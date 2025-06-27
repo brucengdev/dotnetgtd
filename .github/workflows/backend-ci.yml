@@ -28,7 +28,7 @@ jobs:
       run: dotnet restore
       working-directory: ./src
     - name: Build solution
-      run: dotnet build ./DotNetExpensesManager.sln
+      run: dotnet build ./DotnetGTD.sln
       working-directory: ./src
     - name: Test Backend.Core
       run: dotnet test --no-build --verbosity normal
