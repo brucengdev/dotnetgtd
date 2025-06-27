@@ -1,5 +1,4 @@
 import { IClient } from "../api/Client";
-import { sameDate } from "../utils";
 
 export const TEST_USER_NAME = "valid_user"
 export const TEST_PASSWORD = "correct_pass"
