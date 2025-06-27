@@ -1,17 +1,9 @@
-import { Category } from "../models/Category"
-import { Entry } from "../models/Entry"
-
 export interface IClient {
     Token: () => string | undefined
     IsLoggedIn: () => Promise<boolean>
     Login: (username: string, pass: string) => Promise<boolean>
     LoginByToken: (token:string) => Promise<boolean>
     Logout: () => void
-    GetEntriesByDate: (date: Date) => Promise<Entry[]>
-    AddEntry: (entry: Entry) => Promise<boolean>
-    DeleteEntry(id: number): Promise<boolean>
-    GetCategories: () => Promise<Category[]>
-    AddCategory: (name: string) => Promise<boolean>
 }
 
 const devUrl = "https://localhost:7146"

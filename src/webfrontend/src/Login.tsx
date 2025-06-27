@@ -23,7 +23,7 @@ export function Login({client, storage, onLogin}: LoginProps) {
 
     return <div className="isolate bg-white">
         <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-4xl font-semibold tracking-tight text-balance text-gray-900 sm:text-5xl">Login to expenses</h2>
+            <h2 className="text-4xl font-semibold tracking-tight text-balance text-gray-900 sm:text-5xl">Login to GTD</h2>
         </div>
         <form data-testid="login-view" action="#" method="POST" className="mx-auto mt-16 max-w-xl sm:mt-20">
             <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
