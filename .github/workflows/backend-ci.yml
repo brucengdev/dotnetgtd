@@ -1,0 +1,38 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: Backend CI
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  ConnectionStrings__DefaultConnection: Data Source=localhost;Initial Catalog=GTD;User Id=sa; Password=MyPassword;Trust Server Certificate=True
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    # - name: Start SQL server
+    #  run: docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=MyPassword" -e "MSSQL_PID=Express" -p 1433:1433  --name sqlpreview --hostname sqlpreview -d mcr.microsoft.com/mssql/server:2022-preview-ubuntu-22.04
+    
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: ./src
+    - name: Build solution
+      run: dotnet build ./DotNetExpensesManager.sln
+      working-directory: ./src
+    - name: Test Backend.Core
+      run: dotnet test --no-build --verbosity normal
+      working-directory: ./src/Backend.Core.Tests
+    - name: Test Backend.WebApi
+      run: dotnet test --no-build --verbosity normal
+      working-directory: ./src/Backend.WebApi.Tests
