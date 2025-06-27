@@ -8,8 +8,6 @@ public class User
     public string Username { get; set; }
     public string Password { get; set; }
     
-    public ICollection<Entry> Entries { get; set; }
-
     public override bool Equals(object? obj)
     {
         return obj is User otherUser

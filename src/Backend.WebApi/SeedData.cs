@@ -17,12 +17,6 @@ public static class SeedData {
             Password = "admin"
         });
 
-        context.Categories.Add(new Category
-        {
-            Id = 0,
-            Name = "Uncategorized"
-        });
-
         context.SaveChanges();
     }
 }
