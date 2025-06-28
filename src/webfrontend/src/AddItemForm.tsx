@@ -6,6 +6,7 @@ interface AddItemFormProps {
 }
 
 export function AddItemForm(props: AddItemFormProps) {
+    const { onCancel } = props
     return <div data-testid="add-item-form">
         <h1>
             New item
@@ -22,6 +23,7 @@ export function AddItemForm(props: AddItemFormProps) {
         <Button 
             mode={ButtonMode.SECONDARY}
             text="Cancel"
+            onClick={onCancel}
         />
     </div>
 }

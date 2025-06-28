@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import {describe, expect, it, vitest} from 'vitest'
 import '@testing-library/jest-dom'
 import { AddItemForm } from "./AddItemForm";
@@ -17,6 +17,7 @@ describe("AddItemForm", () => {
         const fn = vitest.fn()
         render(<AddItemForm onCancel={fn} />)
 
-
+        fireEvent.click(screen.getByRole("button", {name: "Cancel"}))
+        expect(fn).toHaveBeenCalled()
     })
 })
