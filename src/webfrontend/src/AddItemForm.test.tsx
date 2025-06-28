@@ -2,10 +2,11 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import {describe, expect, it, vitest} from 'vitest'
 import '@testing-library/jest-dom'
 import { AddItemForm } from "./AddItemForm";
+import { TestClient } from "./__test__/TestClient";
 
 describe("AddItemForm", () => {
     it("has necessary ui components", () => {
-        render(<AddItemForm onCancel={() => {}}/>)
+        render(<AddItemForm client={new TestClient()} onCancel={() => {}}/>)
 
         expect(screen.getByRole("heading", {name: "New item"})).toBeInTheDocument()
         expect(screen.getByRole("textbox", {name: "Description"})).toBeInTheDocument()
@@ -15,9 +16,13 @@ describe("AddItemForm", () => {
 
     it("invokes callback when clicking Cancel", () => {
         const fn = vitest.fn()
-        render(<AddItemForm onCancel={fn} />)
+        render(<AddItemForm client={new TestClient()} onCancel={fn} />)
 
         fireEvent.click(screen.getByRole("button", {name: "Cancel"}))
         expect(fn).toHaveBeenCalled()
+    })
+
+    it("submit item to backend when clicking Create", () => {
+        render(<AddItemForm onCancel={() => {}} client={new TestClient()} />)
     })
 })

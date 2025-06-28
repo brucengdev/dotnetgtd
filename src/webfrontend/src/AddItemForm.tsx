@@ -1,8 +1,10 @@
+import { IClient } from "./api/Client";
 import { Button, ButtonMode } from "./controls/Button";
 import { TextBox } from "./controls/TextBox";
 
 interface AddItemFormProps {
     onCancel: () => any
+    client: IClient
 }
 
 export function AddItemForm(props: AddItemFormProps) {
