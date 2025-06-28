@@ -1,3 +1,4 @@
+import { Button } from "./controls/Button";
 import { TextBox } from "./controls/TextBox";
 
 export function AddItemForm() {
@@ -9,6 +10,9 @@ export function AddItemForm() {
             label="Description"
             name="Description"
             value=""
+        />
+        <Button 
+         text="Create"
         />
     </div>
 }
