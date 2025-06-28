@@ -22,9 +22,10 @@ describe("AddItemForm", () => {
         expect(fn).toHaveBeenCalled()
     })
 
-    it("submit item to backend when clicking Create", () => {
+    it("submits item to backend when clicking Create", () => {
         const client = new TestClient()
-        render(<AddItemForm onCancel={() => {}} client={client} />)
+        const onCompleted = vitest.fn()
+        render(<AddItemForm onCancel={() => {}} client={client} onCompleted={onCompleted} />)
 
         const descriptionTextBox = screen.getByRole("textbox", { name: "Description"})
         fireEvent.change(descriptionTextBox, { target: { value: "description of a task"}})
@@ -36,5 +37,7 @@ describe("AddItemForm", () => {
         expect(client.Items).toContainEqual({
             description: "description of a task"
         })
+
+        expect(onCompleted).toHaveBeenCalled()
     })
 })

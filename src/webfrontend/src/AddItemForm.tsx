@@ -5,11 +5,12 @@ import { TextBox } from "./controls/TextBox";
 
 interface AddItemFormProps {
     onCancel: () => any
+    onCompleted?: () => any
     client: IClient
 }
 
 export function AddItemForm(props: AddItemFormProps) {
-    const { onCancel, client } = props
+    const { onCancel, client, onCompleted } = props
     const [ description, setDescription ] = useState('')
     return <div data-testid="add-item-form">
         <h1>
@@ -24,7 +25,12 @@ export function AddItemForm(props: AddItemFormProps) {
         <Button 
             mode={ButtonMode.PRIMARY}
             text="Create"
-            onClick={() => client.AddItem({description})}
+            onClick={() => {
+                client.AddItem({description})
+                if(onCompleted) {
+                    onCompleted()
+                }
+            }}
         />
         <Button 
             mode={ButtonMode.SECONDARY}
