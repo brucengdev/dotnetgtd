@@ -32,7 +32,7 @@ describe("AddItemForm", () => {
         expect(descriptionTextBox).toHaveValue("description of a task")
 
         fireEvent.click(screen.getByRole("button", { name: "Create"}))
-        console.log(JSON.stringify(client.Items))
+
         expect(client.Items).toContainEqual({
             description: "description of a task"
         })
