@@ -1,7 +1,11 @@
 import { Button, ButtonMode } from "./controls/Button";
 import { TextBox } from "./controls/TextBox";
 
-export function AddItemForm() {
+interface AddItemFormProps {
+    onCancel: () => any
+}
+
+export function AddItemForm(props: AddItemFormProps) {
     return <div data-testid="add-item-form">
         <h1>
             New item
