@@ -8,5 +8,6 @@ describe("AddItemForm", () => {
         render(<AddItemForm />)
 
         expect(screen.getByRole("heading", {name: "New item"})).toBeInTheDocument()
+        expect(screen.getByRole("textbox", {name: "Description"})).toBeInTheDocument()
     })
 })
