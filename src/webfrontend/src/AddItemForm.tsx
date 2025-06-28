@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { IClient } from "./api/Client";
 import { Button, ButtonMode } from "./controls/Button";
 import { TextBox } from "./controls/TextBox";
@@ -9,6 +10,7 @@ interface AddItemFormProps {
 
 export function AddItemForm(props: AddItemFormProps) {
     const { onCancel } = props
+    const [ description, setDescription ] = useState('')
     return <div data-testid="add-item-form">
         <h1>
             New item
@@ -16,7 +18,8 @@ export function AddItemForm(props: AddItemFormProps) {
         <TextBox 
             label="Description"
             name="Description"
-            value=""
+            value={description}
+            onChange={e => setDescription(e.target.value)}
         />
         <Button 
             mode={ButtonMode.PRIMARY}

@@ -24,5 +24,10 @@ describe("AddItemForm", () => {
 
     it("submit item to backend when clicking Create", () => {
         render(<AddItemForm onCancel={() => {}} client={new TestClient()} />)
+
+        const descriptionTextBox = screen.getByRole("textbox", { name: "Description"})
+        fireEvent.change(descriptionTextBox, { target: { value: "description of a task"}})
+
+        expect(descriptionTextBox).toHaveValue("description of a task")
     })
 })
