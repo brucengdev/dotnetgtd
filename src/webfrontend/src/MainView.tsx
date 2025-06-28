@@ -15,7 +15,10 @@ export function MainView({onLogout, client} : MainViewProps) {
             <h2 className="text-2xl font-semibold text-gray-900">GTD</h2>
       </div>
       {showNewTaskForm
-        ? <AddItemForm client={client} onCancel={() => setShowNewTaskForm(false)} />
+        ? <AddItemForm client={client} 
+            onCancel={() => setShowNewTaskForm(false)} 
+            onCompleted={() => setShowNewTaskForm(false)}
+            />
         : <Button text="Add" onClick={() => setShowNewTaskForm(true)} />}
       <Button 
         text="Log out"
