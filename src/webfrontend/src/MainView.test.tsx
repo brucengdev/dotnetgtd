@@ -24,5 +24,7 @@ describe("MainView", () => {
         fireEvent.click(addItemButton)
 
         expect(screen.getByRole("heading", { name: "New task"})).toBeInTheDocument()
+
+        expect(screen.queryByRole("button", { name: "Add"})).not.toBeInTheDocument()
     })
 })
