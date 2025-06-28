@@ -11,6 +11,7 @@ export function MainView({onLogout} : MainViewProps) {
       <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-2xl font-semibold text-gray-900">GTD</h2>
       </div>
+      <h1>New task</h1>
       <Button text="Add" />
       <Button 
         text="Log out"
