@@ -23,7 +23,7 @@ describe("MainView", () => {
         const addItemButton = screen.getByRole("button", { name: "Add"})
         fireEvent.click(addItemButton)
 
-        expect(screen.getByRole("heading", { name: "New task"})).toBeInTheDocument()
+        expect(screen.getByTestId("add-item-form")).toBeInTheDocument()
 
         expect(screen.queryByRole("button", { name: "Add"})).not.toBeInTheDocument()
     })

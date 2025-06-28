@@ -1,4 +1,5 @@
 
 export function AddItemForm() {
-    return <></>
+    return <div data-testid="add-item-form">
+    </div>
 }
