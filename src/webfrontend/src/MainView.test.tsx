@@ -13,6 +13,8 @@ describe("MainView", () => {
 
         const logoutButton = screen.getByRole("button", { name: "Log out"})
         expect(logoutButton).toBeInTheDocument()
+
+        expect(screen.queryByRole("heading", { name: "New task"})).not.toBeInTheDocument()
     })
 
     it("shows add item form when button Add is clicked", () => {
