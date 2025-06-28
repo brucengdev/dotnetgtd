@@ -23,11 +23,18 @@ describe("AddItemForm", () => {
     })
 
     it("submit item to backend when clicking Create", () => {
-        render(<AddItemForm onCancel={() => {}} client={new TestClient()} />)
+        const client = new TestClient()
+        render(<AddItemForm onCancel={() => {}} client={client} />)
 
         const descriptionTextBox = screen.getByRole("textbox", { name: "Description"})
         fireEvent.change(descriptionTextBox, { target: { value: "description of a task"}})
 
         expect(descriptionTextBox).toHaveValue("description of a task")
+
+        fireEvent.click(screen.getByRole("button", { name: "Create"}))
+        console.log(JSON.stringify(client.Items))
+        expect(client.Items).toContainEqual({
+            description: "description of a task"
+        })
     })
 })

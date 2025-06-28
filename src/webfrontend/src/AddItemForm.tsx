@@ -9,7 +9,7 @@ interface AddItemFormProps {
 }
 
 export function AddItemForm(props: AddItemFormProps) {
-    const { onCancel } = props
+    const { onCancel, client } = props
     const [ description, setDescription ] = useState('')
     return <div data-testid="add-item-form">
         <h1>
@@ -24,6 +24,7 @@ export function AddItemForm(props: AddItemFormProps) {
         <Button 
             mode={ButtonMode.PRIMARY}
             text="Create"
+            onClick={() => client.AddItem({description})}
         />
         <Button 
             mode={ButtonMode.SECONDARY}

@@ -1,9 +1,12 @@
+import { Item } from "../models/Item"
+
 export interface IClient {
     Token: () => string | undefined
     IsLoggedIn: () => Promise<boolean>
     Login: (username: string, pass: string) => Promise<boolean>
     LoginByToken: (token:string) => Promise<boolean>
     Logout: () => void
+    AddItem: (item: Item) => Promise<boolean>
 }
 
 const devUrl = "https://localhost:7146"
@@ -49,5 +52,9 @@ export class Client implements IClient {
         const succeeded = await this.IsTokenValid(token)
         this.token = token
         return succeeded
+    }
+
+    public AddItem(_: Item): Promise<boolean> {
+        throw new Error("Not implemented")
     }
 }
