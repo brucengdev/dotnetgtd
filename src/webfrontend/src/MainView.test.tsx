@@ -8,6 +8,9 @@ describe("MainView", () => {
     it("has necessary ui components", () => {
         render(<MainView client={new TestClient()} onLogout={() => { }} />)
         
+        const addItemButton = screen.getByRole("button", { name: "Add"})
+        expect(addItemButton).toBeInTheDocument()
+
         const logoutButton = screen.getByRole("button", { name: "Log out"})
         expect(logoutButton).toBeInTheDocument()
     })
