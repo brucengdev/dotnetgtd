@@ -1,9 +1,12 @@
+import { Item } from "../models/Item"
+
 export interface IClient {
     Token: () => string | undefined
     IsLoggedIn: () => Promise<boolean>
     Login: (username: string, pass: string) => Promise<boolean>
     LoginByToken: (token:string) => Promise<boolean>
     Logout: () => void
+    AddItem: (item: Item) => Promise<boolean>
 }
 
 const devUrl = "https://localhost:7146"
@@ -51,63 +54,10 @@ export class Client implements IClient {
         return succeeded
     }
 
-    async GetEntriesByDate(date: Date): Promise<Entry[]> {
-        const result = await fetch(`${url}/Entries/GetByDate?${new URLSearchParams({
-            accessToken: this.token,
-            date: date.toISOString()
-        }).toString()}`, {
-            method: "GET"
-        })
-        if(result.ok) {
-            return await result.json()
-        }
-        return []
-    }
-    async AddEntry(entry: Entry): Promise<boolean> {
-        const result = await fetch(`${url}/Entries/AddEntry?${new URLSearchParams({
-            accessToken: this.token
-        }).toString()}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(entry)
-        })  
-        return result.ok
-    }
-    
-    async DeleteEntry(id: number): Promise<boolean> {
-        const result = await fetch(`${url}/Entries/Delete?${new URLSearchParams({
-            accessToken: this.token,
-            id: id.toString()
-        }).toString()}`, {
-            method: "DELETE",
-        })  
-        return result.ok
-    }
-
-    async GetCategories(): Promise<Category[]> {
-        const result = await fetch(`${url}/Category/GetCategories?${new URLSearchParams({
-            accessToken: this.token,
-        }).toString()}`, {
-            method: "GET"
-        })
-        if(result.ok) {
-            return await result.json()
-        }
-        return []
-    }
-
-    async AddCategory(name: string): Promise<boolean> {
-        const result = await fetch(`${url}/Category/AddCategory?${new URLSearchParams({
-            accessToken: this.token
-        }).toString()}`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(new Category(0, name))
-        })  
-        return result.ok
+    private Items: Item[] = []
+    public async AddItem(item: Item): Promise<boolean> {
+        //dummy implementation until backend is implemented
+        this.Items.push(item)
+        return true
     }
 }

@@ -5,12 +5,12 @@ services:
     build: .
     image: ${DOCKERHUB_REGISTRY}/dotnetgtd
     environment:
-      ConnectionStrings__DefaultConnection: "Data Source=azure-sql-edge;Initial Catalog=GTD;User Id=sa;Password='Pass@123';Trust Server Certificate=True;"
+      ConnectionStrings__DefaultConnection: "Data Source=gtd-db;Initial Catalog=GTD;User Id=sa;Password='Pass@123';Trust Server Certificate=True;"
     ports:
       - 80:8080
 
   db:
-    container_name: azure-sql-edge
+    container_name: gtd-db
     image: mcr.microsoft.com/azure-sql-edge
     restart: always
     volumes: 
