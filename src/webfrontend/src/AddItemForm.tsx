@@ -1,4 +1,4 @@
-import { Button } from "./controls/Button";
+import { Button, ButtonMode } from "./controls/Button";
 import { TextBox } from "./controls/TextBox";
 
 export function AddItemForm() {
@@ -12,7 +12,12 @@ export function AddItemForm() {
             value=""
         />
         <Button 
-         text="Create"
+            mode={ButtonMode.PRIMARY}
+            text="Create"
+        />
+        <Button 
+            mode={ButtonMode.SECONDARY}
+            text="Cancel"
         />
     </div>
 }
