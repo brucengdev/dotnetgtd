@@ -14,7 +14,9 @@ export function MainView({onLogout} : MainViewProps) {
       <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-2xl font-semibold text-gray-900">GTD</h2>
       </div>
-      {showNewTaskForm? <AddItemForm />: <Button text="Add" onClick={() => setShowNewTaskForm(true)} />}
+      {showNewTaskForm
+        ? <AddItemForm onCancel={() => setShowNewTaskForm(false)} />
+        : <Button text="Add" onClick={() => setShowNewTaskForm(true)} />}
       <Button 
         text="Log out"
         onClick={() => onLogout()}
