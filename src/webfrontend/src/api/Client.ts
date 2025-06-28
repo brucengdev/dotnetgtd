@@ -54,7 +54,10 @@ export class Client implements IClient {
         return succeeded
     }
 
-    public AddItem(_: Item): Promise<boolean> {
-        throw new Error("Not implemented")
+    private Items: Item[] = []
+    public async AddItem(item: Item): Promise<boolean> {
+        //dummy implementation until backend is implemented
+        this.Items.push(item)
+        return true
     }
 }
