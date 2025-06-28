@@ -1,4 +1,5 @@
 import { IClient } from "../api/Client";
+import { Item } from "../models/Item";
 
 export const TEST_USER_NAME = "valid_user"
 export const TEST_PASSWORD = "correct_pass"
@@ -6,6 +7,7 @@ export const TEST_TOKEN = "correcttoken"
 
 export class TestClient implements IClient {
     private _token: string | undefined = undefined
+    public Items: Item[] = []
     public Token() { return this._token }
     async IsLoggedIn() {
         return this._token === TEST_TOKEN
@@ -28,5 +30,10 @@ export class TestClient implements IClient {
             this._token = token
         }
         return loggedIn
+    }
+
+    async AddItem(item: Item): Promise<boolean> {
+        this.Items.push(item)
+        return true
     }
 }
