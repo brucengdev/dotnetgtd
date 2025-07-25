@@ -33,6 +33,9 @@ namespace Backend.WebApi.Tests.Controller
         {
             //arrange
             var itemManager = new Mock<IItemManager>();
+            var expectedItemId = 256;
+            itemManager.Setup(im => im.CreateItem(It.IsAny<Item>(), It.IsAny<int>()))
+                .Returns(expectedItemId);
             var sut = new ItemsController(itemManager.Object);
             sut.ControllerContext = new ControllerContext();
             sut.ControllerContext.HttpContext = new DefaultHttpContext();
@@ -52,6 +55,7 @@ namespace Backend.WebApi.Tests.Controller
             response.ShouldBeOfType<OkObjectResult>();
             var result = response as OkObjectResult;
             result?.StatusCode.ShouldBe((int)HttpStatusCode.OK);
+            result?.Value.ShouldBe(expectedItemId);
         }
     }
 }

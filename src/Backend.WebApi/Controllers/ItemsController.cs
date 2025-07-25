@@ -19,8 +19,8 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult CreateItem(Item item)
         {
-            _itemManager.CreateItem(item, Convert.ToInt32(HttpContext.Request.Headers["UserId"]));
-            return Ok(12);
+            var itemId = _itemManager.CreateItem(item, Convert.ToInt32(HttpContext.Request.Headers["UserId"]));
+            return Ok(itemId);
         }
     }
 }
