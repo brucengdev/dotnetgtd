@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Backend.Core.Manager;
+﻿using Backend.Core.Manager;
 using Backend.Models;
 using Backend.WebApi.Controllers;
 using Moq;
@@ -20,12 +15,15 @@ namespace Backend.WebApi.Tests.Controller
             var sut = new ItemController(itemManager.Object);
 
             //act
-            sut.AddItem(new Item
+            var item = new Item
             {
                 Description = "Foo"
-            });
+            };
+            sut.AddItem(item);
 
             //assert
+            itemManager.Verify(im => im.CreateItem(item), Times.Once);
+            itemManager.VerifyNoOtherCalls();
         }
     }
 }
