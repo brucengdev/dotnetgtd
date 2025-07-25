@@ -19,7 +19,7 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public void CreateItem(Item item)
         {
-            _itemManager.CreateItem(item);
+            _itemManager.CreateItem(item, Convert.ToInt32(HttpContext.Request.Headers["UserId"]));
         }
     }
 }

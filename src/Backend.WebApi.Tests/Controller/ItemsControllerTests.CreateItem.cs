@@ -2,6 +2,7 @@
 using Backend.Models;
 using Backend.WebApi.ActionFilters;
 using Backend.WebApi.Controllers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Shouldly;
@@ -32,6 +33,9 @@ namespace Backend.WebApi.Tests.Controller
             //arrange
             var itemManager = new Mock<IItemManager>();
             var sut = new ItemsController(itemManager.Object);
+            sut.ControllerContext = new ControllerContext();
+            sut.ControllerContext.HttpContext = new DefaultHttpContext();
+            sut.HttpContext.Request.Headers["UserId"] = 123.ToString();
 
             //act
             var item = new Item
@@ -41,7 +45,7 @@ namespace Backend.WebApi.Tests.Controller
             sut.CreateItem(item);
 
             //assert
-            itemManager.Verify(im => im.CreateItem(item), Times.Once);
+            itemManager.Verify(im => im.CreateItem(item, 123), Times.Once);
             itemManager.VerifyNoOtherCalls();
         }
     }
