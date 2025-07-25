@@ -42,11 +42,13 @@ namespace Backend.WebApi.Tests.Controller
             {
                 Description = "Foo"
             };
-            sut.CreateItem(item);
+            var response = sut.CreateItem(item);
 
             //assert
             itemManager.Verify(im => im.CreateItem(item, 123), Times.Once);
             itemManager.VerifyNoOtherCalls();
+            
+            response.ShouldBeOfType<OkResult>();
         }
     }
 }
