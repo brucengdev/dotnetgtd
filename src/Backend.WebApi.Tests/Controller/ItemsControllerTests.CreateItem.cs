@@ -1,4 +1,5 @@
-﻿using Backend.Core.Manager;
+﻿using System.Net;
+using Backend.Core.Manager;
 using Backend.Models;
 using Backend.WebApi.ActionFilters;
 using Backend.WebApi.Controllers;
@@ -48,7 +49,9 @@ namespace Backend.WebApi.Tests.Controller
             itemManager.Verify(im => im.CreateItem(item, 123), Times.Once);
             itemManager.VerifyNoOtherCalls();
             
-            response.ShouldBeOfType<OkResult>();
+            response.ShouldBeOfType<OkObjectResult>();
+            var result = response as OkObjectResult;
+            result?.StatusCode.ShouldBe((int)HttpStatusCode.OK);
         }
     }
 }

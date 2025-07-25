@@ -20,7 +20,7 @@ namespace Backend.WebApi.Controllers
         public ActionResult CreateItem(Item item)
         {
             _itemManager.CreateItem(item, Convert.ToInt32(HttpContext.Request.Headers["UserId"]));
-            return Ok();
+            return Ok(12);
         }
     }
 }
