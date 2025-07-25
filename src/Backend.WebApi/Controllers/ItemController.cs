@@ -1,9 +1,12 @@
 ﻿using Backend.Core.Manager;
 using Backend.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.WebApi.Controllers
 {
-    public class ItemController
+    [ApiController]
+    [Route("[controller]")]
+    public class ItemController: ControllerBase
     {
         private IItemManager _itemManager;
         public ItemController(IItemManager itemManager)

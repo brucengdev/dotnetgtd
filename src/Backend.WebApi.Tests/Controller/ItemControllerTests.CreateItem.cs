@@ -5,7 +5,7 @@ using Moq;
 
 namespace Backend.WebApi.Tests.Controller
 {
-    public class ItemControllerTests
+    public partial class ItemControllerTests
     {
         [Fact]
         public void Item_must_be_added()
