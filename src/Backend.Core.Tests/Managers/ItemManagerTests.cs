@@ -15,16 +15,21 @@ public class ItemManagerTests
         //arrange
         var repo = new TestItemRepository();
         var sut = new ItemManager(repo);
-        var item = new Item
+        var input = new Item
         {
             Description = "Foo"
         };
 
         //act
-        var itemId = sut.CreateItem(item, 123);
+        var itemId = sut.CreateItem(input, 123);
 
         //assert
         itemId.ShouldBe(1);
         repo.Items.Count.ShouldBe(1);
+        var savedItem = repo.Items[0];
+        savedItem.ShouldBe(new Item
+        {
+            Description = "Foo"
+        });
     }
 }
