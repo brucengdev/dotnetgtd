@@ -32,6 +32,8 @@ if (builder.Environment.IsDevelopment())
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAccountManager, AccountManager>();
+builder.Services.AddScoped<IItemRepository, ItemRepository>();
+builder.Services.AddScoped<IItemManager, ItemManager>();
 
 builder.Services.AddScoped<SecurityFilterAttribute>();
 
