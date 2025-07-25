@@ -1,8 +1,6 @@
 ﻿using Backend.Core.Manager;
-using Backend.Core.Repository;
 using Backend.Core.Tests.Mocks;
 using Backend.Models;
-using Moq;
 using Shouldly;
 
 namespace Backend.Core.Tests;
