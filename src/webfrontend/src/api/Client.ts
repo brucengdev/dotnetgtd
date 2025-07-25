@@ -54,10 +54,16 @@ export class Client implements IClient {
         return succeeded
     }
 
-    private Items: Item[] = []
     public async AddItem(item: Item): Promise<boolean> {
-        //dummy implementation until backend is implemented
-        this.Items.push(item)
-        return true
+        const result = await fetch(`${url}/Items/CreateItem?${new URLSearchParams({
+            accessToken: this.token
+        }).toString()}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(item)
+        })
+        return result.ok
     }
 }
