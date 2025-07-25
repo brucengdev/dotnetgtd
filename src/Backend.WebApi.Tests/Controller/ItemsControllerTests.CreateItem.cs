@@ -27,7 +27,7 @@ namespace Backend.WebApi.Tests.Controller
         }
         
         [Fact]
-        public void Item_must_be_added()
+        public void Item_must_be_created()
         {
             //arrange
             var itemManager = new Mock<IItemManager>();
