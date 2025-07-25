@@ -29,7 +29,8 @@ public class ItemManagerTests
         var savedItem = repo.Items[0];
         savedItem.ShouldBe(new Item
         {
-            Description = "Foo"
+            Description = "Foo",
+            UserId = 123
         });
     }
 }
