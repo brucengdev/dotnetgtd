@@ -2,6 +2,7 @@
 
 public class Item
 {
+    public int Id { get; set; }
     public string Description { get; set; }
     public int UserId { get; set; }
 
@@ -13,7 +14,8 @@ public class Item
         }
 
         var otherItem = obj as Item;
-        return Description == otherItem.Description
-               && UserId == otherItem.UserId;
+        return Id == otherItem.Id 
+                && Description == otherItem.Description
+                && UserId == otherItem.UserId;
     }
 }
