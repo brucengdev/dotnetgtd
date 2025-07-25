@@ -1,5 +1,6 @@
 ﻿using Backend.Core.Manager;
 using Backend.Models;
+using Backend.WebApi.ActionFilters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.WebApi.Controllers
@@ -14,7 +15,9 @@ namespace Backend.WebApi.Controllers
             _itemManager = itemManager;
         }
 
-        public void AddItem(Item item)
+        [HttpPost("[action]")]
+        [ServiceFilter<SecurityFilterAttribute>]
+        public void CreateItem(Item item)
         {
             _itemManager.CreateItem(item);
         }
