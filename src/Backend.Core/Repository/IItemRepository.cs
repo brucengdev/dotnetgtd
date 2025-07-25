@@ -4,5 +4,5 @@ namespace Backend.Core.Repository;
 
 public interface IItemRepository
 {
-    void CreateItem(Item item);
+    int CreateItem(Item item);
 }

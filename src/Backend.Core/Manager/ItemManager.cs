@@ -14,7 +14,6 @@ public class ItemManager: IItemManager
     public int CreateItem(Item item, int userId)
     {
         item.UserId = userId;
-        _itemRepo.CreateItem(item);
-        return 1;
+        return _itemRepo.CreateItem(item);
     }
 }
