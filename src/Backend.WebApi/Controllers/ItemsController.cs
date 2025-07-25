@@ -6,10 +6,10 @@ namespace Backend.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ItemController: ControllerBase
+    public class ItemsController: ControllerBase
     {
         private IItemManager _itemManager;
-        public ItemController(IItemManager itemManager)
+        public ItemsController(IItemManager itemManager)
         {
             _itemManager = itemManager;
         }

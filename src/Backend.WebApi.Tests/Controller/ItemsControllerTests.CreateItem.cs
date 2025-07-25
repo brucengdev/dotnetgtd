@@ -5,14 +5,14 @@ using Moq;
 
 namespace Backend.WebApi.Tests.Controller
 {
-    public partial class ItemControllerTests
+    public partial class ItemsControllerTests
     {
         [Fact]
         public void Item_must_be_added()
         {
             //arrange
             var itemManager = new Mock<IItemManager>();
-            var sut = new ItemController(itemManager.Object);
+            var sut = new ItemsController(itemManager.Object);
 
             //act
             var item = new Item
