@@ -4,7 +4,7 @@ import '@testing-library/jest-dom'
 import ItemList from "./ItemList";
 
 describe("ItemList", () => {
-    it("has necessary ui components", () => {
+    it("shows message when there are no items", () => {
         render(<ItemList />)
         expect(screen.getByText("There are no items.")).toBeInTheDocument()
     })
