@@ -14,8 +14,9 @@ export default function ItemList(props: ItemListProps) {
         client.GetItems()
             .then(items => setItems(items))
     }
+    const numberOfItems = items?.length ?? 0
     return <div data-testId="item-list">
-        {items?.length === 0
+        {numberOfItems === 0
         ?<div>There are no items.</div>
         :<div>
             {
