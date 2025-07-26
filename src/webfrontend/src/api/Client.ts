@@ -68,8 +68,11 @@ export class Client implements IClient {
         return result.ok
     }
 
-    public async GetItems() {
-        throw new Error("Not yet implemented")
-        return []
+    public async GetItems(): Promise<Item[]> {
+        //dummy implementation until the API is ready
+        return [
+            { description: "Task A" },
+            { description: "Task B" }
+        ]
     }
 }
