@@ -1,15 +1,25 @@
+import { useState } from "react"
 import { IClient } from "./api/Client"
+import { Item } from "./models/Item"
 
 interface ItemListProps {
-    client?: IClient
+    client: IClient
 }
 
-export default function ItemList(_: ItemListProps) {
+export default function ItemList(props: ItemListProps) {
+    const { client } = props
+    const [items, setItems] = useState([] as Item[])
+    client.GetItems()
+    .then(items => setItems(items))
     return <div data-testId="item-list">
-        There are no items.
-        <div data-testId="item">
+        {items.length === 0
+        ?<div>There are no items.</div>
+        :<div>
+            <div data-testId="item">
+            </div>
+            <div data-testId="item">
+            </div>
         </div>
-        <div data-testId="item">
-        </div>
+        }
     </div>
 }

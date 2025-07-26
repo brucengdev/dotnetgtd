@@ -3,14 +3,15 @@ import {describe, expect, it} from 'vitest'
 import '@testing-library/jest-dom'
 import ItemList from "./ItemList";
 import { TestClient } from "./__test__/TestClient";
+import { sleep } from "./__test__/testutils";
 
 describe("ItemList", () => {
     it("shows message when there are no items", () => {
-        render(<ItemList />)
+        render(<ItemList client={new TestClient()} />)
         expect(screen.getByText("There are no items.")).toBeInTheDocument()
     })
 
-    it("shows a list of items", () => {
+    it("shows a list of items", async () => {
         const testClient = new TestClient()
         testClient.Items = [
             { description: "Task A" },
@@ -18,7 +19,11 @@ describe("ItemList", () => {
         ]
         render(<ItemList client={testClient} />)
 
+        await sleep(10)
+
         const items = screen.getAllByTestId("item")
         expect(items.length).toBe(2)
+
+        expect(screen.queryByText("There are no items.")).not.toBeInTheDocument()
     })
 })
