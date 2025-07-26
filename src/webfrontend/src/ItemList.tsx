@@ -9,15 +9,17 @@ interface ItemListProps {
 
 export default function ItemList(props: ItemListProps) {
     const { client } = props
-    const [items, setItems] = useState([] as Item[])
-    client.GetItems()
-    .then(items => setItems(items))
+    const [items, setItems] = useState(null as (Item[]|null))
+    if(items === null) {
+        client.GetItems()
+            .then(items => setItems(items))
+    }
     return <div data-testId="item-list">
-        {items.length === 0
+        {items?.length === 0
         ?<div>There are no items.</div>
         :<div>
             {
-                items.map(item => <ItemView description={item.description} />)
+                items?.map(item => <ItemView description={item.description} />)
             }
         </div>
         }
