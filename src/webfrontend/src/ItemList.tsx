@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { IClient } from "./api/Client"
 import { Item } from "./models/Item"
+import ItemView from "./ItemView"
 
 interface ItemListProps {
     client: IClient
@@ -15,12 +16,9 @@ export default function ItemList(props: ItemListProps) {
         {items.length === 0
         ?<div>There are no items.</div>
         :<div>
-            <div data-testId="item">
-                <div data-testId="description">Task A</div>
-            </div>
-            <div data-testId="item">
-                <div data-testId="description">Task B</div>
-            </div>
+            {
+                items.map(item => <ItemView description={item.description} />)
+            }
         </div>
         }
     </div>

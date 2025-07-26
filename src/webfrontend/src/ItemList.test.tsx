@@ -21,12 +21,25 @@ describe("ItemList", () => {
 
         await sleep(10)
 
-        const items = screen.getAllByTestId("item")
+        let items = screen.getAllByTestId("item")
         expect(items.length).toBe(2)
 
         expect(items[0].querySelector('[data-testid="description"]')?.textContent).toBe("Task A")
         expect(items[1].querySelector('[data-testid="description"]')?.textContent).toBe("Task B")
 
         expect(screen.queryByText("There are no items.")).not.toBeInTheDocument()
+    })
+
+    it("shows a list of items 2", async () => {
+        const testClient = new TestClient()
+        testClient.Items = [
+            { description: "Task C" },
+        ]
+        render(<ItemList client={testClient} />)
+        await sleep(10)
+        
+        let items = screen.getAllByTestId("item")
+        expect(items.length).toBe(1)
+        expect(items[0].querySelector('[data-testid="description"]')?.textContent).toBe("Task C")
     })
 })
