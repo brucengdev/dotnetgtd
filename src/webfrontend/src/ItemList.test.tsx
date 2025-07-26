@@ -12,6 +12,13 @@ describe("ItemList", () => {
 
     it("shows a list of items", () => {
         const testClient = new TestClient()
+        testClient.Items = [
+            { description: "Task A" },
+            { description: "Task B" }
+        ]
         render(<ItemList client={testClient} />)
+
+        const items = screen.getAllByTestId("item")
+        expect(items.length).toBe(2)
     })
 })
