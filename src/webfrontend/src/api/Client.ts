@@ -7,6 +7,7 @@ export interface IClient {
     LoginByToken: (token:string) => Promise<boolean>
     Logout: () => void
     AddItem: (item: Item) => Promise<boolean>
+    GetItems: () => Promise<Item[]>
 }
 
 const devUrl = "https://localhost:7146"
@@ -65,5 +66,13 @@ export class Client implements IClient {
             body: JSON.stringify(item)
         })
         return result.ok
+    }
+
+    public async GetItems(): Promise<Item[]> {
+        //dummy implementation until the API is ready
+        return [
+            { description: "Task A" },
+            { description: "Task B" }
+        ]
     }
 }

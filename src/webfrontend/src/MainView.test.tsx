@@ -15,6 +15,8 @@ describe("MainView", () => {
         expect(logoutButton).toBeInTheDocument()
 
         expect(screen.queryByRole("heading", { name: "New task"})).not.toBeInTheDocument()
+
+        expect(screen.getByTestId("item-list")).toBeInTheDocument()
     })
 
     it("shows add item form when button Add is clicked", () => {

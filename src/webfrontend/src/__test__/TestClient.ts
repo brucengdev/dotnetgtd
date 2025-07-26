@@ -36,4 +36,8 @@ export class TestClient implements IClient {
         this.Items.push(item)
         return true
     }
+
+    async GetItems() {
+        return this.Items
+    }
 }
