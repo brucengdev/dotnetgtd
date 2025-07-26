@@ -24,6 +24,9 @@ describe("ItemList", () => {
         const items = screen.getAllByTestId("item")
         expect(items.length).toBe(2)
 
+        expect(items[0].querySelector('[data-testid="description"]')?.textContent).toBe("Task A")
+        expect(items[1].querySelector('[data-testid="description"]')?.textContent).toBe("Task B")
+
         expect(screen.queryByText("There are no items.")).not.toBeInTheDocument()
     })
 })

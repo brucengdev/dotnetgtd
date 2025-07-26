@@ -16,8 +16,10 @@ export default function ItemList(props: ItemListProps) {
         ?<div>There are no items.</div>
         :<div>
             <div data-testId="item">
+                <div data-testId="description">Task A</div>
             </div>
             <div data-testId="item">
+                <div data-testId="description">Task B</div>
             </div>
         </div>
         }
