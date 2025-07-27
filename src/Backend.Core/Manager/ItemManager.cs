@@ -16,4 +16,9 @@ public class ItemManager: IItemManager
         item.UserId = userId;
         return _itemRepo.CreateItem(item);
     }
+
+    public IEnumerable<Item> GetItems(int userId)
+    {
+        return _itemRepo.GetItems(userId);
+    }
 }
