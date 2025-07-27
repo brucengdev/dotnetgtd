@@ -16,4 +16,9 @@ public class ItemRepository: IItemRepository
         _dbContext.SaveChanges();
         return item.Id;
     }
+
+    public IEnumerable<Item> GetItems(int userId)
+    {
+        return _dbContext.Items.Where(i => i.UserId == userId);
+    }
 }

@@ -12,4 +12,9 @@ public class TestItemRepository: IItemRepository
         Items.Add(item);
         return item.Id;
     }
+
+    public IEnumerable<Item> GetItems(int userId)
+    {
+        return Items.Where(i => i.UserId == userId);
+    }
 }

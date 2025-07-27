@@ -19,6 +19,6 @@ public class ItemManager: IItemManager
 
     public IEnumerable<Item> GetItems(int userId)
     {
-        return [];
+        return _itemRepo.GetItems(userId);
     }
 }
