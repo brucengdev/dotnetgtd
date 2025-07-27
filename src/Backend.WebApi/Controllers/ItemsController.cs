@@ -23,5 +23,12 @@ namespace Backend.WebApi.Controllers
             var itemId = _itemManager.CreateItem(item, Convert.ToInt32(userId));
             return Ok(itemId);
         }
+        
+        [HttpGet("[action]")]
+        [ServiceFilter<SecurityFilterAttribute>]
+        public ActionResult GetItems()
+        {
+            return Ok();
+        }
     }
 }
