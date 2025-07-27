@@ -38,6 +38,8 @@ export class TestClient implements IClient {
     }
 
     async GetItems() {
-        return this.Items
+        return [...this.Items.map(i =>{
+            return {...i}
+        })]
     }
 }

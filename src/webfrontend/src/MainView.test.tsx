@@ -77,6 +77,8 @@ describe("MainView", () => {
 
         fireEvent.click(screen.getByRole("button", { name: "Create"}))
 
+        await sleep(10)
+
         items = screen.queryAllByTestId("item")
         expect(items.length).toBe(2)
         expect(items[0].querySelector('[data-testId="description"]')?.textContent).toBe("Task A")

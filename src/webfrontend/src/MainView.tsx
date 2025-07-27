@@ -25,7 +25,11 @@ export function MainView({onLogout, client} : MainViewProps) {
       {showNewTaskForm
         ? <AddItemForm client={client} 
             onCancel={() => setShowNewTaskForm(false)} 
-            onCompleted={() => setShowNewTaskForm(false)}
+            onCompleted={() => {
+                setShowNewTaskForm(false)
+                setItems(undefined) //to reload
+              }
+            }
             />
         : <Button text="Add" onClick={() => setShowNewTaskForm(true)} />}
       <Button 
