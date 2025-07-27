@@ -66,13 +66,20 @@ describe("MainView", () => {
 
         await sleep(10)
 
-        const items = screen.queryAllByTestId("item")
+        let items = screen.queryAllByTestId("item")
         expect(items.length).toBe(1)
         expect(items[0].querySelector('[data-testId="description"]')?.textContent).toBe("Task A")
         
         const addItemButton = screen.getByRole("button", { name: "Add"})
         fireEvent.click(addItemButton)
 
+        fireEvent.change(screen.getByRole("textbox", { name: "Description"}), { target: { value: "Task B"}})
+
         fireEvent.click(screen.getByRole("button", { name: "Create"}))
+
+        items = screen.queryAllByTestId("item")
+        expect(items.length).toBe(2)
+        expect(items[0].querySelector('[data-testId="description"]')?.textContent).toBe("Task A")
+        expect(items[1].querySelector('[data-testId="description"]')?.textContent).toBe("Task B")
     })
 })
