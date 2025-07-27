@@ -3,6 +3,7 @@ import {describe, expect, it, vitest} from 'vitest'
 import '@testing-library/jest-dom'
 import { AddItemForm } from "./AddItemForm";
 import { TestClient } from "./__test__/TestClient";
+import { sleep } from "./__test__/testutils";
 
 describe("AddItemForm", () => {
     it("has necessary ui components", () => {
@@ -22,7 +23,7 @@ describe("AddItemForm", () => {
         expect(fn).toHaveBeenCalled()
     })
 
-    it("submits item to backend when clicking Create", () => {
+    it("submits item to backend when clicking Create", async () => {
         const client = new TestClient()
         const onCompleted = vitest.fn()
         render(<AddItemForm onCancel={() => {}} client={client} onCompleted={onCompleted} />)
@@ -37,6 +38,8 @@ describe("AddItemForm", () => {
         expect(client.Items).toContainEqual({
             description: "description of a task"
         })
+
+        await sleep(10)
 
         expect(onCompleted).toHaveBeenCalled()
     })
