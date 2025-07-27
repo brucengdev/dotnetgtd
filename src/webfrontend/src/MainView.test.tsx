@@ -68,6 +68,7 @@ describe("MainView", () => {
 
         const items = screen.queryAllByTestId("item")
         expect(items.length).toBe(1)
+        expect(items[0].querySelector('[data-testId="description"]')?.textContent).toBe("Task A")
         
         const addItemButton = screen.getByRole("button", { name: "Add"})
         fireEvent.click(addItemButton)
