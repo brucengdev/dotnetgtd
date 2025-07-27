@@ -2,7 +2,6 @@ import { screen, render } from "@testing-library/react";
 import {describe, expect, it} from 'vitest'
 import '@testing-library/jest-dom'
 import ItemList from "./ItemList";
-import { TestClient } from "./__test__/TestClient";
 import { sleep } from "./__test__/testutils";
 
 describe("ItemList", () => {
