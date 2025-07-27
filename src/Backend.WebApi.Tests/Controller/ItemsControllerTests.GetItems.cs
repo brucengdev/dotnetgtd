@@ -27,35 +27,38 @@ namespace Backend.WebApi.Tests.Controller
             attributes = method?.GetCustomAttributes(typeof(ServiceFilterAttribute<SecurityFilterAttribute>), true);
             attributes.Length.ShouldBeGreaterThan(0, "Must require authorization");
         }
-        //
-        // [Fact]
-        // public void Item_must_be_created()
-        // {
-        //     //arrange
-        //     var itemManager = new Mock<IItemManager>();
-        //     var expectedItemId = 256;
-        //     itemManager.Setup(im => im.CreateItem(It.IsAny<Item>(), It.IsAny<int>()))
-        //         .Returns(expectedItemId);
-        //     var sut = new ItemsController(itemManager.Object);
-        //     sut.ControllerContext = new ControllerContext();
-        //     sut.ControllerContext.HttpContext = new DefaultHttpContext();
-        //     sut.HttpContext.Request.Headers["UserId"] = 123.ToString();
-        //
-        //     //act
-        //     var item = new Item
-        //     {
-        //         Description = "Foo"
-        //     };
-        //     var response = sut.CreateItem(item);
-        //
-        //     //assert
-        //     itemManager.Verify(im => im.CreateItem(item, 123), Times.Once);
-        //     itemManager.VerifyNoOtherCalls();
-        //     
-        //     response.ShouldBeOfType<OkObjectResult>();
-        //     var result = response as OkObjectResult;
-        //     result?.StatusCode.ShouldBe((int)HttpStatusCode.OK);
-        //     result?.Value.ShouldBe(expectedItemId);
-        // }
+        
+        [Fact]
+        public void GetItems_must_return_all_items()
+        {
+            //arrange
+            var itemManager = new Mock<IItemManager>();
+            itemManager.Setup(im => im.GetItems(It.IsAny<int>()))
+                .Returns(new List<Item>()
+                {
+                    new Item() { Description = "Task A"},
+                    new Item() { Description = "Task B"}
+                });
+            var sut = new ItemsController(itemManager.Object);
+            sut.ControllerContext = new ControllerContext();
+            sut.ControllerContext.HttpContext = new DefaultHttpContext();
+            sut.HttpContext.Request.Headers["UserId"] = 123.ToString();
+        
+            //act
+            var response = sut.GetItems();
+        
+            //assert
+            itemManager.Verify(im => im.GetItems(123), Times.Once);
+            itemManager.VerifyNoOtherCalls();
+            
+            response.ShouldBeOfType<OkObjectResult>();
+            var result = response as OkObjectResult;
+            result?.StatusCode.ShouldBe((int)HttpStatusCode.OK);
+            result?.Value.ShouldBe(new List<Item>()
+            {
+                new Item() { Description = "Task A"},
+                new Item() { Description = "Task B"}
+            });
+        }
     }
 }

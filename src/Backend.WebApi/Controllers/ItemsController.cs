@@ -28,7 +28,8 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult GetItems()
         {
-            return Ok();
+            var userId = Convert.ToInt32(HttpContext.Request.Headers["UserId"]);
+            return Ok(_itemManager.GetItems(userId));
         }
     }
 }
