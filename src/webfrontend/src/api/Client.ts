@@ -69,10 +69,14 @@ export class Client implements IClient {
     }
 
     public async GetItems(): Promise<Item[]> {
-        //dummy implementation until the API is ready
-        return [
-            { description: "Task A" },
-            { description: "Task B" }
-        ]
+         const result = await fetch(`${url}/Items/GetItems?${new URLSearchParams({
+            accessToken: this.token,
+        }).toString()}`, {
+            method: "GET"
+        })
+        if(result.ok) {
+            return await result.json()
+        }
+        return []
     }
 }
