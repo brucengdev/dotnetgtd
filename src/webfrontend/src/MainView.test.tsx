@@ -44,13 +44,15 @@ describe("MainView", () => {
         expect(screen.queryByRole("button", { name: "Add"})).toBeInTheDocument()
     })
 
-    it("hides the add item form when create is clicked", () => {
+    it("hides the add item form when create is clicked", async () => {
         render(<MainView client={new TestClient()} onLogout={() => { }} />)
         
         const addItemButton = screen.getByRole("button", { name: "Add"})
         fireEvent.click(addItemButton)
 
         fireEvent.click(screen.getByRole("button", { name: "Create"}))
+
+        await sleep(10)
 
         expect(screen.queryByTestId("add-item-form")).not.toBeInTheDocument()
 

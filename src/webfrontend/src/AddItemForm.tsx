@@ -27,9 +27,11 @@ export function AddItemForm(props: AddItemFormProps) {
             text="Create"
             onClick={() => {
                 client.AddItem({description})
-                if(onCompleted) {
-                    onCompleted()
-                }
+                .then(() => {
+                    if(onCompleted) {
+                        onCompleted()
+                    }
+                })
             }}
         />
         <Button 
