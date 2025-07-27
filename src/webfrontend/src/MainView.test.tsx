@@ -3,6 +3,7 @@ import {describe, expect, it} from 'vitest'
 import '@testing-library/jest-dom'
 import { MainView } from "./MainView";
 import { TestClient } from "./__test__/TestClient";
+import { sleep } from "./__test__/testutils";
 
 describe("MainView", () => {
     it("has necessary ui components", () => {
@@ -54,5 +55,23 @@ describe("MainView", () => {
         expect(screen.queryByTestId("add-item-form")).not.toBeInTheDocument()
 
         expect(screen.queryByRole("button", { name: "Add"})).toBeInTheDocument()
+    })
+
+    it("refresh the item list after a new item is created", async () => {
+        const client = new TestClient()
+        client.Items = [
+            { description: "Task A"}
+        ]
+        render(<MainView client={client} onLogout={() => { }} />)
+
+        await sleep(10)
+
+        const items = screen.queryAllByTestId("item")
+        expect(items.length).toBe(1)
+        
+        const addItemButton = screen.getByRole("button", { name: "Add"})
+        fireEvent.click(addItemButton)
+
+        fireEvent.click(screen.getByRole("button", { name: "Create"}))
     })
 })
