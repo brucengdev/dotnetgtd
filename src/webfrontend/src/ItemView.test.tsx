@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vitest } from "vitest"
 import ItemView from "./ItemView"
 import { screen, render, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom'
@@ -35,5 +35,16 @@ describe("ItemView", () => {
 
         fireEvent.click(screen.getByRole("button", { name: "No" }))
         expect(screen.queryByTestId("confirmDeleteView")).not.toBeInTheDocument()
+    })
+
+    it("executes onDelete when yes is clicked", () => {
+        const onDelete = vitest.fn()
+        render(<ItemView description="Test Description" onDelete={onDelete} />)
+
+        const deleteButton = screen.getByRole("button", { name: "Delete" })
+        fireEvent.click(deleteButton)
+
+        fireEvent.click(screen.getByRole("button", { name: "Yes" }))
+        expect(onDelete).toHaveBeenCalled()
     })
 })
