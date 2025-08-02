@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import ItemView from "./ItemView"
-import { screen, render } from "@testing-library/react";
+import { screen, render, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom'
 
 describe("ItemView", () => {
@@ -13,5 +13,14 @@ describe("ItemView", () => {
 
         const deleteButton = screen.getByRole("button", { name: "Delete" })
         expect(deleteButton).toBeInTheDocument()
+    })
+
+    it("shows delete confirm view when delete is clicked", () => {
+        render(<ItemView description="Test Description" />)
+
+        const deleteButton = screen.getByRole("button", { name: "Delete" })
+        fireEvent.click(deleteButton)
+
+        expect(screen.getByTestId("confirmDeleteView")).toBeInTheDocument()
     })
 })
