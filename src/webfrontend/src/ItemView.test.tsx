@@ -7,6 +7,8 @@ describe("ItemView", () => {
     it("renders description", () => {
         render(<ItemView description="Test Description" />)
 
-        expect(screen.getByTestId("description")).toBeInTheDocument()
+        const description = screen.getByTestId("description")
+        expect(description).toBeInTheDocument()
+
     })
 })
