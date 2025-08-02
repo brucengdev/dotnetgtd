@@ -10,7 +10,7 @@ export default function ItemView(props: ItemViewProps) {
     return <div data-testId="item">
                 <div data-testId="description">{description}</div>
                 {showConfirmDelete
-                    ?<ConfirmDeleteView />
+                    ?<ConfirmDeleteView onNo={() => setShowConfirmDelete(false)} />
                     : <button onClick={() => setShowConfirmDelete(true)}>Delete</button>}
         </div>
 }

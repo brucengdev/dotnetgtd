@@ -26,4 +26,14 @@ describe("ItemView", () => {
         expect(screen.getByTestId("confirmDeleteView")).toBeInTheDocument()
         expect(deleteButton).not.toBeInTheDocument()
     })
+
+    it("hides delete confirm view when no is clicked", () => {
+        render(<ItemView description="Test Description" />)
+
+        const deleteButton = screen.getByRole("button", { name: "Delete" })
+        fireEvent.click(deleteButton)
+
+        fireEvent.click(screen.getByRole("button", { name: "No" }))
+        expect(screen.queryByTestId("confirmDeleteView")).not.toBeInTheDocument()
+    })
 })
