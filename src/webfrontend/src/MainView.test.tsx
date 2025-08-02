@@ -62,7 +62,7 @@ describe("MainView", () => {
     it("refresh the item list after a new item is created", async () => {
         const client = new TestClient()
         client.Items = [
-            { description: "Task A"}
+            { id: 1, description: "Task A"}
         ]
         render(<MainView client={client} onLogout={() => { }} />)
 
@@ -86,4 +86,29 @@ describe("MainView", () => {
         expect(items[0].querySelector('[data-testId="description"]')?.textContent).toBe("Task A")
         expect(items[1].querySelector('[data-testId="description"]')?.textContent).toBe("Task B")
     })
+
+    
+    it("call delete item and refresh list after an item is deleted", async () => {
+        const client = new TestClient()
+        client.Items = [
+            { id: 1, description: "Task A"},
+            { id: 2, description: "Task B"},
+            { id: 3, description: "Task C"}
+        ]
+        render(<MainView client={client} onLogout={() => { }} />)
+
+        await sleep(10)
+
+        const items = screen.queryAllByTestId("item")
+        expect(items.length).toBe(3)
+
+        const deleteButtons = screen.getAllByRole("button", { name: "Delete" })
+        fireEvent.click(deleteButtons[1])
+
+        fireEvent.click(screen.getByRole("button", { name: "Yes" }))
+        await sleep(10)
+
+        expect(client.Items.length).toBe(2)
+    })
+
 })

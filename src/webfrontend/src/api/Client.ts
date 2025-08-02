@@ -8,6 +8,7 @@ export interface IClient {
     Logout: () => void
     AddItem: (item: Item) => Promise<boolean>
     GetItems: () => Promise<Item[]>
+    DeleteItem: (id: number) => Promise<boolean>
 }
 
 const devUrl = "https://localhost:7146"
@@ -78,5 +79,10 @@ export class Client implements IClient {
             return await result.json()
         }
         return []
+    }
+
+    public async DeleteItem(_: number): Promise<boolean> {
+        //TODO: implement delete item
+        return false;
     }
 }

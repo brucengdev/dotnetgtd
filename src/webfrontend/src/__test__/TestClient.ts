@@ -42,4 +42,10 @@ export class TestClient implements IClient {
             return {...i}
         })]
     }
+
+    async DeleteItem(id: number) {
+        const itemIndex = this.Items.findIndex(i => i.id === id)
+        this.Items.splice(itemIndex, 1)
+        return itemIndex >= 0
+    }
 }

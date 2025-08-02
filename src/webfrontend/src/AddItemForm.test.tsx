@@ -36,6 +36,7 @@ describe("AddItemForm", () => {
         fireEvent.click(screen.getByRole("button", { name: "Create"}))
 
         expect(client.Items).toContainEqual({
+            id: 0,
             description: "description of a task"
         })
 
