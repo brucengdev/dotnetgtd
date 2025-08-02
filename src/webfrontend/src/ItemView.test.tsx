@@ -24,5 +24,6 @@ describe("ItemView", () => {
         fireEvent.click(deleteButton)
 
         expect(screen.getByTestId("confirmDeleteView")).toBeInTheDocument()
+        expect(deleteButton).not.toBeInTheDocument()
     })
 })

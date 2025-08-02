@@ -9,7 +9,8 @@ export default function ItemView(props: ItemViewProps) {
     const [ showConfirmDelete, setShowConfirmDelete ] = useState(false)
     return <div data-testId="item">
                 <div data-testId="description">{description}</div>
-                <button onClick={() => setShowConfirmDelete(true)}>Delete</button>
-                {showConfirmDelete? <ConfirmDeleteView /> : <></>}
+                {showConfirmDelete
+                    ?<ConfirmDeleteView />
+                    : <button onClick={() => setShowConfirmDelete(true)}>Delete</button>}
         </div>
 }
