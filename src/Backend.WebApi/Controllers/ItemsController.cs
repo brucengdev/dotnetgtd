@@ -36,6 +36,7 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult DeleteItem([FromQuery] int id)
         {
+            _itemManager.DeleteItem(12, 223);
             return Ok();
         }
     }

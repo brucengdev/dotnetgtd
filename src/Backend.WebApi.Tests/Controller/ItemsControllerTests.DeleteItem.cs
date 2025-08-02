@@ -1,6 +1,4 @@
-﻿using System.Net;
-using Backend.Core.Manager;
-using Backend.Models;
+﻿using Backend.Core.Manager;
 using Backend.WebApi.ActionFilters;
 using Backend.WebApi.Controllers;
 using Microsoft.AspNetCore.Http;
@@ -31,6 +29,25 @@ namespace Backend.WebApi.Tests.Controller
             idParam.Name.ShouldBe("id");
             
             idParam.GetCustomAttributes(typeof(FromQueryAttribute), true).ShouldNotBeEmpty();
+        }
+
+        [Fact]
+        public void DeleteItem_must_be_successful()
+        {
+            //arrange
+            var itemManager = new Mock<IItemManager>();
+            var sut = new ItemsController(itemManager.Object);
+            var controllerContext = new ControllerContext();
+            sut.ControllerContext = controllerContext;
+            controllerContext.HttpContext = new DefaultHttpContext();
+            controllerContext.HttpContext.Request.Headers["UserId"] = "223";
+            
+            //act
+            sut.DeleteItem(12);
+            
+            //assert
+            itemManager.Verify(im => im.DeleteItem(12,223), Times.Once);
+            itemManager.VerifyNoOtherCalls();
         }
     }
 }

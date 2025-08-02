@@ -21,4 +21,9 @@ public class ItemManager: IItemManager
     {
         return _itemRepo.GetItems(userId);
     }
+
+    public void DeleteItem(int itemId, int userId)
+    {
+        
+    }
 }
