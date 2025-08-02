@@ -31,8 +31,9 @@ namespace Backend.WebApi.Tests.Controller
             idParam.GetCustomAttributes(typeof(FromQueryAttribute), true).ShouldNotBeEmpty();
         }
 
-        [Fact]
-        public void DeleteItem_must_be_successful()
+        [Theory]
+        [InlineData(12 ,223)]
+        public void DeleteItem_must_be_successful(int itemId, int userId)
         {
             //arrange
             var itemManager = new Mock<IItemManager>();
@@ -40,13 +41,13 @@ namespace Backend.WebApi.Tests.Controller
             var controllerContext = new ControllerContext();
             sut.ControllerContext = controllerContext;
             controllerContext.HttpContext = new DefaultHttpContext();
-            controllerContext.HttpContext.Request.Headers["UserId"] = "223";
+            controllerContext.HttpContext.Request.Headers["UserId"] = userId.ToString();
             
             //act
-            sut.DeleteItem(12);
+            sut.DeleteItem(itemId);
             
             //assert
-            itemManager.Verify(im => im.DeleteItem(12,223), Times.Once);
+            itemManager.Verify(im => im.DeleteItem(itemId,userId), Times.Once);
             itemManager.VerifyNoOtherCalls();
         }
     }
