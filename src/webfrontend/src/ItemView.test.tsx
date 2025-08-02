@@ -13,6 +13,8 @@ describe("ItemView", () => {
 
         const deleteButton = screen.getByRole("button", { name: "Delete" })
         expect(deleteButton).toBeInTheDocument()
+
+        expect(screen.queryByTestId("confirmDeleteView")).not.toBeInTheDocument()
     })
 
     it("shows delete confirm view when delete is clicked", () => {
