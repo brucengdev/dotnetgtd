@@ -33,6 +33,7 @@ namespace Backend.WebApi.Tests.Controller
 
         [Theory]
         [InlineData(12 ,223)]
+        [InlineData(33 ,21)]
         public void DeleteItem_must_be_successful(int itemId, int userId)
         {
             //arrange
