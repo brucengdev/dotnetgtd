@@ -13,8 +13,8 @@ describe("ItemList", () => {
 
     it("shows a list of items", async () => {
         const items = [
-            { description: "Task A" },
-            { description: "Task B" }
+            { id: 1, description: "Task A" },
+            { id: 2, description: "Task B" }
         ]
         render(<ItemList items={items} />)
 
@@ -31,7 +31,7 @@ describe("ItemList", () => {
 
     it("shows a list of items 2", async () => {
         const items = [
-            { description: "Task C" },
+            { id: 1, description: "Task C" },
         ]
         render(<ItemList items={items} />)
         await sleep(10)
@@ -43,9 +43,9 @@ describe("ItemList", () => {
 
     it("executes onDelete when an item is deleted by user", async () => {
         const items = [
-            { description: "Task A" },
-            { description: "Task B" },
-            { description: "Task C" }
+            { id: 1, description: "Task A" },
+            { id: 2, description: "Task B" },
+            { id: 3, description: "Task C" }
         ]
         let selectedItem: Item | undefined = undefined
         const onDelete = vitest.fn((item: Item) => {
@@ -62,6 +62,6 @@ describe("ItemList", () => {
 
         fireEvent.click(screen.getByRole("button", { name: "Yes" }))
         expect(onDelete).toHaveBeenCalled()
-        expect(selectedItem).toEqual({ description: "Task B" })
+        expect(selectedItem).toEqual({ id: 2, description: "Task B" })
     })
 })

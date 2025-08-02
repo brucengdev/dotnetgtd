@@ -26,7 +26,7 @@ export function AddItemForm(props: AddItemFormProps) {
             mode={ButtonMode.PRIMARY}
             text="Create"
             onClick={() => {
-                client.AddItem({description})
+                client.AddItem({id: 0, description})
                 .then(() => {
                     if(onCompleted) {
                         onCompleted()

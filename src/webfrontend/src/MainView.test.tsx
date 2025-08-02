@@ -62,7 +62,7 @@ describe("MainView", () => {
     it("refresh the item list after a new item is created", async () => {
         const client = new TestClient()
         client.Items = [
-            { description: "Task A"}
+            { id: 1, description: "Task A"}
         ]
         render(<MainView client={client} onLogout={() => { }} />)
 
@@ -91,9 +91,9 @@ describe("MainView", () => {
     it("call delete item and refresh list after an item is deleted", async () => {
         const client = new TestClient()
         client.Items = [
-            { description: "Task A"},
-            { description: "Task B"},
-            { description: "Task C"}
+            { id: 1, description: "Task A"},
+            { id: 2, description: "Task B"},
+            { id: 3, description: "Task C"}
         ]
         render(<MainView client={client} onLogout={() => { }} />)
 

@@ -23,7 +23,7 @@ export function MainView({onLogout, client} : MainViewProps) {
       </div>
       <ItemList items={items} 
         onDelete={(item: Item) => {
-            client.DeleteItem(item.Id)
+            client.DeleteItem(item.id)
                 .then(() => {
                     setItems(undefined) //to reload
                 })
