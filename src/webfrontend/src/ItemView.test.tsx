@@ -9,8 +9,9 @@ describe("ItemView", () => {
 
         const description = screen.getByTestId("description")
         expect(description).toBeInTheDocument()
-
         expect(description.textContent).toBe("Test Description")
 
+        const deleteButton = screen.getByRole("button", { name: "Delete" })
+        expect(deleteButton).toBeInTheDocument()
     })
 })
