@@ -21,7 +21,14 @@ export function MainView({onLogout, client} : MainViewProps) {
       <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-2xl font-semibold text-gray-900">GTD</h2>
       </div>
-      <ItemList items={items} />
+      <ItemList items={items} 
+        onDelete={(item: Item) => {
+            client.DeleteItem(item.Id)
+                .then(() => {
+                    setItems(undefined) //to reload
+                })
+        }}
+      />
       {showNewTaskForm
         ? <AddItemForm client={client} 
             onCancel={() => setShowNewTaskForm(false)} 
