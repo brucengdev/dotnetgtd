@@ -4,7 +4,7 @@ import { screen, render } from "@testing-library/react";
 import '@testing-library/jest-dom'
 
 describe("ItemView", () => {
-    it("renders description", () => {
+    it("renders description and delete button", () => {
         render(<ItemView description="Test Description" />)
 
         const description = screen.getByTestId("description")
