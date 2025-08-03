@@ -6,4 +6,8 @@ public interface IItemManager
 {
     int CreateItem(Item item, int userId);
     IEnumerable<Item> GetItems(int userId);
+
+    void DeleteItem(int itemId, int userId);
 }
+
+public class ItemNotFoundException: Exception { }

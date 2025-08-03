@@ -5,7 +5,7 @@ using Shouldly;
 
 namespace Backend.Core.Tests;
 
-public class ItemManagerTests
+public partial class ItemManagerTests
 {
     [Fact]
     public void Creating_item_is_successful()

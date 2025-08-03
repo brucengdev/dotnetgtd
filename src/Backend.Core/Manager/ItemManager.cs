@@ -21,4 +21,18 @@ public class ItemManager: IItemManager
     {
         return _itemRepo.GetItems(userId);
     }
+
+    public void DeleteItem(int itemId, int userId)
+    {
+        var item = _itemRepo.GetItem(itemId);
+        if (item == null)
+        {
+            throw new ItemNotFoundException();
+        }
+        if (item?.UserId != userId)
+        {
+            throw new UnauthorizedAccessException("User is not allowed to delete items owned by other users");
+        }
+        _itemRepo.DeleteItem(itemId);
+    }
 }

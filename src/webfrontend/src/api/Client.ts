@@ -70,7 +70,7 @@ export class Client implements IClient {
     }
 
     public async GetItems(): Promise<Item[]> {
-         const result = await fetch(`${url}/Items/GetItems?${new URLSearchParams({
+        const result = await fetch(`${url}/Items/GetItems?${new URLSearchParams({
             accessToken: this.token,
         }).toString()}`, {
             method: "GET"
@@ -81,8 +81,13 @@ export class Client implements IClient {
         return []
     }
 
-    public async DeleteItem(_: number): Promise<boolean> {
-        //TODO: implement delete item
-        return false;
+    public async DeleteItem(id: number): Promise<boolean> {
+        const result = await fetch(`${url}/Items/DeleteItem?${new URLSearchParams({
+            accessToken: this.token,
+            id: id.toString()
+        }).toString()}`, {
+            method: "DELETE"
+        })
+        return result.ok
     }
 }

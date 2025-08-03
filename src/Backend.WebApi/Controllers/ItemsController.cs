@@ -31,5 +31,14 @@ namespace Backend.WebApi.Controllers
             var userId = Convert.ToInt32(HttpContext.Request.Headers["UserId"]);
             return Ok(_itemManager.GetItems(userId));
         }
+
+        [HttpDelete("[action]")]
+        [ServiceFilter<SecurityFilterAttribute>]
+        public ActionResult DeleteItem([FromQuery] int id)
+        {
+            var userId = Convert.ToInt32(HttpContext.Request.Headers["UserId"]);
+            _itemManager.DeleteItem(id, userId);
+            return Ok();
+        }
     }
 }
