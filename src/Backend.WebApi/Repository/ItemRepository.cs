@@ -24,11 +24,17 @@ public class ItemRepository: IItemRepository
 
     public void DeleteItem(int itemId)
     {
-        throw new NotImplementedException();
+        var item = _dbContext.Items.Find(itemId);
+        if (item != null)
+        {
+            _dbContext.Items.Remove(item);
+            _dbContext.SaveChanges();
+        }
     }
 
     public Item? GetItem(int itemId)
     {
-        throw new NotImplementedException();
+        var item = _dbContext.Items.Find(itemId);
+        return item;
     }
 }
