@@ -26,4 +26,9 @@ public class ItemRepository: IItemRepository
     {
         throw new NotImplementedException();
     }
+
+    public Item? GetItem(int itemId)
+    {
+        throw new NotImplementedException();
+    }
 }

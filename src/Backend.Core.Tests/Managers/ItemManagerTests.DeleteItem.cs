@@ -32,4 +32,31 @@ public partial class ItemManagerTests
             new() { Id = 3, Description = "Task C", UserId = 3 }
         });
     }
+    
+    [Fact]
+    public void DeleteItem_must_fail_if_item_does_not_belong_to_user()
+    {
+        //arrange
+        var repo = new TestItemRepository();
+        repo.Items = new List<Item>
+        {
+            new() { Id = 1, Description = "Task A", UserId = 1 },
+            new() { Id = 2, Description = "Task B", UserId = 23 },
+            new() { Id = 3, Description = "Task C", UserId = 3 }
+        };
+        var sut = new ItemManager(repo);
+        
+        //act and assert
+        var exception = Assert.Throws<UnauthorizedAccessException>(() => sut.DeleteItem(1, 23));
+        
+        //assert
+        exception.Message.ShouldBe("User is not allowed to delete items owned by other users");
+        repo.Items.Count.ShouldBe(3);
+        repo.Items.ShouldBe(new List<Item>
+        {
+            new() { Id = 1, Description = "Task A", UserId = 1 },
+            new() { Id = 2, Description = "Task B", UserId = 23 },
+            new() { Id = 3, Description = "Task C", UserId = 3 }
+        });
+    }
 }

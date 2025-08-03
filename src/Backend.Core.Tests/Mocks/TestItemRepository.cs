@@ -26,4 +26,9 @@ public class TestItemRepository: IItemRepository
             Items.Remove(item);
         }
     }
+
+    public Item? GetItem(int itemId)
+    {
+        return Items.Find(i => i.Id == itemId);
+    }
 }
