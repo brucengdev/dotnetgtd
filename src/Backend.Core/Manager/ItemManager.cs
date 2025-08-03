@@ -24,6 +24,6 @@ public class ItemManager: IItemManager
 
     public void DeleteItem(int itemId, int userId)
     {
-        
+        _itemRepo.DeleteItem(itemId);
     }
 }

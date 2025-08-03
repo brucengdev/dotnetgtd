@@ -21,4 +21,9 @@ public class ItemRepository: IItemRepository
     {
         return _dbContext.Items.Where(i => i.UserId == userId);
     }
+
+    public void DeleteItem(int itemId)
+    {
+        throw new NotImplementedException();
+    }
 }

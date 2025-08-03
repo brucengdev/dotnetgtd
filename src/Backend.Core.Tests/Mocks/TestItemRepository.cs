@@ -17,4 +17,13 @@ public class TestItemRepository: IItemRepository
     {
         return Items.Where(i => i.UserId == userId);
     }
+
+    public void DeleteItem(int itemId)
+    {
+        var item = Items.Find(i => i.Id == itemId);
+        if (item != null)
+        {
+            Items.Remove(item);
+        }
+    }
 }
