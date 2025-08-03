@@ -73,7 +73,7 @@ public partial class ItemManagerTests
         var sut = new ItemManager(repo);
         
         //act and assert
-        var exception = Assert.Throws<ItemNotFoundException>(() => sut.DeleteItem(4, 23));
+        Assert.Throws<ItemNotFoundException>(() => sut.DeleteItem(4, 23));
         
         //assert
         repo.Items.ShouldBe(new List<Item>
