@@ -1,7 +1,10 @@
 ﻿using Backend.Core.Manager;
+using Backend.Core.Repository;
 using Backend.Core.Tests.Mocks;
 using Backend.Models;
 using Backend.WebApi.Repository;
+using Microsoft.Identity.Client;
+using Moq;
 using Shouldly;
 
 namespace Backend.Core.Tests;
@@ -19,7 +22,7 @@ public partial class ItemManagerTests
             new() { Id = 2, Description = "Task B", UserId = 23 },
             new() { Id = 3, Description = "Task C", UserId = 3 }
         };
-        var sut = new ItemManager(repo);
+        var sut = new ItemManager(repo, new Mock<IUserRepository>().Object);
         
         //act
         sut.DeleteItem(2, 23);
@@ -44,7 +47,7 @@ public partial class ItemManagerTests
             new() { Id = 2, Description = "Task B", UserId = 23 },
             new() { Id = 3, Description = "Task C", UserId = 3 }
         };
-        var sut = new ItemManager(repo);
+        var sut = new ItemManager(repo, new Mock<IUserRepository>().Object);
         
         //act and assert
         var exception = Assert.Throws<UnauthorizedAccessException>(() => sut.DeleteItem(1, 23));
@@ -70,7 +73,7 @@ public partial class ItemManagerTests
             new() { Id = 2, Description = "Task B", UserId = 23 },
             new() { Id = 3, Description = "Task C", UserId = 3 }
         };
-        var sut = new ItemManager(repo);
+        var sut = new ItemManager(repo, new Mock<IUserRepository>().Object);
         
         //act and assert
         Assert.Throws<ItemNotFoundException>(() => sut.DeleteItem(4, 23));

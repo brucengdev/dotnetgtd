@@ -11,20 +11,26 @@ public partial class ItemManagerTests
     public void Creating_item_is_successful()
     {
         //arrange
-        var repo = new TestItemRepository();
-        repo.Items.Add(new Item
+        var itemRepo = new TestItemRepository();
+        itemRepo.Items.Add(new Item
         {
             Id = 1,
             Description = "Task 1",
             UserId = 123
         });
-        repo.Items.Add(new Item
+        itemRepo.Items.Add(new Item
         {
             Id = 2,
             Description = "Task 2",
             UserId = 234
         });
-        var sut = new ItemManager(repo);
+        var userRepo = new TestUserRepository();
+        userRepo.AddUser(new()
+        {
+            Id = 123,
+            Username = "testuser"
+        });
+        var sut = new ItemManager(itemRepo, userRepo);
         var input = new Item
         {
             Description = "New Task"
@@ -37,13 +43,43 @@ public partial class ItemManagerTests
         //assert
         var expectedItemId = 3;
         itemId.ShouldBe(expectedItemId);
-        repo.Items.Count.ShouldBe(3);
-        var savedItem = repo.Items[repo.Items.Count - 1];
+        itemRepo.Items.Count.ShouldBe(3);
+        var savedItem = itemRepo.Items[itemRepo.Items.Count - 1];
         savedItem.ShouldBe(new Item
         {
             Id = expectedItemId,
             Description = "New Task",
             UserId = expectedUserId
         });
+    }
+    
+    [Fact]
+    public void Creating_item_must_fail_if_user_is_invalid()
+    {
+        //arrange
+        var itemRepo = new TestItemRepository();
+        itemRepo.Items.Add(new Item
+        {
+            Id = 1,
+            Description = "Task 1",
+            UserId = 123
+        });
+        itemRepo.Items.Add(new Item
+        {
+            Id = 2,
+            Description = "Task 2",
+            UserId = 234
+        });
+        var userRepo = new TestUserRepository();
+        var sut = new ItemManager(itemRepo, userRepo);
+        var input = new Item
+        {
+            Description = "New Task"
+        };
+        var expectedUserId = 123;
+
+        //act and assert
+        Assert.Throws<UserNotFoundException>(() => sut.CreateItem(input, expectedUserId));
+        itemRepo.Items.Count.ShouldBe(2);
     }
 }
