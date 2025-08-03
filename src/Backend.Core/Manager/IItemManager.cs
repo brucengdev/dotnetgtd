@@ -9,3 +9,5 @@ public interface IItemManager
 
     void DeleteItem(int itemId, int userId);
 }
+
+public class ItemNotFoundException: Exception { }
