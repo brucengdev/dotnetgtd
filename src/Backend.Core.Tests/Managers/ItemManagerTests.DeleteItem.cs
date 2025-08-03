@@ -26,5 +26,10 @@ public partial class ItemManagerTests
         
         //assert
         repo.Items.Count.ShouldBe(2);
+        repo.Items.ShouldBe(new List<Item>
+        {
+            new() { Id = 1, Description = "Task A", UserId = 1 },
+            new() { Id = 3, Description = "Task C", UserId = 3 }
+        });
     }
 }
