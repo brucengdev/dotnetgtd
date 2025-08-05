@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { ConfirmDeleteView } from "./ConfirmDeleteView"
+import { Button, ButtonMode } from "./controls/Button"
 
 interface ItemViewProps {
     description: string
@@ -12,6 +13,6 @@ export default function ItemView(props: ItemViewProps) {
                 <div data-testId="description">{description}</div>
                 {showConfirmDelete
                     ?<ConfirmDeleteView onNo={() => setShowConfirmDelete(false)} onYes={onDelete} />
-                    : <button onClick={() => setShowConfirmDelete(true)}>Delete</button>}
+                    : <Button text="Delete" mode={ButtonMode.DANGER} onClick={() => setShowConfirmDelete(true)} />}
         </div>
 }
