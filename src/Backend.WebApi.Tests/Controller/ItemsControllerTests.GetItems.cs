@@ -42,7 +42,7 @@ namespace Backend.WebApi.Tests.Controller
             var sut = new ItemsController(itemManager.Object);
             sut.ControllerContext = new ControllerContext();
             sut.ControllerContext.HttpContext = new DefaultHttpContext();
-            sut.HttpContext.Request.Headers["UserId"] = 123.ToString();
+            sut.HttpContext.Items["UserId"] = 123;
         
             //act
             var response = sut.GetItems();

@@ -42,7 +42,7 @@ namespace Backend.WebApi.Tests.Controller
             var controllerContext = new ControllerContext();
             sut.ControllerContext = controllerContext;
             controllerContext.HttpContext = new DefaultHttpContext();
-            controllerContext.HttpContext.Request.Headers["UserId"] = userId.ToString();
+            controllerContext.HttpContext.Items["UserId"] = userId;
             
             //act
             sut.DeleteItem(itemId);
