@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { IClient } from "./api/Client"
-import { Button } from "./controls/Button"
+import { Button, ButtonMode } from "./controls/Button"
 import { AddItemForm } from "./AddItemForm"
 import ItemList from "./ItemList"
 import { Item } from "./models/Item"
@@ -38,9 +38,10 @@ export function MainView({onLogout, client} : MainViewProps) {
               }
             }
             />
-        : <Button text="Add" className="mb-1" onClick={() => setShowNewTaskForm(true)} />}
+        : <Button text="Add" className="mb-5" onClick={() => setShowNewTaskForm(true)} />}
       <Button 
         text="Log out"
+        mode={ButtonMode.DANGER}
         onClick={() => onLogout()}
       />
     </div>
