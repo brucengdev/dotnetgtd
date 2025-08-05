@@ -19,7 +19,7 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult CreateItem(Item item)
         {
-            var userId = Convert.ToInt32(HttpContext.Request.Headers["UserId"]);
+            var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
             var itemId = _itemManager.CreateItem(item, userId);
             return Ok(itemId);
         }
@@ -28,7 +28,7 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult GetItems()
         {
-            var userId = Convert.ToInt32(HttpContext.Request.Headers["UserId"]);
+            var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
             return Ok(_itemManager.GetItems(userId));
         }
 
@@ -36,7 +36,7 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult DeleteItem([FromQuery] int id)
         {
-            var userId = Convert.ToInt32(HttpContext.Request.Headers["UserId"]);
+            var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
             _itemManager.DeleteItem(id, userId);
             return Ok();
         }
