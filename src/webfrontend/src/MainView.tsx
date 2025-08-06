@@ -38,8 +38,9 @@ export function MainView({onLogout, client} : MainViewProps) {
               }
             }
             />
-        : <Button text="Add" className="mb-5" onClick={() => setShowNewTaskForm(true)} />}
+        : <Button text="Add" className="mb-5 block" onClick={() => setShowNewTaskForm(true)} />}
       <Button 
+        className="block"
         text="Log out"
         mode={ButtonMode.DANGER}
         onClick={() => onLogout()}
