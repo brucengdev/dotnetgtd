@@ -6,7 +6,7 @@ interface ConfirmDeleteViewProps {
 }
 
 export function ConfirmDeleteView({onYes, onNo}: ConfirmDeleteViewProps) {
-    return <div data-testid="confirmDeleteView" className="grid-cols-3">
+    return <div data-testid="confirmDeleteView" className="grid-cols-3 mb-6">
         <h2 className="font-semibold text-red-600 text-2xl mb-2">
             Confirm to delete?
         </h2>
