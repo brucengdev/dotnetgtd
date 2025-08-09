@@ -15,7 +15,7 @@ describe("App", () => {
         expect(screen.getByTestId("login-view")).toBeInTheDocument()
     })
 
-    it("shows main view when was logged in before", async () => {
+    it("shows main view and log out button when was logged in before", async () => {
         const client = new TestClient();
         const testStorage = new TestStorage();
         testStorage.Set(STORED_TOKEN, TEST_TOKEN)
@@ -24,6 +24,7 @@ describe("App", () => {
         await sleep(10)
 
         expect(screen.getByTestId("main-view")).toBeInTheDocument()
+        expect(screen.getByRole("button", { name: "Log out" })).toBeInTheDocument()
     })
 
     it("shows login form after logging out", async () => {
@@ -42,7 +43,7 @@ describe("App", () => {
         expect(screen.getByTestId("login-view")).toBeInTheDocument()
     })
 
-    it("shows main view when already logged in", async () => {
+    it("shows main view and logout button when already logged in", async () => {
         const client = new TestClient();
         client.Login(TEST_USER_NAME, TEST_PASSWORD)
         render(<App client={client} storage={new TestStorage()} />)
@@ -50,9 +51,10 @@ describe("App", () => {
         await sleep(10)
 
         expect(screen.getByTestId("main-view")).toBeInTheDocument()
+        expect(screen.getByRole("button", { name: "Log out" })).toBeInTheDocument()
     })
 
-    it("shows main view after logging in", async () => {
+    it("shows main view and logout button after logging in", async () => {
         const client = new TestClient()
         render(<App client={client} storage={new TestStorage()} />)
         
@@ -67,6 +69,7 @@ describe("App", () => {
         await sleep(10)
 
         expect(screen.getByTestId("main-view")).toBeInTheDocument()
+        expect(screen.getByRole("button", { name: "Log out" })).toBeInTheDocument()
     })
 
     it("still shows login form if logging in was failed", async () => {
