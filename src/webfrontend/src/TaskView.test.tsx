@@ -1,13 +1,13 @@
 import { screen, render, fireEvent } from "@testing-library/react";
 import {describe, expect, it} from 'vitest'
 import '@testing-library/jest-dom'
-import { MainView } from "./MainView";
+import { TaskView } from "./TaskView";
 import { TestClient } from "./__test__/TestClient";
 import { sleep } from "./__test__/testutils";
 
-describe("MainView", () => {
+describe("TaskView", () => {
     it("has necessary ui components", () => {
-        render(<MainView client={new TestClient()} onLogout={() => { }} />)
+        render(<TaskView client={new TestClient()} onLogout={() => { }} />)
         
         const addItemButton = screen.getByRole("button", { name: "Add"})
         expect(addItemButton).toBeInTheDocument()
@@ -21,7 +21,7 @@ describe("MainView", () => {
     })
 
     it("shows add item form when button Add is clicked", () => {
-        render(<MainView client={new TestClient()} onLogout={() => { }} />)
+        render(<TaskView client={new TestClient()} onLogout={() => { }} />)
         
         const addItemButton = screen.getByRole("button", { name: "Add"})
         fireEvent.click(addItemButton)
@@ -32,7 +32,7 @@ describe("MainView", () => {
     })
 
     it("hides the add item form when cancel is clicked", () => {
-        render(<MainView client={new TestClient()} onLogout={() => { }} />)
+        render(<TaskView client={new TestClient()} onLogout={() => { }} />)
         
         const addItemButton = screen.getByRole("button", { name: "Add"})
         fireEvent.click(addItemButton)
@@ -45,7 +45,7 @@ describe("MainView", () => {
     })
 
     it("hides the add item form when create is clicked", async () => {
-        render(<MainView client={new TestClient()} onLogout={() => { }} />)
+        render(<TaskView client={new TestClient()} onLogout={() => { }} />)
         
         const addItemButton = screen.getByRole("button", { name: "Add"})
         fireEvent.click(addItemButton)
@@ -64,7 +64,7 @@ describe("MainView", () => {
         client.Items = [
             { id: 1, description: "Task A"}
         ]
-        render(<MainView client={client} onLogout={() => { }} />)
+        render(<TaskView client={client} onLogout={() => { }} />)
 
         await sleep(10)
 
@@ -95,7 +95,7 @@ describe("MainView", () => {
             { id: 2, description: "Task B"},
             { id: 3, description: "Task C"}
         ]
-        render(<MainView client={client} onLogout={() => { }} />)
+        render(<TaskView client={client} onLogout={() => { }} />)
 
         await sleep(10)
 
