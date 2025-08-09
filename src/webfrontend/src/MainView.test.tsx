@@ -10,5 +10,7 @@ describe("MainView", () => {
         
         const logoutButton = screen.getByRole("button", { name: "Log out"})
         expect(logoutButton).toBeInTheDocument()
+
+        expect(screen.getByTestId("task-view")).toBeInTheDocument()
     })
 })
