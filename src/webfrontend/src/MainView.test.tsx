@@ -18,5 +18,7 @@ describe("MainView", () => {
         render(<MainView client={new TestClient()} onLogout={() => { }} />)
 
         fireEvent.click(screen.getByRole("button", { name: "Projects" }))
+
+        expect(screen.getByTestId("project-view")).toBeInTheDocument()
     })
 })
