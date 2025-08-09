@@ -1,114 +1,35 @@
 import { screen, render, fireEvent } from "@testing-library/react";
 import {describe, expect, it} from 'vitest'
 import '@testing-library/jest-dom'
-import { MainView } from "./MainView";
 import { TestClient } from "./__test__/TestClient";
-import { sleep } from "./__test__/testutils";
+import { MainView } from "./MainView";
 
 describe("MainView", () => {
-    it("has necessary ui components", () => {
+    it("shows task view and log out button initially", () => {
         render(<MainView client={new TestClient()} onLogout={() => { }} />)
         
-        const addItemButton = screen.getByRole("button", { name: "Add"})
-        expect(addItemButton).toBeInTheDocument()
-
         const logoutButton = screen.getByRole("button", { name: "Log out"})
         expect(logoutButton).toBeInTheDocument()
 
-        expect(screen.queryByRole("heading", { name: "New task"})).not.toBeInTheDocument()
-
-        expect(screen.getByTestId("item-list")).toBeInTheDocument()
+        expect(screen.getByTestId("task-view")).toBeInTheDocument()
     })
 
-    it("shows add item form when button Add is clicked", () => {
+    it("shows project view after switching to project view", () => {
         render(<MainView client={new TestClient()} onLogout={() => { }} />)
-        
-        const addItemButton = screen.getByRole("button", { name: "Add"})
-        fireEvent.click(addItemButton)
 
-        expect(screen.getByTestId("add-item-form")).toBeInTheDocument()
+        fireEvent.click(screen.getByRole("button", { name: "Projects" }))
 
-        expect(screen.queryByRole("button", { name: "Add"})).not.toBeInTheDocument()
+        expect(screen.getByTestId("project-view")).toBeInTheDocument()
+        expect(screen.queryByTestId("task-view")).not.toBeInTheDocument()
     })
 
-    it("hides the add item form when cancel is clicked", () => {
+    it("shows task view after switching back from project view", () => {
         render(<MainView client={new TestClient()} onLogout={() => { }} />)
-        
-        const addItemButton = screen.getByRole("button", { name: "Add"})
-        fireEvent.click(addItemButton)
 
-        fireEvent.click(screen.getByRole("button", { name: "Cancel"}))
+        fireEvent.click(screen.getByRole("button", { name: "Projects" }))
+        fireEvent.click(screen.getByRole("button", { name: "Tasks" }))
 
-        expect(screen.queryByTestId("add-item-form")).not.toBeInTheDocument()
-
-        expect(screen.queryByRole("button", { name: "Add"})).toBeInTheDocument()
+        expect(screen.getByTestId("task-view")).toBeInTheDocument()
+        expect(screen.queryByTestId("project-view")).not.toBeInTheDocument()
     })
-
-    it("hides the add item form when create is clicked", async () => {
-        render(<MainView client={new TestClient()} onLogout={() => { }} />)
-        
-        const addItemButton = screen.getByRole("button", { name: "Add"})
-        fireEvent.click(addItemButton)
-
-        fireEvent.click(screen.getByRole("button", { name: "Create"}))
-
-        await sleep(10)
-
-        expect(screen.queryByTestId("add-item-form")).not.toBeInTheDocument()
-
-        expect(screen.queryByRole("button", { name: "Add"})).toBeInTheDocument()
-    })
-
-    it("refresh the item list after a new item is created", async () => {
-        const client = new TestClient()
-        client.Items = [
-            { id: 1, description: "Task A"}
-        ]
-        render(<MainView client={client} onLogout={() => { }} />)
-
-        await sleep(10)
-
-        let items = screen.queryAllByTestId("item")
-        expect(items.length).toBe(1)
-        expect(items[0].querySelector('[data-testId="description"]')?.textContent).toBe("Task A")
-        
-        const addItemButton = screen.getByRole("button", { name: "Add"})
-        fireEvent.click(addItemButton)
-
-        fireEvent.change(screen.getByRole("textbox", { name: "Description"}), { target: { value: "Task B"}})
-
-        fireEvent.click(screen.getByRole("button", { name: "Create"}))
-
-        await sleep(10)
-
-        items = screen.queryAllByTestId("item")
-        expect(items.length).toBe(2)
-        expect(items[0].querySelector('[data-testId="description"]')?.textContent).toBe("Task A")
-        expect(items[1].querySelector('[data-testId="description"]')?.textContent).toBe("Task B")
-    })
-
-    
-    it("call delete item and refresh list after an item is deleted", async () => {
-        const client = new TestClient()
-        client.Items = [
-            { id: 1, description: "Task A"},
-            { id: 2, description: "Task B"},
-            { id: 3, description: "Task C"}
-        ]
-        render(<MainView client={client} onLogout={() => { }} />)
-
-        await sleep(10)
-
-        const items = screen.queryAllByTestId("item")
-        expect(items.length).toBe(3)
-
-        const deleteButtons = screen.getAllByRole("button", { name: "Delete" })
-        fireEvent.click(deleteButtons[1])
-
-        fireEvent.click(screen.getByRole("button", { name: "Yes" }))
-        await sleep(10)
-
-        expect(client.Items.length).toBe(2)
-    })
-
 })

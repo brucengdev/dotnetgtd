@@ -1,49 +1,40 @@
-import { useState } from "react"
+import { useState } from "react";
 import { IClient } from "./api/Client"
-import { Button, ButtonMode } from "./controls/Button"
-import { AddItemForm } from "./AddItemForm"
-import ItemList from "./ItemList"
-import { Item } from "./models/Item"
+import { Button, ButtonMode } from "./controls/Button";
+import { TaskView } from "./TaskView"
+import { ProjectView } from "./ProjectView";
 
 export interface MainViewProps {
   client: IClient
   onLogout: () => void
 }
 
+enum View {
+  TASKS,
+  PROJECTS
+}
+
 export function MainView({onLogout, client} : MainViewProps) {
-    const [showNewTaskForm, setShowNewTaskForm] = useState(false)
-    const [items, setItems] = useState(undefined as (Item[]|undefined))
-    if(items === undefined) {
-        client.GetItems()
-            .then(items => setItems(items))
-    }
-    return <div data-testid="main-view" className="row-auto">
-      <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-2xl font-semibold text-gray-900">GTD</h2>
-      </div>
-      <ItemList items={items} 
-        onDelete={(item: Item) => {
-            client.DeleteItem(item.id)
-                .then(() => {
-                    setItems(undefined) //to reload
-                })
-        }}
-      />
-      {showNewTaskForm
-        ? <AddItemForm client={client} 
-            onCancel={() => setShowNewTaskForm(false)} 
-            onCompleted={() => {
-                setShowNewTaskForm(false)
-                setItems(undefined) //to reload
-              }
-            }
-            />
-        : <Button text="Add" className="mb-5 block" onClick={() => setShowNewTaskForm(true)} />}
+    var [currentView, setCurrentView] = useState(View.TASKS)
+    return <div data-testid="main-view">
+      <Button text="Tasks" onClick={() => setCurrentView(View.TASKS)} />
+      <Button text="Projects" onClick={() => setCurrentView(View.PROJECTS)} />
+      {renderView(currentView, client)}
       <Button 
         className="block"
         text="Log out"
         mode={ButtonMode.DANGER}
         onClick={() => onLogout()}
-      />
-    </div>
+        />
+    </div>;
+}
+
+function renderView(view: View, client: IClient) {
+  switch(view) {
+    case View.PROJECTS:
+      return <ProjectView />;
+    case View.TASKS:
+    default:
+      return <TaskView client={client} />
+  }
 }
