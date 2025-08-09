@@ -8,7 +8,7 @@ export interface MainViewProps {
 }
 
 export function MainView({onLogout, client} : MainViewProps) {
-    return <>
+    return <div data-testid="main-view">
       <TaskView client={client} />
       <Button 
         className="block"
@@ -16,5 +16,5 @@ export function MainView({onLogout, client} : MainViewProps) {
         mode={ButtonMode.DANGER}
         onClick={() => onLogout()}
         />
-    </>;
+    </div>;
 }

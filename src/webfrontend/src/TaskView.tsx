@@ -16,7 +16,7 @@ export function TaskView({ client} : TaskViewProps) {
         client.GetItems()
             .then(items => setItems(items))
     }
-    return <div data-testid="main-view" className="row-auto">
+    return <div data-testid="task-view" className="row-auto">
       <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-2xl font-semibold text-gray-900">GTD</h2>
       </div>
