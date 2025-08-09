@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { IClient } from "./api/Client"
-import { Button, ButtonMode } from "./controls/Button"
+import { Button } from "./controls/Button"
 import { AddItemForm } from "./AddItemForm"
 import ItemList from "./ItemList"
 import { Item } from "./models/Item"
@@ -10,7 +10,7 @@ export interface TaskViewProps {
   onLogout: () => void
 }
 
-export function TaskView({onLogout, client} : TaskViewProps) {
+export function TaskView({ client} : TaskViewProps) {
     const [showNewTaskForm, setShowNewTaskForm] = useState(false)
     const [items, setItems] = useState(undefined as (Item[]|undefined))
     if(items === undefined) {
