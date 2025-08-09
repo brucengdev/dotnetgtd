@@ -17,6 +17,7 @@ enum View {
 export function MainView({onLogout, client} : MainViewProps) {
     var [currentView, setCurrentView] = useState(View.TASKS)
     return <div data-testid="main-view">
+      <Button text="Tasks" onClick={() => setCurrentView(View.TASKS)} />
       <Button text="Projects" onClick={() => setCurrentView(View.PROJECTS)} />
       {renderView(currentView, client)}
       <Button 

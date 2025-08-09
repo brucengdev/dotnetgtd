@@ -22,4 +22,14 @@ describe("MainView", () => {
         expect(screen.getByTestId("project-view")).toBeInTheDocument()
         expect(screen.queryByTestId("task-view")).not.toBeInTheDocument()
     })
+
+    it("shows task view after switching back from project view", () => {
+        render(<MainView client={new TestClient()} onLogout={() => { }} />)
+
+        fireEvent.click(screen.getByRole("button", { name: "Projects" }))
+        fireEvent.click(screen.getByRole("button", { name: "Tasks" }))
+
+        expect(screen.getByTestId("task-view")).toBeInTheDocument()
+        expect(screen.queryByTestId("project-view")).not.toBeInTheDocument()
+    })
 })
