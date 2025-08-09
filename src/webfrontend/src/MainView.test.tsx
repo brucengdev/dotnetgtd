@@ -5,7 +5,7 @@ import { TestClient } from "./__test__/TestClient";
 import { MainView } from "./MainView";
 
 describe("MainView", () => {
-    it("has necessary ui components", () => {
+    it("shows task view and log out button initially", () => {
         render(<MainView client={new TestClient()} onLogout={() => { }} />)
         
         const logoutButton = screen.getByRole("button", { name: "Log out"})
