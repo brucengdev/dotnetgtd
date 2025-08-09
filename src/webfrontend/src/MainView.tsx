@@ -9,7 +9,7 @@ export interface MainViewProps {
 
 export function MainView({onLogout, client} : MainViewProps) {
     return <>
-      <TaskView client={client} onLogout={onLogout} />
+      <TaskView client={client} />
       <Button 
         className="block"
         text="Log out"

@@ -7,7 +7,7 @@ import { sleep } from "./__test__/testutils";
 
 describe("TaskView", () => {
     it("has necessary ui components", () => {
-        render(<TaskView client={new TestClient()} onLogout={() => { }} />)
+        render(<TaskView client={new TestClient()} />)
         
         const addItemButton = screen.getByRole("button", { name: "Add"})
         expect(addItemButton).toBeInTheDocument()
@@ -18,7 +18,7 @@ describe("TaskView", () => {
     })
 
     it("shows add item form when button Add is clicked", () => {
-        render(<TaskView client={new TestClient()} onLogout={() => { }} />)
+        render(<TaskView client={new TestClient()} />)
         
         const addItemButton = screen.getByRole("button", { name: "Add"})
         fireEvent.click(addItemButton)
@@ -29,7 +29,7 @@ describe("TaskView", () => {
     })
 
     it("hides the add item form when cancel is clicked", () => {
-        render(<TaskView client={new TestClient()} onLogout={() => { }} />)
+        render(<TaskView client={new TestClient()} />)
         
         const addItemButton = screen.getByRole("button", { name: "Add"})
         fireEvent.click(addItemButton)
@@ -42,7 +42,7 @@ describe("TaskView", () => {
     })
 
     it("hides the add item form when create is clicked", async () => {
-        render(<TaskView client={new TestClient()} onLogout={() => { }} />)
+        render(<TaskView client={new TestClient()} />)
         
         const addItemButton = screen.getByRole("button", { name: "Add"})
         fireEvent.click(addItemButton)
@@ -61,7 +61,7 @@ describe("TaskView", () => {
         client.Items = [
             { id: 1, description: "Task A"}
         ]
-        render(<TaskView client={client} onLogout={() => { }} />)
+        render(<TaskView client={client} />)
 
         await sleep(10)
 
@@ -92,7 +92,7 @@ describe("TaskView", () => {
             { id: 2, description: "Task B"},
             { id: 3, description: "Task C"}
         ]
-        render(<TaskView client={client} onLogout={() => { }} />)
+        render(<TaskView client={client} />)
 
         await sleep(10)
 

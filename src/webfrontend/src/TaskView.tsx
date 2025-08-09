@@ -7,7 +7,6 @@ import { Item } from "./models/Item"
 
 export interface TaskViewProps {
   client: IClient
-  onLogout: () => void
 }
 
 export function TaskView({ client} : TaskViewProps) {
