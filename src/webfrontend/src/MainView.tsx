@@ -9,6 +9,7 @@ export interface MainViewProps {
 
 export function MainView({onLogout, client} : MainViewProps) {
     return <div data-testid="main-view">
+      <Button text="Projects" />
       <TaskView client={client} />
       <Button 
         className="block"

@@ -1,4 +1,4 @@
-import { screen, render } from "@testing-library/react";
+import { screen, render, fireEvent } from "@testing-library/react";
 import {describe, expect, it} from 'vitest'
 import '@testing-library/jest-dom'
 import { TestClient } from "./__test__/TestClient";
@@ -12,5 +12,11 @@ describe("MainView", () => {
         expect(logoutButton).toBeInTheDocument()
 
         expect(screen.getByTestId("task-view")).toBeInTheDocument()
+    })
+
+    it("shows project view after switching to project view", () => {
+        render(<MainView client={new TestClient()} onLogout={() => { }} />)
+
+        fireEvent.click(screen.getByRole("button", { name: "Projects" }))
     })
 })
