@@ -20,5 +20,6 @@ describe("MainView", () => {
         fireEvent.click(screen.getByRole("button", { name: "Projects" }))
 
         expect(screen.getByTestId("project-view")).toBeInTheDocument()
+        expect(screen.queryByTestId("task-view")).not.toBeInTheDocument()
     })
 })
