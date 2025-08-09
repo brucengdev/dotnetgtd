@@ -39,11 +39,5 @@ export function TaskView({onLogout, client} : TaskViewProps) {
             }
             />
         : <Button text="Add" className="mb-5 block" onClick={() => setShowNewTaskForm(true)} />}
-      <Button 
-        className="block"
-        text="Log out"
-        mode={ButtonMode.DANGER}
-        onClick={() => onLogout()}
-      />
     </div>
 }

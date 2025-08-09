@@ -12,9 +12,6 @@ describe("TaskView", () => {
         const addItemButton = screen.getByRole("button", { name: "Add"})
         expect(addItemButton).toBeInTheDocument()
 
-        const logoutButton = screen.getByRole("button", { name: "Log out"})
-        expect(logoutButton).toBeInTheDocument()
-
         expect(screen.queryByRole("heading", { name: "New task"})).not.toBeInTheDocument()
 
         expect(screen.getByTestId("item-list")).toBeInTheDocument()
