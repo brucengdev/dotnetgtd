@@ -2,7 +2,6 @@ import { screen, render, fireEvent } from "@testing-library/react";
 import {describe, expect, it} from 'vitest'
 import '@testing-library/jest-dom'
 import { ProjectView } from "./ProjectView";
-import { sleep } from "./__test__/testutils";
 
 describe("ProjectView", () => {
     it("has necessary ui components", () => {
