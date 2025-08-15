@@ -19,5 +19,7 @@ describe("ProjectView", () => {
 
         expect(screen.getByTestId("add-project-form")).toBeInTheDocument()
 
+        expect(addItemButton).not.toBeInTheDocument()
+
     })
 })
