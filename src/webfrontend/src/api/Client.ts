@@ -1,4 +1,5 @@
 import { Item } from "../models/Item"
+import { Project } from "../models/Project"
 
 export interface IClient {
     Token: () => string | undefined
@@ -9,6 +10,8 @@ export interface IClient {
     AddItem: (item: Item) => Promise<boolean>
     GetItems: () => Promise<Item[]>
     DeleteItem: (id: number) => Promise<boolean>
+
+    AddProject: (item: Project) => Promise<boolean>
 }
 
 const devUrl = "https://localhost:7146"
@@ -87,6 +90,19 @@ export class Client implements IClient {
             id: id.toString()
         }).toString()}`, {
             method: "DELETE"
+        })
+        return result.ok
+    }
+
+    public async AddProject(project: Project): Promise<boolean> {
+        const result = await fetch(`${url}/Projects/CreateProject?${new URLSearchParams({
+            accessToken: this.token
+        }).toString()}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(project)
         })
         return result.ok
     }
