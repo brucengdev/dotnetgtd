@@ -32,7 +32,7 @@ export function MainView({onLogout, client} : MainViewProps) {
 function renderView(view: View, client: IClient) {
   switch(view) {
     case View.PROJECTS:
-      return <ProjectView />;
+      return <ProjectView client={client} />;
     case View.TASKS:
     default:
       return <TaskView client={client} />
