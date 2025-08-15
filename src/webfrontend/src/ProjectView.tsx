@@ -1,12 +1,17 @@
 import { useState } from "react";
 import AddProjectForm from "./AddProjectForm";
 import { Button } from "./controls/Button";
+import { IClient } from "./api/Client";
 
-export function ProjectView() {
+interface ProjectViewProps {
+    client: IClient
+}
+
+export function ProjectView({ client }: ProjectViewProps) {
     const [showNewProjectForm, setShowNewProjectForm] = useState(false)
     return <div data-testid="project-view">
         {showNewProjectForm
-            ?<AddProjectForm onCancel={() => setShowNewProjectForm(false)} />
+            ?<AddProjectForm client={client} onCancel={() => setShowNewProjectForm(false)} />
             :<Button text="Add" onClick={() => setShowNewProjectForm(true)}/>
         }
     </div>

@@ -6,7 +6,7 @@ import { TextBox } from "./controls/TextBox";
 interface AddProjectFormProps {
     onCancel?: () => any
     onCompleted?: () => any
-    client?: IClient
+    client: IClient
 }
 
 export default function AddProjectForm(props: AddProjectFormProps) {
@@ -28,7 +28,7 @@ export default function AddProjectForm(props: AddProjectFormProps) {
                 mode={ButtonMode.PRIMARY}
                 text="Create"
                 onClick={() => {
-                    client?.AddProject({id: 0, description})
+                    client.AddProject({id: 0, description})
                     .then(() => {
                         if(onCompleted) {
                             onCompleted()

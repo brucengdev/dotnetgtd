@@ -2,17 +2,18 @@ import { screen, render, fireEvent } from "@testing-library/react";
 import {describe, expect, it} from 'vitest'
 import '@testing-library/jest-dom'
 import { ProjectView } from "./ProjectView";
+import { TestClient } from "./__test__/TestClient";
 
 describe("ProjectView", () => {
     it("has necessary ui components", () => {
-        render(<ProjectView />)
+        render(<ProjectView client={new TestClient()} />)
         
         const addItemButton = screen.getByRole("button", { name: "Add"})
         expect(addItemButton).toBeInTheDocument()
     })
 
     it("shows add project form when button Add is clicked", () => {
-        render(<ProjectView />)
+        render(<ProjectView client={new TestClient()} />)
         
         const addItemButton = screen.getByRole("button", { name: "Add"})
         fireEvent.click(addItemButton)
@@ -24,7 +25,7 @@ describe("ProjectView", () => {
     })
 
     it("hides add project form when Cancel button is clicked", async () => {
-        render(<ProjectView />)
+        render(<ProjectView client={new TestClient()} />)
         
         const addItemButton = screen.getByRole("button", { name: "Add"})
         fireEvent.click(addItemButton)
