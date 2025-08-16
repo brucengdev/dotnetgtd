@@ -9,7 +9,7 @@ export const TEST_TOKEN = "correcttoken"
 export class TestClient implements IClient {
     private _token: string | undefined = undefined
     public Items: Item[] = []
-    public Projects: Item[] = []
+    public Projects: Project[] = []
     public Token() { return this._token }
     async IsLoggedIn() {
         return this._token === TEST_TOKEN
