@@ -1,4 +1,5 @@
 ﻿using Backend.Core.Manager;
+using Backend.Models;
 
 namespace Backend.Core.Tests;
 
@@ -9,5 +10,13 @@ public partial class ProjectManagerTests
     {
         //arrange
         var sut = new ProjectManager();
+        
+        //act
+        sut.CreateProject(new Project
+        {
+            Description = "Project Name",
+            Id = 0,
+            UserId = 123
+        }, 123);
     } 
 }
