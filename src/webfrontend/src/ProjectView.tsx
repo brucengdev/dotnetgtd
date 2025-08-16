@@ -11,7 +11,9 @@ export function ProjectView({ client }: ProjectViewProps) {
     const [showNewProjectForm, setShowNewProjectForm] = useState(false)
     return <div data-testid="project-view">
         {showNewProjectForm
-            ?<AddProjectForm client={client} onCancel={() => setShowNewProjectForm(false)} />
+            ?<AddProjectForm client={client} 
+                    onCancel={() => setShowNewProjectForm(false)} 
+                    onCompleted={() => setShowNewProjectForm(false)} />
             :<Button text="Add" onClick={() => setShowNewProjectForm(true)}/>
         }
     </div>
