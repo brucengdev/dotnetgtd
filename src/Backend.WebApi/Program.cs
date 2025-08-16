@@ -34,6 +34,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAccountManager, AccountManager>();
 builder.Services.AddScoped<IItemRepository, ItemRepository>();
 builder.Services.AddScoped<IItemManager, ItemManager>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IProjectManager, ProjectManager>();
 
 builder.Services.AddScoped<SecurityFilterAttribute>();
 

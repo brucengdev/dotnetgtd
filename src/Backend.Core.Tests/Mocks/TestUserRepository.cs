@@ -1,6 +1,5 @@
 using Backend.Core.Repository;
 using Backend.Models;
-using Backend.WebApi.Repository;
 
 namespace Backend.Core.Tests.Mocks;
 
