@@ -24,7 +24,7 @@ public partial class ProjectManagerTests
         //act
         var projectId = sut.CreateProject(new Project
         {
-            Description = "Project Name",
+            Name = "Project Name",
             Id = 0,
             UserId = 123
         });
@@ -34,7 +34,7 @@ public partial class ProjectManagerTests
         var savedItem = projectRepo.Projects[0];
         savedItem.ShouldBe(new Project
         {
-            Description = "Project Name",
+            Name = "Project Name",
             Id = projectId,
             UserId = 123
         });
@@ -51,7 +51,7 @@ public partial class ProjectManagerTests
         //act and assert
         Assert.Throws<UserNotFoundException>(() => sut.CreateProject(new Project
         {
-            Description = "Project Name",
+            Name = "Project Name",
             Id = 0,
             UserId = 123
         }));

@@ -45,14 +45,14 @@ namespace Backend.WebApi.Tests.Controller
             //act
             var project = new Project
             {
-                Description = "Foo"
+                Name = "Foo"
             };
             var response = sut.CreateProject(project);
         
             //assert
             var verifyProject = (Project p) =>
             {
-                p.Description.ShouldBe("Foo");
+                p.Name.ShouldBe("Foo");
                 p.UserId.ShouldBe(userId);
                 return true;
             };
