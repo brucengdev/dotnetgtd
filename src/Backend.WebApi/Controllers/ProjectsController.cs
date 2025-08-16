@@ -9,5 +9,12 @@ namespace Backend.WebApi.Controllers
     [Route("[controller]")]
     public class ProjectsController: ControllerBase
     {
+
+        [HttpPost("[action]")]
+        [ServiceFilter<SecurityFilterAttribute>]
+        public void CreateProject()
+        {
+            
+        }
     }
 }
