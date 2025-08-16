@@ -1,6 +1,8 @@
-﻿namespace Backend.Core.Tests.Mocks;
+﻿using Backend.Core.Repository;
 
-public class TestProjectRepository
+namespace Backend.Core.Tests.Mocks;
+
+public class TestProjectRepository: IProjectRepository
 {
     
 }

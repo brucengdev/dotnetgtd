@@ -11,7 +11,7 @@ public partial class ProjectManagerTests
     {
         //arrange
         var projectRepo = new TestProjectRepository();
-        var sut = new ProjectManager();
+        var sut = new ProjectManager(projectRepo);
         
         //act
         var projectId = sut.CreateProject(new Project
