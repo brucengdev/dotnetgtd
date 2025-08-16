@@ -1,6 +1,7 @@
 ﻿using Backend.Core.Manager;
 using Backend.Core.Tests.Mocks;
 using Backend.Models;
+using Shouldly;
 
 namespace Backend.Core.Tests;
 
@@ -22,6 +23,13 @@ public partial class ProjectManagerTests
         });
         
         //assert
-        
+        projectRepo.Projects.Count.ShouldBe(1);
+        var savedItem = projectRepo.Projects[0];
+        savedItem.ShouldBe(new Project
+        {
+            Description = "Project Name",
+            Id = projectId,
+            UserId = 123
+        });
     } 
 }

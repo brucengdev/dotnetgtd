@@ -5,12 +5,13 @@ namespace Backend.Core.Manager;
 
 public class ProjectManager: IProjectManager
 {
-    public ProjectManager(IProjectRepository _)
+    private IProjectRepository _projectRepo;
+    public ProjectManager(IProjectRepository projectRepo)
     {
-        
+        _projectRepo = projectRepo;
     }
     public int CreateProject(Project project)
     {
-        return 0;
+        return _projectRepo.CreateProject(project);
     }
 }
