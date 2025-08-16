@@ -28,18 +28,19 @@ namespace Backend.WebApi.Tests.Controller
             attributes.Length.ShouldBeGreaterThan(0, "Must require authorization");
         }
         
-        [Fact]
-        public void Project_must_be_created()
+        [Theory]
+        [InlineData(256, 123)]
+        [InlineData(457, 224)]
+        public void Project_must_be_created(int expectedProjectId, int userId)
         {
             //arrange
             var projectManager = new Mock<IProjectManager>();
-            var expectedItemId = 256;
             projectManager.Setup(im => im.CreateProject(It.IsAny<Project>(), It.IsAny<int>()))
-                .Returns(expectedItemId);
+                .Returns(expectedProjectId);
             var sut = new ProjectsController(projectManager.Object);
             sut.ControllerContext = new ControllerContext();
             sut.ControllerContext.HttpContext = new DefaultHttpContext();
-            sut.HttpContext.Items["UserId"] = 123;
+            sut.HttpContext.Items["UserId"] = userId;
         
             //act
             var project = new Project
@@ -49,13 +50,13 @@ namespace Backend.WebApi.Tests.Controller
             var response = sut.CreateProject(project);
         
             //assert
-            projectManager.Verify(im => im.CreateProject(project, 123), Times.Once);
+            projectManager.Verify(im => im.CreateProject(project, userId), Times.Once);
             projectManager.VerifyNoOtherCalls();
             
             response.ShouldBeOfType<OkObjectResult>();
             var result = response as OkObjectResult;
             result?.StatusCode.ShouldBe((int)HttpStatusCode.OK);
-            result?.Value.ShouldBe(expectedItemId);
+            result?.Value.ShouldBe(expectedProjectId);
         }
     }
 }
