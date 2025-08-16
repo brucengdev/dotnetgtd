@@ -6,6 +6,7 @@ namespace Backend.Models
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Item> Items { get; set; }
+        public DbSet<Project> Projects { get; set; }
 
         public GTDContext(DbContextOptions<GTDContext> options)
             : base(options)
