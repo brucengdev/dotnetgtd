@@ -9,12 +9,19 @@ namespace Backend.WebApi.Controllers
     [Route("[controller]")]
     public class ProjectsController: ControllerBase
     {
+        private IProjectManager _projectManager;
+        public ProjectsController(IProjectManager projectManager)
+        {
+            _projectManager = projectManager;
+        }
 
         [HttpPost("[action]")]
         [ServiceFilter<SecurityFilterAttribute>]
-        public void CreateProject()
+        public ActionResult CreateProject(Project project)
         {
-            
+            var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
+            _projectManager.CreateProject(project, userId);
+            return Ok(256);
         }
     }
 }

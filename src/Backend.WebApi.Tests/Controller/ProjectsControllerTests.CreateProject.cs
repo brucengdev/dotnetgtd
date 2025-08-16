@@ -27,35 +27,35 @@ namespace Backend.WebApi.Tests.Controller
             attributes = method?.GetCustomAttributes(typeof(ServiceFilterAttribute<SecurityFilterAttribute>), true);
             attributes.Length.ShouldBeGreaterThan(0, "Must require authorization");
         }
-        //
-        // [Fact]
-        // public void Project_must_be_created()
-        // {
-        //     //arrange
-        //     var itemManager = new Mock<IItemManager>();
-        //     var expectedItemId = 256;
-        //     itemManager.Setup(im => im.CreateProject(It.IsAny<Item>(), It.IsAny<int>()))
-        //         .Returns(expectedItemId);
-        //     var sut = new ItemsController(itemManager.Object);
-        //     sut.ControllerContext = new ControllerContext();
-        //     sut.ControllerContext.HttpContext = new DefaultHttpContext();
-        //     sut.HttpContext.Items["UserId"] = 123;
-        //
-        //     //act
-        //     var item = new Item
-        //     {
-        //         Description = "Foo"
-        //     };
-        //     var response = sut.CreateProject(item);
-        //
-        //     //assert
-        //     itemManager.Verify(im => im.CreateProject(item, 123), Times.Once);
-        //     itemManager.VerifyNoOtherCalls();
-        //     
-        //     response.ShouldBeOfType<OkObjectResult>();
-        //     var result = response as OkObjectResult;
-        //     result?.StatusCode.ShouldBe((int)HttpStatusCode.OK);
-        //     result?.Value.ShouldBe(expectedItemId);
-        // }
+        
+        [Fact]
+        public void Project_must_be_created()
+        {
+            //arrange
+            var projectManager = new Mock<IProjectManager>();
+            var expectedItemId = 256;
+            projectManager.Setup(im => im.CreateProject(It.IsAny<Project>(), It.IsAny<int>()))
+                .Returns(expectedItemId);
+            var sut = new ProjectsController(projectManager.Object);
+            sut.ControllerContext = new ControllerContext();
+            sut.ControllerContext.HttpContext = new DefaultHttpContext();
+            sut.HttpContext.Items["UserId"] = 123;
+        
+            //act
+            var project = new Project
+            {
+                Description = "Foo"
+            };
+            var response = sut.CreateProject(project);
+        
+            //assert
+            projectManager.Verify(im => im.CreateProject(project, 123), Times.Once);
+            projectManager.VerifyNoOtherCalls();
+            
+            response.ShouldBeOfType<OkObjectResult>();
+            var result = response as OkObjectResult;
+            result?.StatusCode.ShouldBe((int)HttpStatusCode.OK);
+            result?.Value.ShouldBe(expectedItemId);
+        }
     }
 }
