@@ -10,7 +10,7 @@ describe("AddProjectForm", () => {
         render(<AddProjectForm client={new TestClient()} onCancel={() => {}}/>)
 
         expect(screen.getByRole("heading", {name: "New project"})).toBeInTheDocument()
-        expect(screen.getByRole("textbox", {name: "Description"})).toBeInTheDocument()
+        expect(screen.getByRole("textbox", {name: "Name"})).toBeInTheDocument()
         expect(screen.getByRole("button", {name: "Create"})).toBeInTheDocument()
         expect(screen.getByRole("button", {name: "Cancel"})).toBeInTheDocument()
     })
@@ -28,16 +28,16 @@ describe("AddProjectForm", () => {
         const onCompleted = vitest.fn()
         render(<AddProjectForm onCancel={() => {}} client={client} onCompleted={onCompleted} />)
 
-        const descriptionTextBox = screen.getByRole("textbox", { name: "Description"})
-        fireEvent.change(descriptionTextBox, { target: { value: "description of a project"}})
+        const nameTextBox = screen.getByRole("textbox", { name: "Name"})
+        fireEvent.change(nameTextBox, { target: { value: "name of a project"}})
 
-        expect(descriptionTextBox).toHaveValue("description of a project")
+        expect(nameTextBox).toHaveValue("name of a project")
 
         fireEvent.click(screen.getByRole("button", { name: "Create"}))
 
         expect(client.Projects).toContainEqual({
             id: 0,
-            description: "description of a project"
+            name: "name of a project"
         })
 
         await sleep(10)

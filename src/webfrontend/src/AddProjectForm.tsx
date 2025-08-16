@@ -11,24 +11,24 @@ interface AddProjectFormProps {
 
 export default function AddProjectForm(props: AddProjectFormProps) {
     const { onCancel, client, onCompleted } = props
-    const [ description, setDescription ] = useState('')
+    const [ name, setName ] = useState('')
     return <div data-testid="add-project-form" className="mb-5">
         <h1 className="text-2xl">
             New project
         </h1>
         <TextBox 
-            label="Description"
-            name="Description"
-            value={description}
+            label="Name"
+            name="Name"
+            value={name}
             className="mb-1"
-            onChange={e => setDescription(e.target.value)}
+            onChange={e => setName(e.target.value)}
         />
         <div className="flex justify-end gap-2">
             <Button 
                 mode={ButtonMode.PRIMARY}
                 text="Create"
                 onClick={() => {
-                    client.AddProject({id: 0, description})
+                    client.AddProject({id: 0, name: name})
                     .then(() => {
                         if(onCompleted) {
                             onCompleted()
