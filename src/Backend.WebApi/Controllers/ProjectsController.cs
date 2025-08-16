@@ -20,7 +20,8 @@ namespace Backend.WebApi.Controllers
         public ActionResult CreateProject(Project project)
         {
             var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
-            var projectId = _projectManager.CreateProject(project, userId);
+            project.UserId = userId;
+            var projectId = _projectManager.CreateProject(project);
             return Ok(projectId);
         }
     }

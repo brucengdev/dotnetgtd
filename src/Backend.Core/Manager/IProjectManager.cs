@@ -4,5 +4,5 @@ namespace Backend.Core.Manager;
 
 public interface IProjectManager
 {
-    int CreateProject(Project project, int userId);
+    int CreateProject(Project project);
 }

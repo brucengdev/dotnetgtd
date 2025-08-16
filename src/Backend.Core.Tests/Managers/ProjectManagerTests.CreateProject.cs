@@ -17,6 +17,6 @@ public partial class ProjectManagerTests
             Description = "Project Name",
             Id = 0,
             UserId = 123
-        }, 123);
+        });
     } 
 }

@@ -35,7 +35,7 @@ namespace Backend.WebApi.Tests.Controller
         {
             //arrange
             var projectManager = new Mock<IProjectManager>();
-            projectManager.Setup(im => im.CreateProject(It.IsAny<Project>(), It.IsAny<int>()))
+            projectManager.Setup(im => im.CreateProject(It.IsAny<Project>()))
                 .Returns(expectedProjectId);
             var sut = new ProjectsController(projectManager.Object);
             sut.ControllerContext = new ControllerContext();
@@ -50,7 +50,13 @@ namespace Backend.WebApi.Tests.Controller
             var response = sut.CreateProject(project);
         
             //assert
-            projectManager.Verify(im => im.CreateProject(project, userId), Times.Once);
+            var verifyProject = (Project p) =>
+            {
+                p.Description.ShouldBe("Foo");
+                p.UserId.ShouldBe(userId);
+                return true;
+            };
+            projectManager.Verify(im => im.CreateProject(It.Is<Project>(p => verifyProject(p))), Times.Once);
             projectManager.VerifyNoOtherCalls();
             
             response.ShouldBeOfType<OkObjectResult>();
