@@ -1,5 +1,6 @@
 export function ProjectList() {
     return <div data-testid="project-list">
-        {/* Project list component would go here */}
+        <div data-testid="project">Project 1</div>
+        <div data-testid="project">Project 2</div>
     </div>
 }

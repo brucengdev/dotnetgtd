@@ -15,6 +15,20 @@ describe("ProjectView", () => {
         expect(addItemButton).toBeInTheDocument()
     })
 
+    it("shows a list of projects", () => {
+        const client = new TestClient()
+        client.Projects = [
+            { id: 1, name: "Project 1" },
+            { id: 2, name: "Project 2" }
+        ]
+        render(<ProjectView client={client} />)
+
+        expect(screen.getByTestId("project-list")).toBeInTheDocument()
+        
+        const projects = screen.queryAllByTestId("project")
+        expect(projects.length).toBe(2)
+    })
+
     it("shows add project form when button Add is clicked", () => {
         render(<ProjectView client={new TestClient()} />)
         
