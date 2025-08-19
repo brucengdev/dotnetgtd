@@ -23,18 +23,27 @@ describe("ProjectView", () => {
                 { id: 1, name: "Project 1" },
                 { id: 2, name: "Project 2" }
             ] as Project[]
+        },
+        {
+            name: "3 projects",
+            expectedProjects: [
+                { id: 1, name: "Project A" },
+                { id: 2, name: "Project B" },
+                { id: 3, name: "Project C" }
+            ] as Project[]
         }
     ]
     cases.forEach(({ name, expectedProjects}) => {
-        it(`shows a list of projects for ${name}`, () => {
+        it(`shows a list of projects for ${name}`, async () => {
             const client = new TestClient()
             client.Projects = expectedProjects
             render(<ProjectView client={client} />)
+            await sleep(1)
 
             expect(screen.getByTestId("project-list")).toBeInTheDocument()
             
             const projects = screen.queryAllByTestId("project")
-            expect(projects.length).toBe(2)
+            expect(projects.length).toBe(expectedProjects.length)
         })
     })
 

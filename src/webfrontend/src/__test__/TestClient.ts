@@ -55,4 +55,8 @@ export class TestClient implements IClient {
         this.Projects.push(project)
         return true
     }
+
+    async GetProjects(): Promise<Project[]> {
+        return this.Projects
+    }
 }

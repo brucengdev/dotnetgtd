@@ -11,7 +11,7 @@ interface ProjectViewProps {
 export function ProjectView({ client }: ProjectViewProps) {
     const [showNewProjectForm, setShowNewProjectForm] = useState(false)
     return <div data-testid="project-view">
-        <ProjectList />
+        <ProjectList client={client}/>
         {showNewProjectForm
             ?<AddProjectForm client={client} 
                     onCancel={() => setShowNewProjectForm(false)} 
