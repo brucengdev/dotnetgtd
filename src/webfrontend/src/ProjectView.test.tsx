@@ -4,13 +4,55 @@ import '@testing-library/jest-dom'
 import { ProjectView } from "./ProjectView";
 import { TestClient } from "./__test__/TestClient";
 import { sleep } from "./__test__/testutils";
+import { Project } from "./models/Project";
 
 describe("ProjectView", () => {
     it("has necessary ui components", () => {
         render(<ProjectView client={new TestClient()} />)
+
+        expect(screen.getByTestId("project-list")).toBeInTheDocument()
         
         const addItemButton = screen.getByRole("button", { name: "Add"})
         expect(addItemButton).toBeInTheDocument()
+    })
+
+    const cases = [
+        {
+            name: "0 project",
+            expectedProjects: [] as Project[]
+        },
+        {
+            name: "2 projects",
+            expectedProjects: [
+                { id: 1, name: "Project 1" },
+                { id: 2, name: "Project 2" }
+            ] as Project[]
+        },
+        {
+            name: "3 projects",
+            expectedProjects: [
+                { id: 1, name: "Project A" },
+                { id: 2, name: "Project B" },
+                { id: 3, name: "Project C" }
+            ] as Project[]
+        }
+    ]
+    cases.forEach(({ name, expectedProjects}) => {
+        it(`shows a list of projects for ${name}`, async () => {
+            const client = new TestClient()
+            client.Projects = expectedProjects
+            render(<ProjectView client={client} />)
+            await sleep(1)
+
+            expect(screen.getByTestId("project-list")).toBeInTheDocument()
+            
+            const projects = screen.queryAllByTestId("project")
+            expect(projects.length).toBe(expectedProjects.length)
+
+            for(let i = 0; i < expectedProjects.length; i++) {
+                expect(projects[i].querySelector('[data-testid="description"]')?.textContent).toBe(expectedProjects[i].name)
+            }
+        })
     })
 
     it("shows add project form when button Add is clicked", () => {
@@ -53,5 +95,29 @@ describe("ProjectView", () => {
 
         expect(screen.queryByTestId("add-project-form")).not.toBeInTheDocument()
         expect(screen.getByRole("button", { name: "Add"})).toBeInTheDocument()
+    })
+
+    it("adds a new project when Create button is clicked", async () => {
+        const client = new TestClient()
+        client.Projects = [
+            {id: 1, name: "Project X" }
+        ]
+        render(<ProjectView client={client} />)
+
+        await sleep(1)
+        
+        const addItemButton = screen.getByRole("button", { name: "Add"})
+        fireEvent.click(addItemButton)
+
+        fireEvent.change(screen.getByRole("textbox", { name: "Name"}), { target: { value: "Project Y" } })
+        fireEvent.click(screen.getByRole("button", { name: "Create"}))
+
+        await sleep(10)
+
+        const projects = screen.queryAllByTestId("project")
+        expect(projects.length).toBe(2)
+
+        expect(projects[0].querySelector('[data-testid="description"]')?.textContent).toBe("Project X")
+        expect(projects[1].querySelector('[data-testid="description"]')?.textContent).toBe("Project Y")
     })
 })

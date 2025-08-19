@@ -12,6 +12,7 @@ export interface IClient {
     DeleteItem: (id: number) => Promise<boolean>
 
     AddProject: (item: Project) => Promise<boolean>
+    GetProjects: () => Promise<Project[]>
 }
 
 const devUrl = "https://localhost:7146"
@@ -105,5 +106,9 @@ export class Client implements IClient {
             body: JSON.stringify(project)
         })
         return result.ok
+    }
+
+    public async GetProjects(): Promise<Project[]> {
+        return []
     }
 }
