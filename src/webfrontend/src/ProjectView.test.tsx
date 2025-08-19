@@ -8,6 +8,8 @@ import { sleep } from "./__test__/testutils";
 describe("ProjectView", () => {
     it("has necessary ui components", () => {
         render(<ProjectView client={new TestClient()} />)
+
+        expect(screen.getByTestId("project-list")).toBeInTheDocument()
         
         const addItemButton = screen.getByRole("button", { name: "Add"})
         expect(addItemButton).toBeInTheDocument()
