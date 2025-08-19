@@ -4,6 +4,7 @@ import '@testing-library/jest-dom'
 import { ProjectView } from "./ProjectView";
 import { TestClient } from "./__test__/TestClient";
 import { sleep } from "./__test__/testutils";
+import { Project } from "./models/Project";
 
 describe("ProjectView", () => {
     it("has necessary ui components", () => {
@@ -15,18 +16,26 @@ describe("ProjectView", () => {
         expect(addItemButton).toBeInTheDocument()
     })
 
-    it("shows a list of projects", () => {
-        const client = new TestClient()
-        client.Projects = [
-            { id: 1, name: "Project 1" },
-            { id: 2, name: "Project 2" }
-        ]
-        render(<ProjectView client={client} />)
+    const cases = [
+        {
+            name: "2 projects",
+            expectedProjects: [
+                { id: 1, name: "Project 1" },
+                { id: 2, name: "Project 2" }
+            ] as Project[]
+        }
+    ]
+    cases.forEach(({ name, expectedProjects}) => {
+        it(`shows a list of projects for ${name}`, () => {
+            const client = new TestClient()
+            client.Projects = expectedProjects
+            render(<ProjectView client={client} />)
 
-        expect(screen.getByTestId("project-list")).toBeInTheDocument()
-        
-        const projects = screen.queryAllByTestId("project")
-        expect(projects.length).toBe(2)
+            expect(screen.getByTestId("project-list")).toBeInTheDocument()
+            
+            const projects = screen.queryAllByTestId("project")
+            expect(projects.length).toBe(2)
+        })
     })
 
     it("shows add project form when button Add is clicked", () => {
