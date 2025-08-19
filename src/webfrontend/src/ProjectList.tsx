@@ -12,6 +12,8 @@ export function ProjectList(props: ProjectListProps) {
     client.GetProjects()
     .then(retrievedProjects => setProjects(retrievedProjects))
     return <div data-testid="project-list">
-        {projects.map(p => <div data-testid="project"></div>)}
+        {projects.map(p => <div data-testid="project">
+            <div data-testid="description">{p.name}</div>
+        </div>)}
     </div>
 }

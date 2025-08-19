@@ -44,6 +44,10 @@ describe("ProjectView", () => {
             
             const projects = screen.queryAllByTestId("project")
             expect(projects.length).toBe(expectedProjects.length)
+
+            for(let i = 0; i < expectedProjects.length; i++) {
+                expect(projects[i].querySelector('[data-testid="description"]')?.textContent).toBe(expectedProjects[i].name)
+            }
         })
     })
 
