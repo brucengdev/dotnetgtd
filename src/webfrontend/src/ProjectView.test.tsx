@@ -18,6 +18,10 @@ describe("ProjectView", () => {
 
     const cases = [
         {
+            name: "0 project",
+            expectedProjects: [] as Project[]
+        },
+        {
             name: "2 projects",
             expectedProjects: [
                 { id: 1, name: "Project 1" },
