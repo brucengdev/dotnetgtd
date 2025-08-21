@@ -33,6 +33,12 @@ namespace Backend.WebApi.Tests.Controller
         {
             //arrange
             var manager = new Mock<IProjectManager>();
+            manager.Setup(pm => pm.GetProjects(12))
+                .Returns(new List<Project>()
+                {
+                    new() { Id = 1, Name = "Project A", UserId = 12 },
+                    new() { Id = 2, Name = "Project B", UserId = 12 }
+                });
             var sut = new ProjectsController(manager.Object);
             
             //act
@@ -45,6 +51,12 @@ namespace Backend.WebApi.Tests.Controller
             okObjectResult?.StatusCode.ShouldBe((int)HttpStatusCode.OK);
             okObjectResult?.Value.ShouldNotBeNull();
             okObjectResult?.Value?.GetType().IsAssignableTo(typeof(IEnumerable<Project>)).ShouldBeTrue();
+            
+            okObjectResult?.Value.ShouldBe(new List<Project>()
+            {
+                new() { Id = 1, Name = "Project A", UserId = 12 },
+                new() { Id = 2, Name = "Project B", UserId = 12 }
+            });
         }
     }
 }
