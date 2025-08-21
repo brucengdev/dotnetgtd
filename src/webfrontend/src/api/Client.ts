@@ -109,6 +109,14 @@ export class Client implements IClient {
     }
 
     public async GetProjects(): Promise<Project[]> {
+        const result = await fetch(`${url}/Projects/GetProjects?${new URLSearchParams({
+            accessToken: this.token,
+        }).toString()}`, {
+            method: "GET"
+        })
+        if(result.ok) {
+            return await result.json()
+        }
         return []
     }
 }

@@ -16,4 +16,9 @@ public class ProjectRepository: IProjectRepository
         _dbContext.SaveChanges();
         return project.Id;
     }
+
+    public IEnumerable<Project> GetProjects(int userId)
+    {
+        return _dbContext.Projects.Where(p => p.UserId == userId);
+    }
 }

@@ -20,4 +20,9 @@ public class ProjectManager: IProjectManager
         }
         return _projectRepo.CreateProject(project);
     }
+
+    public IEnumerable<Project> GetProjects(int userId)
+    {
+        return _projectRepo.GetProjects(userId);
+    }
 }

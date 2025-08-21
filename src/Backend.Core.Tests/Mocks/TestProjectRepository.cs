@@ -12,4 +12,9 @@ public class TestProjectRepository: IProjectRepository
         Projects.Add(project);
         return project.Id;
     }
+
+    public IEnumerable<Project> GetProjects(int userId)
+    {
+        return Projects.Where(p => p.UserId == userId);
+    }
 }
