@@ -24,5 +24,12 @@ namespace Backend.WebApi.Controllers
             var projectId = _projectManager.CreateProject(project);
             return Ok(projectId);
         }
+
+        [HttpGet("[action]")]
+        [ServiceFilter<SecurityFilterAttribute>]
+        public void GetProjects()
+        {
+            
+        }
     }
 }
