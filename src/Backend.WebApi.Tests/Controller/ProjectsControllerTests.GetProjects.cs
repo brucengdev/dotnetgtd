@@ -37,6 +37,9 @@ namespace Backend.WebApi.Tests.Controller
             
             //act
             var results = sut.GetProjects();
+            
+            //assert
+            results.ShouldBeOfType<OkObjectResult>();
         }
     }
 }
