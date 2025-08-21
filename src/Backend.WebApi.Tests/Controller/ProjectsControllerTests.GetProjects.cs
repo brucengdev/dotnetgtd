@@ -41,7 +41,9 @@ namespace Backend.WebApi.Tests.Controller
             //assert
             response.ShouldBeOfType<OkObjectResult>();
             var okObjectResult = response as OkObjectResult;
+            okObjectResult.ShouldNotBeNull();
             okObjectResult?.StatusCode.ShouldBe((int)HttpStatusCode.OK);
+            okObjectResult?.Value.ShouldNotBeNull();
             okObjectResult?.Value?.GetType().IsAssignableTo(typeof(IEnumerable<Project>)).ShouldBeTrue();
         }
     }
