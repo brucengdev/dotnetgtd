@@ -39,9 +39,4 @@ public partial class ProjectManagerTests
             new() { Id = 3, Name = "Project C", UserId = 123 }
         });
     } 
-    
-    [Fact]
-    public void GetProjects_must_return_user_not_found_error_with_invalid_user()
-    {
-    } 
 }
