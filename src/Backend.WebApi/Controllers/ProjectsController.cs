@@ -27,9 +27,9 @@ namespace Backend.WebApi.Controllers
 
         [HttpGet("[action]")]
         [ServiceFilter<SecurityFilterAttribute>]
-        public void GetProjects()
+        public ActionResult GetProjects()
         {
-            
+            return Ok();
         }
     }
 }

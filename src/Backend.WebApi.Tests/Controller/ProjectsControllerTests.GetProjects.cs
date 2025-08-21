@@ -13,7 +13,7 @@ namespace Backend.WebApi.Tests.Controller
     public partial class ProjectsControllerTests
     {
         [Fact]
-        public void GetProject_endpoint_config()
+        public void GetProjects_endpoint_config()
         {
             var method = Utils.GetMethod<ProjectsController>(nameof(ProjectsController.GetProjects));
             method.ShouldNotBeNull();
@@ -26,6 +26,17 @@ namespace Backend.WebApi.Tests.Controller
         
             attributes = method?.GetCustomAttributes(typeof(ServiceFilterAttribute<SecurityFilterAttribute>), true);
             attributes.Length.ShouldBeGreaterThan(0, "Must require authorization");
+        }
+
+        [Fact]
+        public void GetProjects_must_be_successful()
+        {
+            //arrange
+            var manager = new Mock<IProjectManager>();
+            var sut = new ProjectsController(manager.Object);
+            
+            //act
+            var results = sut.GetProjects();
         }
     }
 }
