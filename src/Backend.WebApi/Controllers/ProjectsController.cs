@@ -29,7 +29,8 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult GetProjects()
         {
-            return Ok(_projectManager.GetProjects(12));
+            var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
+            return Ok(_projectManager.GetProjects(userId));
         }
     }
 }

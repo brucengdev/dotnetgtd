@@ -28,18 +28,23 @@ namespace Backend.WebApi.Tests.Controller
             attributes.Length.ShouldBeGreaterThan(0, "Must require authorization");
         }
 
-        [Fact]
-        public void GetProjects_must_be_successful()
+        [Theory]
+        [InlineData(12)]
+        [InlineData(44)]
+        public void GetProjects_must_be_successful(int userId)
         {
             //arrange
             var manager = new Mock<IProjectManager>();
-            manager.Setup(pm => pm.GetProjects(12))
+            manager.Setup(pm => pm.GetProjects(userId))
                 .Returns(new List<Project>()
                 {
-                    new() { Id = 1, Name = "Project A", UserId = 12 },
-                    new() { Id = 2, Name = "Project B", UserId = 12 }
+                    new() { Id = 1, Name = "Project A", UserId = userId },
+                    new() { Id = 2, Name = "Project B", UserId = userId }
                 });
             var sut = new ProjectsController(manager.Object);
+            sut.ControllerContext = new ControllerContext();
+            sut.ControllerContext.HttpContext = new DefaultHttpContext();
+            sut.ControllerContext.HttpContext.Items["UserId"] = userId;
             
             //act
             var response = sut.GetProjects();
@@ -54,8 +59,8 @@ namespace Backend.WebApi.Tests.Controller
             
             okObjectResult?.Value.ShouldBe(new List<Project>()
             {
-                new() { Id = 1, Name = "Project A", UserId = 12 },
-                new() { Id = 2, Name = "Project B", UserId = 12 }
+                new() { Id = 1, Name = "Project A", UserId = userId },
+                new() { Id = 2, Name = "Project B", UserId = userId }
             });
         }
     }
