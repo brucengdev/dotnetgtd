@@ -36,10 +36,13 @@ namespace Backend.WebApi.Tests.Controller
             var sut = new ProjectsController(manager.Object);
             
             //act
-            var results = sut.GetProjects();
+            var response = sut.GetProjects();
             
             //assert
-            results.ShouldBeOfType<OkObjectResult>();
+            response.ShouldBeOfType<OkObjectResult>();
+            var okObjectResult = response as OkObjectResult;
+            okObjectResult?.StatusCode.ShouldBe((int)HttpStatusCode.OK);
+            okObjectResult?.Value?.GetType().IsAssignableTo(typeof(IEnumerable<Project>)).ShouldBeTrue();
         }
     }
 }

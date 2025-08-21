@@ -29,7 +29,7 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult GetProjects()
         {
-            return Ok(new object());
+            return Ok(new List<Project>());
         }
     }
 }
