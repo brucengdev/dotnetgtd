@@ -19,6 +19,6 @@ public class ProjectRepository: IProjectRepository
 
     public IEnumerable<Project> GetProjects(int userId)
     {
-        return _dbContext.Projects.Where(p => p.Id == userId);
+        return _dbContext.Projects.Where(p => p.UserId == userId);
     }
 }
