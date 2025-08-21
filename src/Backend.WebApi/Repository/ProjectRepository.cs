@@ -16,4 +16,9 @@ public class ProjectRepository: IProjectRepository
         _dbContext.SaveChanges();
         return project.Id;
     }
+
+    public IEnumerable<Project> GetProjects(int userId)
+    {
+        throw new NotImplementedException();
+    }
 }

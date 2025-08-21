@@ -23,6 +23,6 @@ public class ProjectManager: IProjectManager
 
     public IEnumerable<Project> GetProjects(int userId)
     {
-        throw new NotImplementedException();
+        return _projectRepo.GetProjects(userId);
     }
 }
