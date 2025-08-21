@@ -19,6 +19,6 @@ public class ProjectRepository: IProjectRepository
 
     public IEnumerable<Project> GetProjects(int userId)
     {
-        throw new NotImplementedException();
+        return _dbContext.Projects.Where(p => p.Id == userId);
     }
 }
