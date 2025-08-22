@@ -24,7 +24,7 @@ namespace Backend.Core.Tests
             
             //act
             var currentTime = new DateTime(2024, 12, 7, 5, 29, 0);
-            var result = sut.GetUserId("johndoe-2024-12-07-05-30", currentTime);
+            var result = sut.GetUserId(Utilities.Token("johndoe-2024-12-07-05-30", "testPassword"), currentTime);
             
             //assert
             result.ShouldBe(userId);
