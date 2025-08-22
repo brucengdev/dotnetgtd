@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using Backend.Core.Manager;
 using Backend.Models;
 using Backend.Core.Tests.Mocks;
@@ -24,9 +26,9 @@ namespace Backend.Core.Tests
             var result = sut.CreateAccessToken("johndoe", "testPassword", creationTime);
             
             //assert
-            result.ShouldBe($"johndoe-2024-12-31-19-04");
+            result.ShouldBe(Utilities.Token("johndoe-2024-12-31-19-04", "testPassword"));
         }
-        
+
         [Fact]
         public void Verify_incorrect_password()
         {
