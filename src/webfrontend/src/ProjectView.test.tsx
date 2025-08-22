@@ -105,6 +105,10 @@ describe("ProjectView", () => {
         render(<ProjectView client={client} />)
 
         await sleep(1)
+
+        let projects = screen.queryAllByTestId("project")
+        expect(projects.length).toBe(1)
+        expect(projects[0].querySelector('[data-testid="description"]')?.textContent).toBe("Project X")
         
         const addItemButton = screen.getByRole("button", { name: "Add"})
         fireEvent.click(addItemButton)
@@ -112,9 +116,9 @@ describe("ProjectView", () => {
         fireEvent.change(screen.getByRole("textbox", { name: "Name"}), { target: { value: "Project Y" } })
         fireEvent.click(screen.getByRole("button", { name: "Create"}))
 
-        await sleep(10)
+        await sleep(1)
 
-        const projects = screen.queryAllByTestId("project")
+        projects = screen.queryAllByTestId("project")
         expect(projects.length).toBe(2)
 
         expect(projects[0].querySelector('[data-testid="description"]')?.textContent).toBe("Project X")

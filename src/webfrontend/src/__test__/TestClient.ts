@@ -57,6 +57,8 @@ export class TestClient implements IClient {
     }
 
     async GetProjects(): Promise<Project[]> {
-        return this.Projects
+        return [...this.Projects.map(p => {
+            return {...p}
+        })]
     }
 }
