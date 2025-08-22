@@ -21,7 +21,10 @@ export function ProjectView({ client }: ProjectViewProps) {
         {showNewProjectForm
             ?<AddProjectForm client={client} 
                     onCancel={() => setShowNewProjectForm(false)} 
-                    onCompleted={() => setShowNewProjectForm(false)} />
+                    onCompleted={() => {
+                        setShowNewProjectForm(false)
+                        setProjects(undefined) //set to undefined so projects are reloaded
+                    }} />
             :<Button text="Add" onClick={() => setShowNewProjectForm(true)}/>
         }
     </div>
