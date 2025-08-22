@@ -39,7 +39,8 @@ namespace Backend.Core.Tests
             
             //act + assert
             var currentTime = new DateTime(2024, 12, 7, 5, 29, 0);
-            Should.Throw<UserNotFoundException>(() => sut.GetUserId("johndoe-2024-12-07-05-30", currentTime));
+            var accessToken = Utilities.Token("johndoe-2024-12-07-05-30", "testPass");
+            Should.Throw<UserNotFoundException>(() => sut.GetUserId(accessToken, currentTime));
         }
         
         [Fact]
@@ -57,8 +58,9 @@ namespace Backend.Core.Tests
             
             //act + assert
             var currentTime = new DateTime(2024, 12, 7, 5, 31, 0);
+            var accessToken = Utilities.Token("johndoe-2024-12-07-05-30", "testPass");
             Should.Throw<TokenExpiredException>(
-                () => sut.GetUserId("johndoe-2024-12-07-05-30", currentTime)
+                () => sut.GetUserId(accessToken, currentTime)
             );
         }
         
@@ -68,9 +70,14 @@ namespace Backend.Core.Tests
         [InlineData("343242352324324324324324322423532523525")]
         [InlineData("")]
         [InlineData(null)]
-        public void Throws_malformed_token_exception_on_invalid_token(string token)
+        public void Throws_malformed_token_exception_on_invalid_token(string info)
         {
             //arrange
+            var token = info;
+            if (info != null)
+            {
+                token = Utilities.Token(info, "testPassword");
+            }
             var userRepo = new TestUserRepository();
             userRepo.AddUser(new User
             {
