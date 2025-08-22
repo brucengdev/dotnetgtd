@@ -27,17 +27,10 @@ namespace Backend.Core.Tests
             
             //assert
             var info = "johndoe-2024-12-31-19-04";
-            var hashedDataAndPassword = CreateHash(info + "testPassword");
+            var hashedDataAndPassword = Utilities.CreateHash(info + "testPassword");
 
             var expectedToken = info + "-" + hashedDataAndPassword;
             result.ShouldBe(expectedToken);
-        }
-
-        private string CreateHash(string input)
-        {
-            using var algo = SHA256.Create();
-            var hash = algo.ComputeHash(Encoding.UTF8.GetBytes(input));
-            return Convert.ToBase64String(hash);
         }
 
         [Fact]
