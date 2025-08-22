@@ -3,6 +3,7 @@ import AddProjectForm from "./AddProjectForm";
 import { Button } from "./controls/Button";
 import { IClient } from "./api/Client";
 import { ProjectList } from "./ProjectList";
+import { Project } from "./models/Project";
 
 interface ProjectViewProps {
     client: IClient
@@ -10,8 +11,13 @@ interface ProjectViewProps {
 
 export function ProjectView({ client }: ProjectViewProps) {
     const [showNewProjectForm, setShowNewProjectForm] = useState(false)
+    const [projects, setProjects] = useState<Project[] | undefined>(undefined)
+    if(projects === undefined) {
+        client.GetProjects()
+        .then(retrievedProjects => setProjects(retrievedProjects))
+    }
     return <div data-testid="project-view">
-        <ProjectList client={client}/>
+        <ProjectList projects={projects || []}/>
         {showNewProjectForm
             ?<AddProjectForm client={client} 
                     onCancel={() => setShowNewProjectForm(false)} 
