@@ -29,7 +29,8 @@ namespace Backend.Core.Tests
             var sut = new AccountManager(userRepo);
             
             //act
-            var result = sut.IsTokenValid("johndoe-2024-12-31-19-04", currentTime);
+            var token = Utilities.Token("johndoe-2024-12-31-19-04", "testPassword");
+            var result = sut.IsTokenValid(token, currentTime);
             
             //assert
             result.ShouldBeTrue();
@@ -101,9 +102,14 @@ namespace Backend.Core.Tests
             string testname,
             string username, 
             DateTime currentTime,
-            string token)
+            string tokenInfo)
         {
             //arrange
+            var token = tokenInfo;
+            if (tokenInfo != null)
+            {
+                token = Utilities.Token(tokenInfo, "testPassword");
+            }
             var userRepo = new TestUserRepository();
             userRepo.AddUser(new User
             {
