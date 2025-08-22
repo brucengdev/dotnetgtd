@@ -43,49 +43,56 @@ namespace Backend.Core.Tests
                 "wrong username",
                 "johndoe2", 
                 new DateTime(2024, 12, 31, 19, 4, 0),
-                "johndoe-2024-12-31-19-04"
+                Utilities.Token("johndoe-2024-12-31-19-04", "testPassword")
+            },
+            new object[]
+            {
+                "invalid hash",
+                "johndoe", 
+                new DateTime(2024, 12, 31, 19, 4, 0),
+                Utilities.Token("johndoe-2024-12-31-19-04", "wrongPassword")
             },
             new object[]
             {
                 "expired token 1",
                 "johndoe", 
                 new DateTime(2024, 12, 31, 19, 5, 0),
-                "johndoe-2024-12-31-19-04"
+                Utilities.Token("johndoe-2024-12-31-19-04", "testPassword")
             },
             new object[]
             {
                 "expired token 2",
                 "johndoe", 
                 new DateTime(2024, 12, 31, 20, 4, 0),
-                "johndoe-2024-12-31-19-04"
+                Utilities.Token("johndoe-2024-12-31-19-04", "testPassword")
             },
             new object[]
             {
                 "expired token 3",
                 "johndoe", 
                 new DateTime(2025, 1, 1, 19, 5, 0),
-                "johndoe-2024-12-31-19-04"
+                Utilities.Token("johndoe-2024-12-31-19-04", "testPassword")
             },
             new object[]
             {
                 "invalid token format 1",
                 "johndoe", 
                 new DateTime(2024, 12, 31, 19, 5, 0),
-                "johndoe-202412311904"
+                Utilities.Token("johndoe-202412311904", "testPassword")
             },
             new object[]
             {
                 "invalid token format 2",
                 "johndoe", 
                 new DateTime(2024, 12, 31, 19, 5, 0),
-                "johndoe202412311904"
+                Utilities.Token("johndoe202412311904", "testPassword")
             },
             new object[]
             {
                 "empty token",
                 "johndoe", 
                 new DateTime(2024, 12, 31, 19, 5, 0),
-                ""
+                Utilities.Token("", "testPassword")
             },
             new object[]
             {
@@ -102,14 +109,9 @@ namespace Backend.Core.Tests
             string testname,
             string username, 
             DateTime currentTime,
-            string tokenInfo)
+            string token)
         {
             //arrange
-            var token = tokenInfo;
-            if (tokenInfo != null)
-            {
-                token = Utilities.Token(tokenInfo, "testPassword");
-            }
             var userRepo = new TestUserRepository();
             userRepo.AddUser(new User
             {

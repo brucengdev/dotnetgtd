@@ -97,6 +97,8 @@ public class AccountManager: IAccountManager
     public int GetUserId(string accessToken, DateTime currentTime)
     {
         var username = "";
+        var info = "";
+        var hash = "";
         DateTime expiry;
         try
         {
@@ -108,6 +110,8 @@ public class AccountManager: IAccountManager
                 Convert.ToInt32(parts[4]),
                 Convert.ToInt32(parts[5]),
                 0);
+            
+            info = accessToken.Substring(0, accessToken.LastIndexOf('-'));
         }
         catch (Exception)
         {
@@ -119,10 +123,18 @@ public class AccountManager: IAccountManager
         {
             throw new UserNotFoundException();
         }
+
+        var recreatedToken = info + "-" + CreateHash(info + user.Password);
+        if (recreatedToken != accessToken)
+        {
+            throw new MalformedTokenException();
+        }
+        
         if (currentTime > expiry)
         {
             throw new TokenExpiredException();
         }
+        
         return user.Id;
     }
 

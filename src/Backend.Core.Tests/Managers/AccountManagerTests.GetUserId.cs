@@ -58,26 +58,34 @@ namespace Backend.Core.Tests
             
             //act + assert
             var currentTime = new DateTime(2024, 12, 7, 5, 31, 0);
-            var accessToken = Utilities.Token("johndoe-2024-12-07-05-30", "testPass");
+            var accessToken = Utilities.Token("johndoe-2024-12-07-05-30", "testPassword");
             Should.Throw<TokenExpiredException>(
                 () => sut.GetUserId(accessToken, currentTime)
             );
         }
-        
+
+        public static IEnumerable<object[]> GetUserIdInvalidCases = new List<object[]>
+        {
+            new object[] { "invalid hash",
+                Utilities.Token("johndoe-2024-12-07-05-30", "wrongPassword") },
+            new object[] { "wrong format 1", 
+                Utilities.Token("johndoe-2024sdfsdfds-432432423-asdfasdfsdfdsfff", "testPassword") },
+            new object[] { "wrong format 2",
+                Utilities.Token("johndoe-34324235232432-4324324324322423-532523525", "testPassword") },
+            new object[] { "wrong format 3",
+                Utilities.Token("343242352324324324324324322423532523525", "testPassword") },
+            new object[] { "empty string with hash",
+                Utilities.Token("", "testPassword") },
+            new object[] { "empty string", 
+                "" },
+            new object[] { "null", 
+                null },
+        };
         [Theory]
-        [InlineData("johndoe-2024sdfsdfds-432432423-asdfasdfsdfdsfff")]
-        [InlineData("johndoe-34324235232432-4324324324322423-532523525")]
-        [InlineData("343242352324324324324324322423532523525")]
-        [InlineData("")]
-        [InlineData(null)]
-        public void Throws_malformed_token_exception_on_invalid_token(string info)
+        [MemberData(nameof(GetUserIdInvalidCases))]
+        public void Throws_malformed_token_exception_on_invalid_token(string testCase, string token)
         {
             //arrange
-            var token = info;
-            if (info != null)
-            {
-                token = Utilities.Token(info, "testPassword");
-            }
             var userRepo = new TestUserRepository();
             userRepo.AddUser(new User
             {
