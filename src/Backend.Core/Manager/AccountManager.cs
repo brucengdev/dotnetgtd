@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using Backend.Core.Repository;
 using Backend.Models;
 
@@ -65,8 +67,19 @@ public class AccountManager: IAccountManager
     {
         VerifyUser(username, password);
         var expiryTime = creationTime.AddHours(1);
-        return $"{username}-{expiryTime.ToString("yyyy-MM-dd-HH-mm")}";
+        var info = $"{username}-{expiryTime.ToString("yyyy-MM-dd-HH-mm")}";
+        var infoAndPassword = info + password;
+        var hashedInfoAndPassword = CreateHash(infoAndPassword);
+        return $"{info}-{hashedInfoAndPassword}";
     }
+    
+    private string CreateHash(string input)
+    {
+        using var algo = SHA256.Create();
+        var hash = algo.ComputeHash(Encoding.UTF8.GetBytes(input));
+        return Convert.ToBase64String(hash);
+    }
+
 
     public bool IsTokenValid(string token, DateTime currentTime)
     {

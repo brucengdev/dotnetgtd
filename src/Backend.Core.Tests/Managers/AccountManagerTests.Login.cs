@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using Backend.Core.Manager;
 using Backend.Models;
 using Backend.Core.Tests.Mocks;
@@ -24,9 +26,20 @@ namespace Backend.Core.Tests
             var result = sut.CreateAccessToken("johndoe", "testPassword", creationTime);
             
             //assert
-            result.ShouldBe($"johndoe-2024-12-31-19-04");
+            var info = "johndoe-2024-12-31-19-04";
+            var hashedDataAndPassword = CreateHash(info + "testPassword");
+
+            var expectedToken = info + "-" + hashedDataAndPassword;
+            result.ShouldBe(expectedToken);
         }
-        
+
+        private string CreateHash(string input)
+        {
+            using var algo = SHA256.Create();
+            var hash = algo.ComputeHash(Encoding.UTF8.GetBytes(input));
+            return Convert.ToBase64String(hash);
+        }
+
         [Fact]
         public void Verify_incorrect_password()
         {
