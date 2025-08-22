@@ -112,7 +112,7 @@ describe("ProjectView", () => {
         fireEvent.change(screen.getByRole("textbox", { name: "Name"}), { target: { value: "Project Y" } })
         fireEvent.click(screen.getByRole("button", { name: "Create"}))
 
-        await sleep(10)
+        await sleep(1)
 
         const projects = screen.queryAllByTestId("project")
         expect(projects.length).toBe(2)
