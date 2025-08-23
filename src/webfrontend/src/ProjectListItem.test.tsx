@@ -15,7 +15,10 @@ describe("ProjectListItem", () => {
     it("shows confirms delete form when delete is clicked", () => {
         render(<ProjectListItem name="Test Project" />)
 
+        expect(screen.queryByTestId("confirmDeleteView")).not.toBeInTheDocument()
+
         fireEvent.click(screen.getByRole("button", { name: "Delete" }))
+        
         expect(screen.getByTestId("confirmDeleteView")).toBeInTheDocument()
     })
 });
