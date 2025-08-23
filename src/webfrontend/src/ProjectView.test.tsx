@@ -50,7 +50,7 @@ describe("ProjectView", () => {
             expect(projects.length).toBe(expectedProjects.length)
 
             for(let i = 0; i < expectedProjects.length; i++) {
-                expect(projects[i].querySelector('[data-testid="description"]')?.textContent).toBe(expectedProjects[i].name)
+                expect(projects[i].querySelector('[data-testid="name"]')?.textContent).toBe(expectedProjects[i].name)
             }
         })
     })
@@ -108,7 +108,7 @@ describe("ProjectView", () => {
 
         let projects = screen.queryAllByTestId("project")
         expect(projects.length).toBe(1)
-        expect(projects[0].querySelector('[data-testid="description"]')?.textContent).toBe("Project X")
+        expect(projects[0].querySelector('[data-testid="name"]')?.textContent).toBe("Project X")
         
         const addItemButton = screen.getByRole("button", { name: "Add"})
         fireEvent.click(addItemButton)
@@ -121,7 +121,7 @@ describe("ProjectView", () => {
         projects = screen.queryAllByTestId("project")
         expect(projects.length).toBe(2)
 
-        expect(projects[0].querySelector('[data-testid="description"]')?.textContent).toBe("Project X")
-        expect(projects[1].querySelector('[data-testid="description"]')?.textContent).toBe("Project Y")
+        expect(projects[0].querySelector('[data-testid="name"]')?.textContent).toBe("Project X")
+        expect(projects[1].querySelector('[data-testid="name"]')?.textContent).toBe("Project Y")
     })
 })
