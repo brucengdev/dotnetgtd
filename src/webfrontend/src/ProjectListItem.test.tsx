@@ -18,7 +18,8 @@ describe("ProjectListItem", () => {
         expect(screen.queryByTestId("confirmDeleteView")).not.toBeInTheDocument()
 
         fireEvent.click(screen.getByRole("button", { name: "Delete" }))
-        
+
         expect(screen.getByTestId("confirmDeleteView")).toBeInTheDocument()
+        expect(screen.queryByRole("button", { name: "Delete" })).not.toBeInTheDocument()
     })
 });
