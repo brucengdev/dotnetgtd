@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, expect, it, vitest } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
 import '@testing-library/jest-dom'
 import { ProjectList } from "./ProjectList";
 
@@ -28,6 +28,14 @@ describe("ProjectList", () => {
             { id: 1, name: "Project A" },
             { id: 2, name: "Project B" }
         ]
-        render(<ProjectList projects={projects} />)
+        const onDelete = vitest.fn()
+        render(<ProjectList projects={projects} onDelete={onDelete} />)
+
+        const deleteProjectButtons = screen.getAllByRole("button", {name: "Delete"})
+        const projectYDeleteButton = deleteProjectButtons[1]
+        fireEvent.click(projectYDeleteButton)
+        
+        fireEvent.click(screen.getByRole("button", {name: "Yes"}))
+        expect(onDelete).toHaveBeenCalled()
     })
 });
