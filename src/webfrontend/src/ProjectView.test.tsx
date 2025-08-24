@@ -146,5 +146,8 @@ describe("ProjectView", () => {
 
         const projects = screen.getAllByTestId("project")
         expect(projects.length).toBe(2)
+
+        expect(projects[0].querySelector('[data-testid="name"]')?.textContent).toBe("Project X")
+        expect(projects[1].querySelector('[data-testid="name"]')?.textContent).toBe("Project Z")
     })
 })
