@@ -9,7 +9,9 @@ export function ProjectListItem({name}: ProjectListItemProps) {
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
     return <div data-testid="project"  className="grid grid-cols-2 mb-1">
         <div data-testid="name">{name}</div>
-        <Button text="Delete" onClick={() => setShowConfirmDelete(true)} />
+        {!showConfirmDelete 
+            && <Button text="Delete" 
+                onClick={() => setShowConfirmDelete(true)} /> }
         {showConfirmDelete && <ConfirmDeleteView />}
     </div>
 }
