@@ -3,9 +3,11 @@ import { ConfirmDeleteView } from "./ConfirmDeleteView"
 import { Button } from "./controls/Button"
 
 interface ProjectListItemProps {
-    name: string
+    name: string,
+    onDelete?: () => {}
 }
-export function ProjectListItem({name}: ProjectListItemProps) {
+export function ProjectListItem(props: ProjectListItemProps) {
+    const { name, onDelete } = props
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
     return <div data-testid="project"  className="grid grid-cols-2 mb-1">
         <div data-testid="name">{name}</div>
@@ -14,7 +16,11 @@ export function ProjectListItem({name}: ProjectListItemProps) {
                 onClick={() => setShowConfirmDelete(true)} /> }
         {showConfirmDelete 
         && <ConfirmDeleteView
-                onYes={() => setShowConfirmDelete(false) }
+                onYes={() => {
+                    if(onDelete) {
+                        onDelete()
+                    }
+                }}
                 onNo={() => setShowConfirmDelete(false) } />}
     </div>
 }

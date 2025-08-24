@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vitest } from "vitest";
 import { ProjectListItem } from "./ProjectListItem";
 import { fireEvent, render, screen } from "@testing-library/react";
 import '@testing-library/jest-dom'
@@ -34,14 +34,15 @@ describe("ProjectListItem", () => {
         expect(screen.queryByTestId("confirmDeleteView")).not.toBeInTheDocument()
     })
 
-    it("hides confirm delete form when yes is clicked", () => {
-        render(<ProjectListItem name="Test Project" />)
+    it("must calls onDelete when yes is clicked", () => {
+        const onDelete = vitest.fn()
+        render(<ProjectListItem name="Test Project" onDelete={onDelete} />)
 
         fireEvent.click(screen.getByRole("button", { name: "Delete" }))
 
         expect(screen.getByTestId("confirmDeleteView")).toBeInTheDocument()
 
         fireEvent.click(screen.getByRole("button", {name: "Yes"}))
-        expect(screen.queryByTestId("confirmDeleteView")).not.toBeInTheDocument()
+        expect(onDelete).toHaveBeenCalled()
     })
 });
