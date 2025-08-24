@@ -50,7 +50,7 @@ describe("ProjectView", () => {
             expect(projects.length).toBe(expectedProjects.length)
 
             for(let i = 0; i < expectedProjects.length; i++) {
-                expect(projects[i].querySelector('[data-testid="description"]')?.textContent).toBe(expectedProjects[i].name)
+                expect(projects[i].querySelector('[data-testid="name"]')?.textContent).toBe(expectedProjects[i].name)
             }
         })
     })
@@ -108,7 +108,7 @@ describe("ProjectView", () => {
 
         let projects = screen.queryAllByTestId("project")
         expect(projects.length).toBe(1)
-        expect(projects[0].querySelector('[data-testid="description"]')?.textContent).toBe("Project X")
+        expect(projects[0].querySelector('[data-testid="name"]')?.textContent).toBe("Project X")
         
         const addItemButton = screen.getByRole("button", { name: "Add"})
         fireEvent.click(addItemButton)
@@ -121,7 +121,33 @@ describe("ProjectView", () => {
         projects = screen.queryAllByTestId("project")
         expect(projects.length).toBe(2)
 
-        expect(projects[0].querySelector('[data-testid="description"]')?.textContent).toBe("Project X")
-        expect(projects[1].querySelector('[data-testid="description"]')?.textContent).toBe("Project Y")
+        expect(projects[0].querySelector('[data-testid="name"]')?.textContent).toBe("Project X")
+        expect(projects[1].querySelector('[data-testid="name"]')?.textContent).toBe("Project Y")
+    })
+
+    it("deletes a project when delete is clicked and confirmed", async () => {
+        const client = new TestClient()
+        client.Projects = [
+            {id: 1, name: "Project X" },
+            {id: 2, name: "Project Y" },
+            {id: 3, name: "Project Z" }
+        ]
+        render(<ProjectView client={client} />)
+
+        await sleep(1)
+
+        const deleteProjectButtons = screen.getAllByRole("button", {name: "Delete"})
+        const projectYDeleteButton = deleteProjectButtons[1]
+        fireEvent.click(projectYDeleteButton)
+
+        fireEvent.click(screen.getByRole("button", {name: "Yes"}))
+
+        await sleep(1)
+
+        const projects = screen.getAllByTestId("project")
+        expect(projects.length).toBe(2)
+
+        expect(projects[0].querySelector('[data-testid="name"]')?.textContent).toBe("Project X")
+        expect(projects[1].querySelector('[data-testid="name"]')?.textContent).toBe("Project Z")
     })
 })

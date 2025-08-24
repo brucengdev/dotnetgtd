@@ -17,7 +17,12 @@ export function ProjectView({ client }: ProjectViewProps) {
         .then(retrievedProjects => setProjects(retrievedProjects))
     }
     return <div data-testid="project-view">
-        <ProjectList projects={projects || []}/>
+        <ProjectList projects={projects || []} 
+            onDelete={(projectId) => {
+                client.DeleteProject(projectId)
+                    .then(() => setProjects(undefined))//to reload project list
+            }}
+            />
         {showNewProjectForm
             ?<AddProjectForm client={client} 
                     onCancel={() => setShowNewProjectForm(false)} 

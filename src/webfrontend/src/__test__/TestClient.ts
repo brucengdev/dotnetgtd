@@ -61,4 +61,10 @@ export class TestClient implements IClient {
             return {...p}
         })]
     }
+    
+    async DeleteProject(id: number) {
+        const projects = this.Projects.findIndex(i => i.id === id)
+        this.Projects.splice(projects, 1)
+        return projects >= 0
+    }
 }
