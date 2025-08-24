@@ -22,4 +22,15 @@ describe("ProjectListItem", () => {
         expect(screen.getByTestId("confirmDeleteView")).toBeInTheDocument()
         expect(screen.queryByRole("button", { name: "Delete" })).not.toBeInTheDocument()
     })
+
+    it("hides confirm delete form when cancel is clicked", () => {
+        render(<ProjectListItem name="Test Project" />)
+
+        fireEvent.click(screen.getByRole("button", { name: "Delete" }))
+
+        expect(screen.getByTestId("confirmDeleteView")).toBeInTheDocument()
+
+        fireEvent.click(screen.getByRole("button", {name: "No"}))
+        expect(screen.queryByTestId("confirmDeleteView")).not.toBeInTheDocument()
+    })
 });
