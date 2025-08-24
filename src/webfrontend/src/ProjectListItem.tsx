@@ -13,6 +13,8 @@ export function ProjectListItem({name}: ProjectListItemProps) {
             && <Button text="Delete" 
                 onClick={() => setShowConfirmDelete(true)} /> }
         {showConfirmDelete 
-        && <ConfirmDeleteView onNo={() => setShowConfirmDelete(false)} />}
+        && <ConfirmDeleteView
+                onYes={() => setShowConfirmDelete(false) }
+                onNo={() => setShowConfirmDelete(false) } />}
     </div>
 }
