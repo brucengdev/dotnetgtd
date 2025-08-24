@@ -13,6 +13,7 @@ export interface IClient {
 
     AddProject: (item: Project) => Promise<boolean>
     GetProjects: () => Promise<Project[]>
+    DeleteProject: (id: number) => Promise<boolean>
 }
 
 const devUrl = "https://localhost:7146"
@@ -118,5 +119,15 @@ export class Client implements IClient {
             return await result.json()
         }
         return []
+    }
+
+    public async DeleteProject(id: number): Promise<boolean> {
+        const result = await fetch(`${url}/Projects/DeleteProject?${new URLSearchParams({
+            accessToken: this.token,
+            id: id.toString()
+        }).toString()}`, {
+            method: "DELETE"
+        })
+        return result.ok
     }
 }

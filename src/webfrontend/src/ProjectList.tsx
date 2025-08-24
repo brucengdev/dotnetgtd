@@ -3,7 +3,7 @@ import { ProjectListItem } from "./ProjectListItem"
 
 interface ProjectListProps {
     projects: Project[]
-    onDelete?: (projectId: number) => { }
+    onDelete?: (projectId: number) => void
 }
 
 export function ProjectList(props: ProjectListProps) {

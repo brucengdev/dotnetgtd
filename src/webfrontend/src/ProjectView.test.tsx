@@ -142,6 +142,8 @@ describe("ProjectView", () => {
 
         fireEvent.click(screen.getByRole("button", {name: "Yes"}))
 
+        await sleep(1)
+
         const projects = screen.getAllByTestId("project")
         expect(projects.length).toBe(2)
     })
