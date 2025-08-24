@@ -9,6 +9,14 @@ interface ProjectListProps {
 export function ProjectList(props: ProjectListProps) {
     const { projects, onDelete } = props
     return <div data-testid="project-list">
-        {projects?.map(p => <ProjectListItem key={p.id} name={p.name} /> )}
+        {projects?.map(p => 
+            <ProjectListItem key={p.id} name={p.name}
+                onDelete={() => {
+                    if(onDelete) {
+                        onDelete(p.id)
+                    }
+                }
+            }
+             /> )}
     </div>
 }

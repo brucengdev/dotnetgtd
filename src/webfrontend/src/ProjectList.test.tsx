@@ -18,7 +18,7 @@ describe("ProjectList", () => {
         expect(projectA.querySelector("[data-testId='name']")?.textContent)
             .toBe('Project A')
 
-        const projectB = projectItems[0]
+        const projectB = projectItems[1]
         expect(projectB.querySelector("[data-testId='name']")?.textContent)
             .toBe('Project B')
     })
@@ -36,6 +36,6 @@ describe("ProjectList", () => {
         fireEvent.click(projectYDeleteButton)
         
         fireEvent.click(screen.getByRole("button", {name: "Yes"}))
-        expect(onDelete).toHaveBeenCalled()
+        expect(onDelete).toHaveBeenCalledWith(2)
     })
 });

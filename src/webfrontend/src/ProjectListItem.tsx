@@ -4,7 +4,7 @@ import { Button } from "./controls/Button"
 
 interface ProjectListItemProps {
     name: string,
-    onDelete?: () => {}
+    onDelete?: () => void
 }
 export function ProjectListItem(props: ProjectListItemProps) {
     const { name, onDelete } = props
