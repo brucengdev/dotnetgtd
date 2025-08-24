@@ -124,4 +124,25 @@ describe("ProjectView", () => {
         expect(projects[0].querySelector('[data-testid="name"]')?.textContent).toBe("Project X")
         expect(projects[1].querySelector('[data-testid="name"]')?.textContent).toBe("Project Y")
     })
+
+    it("deletes a project when delete is clicked and confirmed", async () => {
+        const client = new TestClient()
+        client.Projects = [
+            {id: 1, name: "Project X" },
+            {id: 2, name: "Project Y" },
+            {id: 3, name: "Project Z" }
+        ]
+        render(<ProjectView client={client} />)
+
+        await sleep(1)
+
+        const deleteProjectButtons = screen.getAllByRole("button", {name: "Delete"})
+        const projectYDeleteButton = deleteProjectButtons[1]
+        fireEvent.click(projectYDeleteButton)
+
+        fireEvent.click(screen.getByRole("button", {name: "Yes"}))
+
+        const projects = screen.getAllByTestId("project")
+        expect(projects.length).toBe(2)
+    })
 })
