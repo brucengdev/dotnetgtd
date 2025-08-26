@@ -13,8 +13,8 @@ internal class Utilities
         return Convert.ToBase64String(hash);
     }
 
-    public static string Token(string info, string passwordHash)
+    public static string Token(string info, string password)
     {
-        return $"{info}-{CreateHash(info + passwordHash)}";
+        return $"{info}-{CreateHash(info + CreateHash(password))}";
     }
 }

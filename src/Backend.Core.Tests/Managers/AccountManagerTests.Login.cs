@@ -26,7 +26,7 @@ namespace Backend.Core.Tests
             var result = sut.CreateAccessToken("johndoe", "testPassword", creationTime);
             
             //assert
-            result.ShouldBe(Utilities.Token("johndoe-2024-12-31-19-04", testUser.PasswordHash));
+            result.ShouldBe(Utilities.Token("johndoe-2024-12-31-19-04", "testPassword"));
         }
 
         [Fact]

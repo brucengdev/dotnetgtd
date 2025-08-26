@@ -24,7 +24,8 @@ namespace Backend.Core.Tests
             userRepo.AddUser(new User
             {
                 Username = "johndoe",
-                Password = "testPassword"
+                Password = "testPassword",
+                PasswordHash = HashPassword("testPassword")
             });
             var sut = new AccountManager(userRepo);
             

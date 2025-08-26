@@ -126,7 +126,7 @@ public class AccountManager: IAccountManager
             throw new UserNotFoundException();
         }
 
-        var recreatedToken = info + "-" + CreateHash(info + user.Password);
+        var recreatedToken = info + "-" + CreateHash(info + user.PasswordHash);
         if (recreatedToken != accessToken)
         {
             throw new MalformedTokenException();
