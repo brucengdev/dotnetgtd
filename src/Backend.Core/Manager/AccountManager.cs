@@ -67,11 +67,12 @@ public class AccountManager: IAccountManager
     public string CreateAccessToken(string username, string password, DateTime creationTime)
     {
         VerifyUser(username, password);
+        var user = _userRepository.GetUser(username);
         var expiryTime = creationTime.AddHours(1);
         var info = $"{username}-{expiryTime.ToString("yyyy-MM-dd-HH-mm")}";
-        var infoAndPassword = info + password;
-        var hashedInfoAndPassword = CreateHash(infoAndPassword);
-        return $"{info}-{hashedInfoAndPassword}";
+        var infoAndPasswordHash = info + user.PasswordHash;
+        var hasedInfoAndPassHash = CreateHash(infoAndPasswordHash);
+        return $"{info}-{hasedInfoAndPassHash}";
     }
     
     private string CreateHash(string input)
