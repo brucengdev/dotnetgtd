@@ -23,11 +23,11 @@ namespace Backend.Core.Tests
             result.ShouldBe(CreateUserResult.Success);
             var user = userRepo.GetUser("johndoe");
             user.ShouldNotBeNull();
-            user.Password.ShouldBe("testpass");
+            user.PasswordHash.ShouldBe(AccountManagerTests.HashPassword("testpass"));
             user.PasswordHash.ShouldBe(HashPassword("testpass"));
         }
 
-        private string HashPassword(string password)
+        internal static string HashPassword(string password)
         {
             var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(password));
             return Convert.ToBase64String(bytes);
@@ -38,7 +38,10 @@ namespace Backend.Core.Tests
         {
             //arrange
             var userRepo = new TestUserRepository();
-            userRepo.AddUser(new User() { Username = "johndoe", Password = "testpass" });
+            userRepo.AddUser(new User() { 
+                Username = "johndoe", 
+                PasswordHash = HashPassword("testpass")
+            });
 
             //act
             var sut = new AccountManager(userRepo);
@@ -48,7 +51,7 @@ namespace Backend.Core.Tests
             result.ShouldBe(CreateUserResult.AlreadyExists);
             var user = userRepo.GetUser("johndoe");
             user.ShouldNotBeNull();
-            user.Password.ShouldBe("testpass");
+            user.PasswordHash.ShouldBe(HashPassword("testpass"));
         }
     }
 }

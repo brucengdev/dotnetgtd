@@ -1,3 +1,4 @@
+using Backend.Core.Manager;
 using Backend.Models;
 
 namespace Backend.WebApi;
@@ -14,7 +15,7 @@ public static class SeedData {
         {
             Id = 0,
             Username = "admin",
-            Password = "admin"
+            PasswordHash = AccountManager.CreateHash("admin")
         });
 
         context.SaveChanges();

@@ -15,7 +15,7 @@ public partial class ProjectManagerTests
         userRepo.AddUser(new User
         {
             Id = 123,
-            Password = "pass",
+            PasswordHash = AccountManagerTests.HashPassword("pass"),
             Username = "user1"
         });
         var projectRepo = new TestProjectRepository();

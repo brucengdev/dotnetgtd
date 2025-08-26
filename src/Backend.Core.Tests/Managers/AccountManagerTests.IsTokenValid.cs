@@ -24,7 +24,6 @@ namespace Backend.Core.Tests
             userRepo.AddUser(new User
             {
                 Username = "johndoe",
-                Password = "testPassword",
                 PasswordHash = HashPassword("testPassword")
             });
             var sut = new AccountManager(userRepo);
@@ -117,7 +116,7 @@ namespace Backend.Core.Tests
             userRepo.AddUser(new User
             {
                 Username = username,
-                Password = "testPassword"
+                PasswordHash = HashPassword("testPassword")
             });
             var sut = new AccountManager(userRepo);
             

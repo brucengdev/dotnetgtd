@@ -18,7 +18,6 @@ namespace Backend.Core.Tests
             {
                 Id = userId,
                 Username = "johndoe",
-                Password = "testPassword",
                 PasswordHash = HashPassword("testPassword")
             });
             var sut = new AccountManager(userRepo);
@@ -53,7 +52,6 @@ namespace Backend.Core.Tests
             {
                 Id = 12,
                 Username = "johndoe",
-                Password = "testPassword",
                 PasswordHash = HashPassword("testPassword")
             });
             var sut = new AccountManager(userRepo);
@@ -93,7 +91,7 @@ namespace Backend.Core.Tests
             {
                 Id = 12,
                 Username = "johndoe",
-                Password = "testPassword"
+                PasswordHash = HashPassword("testPassword")
             });
             var sut = new AccountManager(userRepo);
             

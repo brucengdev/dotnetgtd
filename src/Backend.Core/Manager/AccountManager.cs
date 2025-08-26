@@ -41,7 +41,7 @@ public class AccountManager: IAccountManager
             throw new UserNotFoundException();
         }
 
-        if (user.Password != password)
+        if (CreateHash(password) != user.PasswordHash)
         {
             throw new WrongPasswordException();
         }
@@ -58,7 +58,6 @@ public class AccountManager: IAccountManager
         _userRepository.AddUser(new User()
         {
             Username = username,
-            Password = password,
             PasswordHash = CreateHash(password)
         });
         return CreateUserResult.Success;
@@ -74,8 +73,8 @@ public class AccountManager: IAccountManager
         var hasedInfoAndPassHash = CreateHash(infoAndPasswordHash);
         return $"{info}-{hasedInfoAndPassHash}";
     }
-    
-    private string CreateHash(string input)
+
+    public static string CreateHash(string input)
     {
         using var algo = SHA256.Create();
         var hash = algo.ComputeHash(Encoding.UTF8.GetBytes(input));
