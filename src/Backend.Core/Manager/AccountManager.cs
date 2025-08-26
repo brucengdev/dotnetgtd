@@ -58,7 +58,8 @@ public class AccountManager: IAccountManager
         _userRepository.AddUser(new User()
         {
             Username = username,
-            Password = password
+            Password = password,
+            PasswordHash = CreateHash(password)
         });
         return CreateUserResult.Success;
     }

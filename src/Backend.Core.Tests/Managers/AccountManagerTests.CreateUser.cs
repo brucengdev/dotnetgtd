@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using Backend.Core.Manager;
 using Backend.Models;
 using Backend.Core.Tests.Mocks;
@@ -22,8 +24,15 @@ namespace Backend.Core.Tests
             var user = userRepo.GetUser("johndoe");
             user.ShouldNotBeNull();
             user.Password.ShouldBe("testpass");
+            user.PasswordHash.ShouldBe(HashPassword("testpass"));
         }
-        
+
+        private string HashPassword(string password)
+        {
+            var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(password));
+            return Convert.ToBase64String(bytes);
+        }
+
         [Fact]
         public void CreateUser_must_fail_when_user_already_exists()
         {

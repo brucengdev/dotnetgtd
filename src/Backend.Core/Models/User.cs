@@ -7,12 +7,14 @@ public class User
     public int Id { get; set; }
     public string Username { get; set; }
     public string Password { get; set; }
-    
+    public object PasswordHash { get; set; }
+
     public override bool Equals(object? obj)
     {
         return obj is User otherUser
-            && Id == otherUser.Id
-            && Username == otherUser.Username
-            && Password == otherUser.Password;
+               && Id == otherUser.Id
+               && Username == otherUser.Username
+               && Password == otherUser.Password
+               && PasswordHash == otherUser.PasswordHash;
     }
 }
