@@ -1,5 +1,3 @@
-using System.Security.Cryptography;
-using System.Text;
 using Backend.Core.Manager;
 using Backend.Models;
 using Backend.Core.Tests.Mocks;
@@ -10,7 +8,7 @@ namespace Backend.Core.Tests
     public partial class AccountManagerTests
     {
         [Fact]
-        public void Verify_correct_user()
+        public void CreateAccessToken_correct_user()
         {
             //arrange
             var userRepo = new TestUserRepository();
@@ -30,7 +28,7 @@ namespace Backend.Core.Tests
         }
 
         [Fact]
-        public void Verify_incorrect_password()
+        public void CreateAccessToken_incorrect_password()
         {
             //arrange
             var userRepo = new TestUserRepository();
@@ -48,7 +46,7 @@ namespace Backend.Core.Tests
         }
         
         [Fact]
-        public void Verify_incorrect_user()
+        public void CreateAccessToken_incorrect_user()
         {
             //arrange
             var userRepo = new TestUserRepository();
