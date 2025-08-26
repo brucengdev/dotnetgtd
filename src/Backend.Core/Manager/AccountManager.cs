@@ -76,8 +76,10 @@ public class AccountManager: IAccountManager
 
     public static string CreateHash(string input)
     {
+        var salt = "Ax4663akaa";
         using var algo = SHA256.Create();
-        var hash = algo.ComputeHash(Encoding.UTF8.GetBytes(input));
+        var phraseToHash = input + salt;
+        var hash = algo.ComputeHash(Encoding.UTF8.GetBytes(phraseToHash));
         return Convert.ToBase64String(hash);
     }
 

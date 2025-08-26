@@ -29,7 +29,9 @@ namespace Backend.Core.Tests
 
         internal static string HashPassword(string password)
         {
-            var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(password));
+            var salt = "Ax4663akaa";
+            var phraseToHash = password + salt;
+            var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(phraseToHash));
             return Convert.ToBase64String(bytes);
         }
 
