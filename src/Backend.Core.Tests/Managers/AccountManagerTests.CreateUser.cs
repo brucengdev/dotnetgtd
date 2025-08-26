@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using Backend.Core.Manager;
 using Backend.Models;
 using Backend.Core.Tests.Mocks;
@@ -21,15 +23,27 @@ namespace Backend.Core.Tests
             result.ShouldBe(CreateUserResult.Success);
             var user = userRepo.GetUser("johndoe");
             user.ShouldNotBeNull();
-            user.Password.ShouldBe("testpass");
+            user.PasswordHash.ShouldBe(AccountManagerTests.HashPassword("testpass"));
+            user.PasswordHash.ShouldBe(HashPassword("testpass"));
         }
-        
+
+        internal static string HashPassword(string password)
+        {
+            var salt = "Ax4663akaa";
+            var phraseToHash = password + salt;
+            var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(phraseToHash));
+            return Convert.ToBase64String(bytes);
+        }
+
         [Fact]
         public void CreateUser_must_fail_when_user_already_exists()
         {
             //arrange
             var userRepo = new TestUserRepository();
-            userRepo.AddUser(new User() { Username = "johndoe", Password = "testpass" });
+            userRepo.AddUser(new User() { 
+                Username = "johndoe", 
+                PasswordHash = HashPassword("testpass")
+            });
 
             //act
             var sut = new AccountManager(userRepo);
@@ -39,7 +53,7 @@ namespace Backend.Core.Tests
             result.ShouldBe(CreateUserResult.AlreadyExists);
             var user = userRepo.GetUser("johndoe");
             user.ShouldNotBeNull();
-            user.Password.ShouldBe("testpass");
+            user.PasswordHash.ShouldBe(HashPassword("testpass"));
         }
     }
 }

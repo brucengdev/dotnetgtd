@@ -41,7 +41,7 @@ public class AccountManager: IAccountManager
             throw new UserNotFoundException();
         }
 
-        if (user.Password != password)
+        if (CreateHash(password) != user.PasswordHash)
         {
             throw new WrongPasswordException();
         }
@@ -58,7 +58,7 @@ public class AccountManager: IAccountManager
         _userRepository.AddUser(new User()
         {
             Username = username,
-            Password = password
+            PasswordHash = CreateHash(password)
         });
         return CreateUserResult.Success;
     }
@@ -66,17 +66,20 @@ public class AccountManager: IAccountManager
     public string CreateAccessToken(string username, string password, DateTime creationTime)
     {
         VerifyUser(username, password);
+        var user = _userRepository.GetUser(username);
         var expiryTime = creationTime.AddHours(1);
         var info = $"{username}-{expiryTime.ToString("yyyy-MM-dd-HH-mm")}";
-        var infoAndPassword = info + password;
-        var hashedInfoAndPassword = CreateHash(infoAndPassword);
-        return $"{info}-{hashedInfoAndPassword}";
+        var infoAndPasswordHash = info + user.PasswordHash;
+        var hasedInfoAndPassHash = CreateHash(infoAndPasswordHash);
+        return $"{info}-{hasedInfoAndPassHash}";
     }
-    
-    private string CreateHash(string input)
+
+    public static string CreateHash(string input)
     {
+        var salt = "Ax4663akaa";
         using var algo = SHA256.Create();
-        var hash = algo.ComputeHash(Encoding.UTF8.GetBytes(input));
+        var phraseToHash = input + salt;
+        var hash = algo.ComputeHash(Encoding.UTF8.GetBytes(phraseToHash));
         return Convert.ToBase64String(hash);
     }
 
@@ -124,7 +127,7 @@ public class AccountManager: IAccountManager
             throw new UserNotFoundException();
         }
 
-        var recreatedToken = info + "-" + CreateHash(info + user.Password);
+        var recreatedToken = info + "-" + CreateHash(info + user.PasswordHash);
         if (recreatedToken != accessToken)
         {
             throw new MalformedTokenException();
