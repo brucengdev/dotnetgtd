@@ -16,20 +16,19 @@ namespace Backend.Core.Tests
             var userRepo = new TestUserRepository();
 
             //act
-            var sut = new AccountManager(userRepo);
+            var salt = "abcdefgh";
+            var sut = new AccountManager(userRepo, salt);
             var result = sut.CreateUser("johndoe", "testpass");
             
             //assert
             result.ShouldBe(CreateUserResult.Success);
             var user = userRepo.GetUser("johndoe");
             user.ShouldNotBeNull();
-            user.PasswordHash.ShouldBe(AccountManagerTests.HashPassword("testpass"));
-            user.PasswordHash.ShouldBe(HashPassword("testpass"));
+            user.PasswordHash.ShouldBe(HashPassword("testpass", "abcdefgh"));
         }
 
-        internal static string HashPassword(string password)
+        internal static string HashPassword(string password, string salt = "Ax4663akaa")
         {
-            var salt = "Ax4663akaa";
             var phraseToHash = password + salt;
             var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(phraseToHash));
             return Convert.ToBase64String(bytes);

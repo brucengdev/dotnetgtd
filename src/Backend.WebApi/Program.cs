@@ -48,7 +48,7 @@ using(var serviceScope = app.Services.CreateScope())
 {
     var context = serviceScope.ServiceProvider.GetService<GTDContext>();
     context.Database.Migrate();
-    SeedData.Initialize(context);
+    SeedData.Initialize(context, builder.Configuration.GetValue<string>("HashSalt"));
 }
 
 app.UseDefaultFiles();

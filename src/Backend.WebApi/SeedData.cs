@@ -4,7 +4,7 @@ using Backend.Models;
 namespace Backend.WebApi;
 
 public static class SeedData {
-    public static void Initialize(GTDContext context)
+    public static void Initialize(GTDContext context, string salt)
     {
         if (context.Users != null && context.Users.Any())
         {
@@ -15,7 +15,7 @@ public static class SeedData {
         {
             Id = 0,
             Username = "admin",
-            PasswordHash = AccountManager.CreateHash("admin")
+            PasswordHash = AccountManager.CreateHash("admin", salt)
         });
 
         context.SaveChanges();
