@@ -29,6 +29,10 @@ public class ProjectManager: IProjectManager
     public void DeleteProject(int projectId, int userId)
     {
         var project = _projectRepo.GetProjectById(projectId);
+        if (project == null)
+        {
+            throw new ProjectNotFoundException();
+        }
         if (project.UserId != userId)
         {
             throw new UnauthorizedAccessException("User does not own this project");

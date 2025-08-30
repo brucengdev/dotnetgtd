@@ -43,7 +43,7 @@ public partial class ProjectManagerTests
     }
     
     [Fact]
-    public void DeleteProject_must_throw_unauthroized_exception_if_user_does_not_own_project()
+    public void DeleteProject_must_throw_unauthorized_exception_if_user_does_not_own_project()
     {
         //arrange
         var userRepo = new TestUserRepository();
@@ -73,6 +73,38 @@ public partial class ProjectManagerTests
             new() { Id = 1, Name = "Project A", UserId = 123 },
             new() { Id = 2, Name = "Project B", UserId = 456 },
             new() { Id = 3, Name = "Project C", UserId = 123 }
+        });
+    }
+    
+    
+    [Fact]
+    public void DeleteProject_must_throw_project_not_found_exception_if_project_is_nonexistent()
+    {
+        //arrange
+        var userRepo = new TestUserRepository();
+        userRepo.AddUser(new User
+        {
+            Id = 123,
+            PasswordHash = AccountManagerTests.HashPassword("pass"),
+            Username = "user1"
+        });
+        var projectRepo = new TestProjectRepository();
+        projectRepo.Projects = new List<Project>
+        {
+            new() { Id = 1, Name = "Project A", UserId = 123 },
+            new() { Id = 2, Name = "Project B", UserId = 456 }
+        };
+        var sut = new ProjectManager(projectRepo, userRepo);
+        
+        //act and assert
+        var exception = Assert.Throws<ProjectNotFoundException>(
+            () =>sut.DeleteProject(3, 245));
+        exception.ShouldNotBeNull();
+        
+        projectRepo.Projects.ShouldBe(new List<Project>
+        {
+            new() { Id = 1, Name = "Project A", UserId = 123 },
+            new() { Id = 2, Name = "Project B", UserId = 456 }
         });
     }
 }
