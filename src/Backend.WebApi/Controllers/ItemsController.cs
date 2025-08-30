@@ -45,6 +45,10 @@ namespace Backend.WebApi.Controllers
             {
                 return Unauthorized();
             }
+            catch (ItemNotFoundException _)
+            {
+                return NotFound();
+            }
 
             return Ok();
         }

@@ -75,5 +75,28 @@ namespace Backend.WebApi.Tests.Controller
             //assert
             response.ShouldBeOfType<UnauthorizedResult>();
         }
+        
+        
+        [Theory]
+        [InlineData(12 ,223)]
+        [InlineData(33 ,21)]
+        public void Delete_item_must_return_not_found_if_item_does_not_exist(int itemId, int userId)
+        {
+            //arrange
+            var itemManager = new Mock<IItemManager>();
+            itemManager.Setup(im => im.DeleteItem(itemId, userId))
+                .Throws<ItemNotFoundException>();
+            var sut = new ItemsController(itemManager.Object);
+            var controllerContext = new ControllerContext();
+            sut.ControllerContext = controllerContext;
+            controllerContext.HttpContext = new DefaultHttpContext();
+            controllerContext.HttpContext.Items["UserId"] = userId;
+            
+            //act
+            var response = sut.DeleteItem(itemId);
+            
+            //assert
+            response.ShouldBeOfType<NotFoundResult>();
+        }
     }
 }
