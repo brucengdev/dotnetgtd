@@ -9,6 +9,7 @@ namespace Backend.Core.Tests
 {
     public partial class AccountManagerTests
     {
+        public const string HashSalt = "Ax4663akaa";
         [Fact]
         public void CreateUser_must_be_successful()
         {
@@ -27,7 +28,7 @@ namespace Backend.Core.Tests
             user.PasswordHash.ShouldBe(HashPassword("testpass", "abcdefgh"));
         }
 
-        internal static string HashPassword(string password, string salt = "Ax4663akaa")
+        internal static string HashPassword(string password, string salt = HashSalt)
         {
             var phraseToHash = password + salt;
             var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(phraseToHash));
@@ -45,7 +46,7 @@ namespace Backend.Core.Tests
             });
 
             //act
-            var sut = new AccountManager(userRepo);
+            var sut = new AccountManager(userRepo, AccountManagerTests.HashSalt);
             var result = sut.CreateUser("johndoe", "testpass2");
             
             //assert

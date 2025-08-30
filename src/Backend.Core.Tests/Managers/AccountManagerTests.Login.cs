@@ -18,7 +18,7 @@ namespace Backend.Core.Tests
                 PasswordHash = HashPassword("testPassword")
             };
             userRepo.AddUser(testUser);
-            var sut = new AccountManager(userRepo);
+            var sut = new AccountManager(userRepo, AccountManagerTests.HashSalt);
             
             //act
             var creationTime = new DateTime(2024, 12, 31, 18, 4, 0);
@@ -38,7 +38,7 @@ namespace Backend.Core.Tests
                 Username = "johndoe",
                 PasswordHash = HashPassword("testPassword")
             });
-            var sut = new AccountManager(userRepo);
+            var sut = new AccountManager(userRepo, AccountManagerTests.HashSalt);
 
             //act & assert
             Should.Throw<WrongPasswordException>(
@@ -56,7 +56,7 @@ namespace Backend.Core.Tests
                 Username = "johndoe",
                 PasswordHash = HashPassword("testPassword")
             });
-            var sut = new AccountManager(userRepo);
+            var sut = new AccountManager(userRepo, AccountManagerTests.HashSalt);
 
             //act and assert
             Should.Throw<UserNotFoundException>(

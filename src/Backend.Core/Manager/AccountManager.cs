@@ -30,7 +30,7 @@ public class AccountManager: IAccountManager
     internal IUserRepository _userRepository;
     private readonly string _salt;
 
-    public AccountManager(IUserRepository userRepository, string salt = "Ax4663akaa")
+    public AccountManager(IUserRepository userRepository, string salt)
     {
         _salt = salt;
         _userRepository = userRepository;
