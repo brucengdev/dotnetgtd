@@ -20,7 +20,7 @@ namespace Backend.Core.Tests
                 Username = "johndoe",
                 PasswordHash = HashPassword("testPassword")
             });
-            var sut = new AccountManager(userRepo);
+            var sut = new AccountManager(userRepo, AccountManagerTests.HashSalt);
             
             //act
             var currentTime = new DateTime(2024, 12, 7, 5, 29, 0);
@@ -35,7 +35,7 @@ namespace Backend.Core.Tests
         {
             //arrange
             var userRepo = new TestUserRepository();
-            var sut = new AccountManager(userRepo);
+            var sut = new AccountManager(userRepo, AccountManagerTests.HashSalt);
             
             //act + assert
             var currentTime = new DateTime(2024, 12, 7, 5, 29, 0);
@@ -54,7 +54,7 @@ namespace Backend.Core.Tests
                 Username = "johndoe",
                 PasswordHash = HashPassword("testPassword")
             });
-            var sut = new AccountManager(userRepo);
+            var sut = new AccountManager(userRepo, AccountManagerTests.HashSalt);
             
             //act + assert
             var currentTime = new DateTime(2024, 12, 7, 5, 31, 0);
@@ -93,7 +93,7 @@ namespace Backend.Core.Tests
                 Username = "johndoe",
                 PasswordHash = HashPassword("testPassword")
             });
-            var sut = new AccountManager(userRepo);
+            var sut = new AccountManager(userRepo, AccountManagerTests.HashSalt);
             
             //act + assert
             var currentTime = new DateTime(2024, 12, 7, 5, 31, 0);

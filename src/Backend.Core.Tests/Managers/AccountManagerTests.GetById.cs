@@ -19,7 +19,7 @@ namespace Backend.Core.Tests
                 PasswordHash = HashPassword("testPassword")
             };
             userRepo.AddUser(testUser);
-            var sut = new AccountManager(userRepo);
+            var sut = new AccountManager(userRepo, AccountManagerTests.HashSalt);
             
             //act
             var result = sut.GetById(12);
@@ -40,7 +40,7 @@ namespace Backend.Core.Tests
                 PasswordHash = HashPassword("testPassword")
             };
             userRepo.AddUser(testUser);
-            var sut = new AccountManager(userRepo);
+            var sut = new AccountManager(userRepo, AccountManagerTests.HashSalt);
             
             //act
             var result = sut.GetById(23);

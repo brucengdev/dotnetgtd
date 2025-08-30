@@ -28,9 +28,11 @@ public class TokenExpiredException : Exception
 public class AccountManager: IAccountManager
 {
     internal IUserRepository _userRepository;
+    private readonly string _salt;
 
-    public AccountManager(IUserRepository userRepository)
+    public AccountManager(IUserRepository userRepository, string salt)
     {
+        _salt = salt;
         _userRepository = userRepository;
     }
     private bool VerifyUser(string username, string password)
@@ -41,7 +43,7 @@ public class AccountManager: IAccountManager
             throw new UserNotFoundException();
         }
 
-        if (CreateHash(password) != user.PasswordHash)
+        if (CreateHash(password, _salt) != user.PasswordHash)
         {
             throw new WrongPasswordException();
         }
@@ -58,7 +60,7 @@ public class AccountManager: IAccountManager
         _userRepository.AddUser(new User()
         {
             Username = username,
-            PasswordHash = CreateHash(password)
+            PasswordHash = CreateHash(password, _salt)
         });
         return CreateUserResult.Success;
     }
@@ -70,13 +72,12 @@ public class AccountManager: IAccountManager
         var expiryTime = creationTime.AddHours(1);
         var info = $"{username}-{expiryTime.ToString("yyyy-MM-dd-HH-mm")}";
         var infoAndPasswordHash = info + user.PasswordHash;
-        var hasedInfoAndPassHash = CreateHash(infoAndPasswordHash);
+        var hasedInfoAndPassHash = CreateHash(infoAndPasswordHash, _salt);
         return $"{info}-{hasedInfoAndPassHash}";
     }
 
-    public static string CreateHash(string input)
+    public static string CreateHash(string input, string salt)
     {
-        var salt = "Ax4663akaa";
         using var algo = SHA256.Create();
         var phraseToHash = input + salt;
         var hash = algo.ComputeHash(Encoding.UTF8.GetBytes(phraseToHash));
@@ -127,7 +128,7 @@ public class AccountManager: IAccountManager
             throw new UserNotFoundException();
         }
 
-        var recreatedToken = info + "-" + CreateHash(info + user.PasswordHash);
+        var recreatedToken = info + "-" + CreateHash(info + user.PasswordHash, _salt);
         if (recreatedToken != accessToken)
         {
             throw new MalformedTokenException();

@@ -26,7 +26,7 @@ namespace Backend.Core.Tests
                 Username = "johndoe",
                 PasswordHash = HashPassword("testPassword")
             });
-            var sut = new AccountManager(userRepo);
+            var sut = new AccountManager(userRepo, AccountManagerTests.HashSalt);
             
             //act
             var token = Utilities.Token("johndoe-2024-12-31-19-04", "testPassword");
@@ -118,7 +118,7 @@ namespace Backend.Core.Tests
                 Username = username,
                 PasswordHash = HashPassword("testPassword")
             });
-            var sut = new AccountManager(userRepo);
+            var sut = new AccountManager(userRepo, AccountManagerTests.HashSalt);
             
             //act
             var result = sut.IsTokenValid(token, currentTime);
