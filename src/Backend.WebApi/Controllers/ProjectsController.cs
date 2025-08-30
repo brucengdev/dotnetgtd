@@ -33,5 +33,26 @@ namespace Backend.WebApi.Controllers
             var projects = _projectManager.GetProjects(userId);
             return Ok(projects);
         }
+
+        [HttpDelete("[action]")]
+        [ServiceFilter<SecurityFilterAttribute>]
+        public ActionResult DeleteProject([FromQuery] int id)
+        {
+            var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
+            try
+            {
+                _projectManager.DeleteProject(id, userId);
+            }
+            catch (ProjectNotFoundException _)
+            {
+                return NotFound();
+            }
+            catch (UnauthorizedAccessException _)
+            {
+                return Unauthorized();
+            }
+
+            return Ok();
+        }
     }
 }
