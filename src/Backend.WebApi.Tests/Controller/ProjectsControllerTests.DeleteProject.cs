@@ -45,11 +45,12 @@ namespace Backend.WebApi.Tests.Controller
             sut.ControllerContext.HttpContext.Items["UserId"] = userId;
 
             //act
-            sut.DeleteProject(projectId);
+            var response = sut.DeleteProject(projectId);
             
             //assert
             projectManager.Verify(pm => pm.DeleteProject(projectId, userId), Times.Once);
             projectManager.VerifyNoOtherCalls();
+            response.ShouldBeOfType<OkResult>();
         }
     }
 }

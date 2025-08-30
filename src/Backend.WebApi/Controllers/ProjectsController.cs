@@ -36,10 +36,11 @@ namespace Backend.WebApi.Controllers
 
         [HttpDelete("[action]")]
         [ServiceFilter<SecurityFilterAttribute>]
-        public void DeleteProject([FromQuery] int id)
+        public ActionResult DeleteProject([FromQuery] int id)
         {
             var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
             _projectManager.DeleteProject(id, userId);
+            return Ok();
         }
     }
 }
