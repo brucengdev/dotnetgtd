@@ -37,7 +37,15 @@ namespace Backend.WebApi.Controllers
         public ActionResult DeleteItem([FromQuery] int id)
         {
             var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
-            _itemManager.DeleteItem(id, userId);
+            try
+            {
+                _itemManager.DeleteItem(id, userId);
+            }
+            catch (UnauthorizedAccessException _)
+            {
+                return Unauthorized();
+            }
+
             return Ok();
         }
     }

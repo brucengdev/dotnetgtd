@@ -45,11 +45,35 @@ namespace Backend.WebApi.Tests.Controller
             controllerContext.HttpContext.Items["UserId"] = userId;
             
             //act
-            sut.DeleteItem(itemId);
+            var response = sut.DeleteItem(itemId);
             
             //assert
             itemManager.Verify(im => im.DeleteItem(itemId,userId), Times.Once);
             itemManager.VerifyNoOtherCalls();
+            response.ShouldBeOfType<OkResult>();
+        }
+        
+        
+        [Theory]
+        [InlineData(12 ,223)]
+        [InlineData(33 ,21)]
+        public void DeleteItem_must_return_unauthorized_if_item_is_not_owned_by_user(int itemId, int userId)
+        {
+            //arrange
+            var itemManager = new Mock<IItemManager>();
+            itemManager.Setup(im => im.DeleteItem(itemId, userId))
+                .Throws<UnauthorizedAccessException>();
+            var sut = new ItemsController(itemManager.Object);
+            var controllerContext = new ControllerContext();
+            sut.ControllerContext = controllerContext;
+            controllerContext.HttpContext = new DefaultHttpContext();
+            controllerContext.HttpContext.Items["UserId"] = userId;
+            
+            //act
+            var response = sut.DeleteItem(itemId);
+            
+            //assert
+            response.ShouldBeOfType<UnauthorizedResult>();
         }
     }
 }
