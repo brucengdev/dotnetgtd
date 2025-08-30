@@ -24,10 +24,10 @@ public class ProjectRepository: IProjectRepository
 
     public void DeleteProject(int projectId)
     {
-        var project = _dbContext.Items.Find(projectId);
+        var project = _dbContext.Projects.Find(projectId);
         if (project != null)
         {
-            _dbContext.Items.Remove(project);
+            _dbContext.Projects.Remove(project);
             _dbContext.SaveChanges();
         }
     }
