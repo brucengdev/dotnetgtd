@@ -26,7 +26,7 @@ public class ProjectManager: IProjectManager
         return _projectRepo.GetProjects(userId);
     }
 
-    public void DeleteProject(int projectId)
+    public void DeleteProject(int projectId, int userId)
     {
         throw new NotImplementedException();
     }

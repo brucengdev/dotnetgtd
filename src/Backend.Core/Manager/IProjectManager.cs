@@ -8,5 +8,5 @@ public interface IProjectManager
     
     IEnumerable<Project> GetProjects(int userId);
 
-    void DeleteProject(int projectId);
+    void DeleteProject(int projectId, int userId);
 }

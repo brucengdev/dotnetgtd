@@ -33,19 +33,22 @@ namespace Backend.WebApi.Tests.Controller
         }
 
         [Theory]
-        [InlineData(12)]
-        [InlineData(45)]
-        public void DeleteProject_must_be_successful(int projectId)
+        [InlineData(12, 22)]
+        [InlineData(45, 23)]
+        public void DeleteProject_must_be_successful(int projectId, int userId)
         {
             //arrange
             var projectManager = new Mock<IProjectManager>();
             var sut = new ProjectsController(projectManager.Object);
+            sut.ControllerContext = new ControllerContext();
+            sut.ControllerContext.HttpContext = new DefaultHttpContext();
+            sut.ControllerContext.HttpContext.Items["UserId"] = userId;
 
             //act
             sut.DeleteProject(projectId);
             
             //assert
-            projectManager.Verify(pm => pm.DeleteProject(projectId), Times.Once);
+            projectManager.Verify(pm => pm.DeleteProject(projectId, userId), Times.Once);
             projectManager.VerifyNoOtherCalls();
         }
     }
