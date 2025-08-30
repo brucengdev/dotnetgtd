@@ -6,6 +6,7 @@ services:
     image: ${DOCKERHUB_REGISTRY}/dotnetgtd
     environment:
       ConnectionStrings__DefaultConnection: "Data Source=gtd-db;Initial Catalog=GTD;User Id=sa;Password='Pass@123';Trust Server Certificate=True;"
+      HashSalt: "Ax4663akaa" # replace with your hash salt here for more security
     ports:
       - 80:8080
 
