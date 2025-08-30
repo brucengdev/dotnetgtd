@@ -34,6 +34,7 @@ namespace Backend.WebApi.Tests.Controller
 
         [Theory]
         [InlineData(12)]
+        [InlineData(45)]
         public void DeleteProject_must_be_successful(int projectId)
         {
             //arrange
