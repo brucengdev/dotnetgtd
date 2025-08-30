@@ -9,4 +9,6 @@ public interface IProjectRepository
     IEnumerable<Project> GetProjects(int userId);
 
     void DeleteProject(int projectId);
+
+    Project GetProjectById(int projectId);
 }

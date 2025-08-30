@@ -40,5 +40,37 @@ public partial class ProjectManagerTests
             new() { Id = 4, Name = "Project D", UserId = 111 },
             new() { Id = 5, Name = "Project E", UserId = 23 }
         });
-    } 
+    }
+    
+    [Fact]
+    public void DeleteProject_must_throw_unauthroized_exception_if_user_does_not_own_project()
+    {
+        //arrange
+        var userRepo = new TestUserRepository();
+        userRepo.AddUser(new User
+        {
+            Id = 123,
+            PasswordHash = AccountManagerTests.HashPassword("pass"),
+            Username = "user1"
+        });
+        var projectRepo = new TestProjectRepository();
+        projectRepo.Projects = new List<Project>
+        {
+            new() { Id = 1, Name = "Project A", UserId = 123 },
+            new() { Id = 2, Name = "Project B", UserId = 456 },
+            new() { Id = 3, Name = "Project C", UserId = 123 }
+        };
+        var sut = new ProjectManager(projectRepo, userRepo);
+        
+        //act and assert
+        Assert.Throws<UnauthorizedAccessException>(
+            () =>sut.DeleteProject(3, 245));
+        
+        projectRepo.Projects.ShouldBe(new List<Project>
+        {
+            new() { Id = 1, Name = "Project A", UserId = 123 },
+            new() { Id = 2, Name = "Project B", UserId = 456 },
+            new() { Id = 3, Name = "Project C", UserId = 123 }
+        });
+    }
 }

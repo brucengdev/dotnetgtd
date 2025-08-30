@@ -28,6 +28,11 @@ public class ProjectManager: IProjectManager
 
     public void DeleteProject(int projectId, int userId)
     {
+        var project = _projectRepo.GetProjectById(projectId);
+        if (project.UserId != userId)
+        {
+            throw new UnauthorizedAccessException();
+        }
         _projectRepo.DeleteProject(projectId);
     }
 }

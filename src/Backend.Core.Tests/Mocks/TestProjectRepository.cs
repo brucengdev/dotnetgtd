@@ -22,4 +22,9 @@ public class TestProjectRepository: IProjectRepository
     {
         Projects.Remove(Projects.Find(p => p.Id == projectId));
     }
+
+    public Project GetProjectById(int projectId)
+    {
+        return Projects.Find(p => p.Id == projectId);
+    }
 }

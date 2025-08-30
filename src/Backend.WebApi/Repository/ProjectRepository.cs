@@ -31,4 +31,9 @@ public class ProjectRepository: IProjectRepository
             _dbContext.SaveChanges();
         }
     }
+
+    public Project GetProjectById(int projectId)
+    {
+        return _dbContext.Projects.Find(projectId);
+    }
 }
