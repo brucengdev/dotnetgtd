@@ -63,8 +63,10 @@ public partial class ProjectManagerTests
         var sut = new ProjectManager(projectRepo, userRepo);
         
         //act and assert
-        Assert.Throws<UnauthorizedAccessException>(
+        var exception = Assert.Throws<UnauthorizedAccessException>(
             () =>sut.DeleteProject(3, 245));
+        exception.ShouldNotBeNull();
+        exception.Message.ShouldBe("User does not own this project");
         
         projectRepo.Projects.ShouldBe(new List<Project>
         {
