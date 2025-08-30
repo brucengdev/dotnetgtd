@@ -26,7 +26,22 @@ namespace Backend.WebApi.Tests.Controller
         
             attributes = method?.GetCustomAttributes(typeof(ServiceFilterAttribute<SecurityFilterAttribute>), true);
             attributes.Length.ShouldBeGreaterThan(0, "Must require authorization");
+            
+            var idParam = method?.GetParameters()[0];
+            idParam.Name.ShouldBe("id");
+            idParam.GetCustomAttributes(typeof(FromQueryAttribute), true).ShouldNotBeEmpty();
         }
 
+        [Theory]
+        [InlineData(12)]
+        public void DeleteProject_must_be_successful(int projectId)
+        {
+            //arrange
+            var projectManager = new Mock<IProjectManager>();
+            var sut = new ProjectsController(projectManager.Object);
+
+            //act
+            sut.DeleteProject(projectId);
+        }
     }
 }

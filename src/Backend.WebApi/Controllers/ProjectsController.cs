@@ -36,7 +36,7 @@ namespace Backend.WebApi.Controllers
 
         [HttpDelete("[action]")]
         [ServiceFilter<SecurityFilterAttribute>]
-        public void DeleteProject()
+        public void DeleteProject([FromQuery] int id)
         {
             
         }
