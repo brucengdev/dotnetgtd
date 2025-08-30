@@ -52,5 +52,24 @@ namespace Backend.WebApi.Tests.Controller
             projectManager.VerifyNoOtherCalls();
             response.ShouldBeOfType<OkResult>();
         }
+        
+        [Fact]
+        public void DeleteProject_must_return_404_if_project_not_found()
+        {
+            //arrange
+            var projectManager = new Mock<IProjectManager>();
+            projectManager.Setup(pm => pm.DeleteProject(123, 23))
+                .Throws<ProjectNotFoundException>();
+            var sut = new ProjectsController(projectManager.Object);
+            sut.ControllerContext = new ControllerContext();
+            sut.ControllerContext.HttpContext = new DefaultHttpContext();
+            sut.ControllerContext.HttpContext.Items["UserId"] = 23;
+
+            //act
+            var response = sut.DeleteProject(123);
+            
+            //assert
+            response.ShouldBeOfType<NotFoundResult>();
+        }
     }
 }

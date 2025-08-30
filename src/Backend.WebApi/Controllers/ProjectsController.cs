@@ -39,7 +39,15 @@ namespace Backend.WebApi.Controllers
         public ActionResult DeleteProject([FromQuery] int id)
         {
             var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
-            _projectManager.DeleteProject(id, userId);
+            try
+            {
+                _projectManager.DeleteProject(id, userId);
+            }
+            catch (ProjectNotFoundException _)
+            {
+                return NotFound();
+            }
+
             return Ok();
         }
     }

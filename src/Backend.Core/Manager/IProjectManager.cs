@@ -2,6 +2,8 @@
 
 namespace Backend.Core.Manager;
 
+public class ProjectNotFoundException: Exception { }
+
 public interface IProjectManager
 {
     int CreateProject(Project project);
