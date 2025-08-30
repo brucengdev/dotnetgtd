@@ -31,7 +31,14 @@ if (builder.Environment.IsDevelopment())
 }
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IAccountManager, AccountManager>();
+builder.Services.AddScoped<IAccountManager, AccountManager>((services) =>
+{
+    var userRepo = services.GetRequiredService<IUserRepository>();
+    var configuration = services.GetRequiredService<IConfiguration>();
+    var salt = configuration.GetValue<string>("HashSalt") ?? Constants.DEFAULT_HASH_SALT;
+    var am = new AccountManager(userRepo, salt);
+    return am;
+});
 builder.Services.AddScoped<IItemRepository, ItemRepository>();
 builder.Services.AddScoped<IItemManager, ItemManager>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
@@ -48,7 +55,7 @@ using(var serviceScope = app.Services.CreateScope())
 {
     var context = serviceScope.ServiceProvider.GetService<GTDContext>();
     context.Database.Migrate();
-    SeedData.Initialize(context, builder.Configuration.GetValue<string>("HashSalt")??"Ax4663akaa");
+    SeedData.Initialize(context, builder.Configuration.GetValue<string>("HashSalt")??Constants.DEFAULT_HASH_SALT);
 }
 
 app.UseDefaultFiles();
