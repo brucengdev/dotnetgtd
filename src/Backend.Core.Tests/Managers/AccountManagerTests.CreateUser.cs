@@ -9,7 +9,7 @@ namespace Backend.Core.Tests
 {
     public partial class AccountManagerTests
     {
-        public const string HashSalt = "Ax4663akaa";
+        public const string HashSalt = "alibabaand40thieves";
         [Fact]
         public void CreateUser_must_be_successful()
         {
