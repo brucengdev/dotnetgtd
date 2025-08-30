@@ -25,4 +25,9 @@ public class ProjectManager: IProjectManager
     {
         return _projectRepo.GetProjects(userId);
     }
+
+    public void DeleteProject(int projectId)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -38,7 +38,7 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public void DeleteProject([FromQuery] int id)
         {
-            
+            _projectManager.DeleteProject(id);
         }
     }
 }

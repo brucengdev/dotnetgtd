@@ -42,6 +42,10 @@ namespace Backend.WebApi.Tests.Controller
 
             //act
             sut.DeleteProject(projectId);
+            
+            //assert
+            projectManager.Verify(pm => pm.DeleteProject(projectId), Times.Once);
+            projectManager.VerifyNoOtherCalls();
         }
     }
 }
