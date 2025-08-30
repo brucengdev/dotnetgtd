@@ -10,7 +10,8 @@ using Shouldly;
 
 namespace Backend.WebApi.Tests.Controller
 {
-    public partial class ProjectsControllerTests
+    public partial class 
+        ProjectsControllerTests
     {
         [Fact]
         public void DeleteProject_endpoint_config()
@@ -70,6 +71,25 @@ namespace Backend.WebApi.Tests.Controller
             
             //assert
             response.ShouldBeOfType<NotFoundResult>();
+        }
+        
+        [Fact]
+        public void DeleteProject_must_return_unauthorized_if_user_not_authorized()
+        {
+            //arrange
+            var projectManager = new Mock<IProjectManager>();
+            projectManager.Setup(pm => pm.DeleteProject(123, 23))
+                .Throws<UnauthorizedAccessException>();
+            var sut = new ProjectsController(projectManager.Object);
+            sut.ControllerContext = new ControllerContext();
+            sut.ControllerContext.HttpContext = new DefaultHttpContext();
+            sut.ControllerContext.HttpContext.Items["UserId"] = 23;
+
+            //act
+            var response = sut.DeleteProject(123);
+            
+            //assert
+            response.ShouldBeOfType<UnauthorizedResult>();
         }
     }
 }
