@@ -21,4 +21,14 @@ public class ProjectRepository: IProjectRepository
     {
         return _dbContext.Projects.Where(p => p.UserId == userId);
     }
+
+    public void DeleteProject(int projectId)
+    {
+        var project = _dbContext.Items.Find(projectId);
+        if (project != null)
+        {
+            _dbContext.Items.Remove(project);
+            _dbContext.SaveChanges();
+        }
+    }
 }

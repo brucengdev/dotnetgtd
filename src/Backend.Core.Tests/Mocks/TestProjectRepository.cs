@@ -17,4 +17,9 @@ public class TestProjectRepository: IProjectRepository
     {
         return Projects.Where(p => p.UserId == userId);
     }
+
+    public void DeleteProject(int projectId)
+    {
+        Projects.Remove(Projects.Find(p => p.Id == projectId));
+    }
 }

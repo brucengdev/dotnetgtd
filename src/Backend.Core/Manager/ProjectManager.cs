@@ -28,6 +28,6 @@ public class ProjectManager: IProjectManager
 
     public void DeleteProject(int projectId, int userId)
     {
-        throw new NotImplementedException();
+        _projectRepo.DeleteProject(projectId);
     }
 }
