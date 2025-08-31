@@ -18,6 +18,7 @@ public class Item
         var otherItem = obj as Item;
         return Id == otherItem.Id 
                 && Description == otherItem.Description
-                && UserId == otherItem.UserId;
+                && UserId == otherItem.UserId
+                && ProjectId == otherItem.ProjectId;
     }
 }
