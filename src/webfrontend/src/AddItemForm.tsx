@@ -33,7 +33,7 @@ export function AddItemForm(props: AddItemFormProps) {
         <label>
             Project
             <select>
-                <option>[No project]</option>
+                <option selected>[No project]</option>
                 {projects?.map(p => <option>{p.name}</option>)}
             </select>
         </label>
