@@ -26,6 +26,8 @@ export function AddItemForm(props: AddItemFormProps) {
         <label>
             Project
             <select>
+                <option>Project 1</option>
+                <option>Project 2</option>
             </select>
         </label>
         <div className="flex justify-end gap-2">

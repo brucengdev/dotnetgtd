@@ -7,11 +7,20 @@ import { sleep } from "./__test__/testutils";
 
 describe("AddItemForm", () => {
     it("has necessary ui components", () => {
-        render(<AddItemForm client={new TestClient()} onCancel={() => {}}/>)
+        const client = new TestClient()
+        client.Projects = [
+            { id: 1, name: "Project 1" }, 
+            { id: 2, name: "Project 2" }
+        ]
+        render(<AddItemForm client={client} onCancel={() => {}}/>)
 
         expect(screen.getByRole("heading", {name: "New item"})).toBeInTheDocument()
         expect(screen.getByRole("textbox", {name: "Description"})).toBeInTheDocument()
+
         expect(screen.getByRole("combobox", { name: "Project"})).toBeInTheDocument()
+        expect(screen.getByRole("option", {name: "Project 1"})).toBeInTheDocument()
+        expect(screen.getByRole("option", {name: "Project 2"})).toBeInTheDocument()
+
         expect(screen.getByRole("button", {name: "Create"})).toBeInTheDocument()
         expect(screen.getByRole("button", {name: "Cancel"})).toBeInTheDocument()
     })
