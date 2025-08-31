@@ -89,9 +89,9 @@ describe("TaskView", () => {
     it("call delete item and refresh list after an item is deleted", async () => {
         const client = new TestClient()
         client.Items = [
-            { id: 1, description: "Task A"},
-            { id: 2, description: "Task B"},
-            { id: 3, description: "Task C"}
+            { id: 1, description: "Task A", projectId: 0},
+            { id: 2, description: "Task B", projectId: 0},
+            { id: 3, description: "Task C", projectId: 0}
         ]
         render(<TaskView client={client} />)
 
