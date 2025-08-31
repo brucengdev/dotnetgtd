@@ -34,7 +34,6 @@ export function AddItemForm(props: AddItemFormProps) {
         <label>
             Project
             <select onChange={(e) => {
-                alert("selected: " + e.target.value)
                 setProjectId(Number(e.target.value))
             }}>
                 <option value="0" selected={projectId === 0}>[No project]</option>

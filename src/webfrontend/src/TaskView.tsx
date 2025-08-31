@@ -4,6 +4,7 @@ import { Button } from "./controls/Button"
 import { AddItemForm } from "./AddItemForm"
 import ItemList from "./ItemList"
 import { Item } from "./models/Item"
+import { Project } from "./models/Project"
 
 export interface TaskViewProps {
   client: IClient
@@ -12,15 +13,20 @@ export interface TaskViewProps {
 export function TaskView({ client} : TaskViewProps) {
     const [showNewTaskForm, setShowNewTaskForm] = useState(false)
     const [items, setItems] = useState(undefined as (Item[]|undefined))
+    const [projects, setProjects] = useState<Project[] | undefined>(undefined)
     if(items === undefined) {
         client.GetItems()
             .then(items => setItems(items))
+    }
+    if(projects === undefined) {
+        client.GetProjects()
+            .then(projects => setProjects(projects))
     }
     return <div data-testid="task-view" className="row-auto">
       <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-2xl font-semibold text-gray-900">GTD</h2>
       </div>
-      <ItemList items={items} 
+      <ItemList items={items} projects={projects}
         onDelete={(item: Item) => {
             client.DeleteItem(item.id)
                 .then(() => {

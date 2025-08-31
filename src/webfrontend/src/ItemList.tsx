@@ -16,14 +16,17 @@ export default function ItemList(props: ItemListProps) {
         ?<div>There are no items.</div>
         :<div>
             {
-                items?.map(item => <ItemView 
-                    description={item.description} 
-                    projectName={props.projects?.find(p => p.id === item.projectId)?.name}
-                    onDelete={() => {
-                            if(onDelete) { onDelete(item) }
+                items?.map(item => {
+                    const projectName = props.projects?.find(p => Number(p.id) == Number(item.projectId))?.name
+                    return <ItemView 
+                        description={item.description} 
+                        projectName={projectName}
+                        onDelete={() => {
+                                if(onDelete) { onDelete(item) }
+                            }
                         }
-                    }
-                    />)
+                        />
+                })
             }
         </div>
         }

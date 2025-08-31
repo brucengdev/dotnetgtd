@@ -8,7 +8,7 @@ import { sleep } from "./__test__/testutils";
 describe("TaskView", () => {
     it("has necessary ui components", () => {
         render(<TaskView client={new TestClient()} />)
-        
+
         const addItemButton = screen.getByRole("button", { name: "Add"})
         expect(addItemButton).toBeInTheDocument()
 
@@ -19,7 +19,7 @@ describe("TaskView", () => {
 
     it("shows add item form when button Add is clicked", () => {
         render(<TaskView client={new TestClient()} />)
-        
+
         const addItemButton = screen.getByRole("button", { name: "Add"})
         fireEvent.click(addItemButton)
 
@@ -30,7 +30,7 @@ describe("TaskView", () => {
 
     it("hides the add item form when cancel is clicked", () => {
         render(<TaskView client={new TestClient()} />)
-        
+
         const addItemButton = screen.getByRole("button", { name: "Add"})
         fireEvent.click(addItemButton)
 
@@ -43,7 +43,7 @@ describe("TaskView", () => {
 
     it("hides the add item form when create is clicked", async () => {
         render(<TaskView client={new TestClient()} />)
-        
+
         const addItemButton = screen.getByRole("button", { name: "Add"})
         fireEvent.click(addItemButton)
 
@@ -61,31 +61,39 @@ describe("TaskView", () => {
         client.Items = [
             { id: 1, description: "Task A", projectId: 0 }
         ]
+        client.Projects = [
+            { id: 1, name: "Project X"}
+        ]
         render(<TaskView client={client} />)
 
-        await sleep(10)
+        await sleep(1)
 
         let items = screen.queryAllByTestId("item")
         expect(items.length).toBe(1)
         expect(items[0].querySelector('[data-testId="description"]')?.textContent).toBe("Task A")
         expect(items[0].querySelector('[data-testId="project"]')?.textContent).toBe("")
-        
+
         const addItemButton = screen.getByRole("button", { name: "Add"})
         fireEvent.click(addItemButton)
 
+        await sleep(1)
+
         fireEvent.change(screen.getByRole("textbox", { name: "Description"}), { target: { value: "Task B"}})
+        fireEvent.change(screen.getByRole("combobox", { name: "Project"}), { target: { value: 1 } })
 
         fireEvent.click(screen.getByRole("button", { name: "Create"}))
 
-        await sleep(10)
+        await sleep(1)
 
         items = screen.queryAllByTestId("item")
         expect(items.length).toBe(2)
         expect(items[0].querySelector('[data-testId="description"]')?.textContent).toBe("Task A")
+        expect(items[0].querySelector('[data-testId="project"]')?.textContent).toBe("")
         expect(items[1].querySelector('[data-testId="description"]')?.textContent).toBe("Task B")
+        expect(items[1].querySelector('[data-testId="project"]')?.textContent).toBe("Project X")
     })
 
-    
+
     it("call delete item and refresh list after an item is deleted", async () => {
         const client = new TestClient()
         client.Items = [
