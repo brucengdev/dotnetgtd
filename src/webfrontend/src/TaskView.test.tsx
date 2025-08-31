@@ -59,7 +59,7 @@ describe("TaskView", () => {
     it("refresh the item list after a new item is created", async () => {
         const client = new TestClient()
         client.Items = [
-            { id: 1, description: "Task A"}
+            { id: 1, description: "Task A", projectId: 0 }
         ]
         render(<TaskView client={client} />)
 
@@ -68,6 +68,7 @@ describe("TaskView", () => {
         let items = screen.queryAllByTestId("item")
         expect(items.length).toBe(1)
         expect(items[0].querySelector('[data-testId="description"]')?.textContent).toBe("Task A")
+        expect(items[0].querySelector('[data-testId="project"]')?.textContent).toBe("")
         
         const addItemButton = screen.getByRole("button", { name: "Add"})
         fireEvent.click(addItemButton)
