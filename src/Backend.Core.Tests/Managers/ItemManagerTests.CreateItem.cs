@@ -16,13 +16,15 @@ public partial class ItemManagerTests
         {
             Id = 1,
             Description = "Task 1",
-            UserId = 123
+            UserId = 123,
+            ProjectId = null
         });
         itemRepo.Items.Add(new Item
         {
             Id = 2,
             Description = "Task 2",
-            UserId = 234
+            UserId = 234,
+            ProjectId = 1
         });
         var userRepo = new TestUserRepository();
         userRepo.AddUser(new()
@@ -33,7 +35,8 @@ public partial class ItemManagerTests
         var sut = new ItemManager(itemRepo, userRepo);
         var input = new Item
         {
-            Description = "New Task"
+            Description = "New Task",
+            ProjectId = 2
         };
         var expectedUserId = 123;
 
@@ -49,7 +52,8 @@ public partial class ItemManagerTests
         {
             Id = expectedItemId,
             Description = "New Task",
-            UserId = expectedUserId
+            UserId = expectedUserId,
+            ProjectId = 2
         });
     }
     
