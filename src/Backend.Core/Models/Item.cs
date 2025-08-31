@@ -6,7 +6,7 @@ public class Item
     public string Description { get; set; }
     public int UserId { get; set; }
     
-    public int ProjectId { get; set; }
+    public int? ProjectId { get; set; }
 
     public override bool Equals(object? obj)
     {
