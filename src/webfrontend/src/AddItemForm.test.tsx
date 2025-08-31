@@ -56,7 +56,8 @@ describe("AddItemForm", () => {
 
         expect(client.Items).toContainEqual({
             id: 0,
-            description: "description of a task"
+            description: "description of a task",
+            projectId: 0
         })
 
         await sleep(10)
