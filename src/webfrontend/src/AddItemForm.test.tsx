@@ -25,8 +25,10 @@ describe("AddItemForm", () => {
         expect(defaultProjectOption.selected).toBe(true)
         const project1 = screen.getByRole("option", {name: "Project 1"}) as HTMLOptionElement
         expect(project1).toBeInTheDocument()
+        expect(project1.getAttribute("value")).toBe("1")
         const project2 = screen.getByRole("option", {name: "Project 2"}) as HTMLOptionElement
         expect(project2).toBeInTheDocument()
+        expect(project2.getAttribute("value")).toBe("2")
 
         expect(screen.getByRole("button", {name: "Create"})).toBeInTheDocument()
         expect(screen.getByRole("button", {name: "Cancel"})).toBeInTheDocument()

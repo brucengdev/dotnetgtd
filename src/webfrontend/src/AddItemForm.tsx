@@ -34,7 +34,7 @@ export function AddItemForm(props: AddItemFormProps) {
             Project
             <select>
                 <option selected>[No project]</option>
-                {projects?.map(p => <option>{p.name}</option>)}
+                {projects?.map(p => <option value={p.id}>{p.name}</option>)}
             </select>
         </label>
         <div className="flex justify-end gap-2">
