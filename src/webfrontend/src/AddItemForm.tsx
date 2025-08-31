@@ -14,6 +14,7 @@ export function AddItemForm(props: AddItemFormProps) {
     const { onCancel, client, onCompleted } = props
     const [ description, setDescription ] = useState('')
     const [projects, setProjects] = useState<Project[] | undefined>(undefined)
+    const [projectId, setProjectId] = useState(0)
     if(projects === undefined) {
         client.GetProjects()
         .then(retrievedProjects => setProjects(retrievedProjects))
@@ -32,9 +33,12 @@ export function AddItemForm(props: AddItemFormProps) {
         />
         <label>
             Project
-            <select>
-                <option selected>[No project]</option>
-                {projects?.map(p => <option value={p.id}>{p.name}</option>)}
+            <select onChange={(e) => {
+                alert("selected: " + e.target.value)
+                setProjectId(Number(e.target.value))
+            }}>
+                <option value="0" selected={projectId === 0}>[No project]</option>
+                {projects?.map(p => <option value={p.id} selected={projectId === p.id}>{p.name}</option>)}
             </select>
         </label>
         <div className="flex justify-end gap-2">
@@ -42,7 +46,7 @@ export function AddItemForm(props: AddItemFormProps) {
                 mode={ButtonMode.PRIMARY}
                 text="Create"
                 onClick={() => {
-                    client.AddItem({id: 0, description, projectId: 0})
+                    client.AddItem({id: 0, description, projectId})
                     .then(() => {
                         if(onCompleted) {
                             onCompleted()
