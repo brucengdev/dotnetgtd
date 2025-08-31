@@ -44,7 +44,8 @@ namespace Backend.WebApi.Tests.Controller
             //act
             var item = new Item
             {
-                Description = "Foo"
+                Description = "Foo",
+                ProjectId = 1
             };
             var response = sut.CreateItem(item);
 
