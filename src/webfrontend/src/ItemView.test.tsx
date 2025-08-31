@@ -4,21 +4,42 @@ import { screen, render, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom'
 
 describe("ItemView", () => {
-    it("renders description and delete button", () => {
-        render(<ItemView description="Test Description" projectName="Project A" />)
+    [
+        { 
+            testCaseName: "renders view correctly with project name = Project A",
+            description: "Task description",
+            projectName: "Project A",
+            expectedDisplayedProjectName: "Project A"
+        },
+        { 
+            testCaseName: "renders view correctly with undefined project name",
+            description: "Task description",
+            projectName: undefined,
+            expectedDisplayedProjectName: ""
+        },
+        { 
+            testCaseName: "renders view correctly with empty project name",
+            description: "Task description",
+            projectName: "",
+            expectedDisplayedProjectName: ""
+        }
+    ].forEach(({testCaseName, description, projectName, expectedDisplayedProjectName}) => {
+        it(testCaseName, () => {
+            render(<ItemView description={description} projectName={projectName} />)
 
-        const description = screen.getByTestId("description")
-        expect(description).toBeInTheDocument()
-        expect(description.textContent).toBe("Test Description")
-        
-        const projectName = screen.getByTestId("project")
-        expect(projectName).toBeInTheDocument()
-        expect(projectName.textContent).toBe("Project A")
+            const descriptionView = screen.getByTestId("description")
+            expect(descriptionView).toBeInTheDocument()
+            expect(descriptionView.textContent).toBe(description)
 
-        const deleteButton = screen.getByRole("button", { name: "Delete" })
-        expect(deleteButton).toBeInTheDocument()
+            const projectNameView = screen.getByTestId("project")
+            expect(projectNameView).toBeInTheDocument()
+            expect(projectNameView.textContent).toBe(expectedDisplayedProjectName)
 
-        expect(screen.queryByTestId("confirmDeleteView")).not.toBeInTheDocument()
+            const deleteButton = screen.getByRole("button", { name: "Delete" })
+            expect(deleteButton).toBeInTheDocument()
+
+            expect(screen.queryByTestId("confirmDeleteView")).not.toBeInTheDocument()
+        })
     })
 
     it("shows delete confirm view when delete is clicked", () => {
