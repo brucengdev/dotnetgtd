@@ -13,10 +13,13 @@ describe("ItemList", () => {
 
     it("shows a list of items", async () => {
         const items = [
-            { id: 1, description: "Task A" },
-            { id: 2, description: "Task B" }
+            { id: 1, description: "Task A", projectId: 0 },
+            { id: 2, description: "Task B", projectId: 2 }
         ]
-        render(<ItemList items={items} />)
+        const projects = [
+            { id: 2, name: "Project X" }
+        ]
+        render(<ItemList items={items} projects={projects} />)
 
         await sleep(10)
 
@@ -24,14 +27,16 @@ describe("ItemList", () => {
         expect(itemViews.length).toBe(2)
 
         expect(itemViews[0].querySelector('[data-testid="description"]')?.textContent).toBe("Task A")
+        expect(itemViews[0].querySelector('[data-testid="project"]')?.textContent).toBe("")
         expect(itemViews[1].querySelector('[data-testid="description"]')?.textContent).toBe("Task B")
+        expect(itemViews[1].querySelector('[data-testid="project"]')?.textContent).toBe("Project X")
 
         expect(screen.queryByText("There are no items.")).not.toBeInTheDocument()
     })
 
     it("shows a list of items 2", async () => {
         const items = [
-            { id: 1, description: "Task C" },
+            { id: 1, description: "Task C", projectId: 1 },
         ]
         render(<ItemList items={items} />)
         await sleep(10)
@@ -43,9 +48,9 @@ describe("ItemList", () => {
 
     it("executes onDelete when an item is deleted by user", async () => {
         const items = [
-            { id: 1, description: "Task A" },
-            { id: 2, description: "Task B" },
-            { id: 3, description: "Task C" }
+            { id: 1, description: "Task A", projectId: 1 },
+            { id: 2, description: "Task B", projectId: 1 },
+            { id: 3, description: "Task C", projectId: 1 }
         ]
         let selectedItem: Item | undefined = undefined
         const onDelete = vitest.fn((item: Item) => {
@@ -62,6 +67,6 @@ describe("ItemList", () => {
 
         fireEvent.click(screen.getByRole("button", { name: "Yes" }))
         expect(onDelete).toHaveBeenCalled()
-        expect(selectedItem).toEqual({ id: 2, description: "Task B" })
+        expect(selectedItem).toEqual({ id: 2, description: "Task B", projectId: 1 })
     })
 })
