@@ -23,6 +23,11 @@ export function AddItemForm(props: AddItemFormProps) {
             className="mb-1"
             onChange={e => setDescription(e.target.value)}
         />
+        <label>
+            Project
+            <select>
+            </select>
+        </label>
         <div className="flex justify-end gap-2">
             <Button 
                 mode={ButtonMode.PRIMARY}
