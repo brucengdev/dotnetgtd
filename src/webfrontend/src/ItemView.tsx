@@ -4,6 +4,7 @@ import { Button, ButtonMode } from "./controls/Button"
 
 interface ItemViewProps {
     description: string
+    projectName?: string
     onDelete?: () => void
 }
 export default function ItemView(props: ItemViewProps) {
@@ -12,6 +13,7 @@ export default function ItemView(props: ItemViewProps) {
     return <div data-testId="item">
         <div  className="grid grid-cols-2 mb-1">
             <div data-testId="description">{description}</div>
+            <div data-testId="project">{props.projectName??""}</div>
             {showConfirmDelete
                 ? <></>
                 : <Button text="Delete" className="justify-self-end" mode={ButtonMode.DANGER} onClick={() => setShowConfirmDelete(true)} />}

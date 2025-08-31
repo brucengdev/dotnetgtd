@@ -5,11 +5,15 @@ import '@testing-library/jest-dom'
 
 describe("ItemView", () => {
     it("renders description and delete button", () => {
-        render(<ItemView description="Test Description" />)
+        render(<ItemView description="Test Description" projectName="Project A" />)
 
         const description = screen.getByTestId("description")
         expect(description).toBeInTheDocument()
         expect(description.textContent).toBe("Test Description")
+        
+        const projectName = screen.getByTestId("project")
+        expect(projectName).toBeInTheDocument()
+        expect(projectName.textContent).toBe("Project A")
 
         const deleteButton = screen.getByRole("button", { name: "Delete" })
         expect(deleteButton).toBeInTheDocument()
