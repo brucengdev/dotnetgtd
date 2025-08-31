@@ -6,13 +6,15 @@ import { TestClient } from "./__test__/TestClient";
 import { sleep } from "./__test__/testutils";
 
 describe("AddItemForm", () => {
-    it("has necessary ui components", () => {
+    it("has necessary ui components", async () => {
         const client = new TestClient()
         client.Projects = [
             { id: 1, name: "Project 1" }, 
             { id: 2, name: "Project 2" }
         ]
         render(<AddItemForm client={client} onCancel={() => {}}/>)
+
+        await sleep(1)
 
         expect(screen.getByRole("heading", {name: "New item"})).toBeInTheDocument()
         expect(screen.getByRole("textbox", {name: "Description"})).toBeInTheDocument()

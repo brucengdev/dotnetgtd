@@ -2,6 +2,7 @@ import { useState } from "react";
 import { IClient } from "./api/Client";
 import { Button, ButtonMode } from "./controls/Button";
 import { TextBox } from "./controls/TextBox";
+import { Project } from "./models/Project";
 
 interface AddItemFormProps {
     onCancel: () => any
@@ -12,6 +13,12 @@ interface AddItemFormProps {
 export function AddItemForm(props: AddItemFormProps) {
     const { onCancel, client, onCompleted } = props
     const [ description, setDescription ] = useState('')
+    const [projects, setProjects] = useState<Project[] | undefined>(undefined)
+    if(projects === undefined) {
+        client.GetProjects()
+        .then(retrievedProjects => setProjects(retrievedProjects))
+    }
+
     return <div data-testid="add-item-form" className="mb-5">
         <h1 className="text-2xl">
             New item
@@ -26,8 +33,7 @@ export function AddItemForm(props: AddItemFormProps) {
         <label>
             Project
             <select>
-                <option>Project 1</option>
-                <option>Project 2</option>
+                {projects?.map(p => <option>{p.name}</option>)}
             </select>
         </label>
         <div className="flex justify-end gap-2">
