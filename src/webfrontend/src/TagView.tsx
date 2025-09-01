@@ -16,7 +16,7 @@ export function TagView({ client }: TagViewProps) {
         client.GetTags()
         .then(retrievedTags => setTags(retrievedTags))
     }
-    return <div data-testid="Tag-view">
+    return <div data-testid="tag-view">
         <TagList tags={Tags || []} 
             onDelete={(tagId) => {
                 client.DeleteTag(tagId)

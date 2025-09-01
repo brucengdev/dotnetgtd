@@ -30,6 +30,16 @@ describe("MainView", () => {
         expect(screen.queryByTestId("task-view")).not.toBeInTheDocument()
     })
 
+    it("shows tag view after switching to tag view", () => {
+        render(<MainView client={new TestClient()} onLogout={() => { }} />)
+
+        fireEvent.click(screen.getByRole("button", { name: "Tags" }))
+
+        expect(screen.getByTestId("tag-view")).toBeInTheDocument()
+        expect(screen.queryByTestId("task-view")).not.toBeInTheDocument()
+        expect(screen.queryByTestId("project-view")).not.toBeInTheDocument()
+    })
+
     it("shows task view after switching back from project view", () => {
         render(<MainView client={new TestClient()} onLogout={() => { }} />)
 
