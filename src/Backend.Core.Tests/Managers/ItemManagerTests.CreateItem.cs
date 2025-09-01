@@ -12,20 +12,23 @@ public partial class ItemManagerTests
     {
         //arrange
         var itemRepo = new TestItemRepository();
-        itemRepo.Items.Add(new Item
+        itemRepo.Items = new List<Item>()
         {
-            Id = 1,
-            Description = "Task 1",
-            UserId = 123,
-            ProjectId = null
-        });
-        itemRepo.Items.Add(new Item
-        {
-            Id = 2,
-            Description = "Task 2",
-            UserId = 234,
-            ProjectId = 1
-        });
+            new Item
+            {
+                Id = 1,
+                Description = "Task 1",
+                UserId = 123,
+                ProjectId = null
+            },
+            new Item
+            {
+                Id = 2,
+                Description = "Task 2",
+                UserId = 234,
+                ProjectId = 1
+            }
+        };
         var userRepo = new TestUserRepository();
         userRepo.AddUser(new()
         {
