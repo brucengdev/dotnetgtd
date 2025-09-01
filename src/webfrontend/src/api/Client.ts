@@ -1,5 +1,6 @@
 import { Item } from "../models/Item"
 import { Project } from "../models/Project"
+import { Tag } from "../models/Tag"
 
 export interface IClient {
     Token: () => string | undefined
@@ -14,6 +15,10 @@ export interface IClient {
     AddProject: (item: Project) => Promise<boolean>
     GetProjects: () => Promise<Project[]>
     DeleteProject: (id: number) => Promise<boolean>
+
+    AddTag: (item: Tag) => Promise<boolean>
+    GetTags: () => Promise<Tag[]>
+    DeleteTag: (id: number) => Promise<boolean>
 }
 
 const devUrl = "https://localhost:7146"
@@ -123,6 +128,41 @@ export class Client implements IClient {
 
     public async DeleteProject(id: number): Promise<boolean> {
         const result = await fetch(`${url}/Projects/DeleteProject?${new URLSearchParams({
+            accessToken: this.token,
+            id: id.toString()
+        }).toString()}`, {
+            method: "DELETE"
+        })
+        return result.ok
+    }
+
+    public async AddTag(tag: Tag): Promise<boolean> {
+        const result = await fetch(`${url}/Tags/CreateTag?${new URLSearchParams({
+            accessToken: this.token
+        }).toString()}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(tag)
+        })
+        return result.ok
+    }
+
+    public async GetTags(): Promise<Tag[]> {
+        const result = await fetch(`${url}/Tags/GetTags?${new URLSearchParams({
+            accessToken: this.token,
+        }).toString()}`, {
+            method: "GET"
+        })
+        if(result.ok) {
+            return await result.json()
+        }
+        return []
+    }
+
+    public async DeleteTag(id: number): Promise<boolean> {
+        const result = await fetch(`${url}/Tags/DeleteTag?${new URLSearchParams({
             accessToken: this.token,
             id: id.toString()
         }).toString()}`, {

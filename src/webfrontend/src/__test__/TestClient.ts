@@ -1,6 +1,7 @@
 import { IClient } from "../api/Client";
 import { Item } from "../models/Item";
 import { Project } from "../models/Project";
+import { Tag } from "../models/Tag";
 
 export const TEST_USER_NAME = "valid_user"
 export const TEST_PASSWORD = "correct_pass"
@@ -10,6 +11,7 @@ export class TestClient implements IClient {
     private _token: string | undefined = undefined
     public Items: Item[] = []
     public Projects: Project[] = []
+    public Tags: Tag[] = []
     public Token() { return this._token }
     async IsLoggedIn() {
         return this._token === TEST_TOKEN
@@ -66,5 +68,22 @@ export class TestClient implements IClient {
         const projects = this.Projects.findIndex(i => i.id === id)
         this.Projects.splice(projects, 1)
         return projects >= 0
+    }
+
+    async AddTag(tag: Tag): Promise<boolean> {
+        this.Tags.push(tag)
+        return true
+    }
+
+    async GetTags(): Promise<Tag[]> {
+        return [...this.Tags.map(p => {
+            return {...p}
+        })]
+    }
+
+    async DeleteTag(id: number) {
+        const tagIndex = this.Tags.findIndex(i => i.id === id)
+        this.Tags.splice(tagIndex, 1)
+        return tagIndex >= 0
     }
 }
