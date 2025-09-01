@@ -43,6 +43,8 @@ builder.Services.AddScoped<IItemRepository, ItemRepository>();
 builder.Services.AddScoped<IItemManager, ItemManager>();
 builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
 builder.Services.AddScoped<IProjectManager, ProjectManager>();
+builder.Services.AddScoped<ITagRepository, TagRepository>();
+builder.Services.AddScoped<ITagManager, TagManager>();
 
 builder.Services.AddScoped<SecurityFilterAttribute>();
 
