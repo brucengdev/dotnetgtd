@@ -67,6 +67,23 @@ public partial class ItemManagerTests
             UserId = expectedUserId,
             ProjectId = 2
         });
+
+        itemTagMappingRepo.Mappings.Where(m => m.ItemId == expectedItemId)
+            .ShouldBe(new List<ItemTagMapping>()
+            {
+                new()
+                {
+                    Id = 1,
+                    ItemId = expectedItemId,
+                    TagId = 1
+                },
+                new()
+                {
+                    Id = 2,
+                    ItemId = expectedItemId,
+                    TagId = 2
+                }
+            });
     }
     
     [Fact]
