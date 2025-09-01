@@ -22,7 +22,7 @@ public partial class ItemManagerTests
             new() { Id = 2, Description = "Task B", UserId = 23 },
             new() { Id = 3, Description = "Task C", UserId = 3 }
         };
-        var sut = new ItemManager(repo, new Mock<IUserRepository>().Object);
+        var sut = new ItemManager(repo, new Mock<IUserRepository>().Object, new TestItemTagMappingRepo());
         
         //act
         sut.DeleteItem(2, 23);
@@ -47,7 +47,7 @@ public partial class ItemManagerTests
             new() { Id = 2, Description = "Task B", UserId = 23 },
             new() { Id = 3, Description = "Task C", UserId = 3 }
         };
-        var sut = new ItemManager(repo, new Mock<IUserRepository>().Object);
+        var sut = new ItemManager(repo, new Mock<IUserRepository>().Object, new TestItemTagMappingRepo());
         
         //act and assert
         var exception = Assert.Throws<UnauthorizedAccessException>(() => sut.DeleteItem(1, 23));
@@ -73,7 +73,7 @@ public partial class ItemManagerTests
             new() { Id = 2, Description = "Task B", UserId = 23 },
             new() { Id = 3, Description = "Task C", UserId = 3 }
         };
-        var sut = new ItemManager(repo, new Mock<IUserRepository>().Object);
+        var sut = new ItemManager(repo, new Mock<IUserRepository>().Object, new TestItemTagMappingRepo());
         
         //act and assert
         Assert.Throws<ItemNotFoundException>(() => sut.DeleteItem(4, 23));

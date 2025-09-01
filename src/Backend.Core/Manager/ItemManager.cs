@@ -7,7 +7,7 @@ public class ItemManager: IItemManager
 {
     private IItemRepository _itemRepo;
     private IUserRepository _userRepo;
-    public ItemManager(IItemRepository itemRepo, IUserRepository userRepo)
+    public ItemManager(IItemRepository itemRepo, IUserRepository userRepo, IItemTagMappingRepo _)
     {
         _itemRepo = itemRepo;
         _userRepo = userRepo;

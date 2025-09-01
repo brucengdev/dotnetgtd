@@ -43,7 +43,7 @@ public partial class ItemManagerTests
             new() { Id = 2, UserId = 123, Name = "Tag2" },
         };
         var itemTagMappingRepo = new TestItemTagMappingRepo();
-        var sut = new ItemManager(itemRepo, userRepo);
+        var sut = new ItemManager(itemRepo, userRepo, itemTagMappingRepo);
         var input = new CreateItemModel
         {
             Description = "New Task",
@@ -87,7 +87,8 @@ public partial class ItemManagerTests
             UserId = 234
         });
         var userRepo = new TestUserRepository();
-        var sut = new ItemManager(itemRepo, userRepo);
+        var itemTagMappingRepo = new TestItemTagMappingRepo();
+        var sut = new ItemManager(itemRepo, userRepo, itemTagMappingRepo);
         var input = new CreateItemModel()
         {
             Description = "New Task"

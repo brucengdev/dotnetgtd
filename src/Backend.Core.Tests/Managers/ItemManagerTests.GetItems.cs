@@ -26,7 +26,7 @@ public partial class ItemManagerTests
             Description = "Task 2",
             UserId = 234
         });
-        var sut = new ItemManager(repo, new Mock<IUserRepository>().Object);
+        var sut = new ItemManager(repo, new Mock<IUserRepository>().Object, new TestItemTagMappingRepo());
         var expectedUserId = 123;
 
         //act
