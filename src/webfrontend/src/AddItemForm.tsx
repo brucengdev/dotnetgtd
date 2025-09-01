@@ -40,6 +40,10 @@ export function AddItemForm(props: AddItemFormProps) {
                 {projects?.map(p => <option value={p.id} selected={projectId === p.id}>{p.name}</option>)}
             </select>
         </label>
+        <label>
+            Tags
+            <select></select>
+        </label>
         <div className="flex justify-end gap-2">
             <Button 
                 mode={ButtonMode.PRIMARY}

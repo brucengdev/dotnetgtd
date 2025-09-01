@@ -36,6 +36,8 @@ describe("AddItemForm", () => {
         expect(project2.getAttribute("value")).toBe("2")
         expect(project2.selected).toBe(false)
 
+        expect(screen.getByRole("combobox", { name: "Tags"})).toBeInTheDocument()
+
         expect(screen.getByRole("button", {name: "Create"})).toBeInTheDocument()
         expect(screen.getByRole("button", {name: "Cancel"})).toBeInTheDocument()
     })
