@@ -36,7 +36,7 @@ export function AddItemForm(props: AddItemFormProps) {
             <select onChange={(e) => {
                 setProjectId(Number(e.target.value))
             }}>
-                <option value="0" selected={projectId === 0}>[No project]</option>
+                <option value={undefined} selected={projectId === 0}>[No project]</option>
                 {projects?.map(p => <option value={p.id} selected={projectId === p.id}>{p.name}</option>)}
             </select>
         </label>

@@ -22,7 +22,7 @@ describe("AddItemForm", () => {
         expect(screen.getByRole("combobox", { name: "Project"})).toBeInTheDocument()
 
         const defaultProjectOption = screen.getByRole("option", {name: "[No project]"}) as HTMLOptionElement
-        expect(defaultProjectOption.getAttribute("value")).toBe("0")
+        expect(defaultProjectOption.getAttribute("value")).toBe(null)
         expect(defaultProjectOption).toBeInTheDocument()
         expect(defaultProjectOption.selected).toBe(true)
         
