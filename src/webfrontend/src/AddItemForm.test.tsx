@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import userEvent from '@testing-library/user-event';
 import {describe, expect, it, vitest} from 'vitest'
 import '@testing-library/jest-dom'
 import { AddItemForm } from "./AddItemForm";
@@ -86,7 +87,7 @@ describe("AddItemForm", () => {
         expect(fn).toHaveBeenCalled()
     })
 
-    var cases = [
+    var projectCases = [
         {
             testName: "submits item to backend when clicking Create and no project", 
             taskDescription: "description of a task", projectId: 0, expectedProjectId: undefined },
@@ -97,7 +98,7 @@ describe("AddItemForm", () => {
             testName: "submits item to backend when clicking Create and Project 2 selected", 
             taskDescription: "task of project 2", projectId: 2, expectedProjectId: 2 }
     ]
-    cases.forEach(({ testName, taskDescription, projectId, expectedProjectId }) => {
+    projectCases.forEach(({ testName, taskDescription, projectId, expectedProjectId }) => {
         it(testName, async () => {
             const client = new TestClient()
             client.Projects = [
@@ -123,7 +124,67 @@ describe("AddItemForm", () => {
             expect(client.Items).toContainEqual({
                 id: 0,
                 description: taskDescription,
-                projectId: expectedProjectId
+                projectId: expectedProjectId,
+                tagIds: []
+            })
+
+            expect(onCompleted).toHaveBeenCalled()
+        })
+    })
+
+    var tagCases = [
+        {
+            testName: "submits item to backend when clicking Create and no tags", 
+            taskDescription: "description of a task", tagIds: [] },
+        {
+            testName: "submits item to backend when clicking Create and 1 tag selected", 
+            taskDescription: "task of project 1", tagIds: [1] },
+        {
+            testName: "submits item to backend when clicking Create and 2 tags selected", 
+            taskDescription: "task of project 2", tagIds: [1, 2] }
+    ]
+    tagCases.forEach(({ testName, taskDescription, tagIds }) => {
+        it(testName, async () => {
+            const client = new TestClient()
+            client.Projects = [
+                { id: 1, name: "Project 1" }, 
+                { id: 2, name: "Project 2" }
+            ]
+            client.Tags = [
+                { id: 1, name: "Tag 1" },
+                { id: 2, name: "Tag 2" }
+            ]
+            const onCompleted = vitest.fn()
+            render(<AddItemForm onCancel={() => {}} client={client} onCompleted={onCompleted} />)
+
+            await sleep(1)
+
+            const descriptionTextBox = screen.getByRole("textbox", { name: "Description"})
+            fireEvent.change(descriptionTextBox, { target: { value: taskDescription}})
+
+            expect(descriptionTextBox).toHaveValue(taskDescription)
+
+            userEvent.selectOptions(screen.getByRole("listbox", { name: "Tags"}), tagIds.map(id => String(id)))
+
+            await sleep(1)
+
+            const tag1 = screen.getByRole("option", {name: "Tag 1"}) as HTMLOptionElement
+            expect(tag1.getAttribute("value")).toBe("1")
+            expect(tag1.selected).toBe(tagIds.includes(1))
+            
+            const tag2 = screen.getByRole("option", {name: "Tag 2"}) as HTMLOptionElement
+            expect(tag2.getAttribute("value")).toBe("2")
+            expect(tag2.selected).toBe(tagIds.includes(2))
+
+            fireEvent.click(screen.getByRole("button", { name: "Create"}))
+            
+            await sleep(1)
+
+            expect(client.Items).toContainEqual({
+                id: 0,
+                description: taskDescription,
+                projectId: undefined,
+                tagIds
             })
 
             expect(onCompleted).toHaveBeenCalled()

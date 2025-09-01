@@ -17,6 +17,7 @@ export function AddItemForm(props: AddItemFormProps) {
     const [projects, setProjects] = useState<Project[] | undefined>(undefined)
     const [projectId, setProjectId] = useState<number>(0)
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
+    const [selectedTagIds, setSelectedTagIds] = useState<number[]>([])
     if(projects === undefined) {
         client.GetProjects()
         .then(retrievedProjects => setProjects(retrievedProjects))
@@ -49,8 +50,20 @@ export function AddItemForm(props: AddItemFormProps) {
         </label>
         <label>
             Tags
-            <select multiple>
-                {tags?.map(t => <option value={t.id}>{t.name}</option>)}
+            <select multiple onChange={e => {
+                const options = e.target.options
+                const tagIds = []
+                for(let i = 0; i < options.length; i++) {
+                    if(options[i].selected) {
+                        tagIds.push(Number(options[i].value))
+                    }
+                }
+                setSelectedTagIds(tagIds)
+            }}>
+                {tags?.map(t => <option 
+                    value={t.id} 
+                    selected={selectedTagIds.includes(t.id)}
+                >{t.name}</option>)}
             </select>
         </label>
         <div className="flex justify-end gap-2">
@@ -58,7 +71,12 @@ export function AddItemForm(props: AddItemFormProps) {
                 mode={ButtonMode.PRIMARY}
                 text="Create"
                 onClick={() => {
-                    client.AddItem({id: 0, description, projectId: (projectId === 0? undefined: projectId)})
+                    client.AddItem({
+                        id: 0, 
+                        description, 
+                        projectId: (projectId === 0? undefined: projectId),
+                        tagIds: selectedTagIds
+                    })
                     .then(() => {
                         if(onCompleted) {
                             onCompleted()
