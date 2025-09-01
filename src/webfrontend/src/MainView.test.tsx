@@ -5,6 +5,12 @@ import { TestClient } from "./__test__/TestClient";
 import { MainView } from "./MainView";
 
 describe("MainView", () => {
+    it("shows buttons to switch between views", () => {
+        render(<MainView client={new TestClient()} onLogout={() => { }} />)
+        
+        expect(screen.getByRole("button", { name: "Tasks"})).toBeInTheDocument()
+
+    })
     it("shows task view and log out button initially", () => {
         render(<MainView client={new TestClient()} onLogout={() => { }} />)
         
