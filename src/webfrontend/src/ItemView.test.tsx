@@ -42,6 +42,49 @@ describe("ItemView", () => {
         })
     })
 
+    const tagCases = [
+        { 
+            testCaseName: "renders view correctly with no tags",
+            description: "Task description",
+            tagNames: [],
+            expectedDisplayedTags: ""
+        },
+        { 
+            testCaseName: "renders view correctly with 1 tag",
+            description: "Task description",
+            tagNames: ["tag1"],
+            expectedDisplayedTags: "tag1"
+        },
+        { 
+            testCaseName: "renders view correctly with multiple tags",
+            description: "Task description",
+            tagNames: ["tag1", "tag2"],
+            expectedDisplayedTags: "tag1,tag2"
+        }
+    ]
+    tagCases.forEach(({testCaseName, description, tagNames, expectedDisplayedTags}) => {
+        it(testCaseName, () => {
+            render(<ItemView description={description} projectName="Project A" tagNames={tagNames} />)
+
+            const descriptionView = screen.getByTestId("description")
+            expect(descriptionView).toBeInTheDocument()
+            expect(descriptionView.textContent).toBe(description)
+
+            const projectNameView = screen.getByTestId("project")
+            expect(projectNameView).toBeInTheDocument()
+            expect(projectNameView.textContent).toBe("Project A")
+
+            const tagNamesView = screen.getByTestId("tags")
+            expect(tagNamesView).toBeInTheDocument()
+            expect(tagNamesView.textContent).toBe(expectedDisplayedTags)
+
+            const deleteButton = screen.getByRole("button", { name: "Delete" })
+            expect(deleteButton).toBeInTheDocument()
+
+            expect(screen.queryByTestId("confirmDeleteView")).not.toBeInTheDocument()
+        })
+    })
+
     it("shows delete confirm view when delete is clicked", () => {
         render(<ItemView description="Test Description" />)
 
