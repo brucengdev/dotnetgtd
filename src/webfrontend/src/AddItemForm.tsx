@@ -3,6 +3,7 @@ import { IClient } from "./api/Client";
 import { Button, ButtonMode } from "./controls/Button";
 import { TextBox } from "./controls/TextBox";
 import { Project } from "./models/Project";
+import { Tag } from "./models/Tag";
 
 interface AddItemFormProps {
     onCancel: () => any
@@ -15,9 +16,15 @@ export function AddItemForm(props: AddItemFormProps) {
     const [ description, setDescription ] = useState('')
     const [projects, setProjects] = useState<Project[] | undefined>(undefined)
     const [projectId, setProjectId] = useState<number>(0)
+    const [tags, setTags] = useState<Tag[] | undefined>(undefined)
     if(projects === undefined) {
         client.GetProjects()
         .then(retrievedProjects => setProjects(retrievedProjects))
+    }
+
+    if(tags === undefined) {
+        client.GetTags()
+        .then(retrievedTags => setTags(retrievedTags))
     }
 
     return <div data-testid="add-item-form" className="mb-5">
@@ -42,7 +49,9 @@ export function AddItemForm(props: AddItemFormProps) {
         </label>
         <label>
             Tags
-            <select></select>
+            <select multiple>
+                {tags?.map(t => <option value={t.id}>{t.name}</option>)}
+            </select>
         </label>
         <div className="flex justify-end gap-2">
             <Button 

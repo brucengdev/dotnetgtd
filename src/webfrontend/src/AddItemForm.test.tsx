@@ -12,6 +12,10 @@ describe("AddItemForm", () => {
             { id: 1, name: "Project 1" }, 
             { id: 2, name: "Project 2" }
         ]
+        client.Tags = [
+            { id: 1, name: "Tag 1" }, 
+            { id: 2, name: "Tag 2" }
+        ]
         render(<AddItemForm client={client} onCancel={() => {}}/>)
 
         await sleep(1)
@@ -36,7 +40,17 @@ describe("AddItemForm", () => {
         expect(project2.getAttribute("value")).toBe("2")
         expect(project2.selected).toBe(false)
 
-        expect(screen.getByRole("combobox", { name: "Tags"})).toBeInTheDocument()
+        expect(screen.getByRole("listbox", { name: "Tags"})).toBeInTheDocument()
+
+        const tag1 = screen.getByRole("option", {name: "Tag 1"}) as HTMLOptionElement
+        expect(tag1).toBeInTheDocument()
+        expect(tag1.getAttribute("value")).toBe("1")
+        expect(tag1.selected).toBe(false)
+        
+        const tag2 = screen.getByRole("option", {name: "Tag 2"}) as HTMLOptionElement
+        expect(tag2).toBeInTheDocument()
+        expect(tag2.getAttribute("value")).toBe("2")
+        expect(tag2.selected).toBe(false)
 
         expect(screen.getByRole("button", {name: "Create"})).toBeInTheDocument()
         expect(screen.getByRole("button", {name: "Cancel"})).toBeInTheDocument()
