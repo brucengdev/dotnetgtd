@@ -7,10 +7,14 @@ public class ItemManager: IItemManager
 {
     private IItemRepository _itemRepo;
     private IUserRepository _userRepo;
-    public ItemManager(IItemRepository itemRepo, IUserRepository userRepo, IItemTagMappingRepo _)
+    private IItemTagMappingRepo _itemTagMappingRepo;
+    public ItemManager(IItemRepository itemRepo, 
+        IUserRepository userRepo, 
+        IItemTagMappingRepo itemTagMappingRepo)
     {
         _itemRepo = itemRepo;
         _userRepo = userRepo;
+        _itemTagMappingRepo = itemTagMappingRepo;
     }
 
     public int CreateItem(CreateItemModel newItemModel, int userId)
@@ -28,7 +32,18 @@ public class ItemManager: IItemManager
             UserId = userId,
             ProjectId = newItemModel.ProjectId,
         };
-        return _itemRepo.CreateItem(item);
+        int itemId = _itemRepo.CreateItem(item);
+
+        foreach (var tagId in (newItemModel.TagIds ?? []))
+        {
+            _itemTagMappingRepo.CreateMapping(new()
+            {
+                ItemId = itemId,
+                TagId = tagId
+            });
+        }
+
+        return itemId;
     }
 
     public IEnumerable<Item> GetItems(int userId)

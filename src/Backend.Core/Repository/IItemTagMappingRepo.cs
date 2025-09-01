@@ -1,6 +1,8 @@
-﻿namespace Backend.Core.Repository;
+﻿using Backend.Models;
 
-public class IItemTagMappingRepo
+namespace Backend.Core.Repository;
+
+public interface IItemTagMappingRepo
 {
-    
+    public int CreateMapping(ItemTagMapping mapping);
 }
