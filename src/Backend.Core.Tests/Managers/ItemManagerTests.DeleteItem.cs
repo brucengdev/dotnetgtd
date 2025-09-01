@@ -2,8 +2,6 @@
 using Backend.Core.Repository;
 using Backend.Core.Tests.Mocks;
 using Backend.Models;
-using Backend.WebApi.Repository;
-using Microsoft.Identity.Client;
 using Moq;
 using Shouldly;
 
