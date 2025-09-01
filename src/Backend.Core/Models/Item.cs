@@ -21,7 +21,7 @@ public class Item
 
         var otherItem = obj as Item;
         var sameTagIds = (tagIds == null && otherItem.tagIds == null)
-            || (tagIds != null && tagIds.Equals(otherItem.tagIds));
+            || (tagIds != null && tagIds.SequenceEqual(otherItem.tagIds));
         return Id == otherItem.Id
                && Description == otherItem.Description
                && UserId == otherItem.UserId
