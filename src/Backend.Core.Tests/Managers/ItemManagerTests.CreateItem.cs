@@ -42,6 +42,7 @@ public partial class ItemManagerTests
             new() { Id = 1, UserId = 123, Name = "Tag1" },
             new() { Id = 2, UserId = 123, Name = "Tag2" },
         };
+        var itemTagMappingRepo = new TestItemTagMappingRepo();
         var sut = new ItemManager(itemRepo, userRepo);
         var input = new CreateItemModel
         {
