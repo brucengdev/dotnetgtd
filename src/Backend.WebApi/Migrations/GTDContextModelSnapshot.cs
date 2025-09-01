@@ -46,7 +46,7 @@ namespace Backend.WebApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Items");
+                    b.ToTable("Items", (string)null);
                 });
 
             modelBuilder.Entity("Backend.Models.Project", b =>
@@ -66,7 +66,7 @@ namespace Backend.WebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("Backend.Models.Tag", b =>
@@ -88,7 +88,7 @@ namespace Backend.WebApi.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Tags");
+                    b.ToTable("Tags", (string)null);
                 });
 
             modelBuilder.Entity("Backend.Models.User", b =>
@@ -109,7 +109,7 @@ namespace Backend.WebApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Backend.Models.Item", b =>
