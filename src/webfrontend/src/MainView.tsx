@@ -3,6 +3,7 @@ import { IClient } from "./api/Client"
 import { Button, ButtonMode } from "./controls/Button";
 import { TaskView } from "./TaskView"
 import { ProjectView } from "./ProjectView";
+import { TagView } from "./TagView";
 
 export interface MainViewProps {
   client: IClient
@@ -11,14 +12,16 @@ export interface MainViewProps {
 
 enum View {
   TASKS,
-  PROJECTS
+  PROJECTS,
+  TAGS
 }
 
 export function MainView({onLogout, client} : MainViewProps) {
     var [currentView, setCurrentView] = useState(View.TASKS)
     return <div data-testid="main-view">
-      <Button text="Tasks" onClick={() => setCurrentView(View.TASKS)} />
-      <Button text="Projects" onClick={() => setCurrentView(View.PROJECTS)} />
+      <Button text="Tasks" className="mr-1" onClick={() => setCurrentView(View.TASKS)} />
+      <Button text="Projects" className="mr-1" onClick={() => setCurrentView(View.PROJECTS)} />
+      <Button text="Tags" onClick={() => setCurrentView(View.TAGS)} />
       {renderView(currentView, client)}
       <Button 
         className="block"
@@ -32,7 +35,9 @@ export function MainView({onLogout, client} : MainViewProps) {
 function renderView(view: View, client: IClient) {
   switch(view) {
     case View.PROJECTS:
-      return <ProjectView client={client} />;
+      return <ProjectView client={client} />
+    case View.TAGS:
+      return <TagView client={client} />;
     case View.TASKS:
     default:
       return <TaskView client={client} />

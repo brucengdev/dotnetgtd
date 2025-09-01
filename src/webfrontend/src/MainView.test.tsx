@@ -5,6 +5,13 @@ import { TestClient } from "./__test__/TestClient";
 import { MainView } from "./MainView";
 
 describe("MainView", () => {
+    it("shows buttons to switch between views", () => {
+        render(<MainView client={new TestClient()} onLogout={() => { }} />)
+        
+        expect(screen.getByRole("button", { name: "Tasks"})).toBeInTheDocument()
+        expect(screen.getByRole("button", { name: "Projects"})).toBeInTheDocument()
+        expect(screen.getByRole("button", { name: "Tags"})).toBeInTheDocument()
+    })
     it("shows task view and log out button initially", () => {
         render(<MainView client={new TestClient()} onLogout={() => { }} />)
         
@@ -21,6 +28,16 @@ describe("MainView", () => {
 
         expect(screen.getByTestId("project-view")).toBeInTheDocument()
         expect(screen.queryByTestId("task-view")).not.toBeInTheDocument()
+    })
+
+    it("shows tag view after switching to tag view", () => {
+        render(<MainView client={new TestClient()} onLogout={() => { }} />)
+
+        fireEvent.click(screen.getByRole("button", { name: "Tags" }))
+
+        expect(screen.getByTestId("tag-view")).toBeInTheDocument()
+        expect(screen.queryByTestId("task-view")).not.toBeInTheDocument()
+        expect(screen.queryByTestId("project-view")).not.toBeInTheDocument()
     })
 
     it("shows task view after switching back from project view", () => {
