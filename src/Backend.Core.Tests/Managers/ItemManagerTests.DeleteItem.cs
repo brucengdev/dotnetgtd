@@ -39,6 +39,10 @@ public partial class ItemManagerTests
             new() { Id = 1, Description = "Task A", UserId = 1 },
             new() { Id = 3, Description = "Task C", UserId = 3 }
         });
+        itemTagMappingRepo.Mappings.ShouldNotContain(m => m.ItemId == 2);
+        itemTagMappingRepo.Mappings.ShouldBe([
+            new() { Id = 3, TagId = 1, ItemId = 1 }
+        ]);
     }
     
     [Fact]
