@@ -1,5 +1,5 @@
 export interface Item {
     id: number
     description: string
-    projectId: number
+    projectId?: number
 }

@@ -73,7 +73,7 @@ describe("AddItemForm", () => {
     var cases = [
         {
             testName: "submits item to backend when clicking Create and no project", 
-            taskDescription: "description of a task", projectId: 0, expectedProjectId: null },
+            taskDescription: "description of a task", projectId: 0, expectedProjectId: undefined },
         {
             testName: "submits item to backend when clicking Create and Project 1 selected", 
             taskDescription: "task of project 1", projectId: 1, expectedProjectId: 1 },
