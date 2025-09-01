@@ -6,7 +6,7 @@ public class Tag
     public string Name { get; set; }
     public int UserId { get; set; }
     
-    public User User { get; set; }
+    public User? User { get; set; }
 
     public override bool Equals(object? obj)
     {
