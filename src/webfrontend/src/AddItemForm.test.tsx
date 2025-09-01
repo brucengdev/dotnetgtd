@@ -73,15 +73,15 @@ describe("AddItemForm", () => {
     var cases = [
         {
             testName: "submits item to backend when clicking Create and no project", 
-            taskDescription: "description of a task", projectId: 0 },
+            taskDescription: "description of a task", projectId: 0, expectedProjectId: undefined },
         {
             testName: "submits item to backend when clicking Create and Project 1 selected", 
-            taskDescription: "task of project 1", projectId: 1 },
+            taskDescription: "task of project 1", projectId: 1, expectedProjectId: 1 },
         {
             testName: "submits item to backend when clicking Create and Project 2 selected", 
-            taskDescription: "task of project 1", projectId: 2 }
+            taskDescription: "task of project 2", projectId: 2, expectedProjectId: 2 }
     ]
-    cases.forEach(({ testName, taskDescription, projectId }) => {
+    cases.forEach(({ testName, taskDescription, projectId, expectedProjectId }) => {
         it(testName, async () => {
             const client = new TestClient()
             client.Projects = [
@@ -107,7 +107,7 @@ describe("AddItemForm", () => {
             expect(client.Items).toContainEqual({
                 id: 0,
                 description: taskDescription,
-                projectId: projectId
+                projectId: expectedProjectId
             })
 
             expect(onCompleted).toHaveBeenCalled()
