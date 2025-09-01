@@ -13,5 +13,13 @@ namespace Backend.Models
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Item>()
+                .HasOne(e => e.User);
+
+            modelBuilder.Entity<Item>()
+                .HasOne(e => e.Project);
+        }
     }
 }
