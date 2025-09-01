@@ -19,6 +19,7 @@ export function MainView({onLogout, client} : MainViewProps) {
     return <div data-testid="main-view">
       <Button text="Tasks" onClick={() => setCurrentView(View.TASKS)} />
       <Button text="Projects" onClick={() => setCurrentView(View.PROJECTS)} />
+      <Button text="Tags" />
       {renderView(currentView, client)}
       <Button 
         className="block"

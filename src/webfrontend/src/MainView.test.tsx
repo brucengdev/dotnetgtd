@@ -10,6 +10,7 @@ describe("MainView", () => {
         
         expect(screen.getByRole("button", { name: "Tasks"})).toBeInTheDocument()
         expect(screen.getByRole("button", { name: "Projects"})).toBeInTheDocument()
+        expect(screen.getByRole("button", { name: "Tags"})).toBeInTheDocument()
     })
     it("shows task view and log out button initially", () => {
         render(<MainView client={new TestClient()} onLogout={() => { }} />)
