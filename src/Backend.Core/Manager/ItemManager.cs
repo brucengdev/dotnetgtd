@@ -13,14 +13,21 @@ public class ItemManager: IItemManager
         _userRepo = userRepo;
     }
 
-    public int CreateItem(Item item, int userId)
+    public int CreateItem(CreateItemModel newItemModel, int userId)
     {
         var user = _userRepo.GetUser(userId);
         if (user == null)
         {
             throw new UserNotFoundException();
         }
-        item.UserId = userId;
+
+        var item = new Item()
+        {
+            Description = newItemModel.Description,
+            Id = 0,
+            UserId = userId,
+            ProjectId = newItemModel.ProjectId,
+        };
         return _itemRepo.CreateItem(item);
     }
 

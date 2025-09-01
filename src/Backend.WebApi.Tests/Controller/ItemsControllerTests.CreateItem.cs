@@ -34,7 +34,7 @@ namespace Backend.WebApi.Tests.Controller
             //arrange
             var itemManager = new Mock<IItemManager>();
             var expectedItemId = 256;
-            itemManager.Setup(im => im.CreateItem(It.IsAny<Item>(), It.IsAny<int>()))
+            itemManager.Setup(im => im.CreateItem(It.IsAny<CreateItemModel>(), It.IsAny<int>()))
                 .Returns(expectedItemId);
             var sut = new ItemsController(itemManager.Object);
             sut.ControllerContext = new ControllerContext();
@@ -42,11 +42,11 @@ namespace Backend.WebApi.Tests.Controller
             sut.HttpContext.Items["UserId"] = 123;
 
             //act
-            var item = new Item
+            var item = new CreateItemModel
             {
                 Description = "Foo",
                 ProjectId = 1,
-                tagIds = new List<int>{1, 2}
+                TagIds = new List<int>{1, 2}
             };
             var response = sut.CreateItem(item);
 

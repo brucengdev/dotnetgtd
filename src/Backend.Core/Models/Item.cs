@@ -10,8 +10,7 @@ public class Item
     
     public int? ProjectId { get; set; }
     public Project? Project { get; set; }
-    public IEnumerable<int>? tagIds { get; set; }
-
+    
     public override bool Equals(object? obj)
     {
         if (obj is not Item)
@@ -20,12 +19,9 @@ public class Item
         }
 
         var otherItem = obj as Item;
-        var sameTagIds = (tagIds == null && otherItem.tagIds == null)
-            || (tagIds != null && tagIds.SequenceEqual(otherItem.tagIds));
         return Id == otherItem.Id
                && Description == otherItem.Description
                && UserId == otherItem.UserId
-               && ProjectId == otherItem.ProjectId
-               && sameTagIds;
+               && ProjectId == otherItem.ProjectId;
     }
 }

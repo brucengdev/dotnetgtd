@@ -17,7 +17,7 @@ namespace Backend.WebApi.Controllers
 
         [HttpPost("[action]")]
         [ServiceFilter<SecurityFilterAttribute>]
-        public ActionResult CreateItem(Item item)
+        public ActionResult CreateItem(CreateItemModel item)
         {
             var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
             var itemId = _itemManager.CreateItem(item, userId);

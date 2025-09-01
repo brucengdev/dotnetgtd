@@ -4,7 +4,7 @@ namespace Backend.Core.Manager;
 
 public interface IItemManager
 {
-    int CreateItem(Item item, int userId);
+    int CreateItem(CreateItemModel newItemModel, int userId);
     IEnumerable<Item> GetItems(int userId);
 
     void DeleteItem(int itemId, int userId);

@@ -33,11 +33,11 @@ public partial class ItemManagerTests
             Username = "testuser"
         });
         var sut = new ItemManager(itemRepo, userRepo);
-        var input = new Item
+        var input = new CreateItemModel
         {
             Description = "New Task",
             ProjectId = 2,
-            tagIds = [1, 2]
+            TagIds = [1, 2]
         };
         var expectedUserId = 123;
 
@@ -54,8 +54,7 @@ public partial class ItemManagerTests
             Id = expectedItemId,
             Description = "New Task",
             UserId = expectedUserId,
-            ProjectId = 2,
-            tagIds = [1, 2]
+            ProjectId = 2
         });
     }
     
@@ -78,7 +77,7 @@ public partial class ItemManagerTests
         });
         var userRepo = new TestUserRepository();
         var sut = new ItemManager(itemRepo, userRepo);
-        var input = new Item
+        var input = new CreateItemModel()
         {
             Description = "New Task"
         };
