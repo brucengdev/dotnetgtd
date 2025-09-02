@@ -48,7 +48,7 @@ public class ItemManager: IItemManager
 
     public IEnumerable<ItemRestModel> GetItems(int userId)
     {
-        var items = _itemRepo.GetItems(userId);
+        var items = _itemRepo.GetItems(userId, fetchTagMappings: true);
         return items.Select(i => ItemRestModel.FromItem(i));
     }
 

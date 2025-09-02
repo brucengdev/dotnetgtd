@@ -11,8 +11,8 @@ public partial class ItemManagerTests
     public void Creating_item_is_successful()
     {
         //arrange
-        var itemRepo = new TestItemRepository();
-        itemRepo.Items = new List<Item>()
+        var itemRepo = new TestItemRepository(Data);
+        Data.Items = new List<Item>()
         {
             new Item
             {
@@ -42,7 +42,7 @@ public partial class ItemManagerTests
             new() { Id = 1, UserId = 123, Name = "Tag1" },
             new() { Id = 2, UserId = 123, Name = "Tag2" },
         };
-        var itemTagMappingRepo = new TestItemTagMappingRepo();
+        var itemTagMappingRepo = new TestItemTagMappingRepo(Data);
         var sut = new ItemManager(itemRepo, userRepo, itemTagMappingRepo);
         var input = new ItemRestModel
         {
@@ -58,8 +58,8 @@ public partial class ItemManagerTests
         //assert
         var expectedItemId = 3;
         itemId.ShouldBe(expectedItemId);
-        itemRepo.Items.Count.ShouldBe(3);
-        var savedItem = itemRepo.Items[itemRepo.Items.Count - 1];
+        Data.Items.Count.ShouldBe(3);
+        var savedItem = Data.Items[Data.Items.Count - 1];
         savedItem.ShouldBe(new Item
         {
             Id = expectedItemId,
@@ -68,7 +68,7 @@ public partial class ItemManagerTests
             ProjectId = 2
         });
 
-        itemTagMappingRepo.Mappings.Where(m => m.ItemId == expectedItemId)
+        Data.ItemTagMappings.Where(m => m.ItemId == expectedItemId)
             .ShouldBe(new List<ItemTagMapping>()
             {
                 new()
@@ -90,21 +90,21 @@ public partial class ItemManagerTests
     public void Creating_item_must_fail_if_user_is_invalid()
     {
         //arrange
-        var itemRepo = new TestItemRepository();
-        itemRepo.Items.Add(new Item
+        var itemRepo = new TestItemRepository(Data);
+        Data.Items.Add(new Item
         {
             Id = 1,
             Description = "Task 1",
             UserId = 123
         });
-        itemRepo.Items.Add(new Item
+        Data.Items.Add(new Item
         {
             Id = 2,
             Description = "Task 2",
             UserId = 234
         });
         var userRepo = new TestUserRepository();
-        var itemTagMappingRepo = new TestItemTagMappingRepo();
+        var itemTagMappingRepo = new TestItemTagMappingRepo(Data);
         var sut = new ItemManager(itemRepo, userRepo, itemTagMappingRepo);
         var input = new ItemRestModel()
         {
@@ -114,6 +114,6 @@ public partial class ItemManagerTests
 
         //act and assert
         Assert.Throws<UserNotFoundException>(() => sut.CreateItem(input, expectedUserId));
-        itemRepo.Items.Count.ShouldBe(2);
+        Data.Items.Count.ShouldBe(2);
     }
 }

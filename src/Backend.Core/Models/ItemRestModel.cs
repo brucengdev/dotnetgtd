@@ -16,7 +16,8 @@ public class ItemRestModel
             Id = item.Id,
             Description = item.Description,
             ProjectId = item.ProjectId,
-            UserId = item.UserId
+            UserId = item.UserId,
+            TagIds = item.ItemTagMappings?.Select(i => i.TagId) ??  Enumerable.Empty<int>()
         };
     }
 
@@ -29,7 +30,7 @@ public class ItemRestModel
         }
 
         var sameTagIds = (TagIds == null && other.TagIds == null)
-                         || TagIds.SequenceEqual(other.TagIds);
+                         || (TagIds != null && other.TagIds != null && TagIds.SequenceEqual(other.TagIds));
         return Id == other.Id
             && Description == other.Description
             && ProjectId == other.ProjectId

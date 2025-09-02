@@ -5,16 +5,21 @@ namespace Backend.Core.Tests.Mocks;
 
 public class TestItemTagMappingRepo: IItemTagMappingRepo
 {
-    public List<ItemTagMapping> Mappings { get; set; } = new();
+    private TestDataSource _data;
+
+    public TestItemTagMappingRepo(TestDataSource data)
+    {
+        _data = data;
+    }
     public int CreateMapping(ItemTagMapping mapping)
     {
-        mapping.Id = Mappings.Count + 1;
-        Mappings.Add(mapping);
+        mapping.Id = _data.ItemTagMappings.Count + 1;
+        _data.ItemTagMappings.Add(mapping);
         return mapping.Id;
     }
 
     public void DeleteByItemId(int itemId)
     {
-        Mappings.RemoveAll(m => m.ItemId == itemId);
+        _data.ItemTagMappings.RemoveAll(m => m.ItemId == itemId);
     }
 }
