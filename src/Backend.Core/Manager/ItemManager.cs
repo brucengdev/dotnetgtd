@@ -7,26 +7,49 @@ public class ItemManager: IItemManager
 {
     private IItemRepository _itemRepo;
     private IUserRepository _userRepo;
-    public ItemManager(IItemRepository itemRepo, IUserRepository userRepo)
+    private IItemTagMappingRepo _itemTagMappingRepo;
+    public ItemManager(IItemRepository itemRepo, 
+        IUserRepository userRepo, 
+        IItemTagMappingRepo itemTagMappingRepo)
     {
         _itemRepo = itemRepo;
         _userRepo = userRepo;
+        _itemTagMappingRepo = itemTagMappingRepo;
     }
 
-    public int CreateItem(Item item, int userId)
+    public int CreateItem(ItemServiceModel newItemServiceModel, int userId)
     {
         var user = _userRepo.GetUser(userId);
         if (user == null)
         {
             throw new UserNotFoundException();
         }
-        item.UserId = userId;
-        return _itemRepo.CreateItem(item);
+
+        var item = new Item()
+        {
+            Description = newItemServiceModel.Description,
+            Id = 0,
+            UserId = userId,
+            ProjectId = newItemServiceModel.ProjectId,
+        };
+        int itemId = _itemRepo.CreateItem(item);
+
+        foreach (var tagId in (newItemServiceModel.TagIds ?? []))
+        {
+            _itemTagMappingRepo.CreateMapping(new()
+            {
+                ItemId = itemId,
+                TagId = tagId
+            });
+        }
+
+        return itemId;
     }
 
-    public IEnumerable<Item> GetItems(int userId)
+    public IEnumerable<ItemServiceModel> GetItems(int userId)
     {
-        return _itemRepo.GetItems(userId);
+        var items = _itemRepo.GetItems(userId, fetchTagMappings: true);
+        return items.Select(i => ItemServiceModel.FromItem(i));
     }
 
     public void DeleteItem(int itemId, int userId)
@@ -40,6 +63,8 @@ public class ItemManager: IItemManager
         {
             throw new UnauthorizedAccessException("User is not allowed to delete items owned by other users");
         }
+
+        _itemTagMappingRepo.DeleteByItemId(itemId);
         _itemRepo.DeleteItem(itemId);
     }
 }

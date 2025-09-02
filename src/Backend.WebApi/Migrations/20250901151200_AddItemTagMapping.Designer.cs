@@ -4,6 +4,7 @@ using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Backend.WebApi.Migrations
 {
     [DbContext(typeof(GTDContext))]
-    partial class GTDContextModelSnapshot : ModelSnapshot
+    [Migration("20250901151200_AddItemTagMapping")]
+    partial class AddItemTagMapping
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,8 +67,6 @@ namespace Backend.WebApi.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
 
                     b.ToTable("ItemTagMappings");
                 });
@@ -150,15 +151,6 @@ namespace Backend.WebApi.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Backend.Models.ItemTagMapping", b =>
-                {
-                    b.HasOne("Backend.Models.Item", null)
-                        .WithMany("ItemTagMappings")
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Backend.Models.Tag", b =>
                 {
                     b.HasOne("Backend.Models.User", "User")
@@ -168,11 +160,6 @@ namespace Backend.WebApi.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Backend.Models.Item", b =>
-                {
-                    b.Navigation("ItemTagMappings");
                 });
 #pragma warning restore 612, 618
         }

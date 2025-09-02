@@ -13,32 +13,40 @@ public partial class ItemManagerTests
     public void GetItems_is_successful()
     {
         //arrange
-        var repo = new TestItemRepository();
-        repo.Items.Add(new Item
+        var repo = new TestItemRepository(Data);
+        Data.Items.Add(new Item
         {
             Id = 1,
             Description = "Task 1",
             UserId = 123
         });
-        repo.Items.Add(new Item
+        Data.Items.Add(new Item
         {
             Id = 2,
             Description = "Task 2",
             UserId = 234
         });
-        var sut = new ItemManager(repo, new Mock<IUserRepository>().Object);
+        var itemTagMappingRepo = new TestItemTagMappingRepo(Data);
+        Data.ItemTagMappings =
+        [
+            new() { Id = 1, ItemId = 1, TagId = 1 },
+            new() { Id = 2, ItemId = 1, TagId = 2 },
+            new() { Id = 3, ItemId = 2, TagId = 2 },
+        ];
+        var sut = new ItemManager(repo, new Mock<IUserRepository>().Object, itemTagMappingRepo);
         var expectedUserId = 123;
 
         //act
         var items = sut.GetItems(expectedUserId);
 
         //assert
-        items.ShouldBe(new List<Item>()
+        items.ShouldBe(new List<ItemServiceModel>()
         {
             new () {
                 Id = 1,
                 Description = "Task 1",
-                UserId = 123
+                UserId = 123,
+                TagIds = [ 1, 2 ]
             }
         });
     }

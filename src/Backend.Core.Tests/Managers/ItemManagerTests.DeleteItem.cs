@@ -2,8 +2,6 @@
 using Backend.Core.Repository;
 using Backend.Core.Tests.Mocks;
 using Backend.Models;
-using Backend.WebApi.Repository;
-using Microsoft.Identity.Client;
 using Moq;
 using Shouldly;
 
@@ -15,46 +13,57 @@ public partial class ItemManagerTests
     public void DeleteItem_must_be_successful()
     {
         //arrange
-        var repo = new TestItemRepository();
-        repo.Items = new List<Item>
+        var itemRepo = new TestItemRepository(Data);
+        Data.Items = new List<Item>
         {
             new() { Id = 1, Description = "Task A", UserId = 1 },
             new() { Id = 2, Description = "Task B", UserId = 23 },
             new() { Id = 3, Description = "Task C", UserId = 3 }
         };
-        var sut = new ItemManager(repo, new Mock<IUserRepository>().Object);
+        var itemTagMappingRepo = new TestItemTagMappingRepo(Data);
+        Data.ItemTagMappings = new List<ItemTagMapping>()
+        {
+            new() { Id = 1, TagId = 1, ItemId = 2 },
+            new() { Id = 2, TagId = 2, ItemId = 2 },
+            new() { Id = 3, TagId = 1, ItemId = 1 }
+        };
+        var sut = new ItemManager(itemRepo, new Mock<IUserRepository>().Object, itemTagMappingRepo);
         
         //act
         sut.DeleteItem(2, 23);
         
         //assert
-        repo.Items.Count.ShouldBe(2);
-        repo.Items.ShouldBe(new List<Item>
+        Data.Items.Count.ShouldBe(2);
+        Data.Items.ShouldBe(new List<Item>
         {
             new() { Id = 1, Description = "Task A", UserId = 1 },
             new() { Id = 3, Description = "Task C", UserId = 3 }
         });
+        Data.ItemTagMappings.ShouldNotContain(m => m.ItemId == 2);
+        Data.ItemTagMappings.ShouldBe([
+            new() { Id = 3, TagId = 1, ItemId = 1 }
+        ]);
     }
     
     [Fact]
     public void DeleteItem_must_fail_if_item_does_not_belong_to_user()
     {
         //arrange
-        var repo = new TestItemRepository();
-        repo.Items = new List<Item>
+        var repo = new TestItemRepository(Data);
+        Data.Items = new List<Item>
         {
             new() { Id = 1, Description = "Task A", UserId = 1 },
             new() { Id = 2, Description = "Task B", UserId = 23 },
             new() { Id = 3, Description = "Task C", UserId = 3 }
         };
-        var sut = new ItemManager(repo, new Mock<IUserRepository>().Object);
+        var sut = new ItemManager(repo, new Mock<IUserRepository>().Object, new TestItemTagMappingRepo(Data));
         
         //act and assert
         var exception = Assert.Throws<UnauthorizedAccessException>(() => sut.DeleteItem(1, 23));
         
         //assert
         exception.Message.ShouldBe("User is not allowed to delete items owned by other users");
-        repo.Items.ShouldBe(new List<Item>
+        Data.Items.ShouldBe(new List<Item>
         {
             new() { Id = 1, Description = "Task A", UserId = 1 },
             new() { Id = 2, Description = "Task B", UserId = 23 },
@@ -66,20 +75,20 @@ public partial class ItemManagerTests
     public void DeleteItem_must_fail_if_item_does_not_exist()
     {
         //arrange
-        var repo = new TestItemRepository();
-        repo.Items = new List<Item>
+        var repo = new TestItemRepository(Data);
+        Data.Items = new List<Item>
         {
             new() { Id = 1, Description = "Task A", UserId = 1 },
             new() { Id = 2, Description = "Task B", UserId = 23 },
             new() { Id = 3, Description = "Task C", UserId = 3 }
         };
-        var sut = new ItemManager(repo, new Mock<IUserRepository>().Object);
+        var sut = new ItemManager(repo, new Mock<IUserRepository>().Object, new TestItemTagMappingRepo(Data));
         
         //act and assert
         Assert.Throws<ItemNotFoundException>(() => sut.DeleteItem(4, 23));
         
         //assert
-        repo.Items.ShouldBe(new List<Item>
+        Data.Items.ShouldBe(new List<Item>
         {
             new() { Id = 1, Description = "Task A", UserId = 1 },
             new() { Id = 2, Description = "Task B", UserId = 23 },

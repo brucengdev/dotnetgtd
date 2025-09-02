@@ -5,30 +5,44 @@ namespace Backend.Core.Tests.Mocks;
 
 public class TestItemRepository: IItemRepository
 {
-    public List<Item> Items { get; set; } = new();
+    private TestDataSource _data;
+    public TestItemRepository(TestDataSource data)
+    {
+        _data = data;
+    }
     public int CreateItem(Item item)
     {
-        item.Id = Items.Count + 1;
-        Items.Add(item);
+        item.Id = _data.Items.Count + 1;
+        _data.Items.Add(item);
         return item.Id;
     }
 
-    public IEnumerable<Item> GetItems(int userId)
+    public IEnumerable<Item> GetItems(int userId, bool fetchTagMappings = false)
     {
-        return Items.Where(i => i.UserId == userId);
+        var results = _data.Items.Where(i => i.UserId == userId);
+        if (fetchTagMappings)
+        {
+            results = results.Select(i =>
+            {
+                var clone = new Item(i);
+                clone.ItemTagMappings = _data.ItemTagMappings.Where(m => m.ItemId == i.Id).ToList();
+                return clone;
+            });
+        }
+        return results;
     }
 
     public void DeleteItem(int itemId)
     {
-        var item = Items.Find(i => i.Id == itemId);
+        var item = _data.Items.Find(i => i.Id == itemId);
         if (item != null)
         {
-            Items.Remove(item);
+            _data.Items.Remove(item);
         }
     }
 
     public Item? GetItem(int itemId)
     {
-        return Items.Find(i => i.Id == itemId);
+        return _data.Items.Find(i => i.Id == itemId);
     }
 }

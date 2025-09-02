@@ -1,5 +1,6 @@
 ﻿using Backend.Core.Repository;
 using Backend.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Backend.WebApi.Repository;
 
@@ -17,9 +18,15 @@ public class ItemRepository: IItemRepository
         return item.Id;
     }
 
-    public IEnumerable<Item> GetItems(int userId)
+    public IEnumerable<Item> GetItems(int userId, bool fetchTagMappings = false)
     {
-        return _dbContext.Items.Where(i => i.UserId == userId);
+        var results =  _dbContext.Items.Where(i => i.UserId == userId);
+        if (fetchTagMappings)
+        {
+            results = results.Include(i => i.ItemTagMappings);
+        }
+
+        return results;
     }
 
     public void DeleteItem(int itemId)

@@ -11,32 +11,44 @@ public partial class ItemManagerTests
     public void Creating_item_is_successful()
     {
         //arrange
-        var itemRepo = new TestItemRepository();
-        itemRepo.Items.Add(new Item
+        var itemRepo = new TestItemRepository(Data);
+        Data.Items = new List<Item>()
         {
-            Id = 1,
-            Description = "Task 1",
-            UserId = 123,
-            ProjectId = null
-        });
-        itemRepo.Items.Add(new Item
-        {
-            Id = 2,
-            Description = "Task 2",
-            UserId = 234,
-            ProjectId = 1
-        });
+            new Item
+            {
+                Id = 1,
+                Description = "Task 1",
+                UserId = 123,
+                ProjectId = null
+            },
+            new Item
+            {
+                Id = 2,
+                Description = "Task 2",
+                UserId = 234,
+                ProjectId = 1
+            }
+        };
         var userRepo = new TestUserRepository();
         userRepo.AddUser(new()
         {
             Id = 123,
             Username = "testuser"
         });
-        var sut = new ItemManager(itemRepo, userRepo);
-        var input = new Item
+
+        var tagRepo = new TestTagRepository();
+        tagRepo.Tags = new List<Tag>()
+        {
+            new() { Id = 1, UserId = 123, Name = "Tag1" },
+            new() { Id = 2, UserId = 123, Name = "Tag2" },
+        };
+        var itemTagMappingRepo = new TestItemTagMappingRepo(Data);
+        var sut = new ItemManager(itemRepo, userRepo, itemTagMappingRepo);
+        var input = new ItemServiceModel
         {
             Description = "New Task",
-            ProjectId = 2
+            ProjectId = 2,
+            TagIds = [1, 2]
         };
         var expectedUserId = 123;
 
@@ -46,8 +58,8 @@ public partial class ItemManagerTests
         //assert
         var expectedItemId = 3;
         itemId.ShouldBe(expectedItemId);
-        itemRepo.Items.Count.ShouldBe(3);
-        var savedItem = itemRepo.Items[itemRepo.Items.Count - 1];
+        Data.Items.Count.ShouldBe(3);
+        var savedItem = Data.Items[Data.Items.Count - 1];
         savedItem.ShouldBe(new Item
         {
             Id = expectedItemId,
@@ -55,28 +67,46 @@ public partial class ItemManagerTests
             UserId = expectedUserId,
             ProjectId = 2
         });
+
+        Data.ItemTagMappings.Where(m => m.ItemId == expectedItemId)
+            .ShouldBe(new List<ItemTagMapping>()
+            {
+                new()
+                {
+                    Id = 1,
+                    ItemId = expectedItemId,
+                    TagId = 1
+                },
+                new()
+                {
+                    Id = 2,
+                    ItemId = expectedItemId,
+                    TagId = 2
+                }
+            });
     }
     
     [Fact]
     public void Creating_item_must_fail_if_user_is_invalid()
     {
         //arrange
-        var itemRepo = new TestItemRepository();
-        itemRepo.Items.Add(new Item
+        var itemRepo = new TestItemRepository(Data);
+        Data.Items.Add(new Item
         {
             Id = 1,
             Description = "Task 1",
             UserId = 123
         });
-        itemRepo.Items.Add(new Item
+        Data.Items.Add(new Item
         {
             Id = 2,
             Description = "Task 2",
             UserId = 234
         });
         var userRepo = new TestUserRepository();
-        var sut = new ItemManager(itemRepo, userRepo);
-        var input = new Item
+        var itemTagMappingRepo = new TestItemTagMappingRepo(Data);
+        var sut = new ItemManager(itemRepo, userRepo, itemTagMappingRepo);
+        var input = new ItemServiceModel()
         {
             Description = "New Task"
         };
@@ -84,6 +114,6 @@ public partial class ItemManagerTests
 
         //act and assert
         Assert.Throws<UserNotFoundException>(() => sut.CreateItem(input, expectedUserId));
-        itemRepo.Items.Count.ShouldBe(2);
+        Data.Items.Count.ShouldBe(2);
     }
 }
