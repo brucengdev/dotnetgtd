@@ -33,7 +33,7 @@ public partial class ItemManagerTests
         var items = sut.GetItems(expectedUserId);
 
         //assert
-        items.ShouldBe(new List<Item>()
+        items.ShouldBe(new List<ItemRestModel>()
         {
             new () {
                 Id = 1,

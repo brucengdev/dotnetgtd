@@ -17,7 +17,7 @@ public class ItemManager: IItemManager
         _itemTagMappingRepo = itemTagMappingRepo;
     }
 
-    public int CreateItem(CreateItemModel newItemModel, int userId)
+    public int CreateItem(ItemRestModel newItemRestModel, int userId)
     {
         var user = _userRepo.GetUser(userId);
         if (user == null)
@@ -27,14 +27,14 @@ public class ItemManager: IItemManager
 
         var item = new Item()
         {
-            Description = newItemModel.Description,
+            Description = newItemRestModel.Description,
             Id = 0,
             UserId = userId,
-            ProjectId = newItemModel.ProjectId,
+            ProjectId = newItemRestModel.ProjectId,
         };
         int itemId = _itemRepo.CreateItem(item);
 
-        foreach (var tagId in (newItemModel.TagIds ?? []))
+        foreach (var tagId in (newItemRestModel.TagIds ?? []))
         {
             _itemTagMappingRepo.CreateMapping(new()
             {
@@ -46,9 +46,10 @@ public class ItemManager: IItemManager
         return itemId;
     }
 
-    public IEnumerable<Item> GetItems(int userId)
+    public IEnumerable<ItemRestModel> GetItems(int userId)
     {
-        return _itemRepo.GetItems(userId);
+        var items = _itemRepo.GetItems(userId);
+        return items.Select(i => ItemRestModel.FromItem(i));
     }
 
     public void DeleteItem(int itemId, int userId)

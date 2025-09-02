@@ -34,7 +34,7 @@ namespace Backend.WebApi.Tests.Controller
             //arrange
             var itemManager = new Mock<IItemManager>();
             itemManager.Setup(im => im.GetItems(It.IsAny<int>()))
-                .Returns(new List<Item>()
+                .Returns(new List<ItemRestModel>()
                 {
                     new () { Id=1, Description = "Task A", UserId = 123, ProjectId = 1},
                     new () { Id=2, Description = "Task B", UserId = 123, ProjectId = 2}
@@ -54,7 +54,7 @@ namespace Backend.WebApi.Tests.Controller
             response.ShouldBeOfType<OkObjectResult>();
             var result = response as OkObjectResult;
             result?.StatusCode.ShouldBe((int)HttpStatusCode.OK);
-            result?.Value.ShouldBe(new List<Item>()
+            result?.Value.ShouldBe(new List<ItemRestModel>()
             {
                 new () { Id=1, Description = "Task A", UserId = 123, ProjectId = 1},
                 new () { Id=2, Description = "Task B", UserId = 123, ProjectId = 2}
