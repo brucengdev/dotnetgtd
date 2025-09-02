@@ -20,7 +20,7 @@ export default function ItemList(props: ItemListProps) {
             {
                 items?.map(item => {
                     const projectName = props.projects?.find(p => Number(p.id) == Number(item.projectId))?.name
-                    const tags = (item.tagIds ?? []).map(id => props.tags?.find(t => t.id === id)).filter(t => t !== undefined) as Tag[]
+                    const tags = (item.tagIds ?? []).map(id => tags?.find(t => t.id === id)).filter(t => t !== undefined) as Tag[]
                     const tagNames = tags.map(t => t.name)
                     return <ItemView 
                         description={item.description} 
