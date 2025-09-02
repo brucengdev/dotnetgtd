@@ -40,7 +40,7 @@ public partial class ItemManagerTests
         var items = sut.GetItems(expectedUserId);
 
         //assert
-        items.ShouldBe(new List<ItemRestModel>()
+        items.ShouldBe(new List<ItemServiceModel>()
         {
             new () {
                 Id = 1,

@@ -1,6 +1,6 @@
 ﻿namespace Backend.Models;
 
-public class ItemRestModel
+public class ItemServiceModel
 {
     public int Id { get; set; }
     public string Description { get; set; }
@@ -9,9 +9,9 @@ public class ItemRestModel
     
     public int UserId { get; set; }
 
-    public static ItemRestModel FromItem(Item item)
+    public static ItemServiceModel FromItem(Item item)
     {
-        return new ItemRestModel()
+        return new ItemServiceModel()
         {
             Id = item.Id,
             Description = item.Description,
@@ -23,7 +23,7 @@ public class ItemRestModel
 
     public override bool Equals(object? obj)
     {
-        var other = obj as ItemRestModel;
+        var other = obj as ItemServiceModel;
         if (other == null)
         {
             return false;

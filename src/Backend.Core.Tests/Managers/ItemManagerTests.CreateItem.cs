@@ -44,7 +44,7 @@ public partial class ItemManagerTests
         };
         var itemTagMappingRepo = new TestItemTagMappingRepo(Data);
         var sut = new ItemManager(itemRepo, userRepo, itemTagMappingRepo);
-        var input = new ItemRestModel
+        var input = new ItemServiceModel
         {
             Description = "New Task",
             ProjectId = 2,
@@ -106,7 +106,7 @@ public partial class ItemManagerTests
         var userRepo = new TestUserRepository();
         var itemTagMappingRepo = new TestItemTagMappingRepo(Data);
         var sut = new ItemManager(itemRepo, userRepo, itemTagMappingRepo);
-        var input = new ItemRestModel()
+        var input = new ItemServiceModel()
         {
             Description = "New Task"
         };
