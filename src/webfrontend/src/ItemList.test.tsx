@@ -14,12 +14,17 @@ describe("ItemList", () => {
     it("shows a list of items", async () => {
         const items = [
             { id: 1, description: "Task A", projectId: 0 },
-            { id: 2, description: "Task B", projectId: 2 }
+            { id: 2, description: "Task B", projectId: 2, tagIds: [1, 2] }
         ]
         const projects = [
             { id: 2, name: "Project X" }
         ]
-        render(<ItemList items={items} projects={projects} />)
+        const tags = [
+            { id: 1, name: "Tag 1" },
+            { id: 2, name: "Tag 2" },
+            { id: 3, name: "Tag 3" }
+        ]
+        render(<ItemList items={items} projects={projects} tags={tags} />)
 
         await sleep(10)
 
@@ -30,6 +35,7 @@ describe("ItemList", () => {
         expect(itemViews[0].querySelector('[data-testid="project"]')?.textContent).toBe("")
         expect(itemViews[1].querySelector('[data-testid="description"]')?.textContent).toBe("Task B")
         expect(itemViews[1].querySelector('[data-testid="project"]')?.textContent).toBe("Project X")
+        expect(itemViews[1].querySelector('[data-testid="tags"]')?.textContent).toBe("Tag 1,Tag 2")
 
         expect(screen.queryByText("There are no items.")).not.toBeInTheDocument()
     })
