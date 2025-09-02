@@ -12,4 +12,9 @@ public class TestItemTagMappingRepo: IItemTagMappingRepo
         Mappings.Add(mapping);
         return mapping.Id;
     }
+
+    public void DeleteByItemId(int itemId)
+    {
+        Mappings.RemoveAll(m => m.ItemId == itemId);
+    }
 }

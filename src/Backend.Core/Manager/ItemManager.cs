@@ -62,6 +62,8 @@ public class ItemManager: IItemManager
         {
             throw new UnauthorizedAccessException("User is not allowed to delete items owned by other users");
         }
+
+        _itemTagMappingRepo.DeleteByItemId(itemId);
         _itemRepo.DeleteItem(itemId);
     }
 }
