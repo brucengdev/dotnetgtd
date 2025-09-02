@@ -4,6 +4,7 @@ import '@testing-library/jest-dom'
 import { TaskView } from "./TaskView";
 import { TestClient } from "./__test__/TestClient";
 import { sleep } from "./__test__/testutils";
+import userEvent from "@testing-library/user-event";
 
 describe("TaskView", () => {
     it("has necessary ui components", () => {
@@ -64,6 +65,10 @@ describe("TaskView", () => {
         client.Projects = [
             { id: 1, name: "Project X"}
         ]
+        client.Tags = [
+            { id: 1, name: "Tag 1" },
+            { id: 2, name: "Tag 2" }
+        ]
         render(<TaskView client={client} />)
 
         await sleep(1)
@@ -80,6 +85,9 @@ describe("TaskView", () => {
 
         fireEvent.change(screen.getByRole("textbox", { name: "Description"}), { target: { value: "Task B"}})
         fireEvent.change(screen.getByRole("combobox", { name: "Project"}), { target: { value: 1 } })
+        userEvent.selectOptions(screen.getByRole("listbox", { name: "Tags"}), ["1", "2"])
+
+        await sleep(1)
 
         fireEvent.click(screen.getByRole("button", { name: "Create"}))
 
@@ -91,6 +99,7 @@ describe("TaskView", () => {
         expect(items[0].querySelector('[data-testId="project"]')?.textContent).toBe("")
         expect(items[1].querySelector('[data-testId="description"]')?.textContent).toBe("Task B")
         expect(items[1].querySelector('[data-testId="project"]')?.textContent).toBe("Project X")
+        expect(items[1].querySelector('[data-testId="tags"]')?.textContent).toBe("Tag 1,Tag 2")
     })
 
 
