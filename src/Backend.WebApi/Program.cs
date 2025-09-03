@@ -58,7 +58,11 @@ using(var serviceScope = app.Services.CreateScope())
 {
     var context = serviceScope.ServiceProvider.GetService<GTDContext>();
     context.Database.Migrate();
-    SeedData.Initialize(context, builder.Configuration.GetValue<string>("HashSalt")??Constants.DEFAULT_HASH_SALT);
+    var adminPassword = builder.Configuration.GetValue<string>("AdminPassword") 
+                        ?? Constants.DEFAULT_ADMIN_PASSWORD;
+    var salt = builder.Configuration.GetValue<string>("HashSalt") 
+               ?? Constants.DEFAULT_HASH_SALT;
+    SeedData.Initialize(context, adminPassword, salt);
 }
 
 app.UseDefaultFiles();
