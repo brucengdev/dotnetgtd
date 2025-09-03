@@ -39,6 +39,11 @@ public class AccountController: ControllerBase
         [FromForm] string username, 
         [FromForm] string password)
     {
+        var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
+        if (userId != 1)
+        {
+            return Unauthorized();
+        }
         var result = _accountManager.CreateUser(username, password);
         if (result == CreateUserResult.AlreadyExists)
         {
