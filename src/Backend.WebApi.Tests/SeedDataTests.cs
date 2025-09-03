@@ -1,4 +1,6 @@
-﻿using Backend.Models;
+﻿using System.Security.Cryptography;
+using System.Text;
+using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 using Shouldly;
 
@@ -21,5 +23,16 @@ public class SeedDataTests
         
         //assert
         context.Users.Count().ShouldBe(1);
+        var admin = context.Users.Single();
+        admin.Username.ShouldBe("admin");
+        admin.PasswordHash.ShouldBe(CreateHash("admin", salt));
+    }
+
+    private string CreateHash(string input, string salt)
+    {
+        using var algo = SHA256.Create();
+        var phraseToHash = input + salt;
+        var hash = algo.ComputeHash(Encoding.UTF8.GetBytes(phraseToHash));
+        return Convert.ToBase64String(hash);
     }
 }
