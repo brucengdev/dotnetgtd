@@ -13,8 +13,14 @@ describe("ItemList", () => {
 
     it("shows a list of items", async () => {
         const items = [
-            { id: 1, description: "Task A", projectId: 0 },
-            { id: 2, description: "Task B", projectId: 2, tagIds: [1, 2] }
+            { 
+                id: 1, description: "Task A", projectId: 0, 
+                done: false, later: true 
+            },
+            { 
+                id: 2, description: "Task B", projectId: 2, tagIds: [1, 2] ,
+                done: true, later: false
+            }
         ]
         const projects = [
             { id: 2, name: "Project X" }
@@ -31,18 +37,34 @@ describe("ItemList", () => {
         let itemViews = screen.getAllByTestId("item")
         expect(itemViews.length).toBe(2)
 
-        expect(itemViews[0].querySelector('[data-testid="description"]')?.textContent).toBe("Task A")
-        expect(itemViews[0].querySelector('[data-testid="project"]')?.textContent).toBe("")
-        expect(itemViews[1].querySelector('[data-testid="description"]')?.textContent).toBe("Task B")
-        expect(itemViews[1].querySelector('[data-testid="project"]')?.textContent).toBe("Project X")
-        expect(itemViews[1].querySelector('[data-testid="tags"]')?.textContent).toBe("Tag 1,Tag 2")
+        expect(itemViews[0].querySelector('[data-testid="description"]')
+            ?.textContent).toBe("Task A")
+        expect(itemViews[0].querySelector('[data-testid="project"]')
+            ?.textContent).toBe("")
+        expect(itemViews[0].querySelector('[data-testid="done"]'))
+            .not.toBeChecked()
+        expect(itemViews[0].querySelector('[data-testid="later"]'))
+            .toBeChecked()
+
+        expect(itemViews[1].querySelector('[data-testid="description"]')
+            ?.textContent).toBe("Task B")
+        expect(itemViews[1].querySelector('[data-testid="project"]')
+            ?.textContent).toBe("Project X")
+        expect(itemViews[1].querySelector('[data-testid="tags"]')
+            ?.textContent).toBe("Tag 1,Tag 2")
+        expect(itemViews[1].querySelector('[data-testid="done"]'))
+            .toBeChecked()
+        expect(itemViews[1].querySelector('[data-testid="later"]'))
+            .not.toBeChecked()
+
 
         expect(screen.queryByText("There are no items.")).not.toBeInTheDocument()
     })
 
     it("shows a list of items 2", async () => {
         const items = [
-            { id: 1, description: "Task C", projectId: 1 },
+            { id: 1, description: "Task C", projectId: 1, 
+                done: false, later: false },
         ]
         render(<ItemList items={items} />)
         await sleep(10)
@@ -54,9 +76,12 @@ describe("ItemList", () => {
 
     it("executes onDelete when an item is deleted by user", async () => {
         const items = [
-            { id: 1, description: "Task A", projectId: 1 },
-            { id: 2, description: "Task B", projectId: 1 },
-            { id: 3, description: "Task C", projectId: 1 }
+            { id: 1, description: "Task A", projectId: 1, 
+                done: false, later: false },
+            { id: 2, description: "Task B", projectId: 1, 
+                done: false, later: false },
+            { id: 3, description: "Task C", projectId: 1, 
+                done: false, later: false }
         ]
         let selectedItem: Item | undefined = undefined
         const onDelete = vitest.fn((item: Item) => {
@@ -73,6 +98,7 @@ describe("ItemList", () => {
 
         fireEvent.click(screen.getByRole("button", { name: "Yes" }))
         expect(onDelete).toHaveBeenCalled()
-        expect(selectedItem).toEqual({ id: 2, description: "Task B", projectId: 1 })
+        expect(selectedItem).toEqual({ id: 2, description: "Task B", 
+            projectId: 1, done: false, later: false })
     })
 })
