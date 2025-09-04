@@ -3,4 +3,6 @@ export interface Item {
     description: string
     projectId?: number
     tagIds?: number[]
+    done: boolean
+    later: boolean
 }

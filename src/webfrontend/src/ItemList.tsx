@@ -26,6 +26,8 @@ export default function ItemList(props: ItemListProps) {
                         description={item.description} 
                         projectName={projectName}
                         tagNames={tagNames}
+                        done={item.done}
+                        later={item.later}
                         onDelete={() => {
                                 if(onDelete) { onDelete(item) }
                             }
