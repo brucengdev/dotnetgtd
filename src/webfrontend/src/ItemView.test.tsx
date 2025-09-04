@@ -11,7 +11,9 @@ describe("ItemView", () => {
             projectName: "Project A",
             expectedDisplayedProjectName: "Project A",
             tagNames: [],
-            expectedDisplayedTags: ""
+            expectedDisplayedTags: "",
+            done: false,
+            later: false
         },
         { 
             testCaseName: "renders view correctly with undefined project name",
@@ -19,7 +21,9 @@ describe("ItemView", () => {
             projectName: undefined,
             expectedDisplayedProjectName: "",
             tagNames: [],
-            expectedDisplayedTags: ""
+            expectedDisplayedTags: "",
+            done: false,
+            later: true
         },
         { 
             testCaseName: "renders view correctly with empty project name",
@@ -27,7 +31,9 @@ describe("ItemView", () => {
             projectName: "",
             expectedDisplayedProjectName: "",
             tagNames: [],
-            expectedDisplayedTags: ""
+            expectedDisplayedTags: "",
+            done: true,
+            later: false
         },
         { 
             testCaseName: "renders view correctly with 1 tag",
@@ -35,7 +41,9 @@ describe("ItemView", () => {
             projectName: "Project A",
             expectedDisplayedProjectName: "Project A",
             tagNames: ["tag1"],
-            expectedDisplayedTags: "tag1"
+            expectedDisplayedTags: "tag1",
+            done: true,
+            later: true
         },
         { 
             testCaseName: "renders view correctly with multiple tags",
@@ -43,15 +51,18 @@ describe("ItemView", () => {
             projectName: "Project A",
             expectedDisplayedProjectName: "Project A",
             tagNames: ["tag1", "tag2"],
-            expectedDisplayedTags: "tag1,tag2"
+            expectedDisplayedTags: "tag1,tag2",
+            done: false,
+            later: false
         }
     ].forEach(testCase => {
         const {testCaseName, description, 
             projectName, expectedDisplayedProjectName,
-            tagNames, expectedDisplayedTags} = testCase
+            tagNames, expectedDisplayedTags, done, later} = testCase
         it(testCaseName, () => {
             render(<ItemView description={description} 
-                projectName={projectName} tagNames={tagNames} />)
+                projectName={projectName} tagNames={tagNames} 
+                done={done} later={later} />)
 
             const descriptionView = screen.getByTestId("description")
             expect(descriptionView).toBeInTheDocument()
@@ -64,6 +75,13 @@ describe("ItemView", () => {
             const tagNamesView = screen.getByTestId("tags")
             expect(tagNamesView).toBeInTheDocument()
             expect(tagNamesView.textContent).toBe(expectedDisplayedTags)
+
+            const doneView = screen.getByRole("checkbox", { name: "Done"})
+            if(done) {
+                expect(doneView).toBeChecked()
+            }else {
+                expect(doneView).not.toBeChecked()
+            }
 
             const deleteButton = screen.getByRole("button", { name: "Delete" })
             expect(deleteButton).toBeInTheDocument()
