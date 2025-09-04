@@ -7,8 +7,12 @@ namespace Backend.Core.Tests;
 
 public partial class ItemManagerTests
 {
-    [Fact]
-    public void Creating_item_is_successful()
+    [Theory]
+    [InlineData("task a", false, false)]
+    [InlineData("task b", false, true)]
+    [InlineData("task c", true, false)]
+    [InlineData("task d", true, true)]
+    public void Creating_item_is_successful(string desc, bool done, bool later)
     {
         //arrange
         var itemRepo = new TestItemRepository(Data);
@@ -46,14 +50,15 @@ public partial class ItemManagerTests
         var sut = new ItemManager(itemRepo, userRepo, itemTagMappingRepo);
         var input = new ItemServiceModel
         {
-            Description = "New Task",
+            Description = desc,
             ProjectId = 2,
-            TagIds = [1, 2]
+            TagIds = [1, 2],
+            Done = done,
+            Later = later
         };
-        var expectedUserId = 123;
 
         //act
-        var itemId = sut.CreateItem(input, expectedUserId);
+        var itemId = sut.CreateItem(input, 123);
 
         //assert
         var expectedItemId = 3;
@@ -63,9 +68,11 @@ public partial class ItemManagerTests
         savedItem.ShouldBe(new Item
         {
             Id = expectedItemId,
-            Description = "New Task",
-            UserId = expectedUserId,
-            ProjectId = 2
+            Description = desc,
+            UserId = 123,
+            ProjectId = 2,
+            Done = done,
+            Later = later
         });
 
         Data.ItemTagMappings.Where(m => m.ItemId == expectedItemId)

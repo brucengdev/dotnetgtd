@@ -31,6 +31,8 @@ public class ItemManager: IItemManager
             Id = 0,
             UserId = userId,
             ProjectId = newItemServiceModel.ProjectId,
+            Done = newItemServiceModel.Done,
+            Later = newItemServiceModel.Later
         };
         int itemId = _itemRepo.CreateItem(item);
 

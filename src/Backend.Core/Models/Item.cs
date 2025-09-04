@@ -11,6 +11,9 @@ public class Item
     public int? ProjectId { get; set; }
     public Project? Project { get; set; }
     
+    public bool Done { get; set; }
+    public bool Later { get; set; }
+    
     public ICollection<ItemTagMapping>? ItemTagMappings { get; set; }
     
     public Item() { }
@@ -40,6 +43,8 @@ public class Item
                && Description == otherItem.Description
                && UserId == otherItem.UserId
                && ProjectId == otherItem.ProjectId
-               && hasSameTagMappings;
+               && hasSameTagMappings
+               && Done == otherItem.Done
+               && Later == otherItem.Later;
     }
 }
