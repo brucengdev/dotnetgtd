@@ -83,6 +83,13 @@ describe("ItemView", () => {
                 expect(doneView).not.toBeChecked()
             }
 
+            const laterView = screen.getByRole("checkbox", { name: "Later"})
+            if(later) {
+                expect(laterView).toBeChecked()
+            }else {
+                expect(laterView).not.toBeChecked()
+            }
+
             const deleteButton = screen.getByRole("button", { name: "Delete" })
             expect(deleteButton).toBeInTheDocument()
 
