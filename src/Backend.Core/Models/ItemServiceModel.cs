@@ -8,6 +8,9 @@ public class ItemServiceModel
     public IEnumerable<int>? TagIds { get; set; }
     
     public int UserId { get; set; }
+    
+    public bool Done { get; set; }
+    public bool Later { get; set; }
 
     public static ItemServiceModel FromItem(Item item)
     {

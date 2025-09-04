@@ -46,7 +46,9 @@ namespace Backend.WebApi.Tests.Controller
             {
                 Description = "Foo",
                 ProjectId = 1,
-                TagIds = new List<int>{1, 2}
+                TagIds = new List<int>{1, 2},
+                Done = false,
+                Later = false
             };
             var response = sut.CreateItem(item);
 
