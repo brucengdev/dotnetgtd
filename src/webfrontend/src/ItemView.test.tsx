@@ -93,12 +93,14 @@ describe("ItemView", () => {
             const deleteButton = screen.getByRole("button", { name: "Delete" })
             expect(deleteButton).toBeInTheDocument()
 
-            expect(screen.queryByTestId("confirmDeleteView")).not.toBeInTheDocument()
+            expect(screen.queryByTestId("confirmDeleteView"))
+                .not.toBeInTheDocument()
         })
     })
 
     it("shows delete confirm view when delete is clicked", () => {
-        render(<ItemView description="Test Description" />)
+        render(<ItemView description="Test Description" 
+                done={false} later={false} />)
 
         const deleteButton = screen.getByRole("button", { name: "Delete" })
         fireEvent.click(deleteButton)
@@ -108,18 +110,21 @@ describe("ItemView", () => {
     })
 
     it("hides delete confirm view when no is clicked", () => {
-        render(<ItemView description="Test Description" />)
+        render(<ItemView description="Test Description"
+                done={false} later={false} />)
 
         const deleteButton = screen.getByRole("button", { name: "Delete" })
         fireEvent.click(deleteButton)
 
         fireEvent.click(screen.getByRole("button", { name: "No" }))
-        expect(screen.queryByTestId("confirmDeleteView")).not.toBeInTheDocument()
+        expect(screen.queryByTestId("confirmDeleteView"))
+                .not.toBeInTheDocument()
     })
 
     it("executes onDelete when yes is clicked", () => {
         const onDelete = vitest.fn()
-        render(<ItemView description="Test Description" onDelete={onDelete} />)
+        render(<ItemView description="Test Description" 
+                onDelete={onDelete} done={false} later={false} />)
 
         const deleteButton = screen.getByRole("button", { name: "Delete" })
         fireEvent.click(deleteButton)
