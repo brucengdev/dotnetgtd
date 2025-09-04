@@ -25,13 +25,9 @@ public class ItemManager: IItemManager
             throw new UserNotFoundException();
         }
 
-        var item = new Item()
-        {
-            Description = newItemServiceModel.Description,
-            Id = 0,
-            UserId = userId,
-            ProjectId = newItemServiceModel.ProjectId,
-        };
+        newItemServiceModel.UserId = userId;
+
+        var item = Item.FromServiceModel(newItemServiceModel);
         int itemId = _itemRepo.CreateItem(item);
 
         foreach (var tagId in (newItemServiceModel.TagIds ?? []))

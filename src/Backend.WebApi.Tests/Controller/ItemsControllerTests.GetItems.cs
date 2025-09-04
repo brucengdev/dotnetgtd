@@ -36,8 +36,16 @@ namespace Backend.WebApi.Tests.Controller
             itemManager.Setup(im => im.GetItems(It.IsAny<int>()))
                 .Returns(new List<ItemServiceModel>()
                 {
-                    new () { Id=1, Description = "Task A", UserId = 123, ProjectId = 1},
-                    new () { Id=2, Description = "Task B", UserId = 123, ProjectId = 2}
+                    new () 
+                    {
+                        Id=1, Description = "Task A", UserId = 123, ProjectId = 1, 
+                        Done = true, Later = false 
+                    },
+                    new ()
+                    {
+                        Id=2, Description = "Task B", UserId = 123, ProjectId = 2,
+                        Done = false, Later = true 
+                    }
                 });
             var sut = new ItemsController(itemManager.Object);
             sut.ControllerContext = new ControllerContext();
@@ -56,8 +64,16 @@ namespace Backend.WebApi.Tests.Controller
             result?.StatusCode.ShouldBe((int)HttpStatusCode.OK);
             result?.Value.ShouldBe(new List<ItemServiceModel>()
             {
-                new () { Id=1, Description = "Task A", UserId = 123, ProjectId = 1},
-                new () { Id=2, Description = "Task B", UserId = 123, ProjectId = 2}
+                new ()
+                {
+                    Id=1, Description = "Task A", UserId = 123, ProjectId = 1,
+                    Done = true, Later = false
+                },
+                new ()
+                {
+                    Id=2, Description = "Task B", UserId = 123, ProjectId = 2,
+                    Done = false, Later = true
+                }
             });
         }
     }
