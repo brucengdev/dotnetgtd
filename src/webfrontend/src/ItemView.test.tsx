@@ -76,14 +76,14 @@ describe("ItemView", () => {
             expect(tagNamesView).toBeInTheDocument()
             expect(tagNamesView.textContent).toBe(expectedDisplayedTags)
 
-            const doneView = screen.getByRole("checkbox", { name: "Done"})
+            const doneView = screen.getByTestId("done")
             if(done) {
                 expect(doneView).toBeChecked()
             }else {
                 expect(doneView).not.toBeChecked()
             }
 
-            const laterView = screen.getByRole("checkbox", { name: "Later"})
+            const laterView = screen.getByTestId("later")
             if(later) {
                 expect(laterView).toBeChecked()
             }else {
