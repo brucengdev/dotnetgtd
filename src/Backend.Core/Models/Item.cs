@@ -47,4 +47,17 @@ public class Item
                && Done == otherItem.Done
                && Later == otherItem.Later;
     }
+
+    public static Item FromServiceModel(ItemServiceModel newItemServiceModel)
+    {
+        return new Item()
+        {
+            Description = newItemServiceModel.Description,
+            Id = 0,
+            UserId = newItemServiceModel.UserId,
+            ProjectId = newItemServiceModel.ProjectId,
+            Done = newItemServiceModel.Done,
+            Later = newItemServiceModel.Later
+        };
+    }
 }
