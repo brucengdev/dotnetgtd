@@ -156,8 +156,8 @@ describe("AddItemForm", () => {
                 id: 0,
                 description: desc,
                 tagIds: [],
-                done: false,
-                later: false
+                done: done,
+                later: later
             })
 
             expect(onCompleted).toHaveBeenCalled()
