@@ -66,6 +66,10 @@ export function AddItemForm(props: AddItemFormProps) {
                 >{t.name}</option>)}
             </select>
         </label>
+        <label>
+            Done
+            <input type="checkbox" />
+        </label>
         <div className="flex justify-end gap-2">
             <Button 
                 mode={ButtonMode.PRIMARY}

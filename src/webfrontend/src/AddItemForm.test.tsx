@@ -53,6 +53,9 @@ describe("AddItemForm", () => {
         expect(tag2.getAttribute("value")).toBe("2")
         expect(tag2.selected).toBe(false)
 
+        const doneCheckBox = screen.getByRole("checkbox", { name: "Done"})
+        expect(doneCheckBox).toBeInTheDocument()
+
         expect(screen.getByRole("button", {name: "Create"})).toBeInTheDocument()
         expect(screen.getByRole("button", {name: "Cancel"})).toBeInTheDocument()
     })
