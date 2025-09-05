@@ -14,7 +14,7 @@ export default function ItemView(props: ItemViewProps) {
     const { description, onDelete, done, later } = props
     const [ showConfirmDelete, setShowConfirmDelete ] = useState(false)
     return <div data-testId="item">
-        <div  className="grid grid-cols-4 mb-1">
+        <div  className="grid grid-cols-6 mb-1">
             <div data-testId="description">{description}</div>
             <div data-testId="project">{props.projectName??""}</div>
             <div data-testId="tags">{props.tagNames?.join(",") ?? ""}</div>
