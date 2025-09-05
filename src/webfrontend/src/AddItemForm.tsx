@@ -83,7 +83,9 @@ export function AddItemForm(props: AddItemFormProps) {
                         id: 0, 
                         description, 
                         projectId: (projectId === 0? undefined: projectId),
-                        tagIds: selectedTagIds
+                        tagIds: selectedTagIds,
+                        done: false,
+                        later: false
                     })
                     .then(() => {
                         if(onCompleted) {
