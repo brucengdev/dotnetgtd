@@ -95,6 +95,64 @@ describe("AddItemForm", () => {
         expect(fn).toHaveBeenCalled()
     })
 
+    var createItemCases = [
+        {
+            desc: "Task 1",
+            done: false, later: false
+        },
+        {
+            desc: "Task 2",
+            done: false, later: true
+        },
+        {
+            desc: "Task 3",
+            done: true, later: false
+        },
+        {
+            desc: "Task 4",
+            done: true, later: true
+        }
+    ]
+    createItemCases.forEach(test => {
+        const { desc, done, later } = test
+        it(`creates item with done=${done} and later=${later}`, async () => {
+            const client = new TestClient()
+            const onCompleted = vitest.fn()
+            render(<AddItemForm onCancel={() => {}} client={client} onCompleted={onCompleted} />)
+
+            await sleep(1)
+
+            const descriptionTextBox = screen.getByRole("textbox", { name: "Description"})
+            fireEvent.change(descriptionTextBox, { target: { value: desc}})
+
+            const doneCheckBox = screen.getByRole("checkbox", { name: "Done"})
+            if(done) {
+                fireEvent.click(doneCheckBox)
+            }
+
+            expect(descriptionTextBox).toHaveValue(desc)
+            if(done) {
+                expect(doneCheckBox).toBeChecked()
+            }else {
+                expect(doneCheckBox).not.toBeChecked()
+            }
+
+            fireEvent.click(screen.getByRole("button", { name: "Create"}))
+            
+            await sleep(1)
+
+            expect(client.Items).toContainEqual({
+                id: 0,
+                description: desc,
+                tagIds: [],
+                done: false,
+                later: false
+            })
+
+            expect(onCompleted).toHaveBeenCalled()
+        })
+    })
+
     var projectCases = [
         {
             testName: "submits item to backend when clicking Create and no project", 
@@ -133,7 +191,9 @@ describe("AddItemForm", () => {
                 id: 0,
                 description: taskDescription,
                 projectId: expectedProjectId,
-                tagIds: []
+                tagIds: [],
+                done: false,
+                later: false
             })
 
             expect(onCompleted).toHaveBeenCalled()
@@ -192,7 +252,9 @@ describe("AddItemForm", () => {
                 id: 0,
                 description: taskDescription,
                 projectId: undefined,
-                tagIds
+                tagIds,
+                done: false,
+                later: false
             })
 
             expect(onCompleted).toHaveBeenCalled()
