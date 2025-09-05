@@ -18,6 +18,8 @@ export function AddItemForm(props: AddItemFormProps) {
     const [projectId, setProjectId] = useState<number>(0)
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
     const [selectedTagIds, setSelectedTagIds] = useState<number[]>([])
+    const [done, setDone] = useState(false)
+    const [later, setLater] = useState(false)
     if(projects === undefined) {
         client.GetProjects()
         .then(retrievedProjects => setProjects(retrievedProjects))
@@ -68,11 +70,13 @@ export function AddItemForm(props: AddItemFormProps) {
         </label>
         <label>
             Done
-            <input type="checkbox" />
+            <input type="checkbox" checked={done} 
+                onClick={() => setDone(!done)} />
         </label>
         <label>
             Later
-            <input type="checkbox" />
+            <input type="checkbox" checked={later} 
+                onClick={() => setLater(!later)} />
         </label>
         <div className="flex justify-end gap-2">
             <Button 
@@ -84,8 +88,8 @@ export function AddItemForm(props: AddItemFormProps) {
                         description, 
                         projectId: (projectId === 0? undefined: projectId),
                         tagIds: selectedTagIds,
-                        done: false,
-                        later: false
+                        done,
+                        later
                     })
                     .then(() => {
                         if(onCompleted) {
