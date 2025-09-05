@@ -30,6 +30,14 @@ public partial class ItemManagerTests
             Done = false,
             Later = true
         });
+        Data.Items.Add(new Item
+        {
+            Id = 3,
+            Description = "Task 3",
+            UserId = 123,
+            Done = false,
+            Later = true
+        });
         var itemTagMappingRepo = new TestItemTagMappingRepo(Data);
         Data.ItemTagMappings =
         [
@@ -53,6 +61,15 @@ public partial class ItemManagerTests
                 TagIds = [ 1, 2 ],
                 Done = true,
                 Later = false
+            },
+            new()
+            {
+                Id = 3,
+                Description = "Task 3",
+                UserId = 123,
+                TagIds = [],
+                Done = false,
+                Later = true
             }
         });
     }
