@@ -130,12 +130,23 @@ describe("AddItemForm", () => {
                 fireEvent.click(doneCheckBox)
             }
 
+            const laterCheckBox = screen.getByRole("checkbox", { name: "Later"})
+            if(later) {
+                fireEvent.click(laterCheckBox)
+            }
+
             expect(descriptionTextBox).toHaveValue(desc)
             if(done) {
                 expect(doneCheckBox).toBeChecked()
             }else {
                 expect(doneCheckBox).not.toBeChecked()
             }
+            if(later) {
+                expect(laterCheckBox).toBeChecked()
+            }else {
+                expect(laterCheckBox).not.toBeChecked()
+            }
+
 
             fireEvent.click(screen.getByRole("button", { name: "Create"}))
             
