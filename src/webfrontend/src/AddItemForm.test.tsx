@@ -57,6 +57,10 @@ describe("AddItemForm", () => {
         expect(doneCheckBox).toBeInTheDocument()
         expect(doneCheckBox).not.toBeChecked()
 
+        const laterCheckBox = screen.getByRole("checkbox", { name: "Later"})
+        expect(laterCheckBox).toBeInTheDocument()
+        expect(laterCheckBox).not.toBeChecked()
+
         expect(screen.getByRole("button", {name: "Create"})).toBeInTheDocument()
         expect(screen.getByRole("button", {name: "Cancel"})).toBeInTheDocument()
     })
