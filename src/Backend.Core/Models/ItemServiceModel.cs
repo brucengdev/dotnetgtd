@@ -20,7 +20,9 @@ public class ItemServiceModel
             Description = item.Description,
             ProjectId = item.ProjectId,
             UserId = item.UserId,
-            TagIds = item.ItemTagMappings?.Select(i => i.TagId) ??  Enumerable.Empty<int>()
+            TagIds = item.ItemTagMappings?.Select(i => i.TagId) ??  Enumerable.Empty<int>(),
+            Done = item.Done,
+            Later = item.Later
         };
     }
 
@@ -35,9 +37,11 @@ public class ItemServiceModel
         var sameTagIds = (TagIds == null && other.TagIds == null)
                          || (TagIds != null && other.TagIds != null && TagIds.SequenceEqual(other.TagIds));
         return Id == other.Id
-            && Description == other.Description
-            && ProjectId == other.ProjectId
-            && UserId == other.UserId
-            && sameTagIds;
+               && Description == other.Description
+               && ProjectId == other.ProjectId
+               && UserId == other.UserId
+               && sameTagIds
+               && Done == other.Done
+               && Later == other.Later;
     }
 }

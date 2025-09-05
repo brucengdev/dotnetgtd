@@ -18,13 +18,25 @@ public partial class ItemManagerTests
         {
             Id = 1,
             Description = "Task 1",
-            UserId = 123
+            UserId = 123,
+            Done = true,
+            Later = false
         });
         Data.Items.Add(new Item
         {
             Id = 2,
             Description = "Task 2",
-            UserId = 234
+            UserId = 234,
+            Done = false,
+            Later = true
+        });
+        Data.Items.Add(new Item
+        {
+            Id = 3,
+            Description = "Task 3",
+            UserId = 123,
+            Done = false,
+            Later = true
         });
         var itemTagMappingRepo = new TestItemTagMappingRepo(Data);
         Data.ItemTagMappings =
@@ -46,7 +58,18 @@ public partial class ItemManagerTests
                 Id = 1,
                 Description = "Task 1",
                 UserId = 123,
-                TagIds = [ 1, 2 ]
+                TagIds = [ 1, 2 ],
+                Done = true,
+                Later = false
+            },
+            new()
+            {
+                Id = 3,
+                Description = "Task 3",
+                UserId = 123,
+                TagIds = [],
+                Done = false,
+                Later = true
             }
         });
     }

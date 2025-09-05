@@ -27,6 +27,8 @@ public class Item
         ProjectId = source.ProjectId;
         Project = source.Project;
         ItemTagMappings = source.ItemTagMappings;
+        Done = source.Done;
+        Later = source.Later;
     }
     
     public override bool Equals(object? obj)
