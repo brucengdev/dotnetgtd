@@ -46,6 +46,13 @@ describe("AddProjectForm", () => {
 
             expect(nameTextBox).toHaveValue(name)
 
+            if(later) {
+                fireEvent.click(screen.getByRole("checkbox", { name: "Later"}))
+                expect(screen.getByRole("checkbox", { name: "Later"})).toBeChecked()
+            } else {
+                expect(screen.getByRole("checkbox", { name: "Later"})).not.toBeChecked()
+            }
+
             fireEvent.click(screen.getByRole("button", { name: "Create"}))
 
             expect(client.Projects).toContainEqual({
