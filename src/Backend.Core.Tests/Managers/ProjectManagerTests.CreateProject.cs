@@ -7,8 +7,10 @@ namespace Backend.Core.Tests;
 
 public partial class ProjectManagerTests
 {
-    [Fact]
-    public void Create_project_must_be_successful()
+    [Theory]
+    [InlineData("Project A", true)]
+    [InlineData("Project B", false)]
+    public void Create_project_must_be_successful(string projectName, bool later)
     {
         //arrange
         var userRepo = new TestUserRepository();
@@ -24,9 +26,10 @@ public partial class ProjectManagerTests
         //act
         var projectId = sut.CreateProject(new Project
         {
-            Name = "Project Name",
+            Name = projectName,
             Id = 0,
-            UserId = 123
+            UserId = 123,
+            Later = later
         });
         
         //assert
@@ -34,9 +37,10 @@ public partial class ProjectManagerTests
         var savedItem = projectRepo.Projects[0];
         savedItem.ShouldBe(new Project
         {
-            Name = "Project Name",
+            Name = projectName,
             Id = projectId,
-            UserId = 123
+            UserId = 123,
+            Later = later
         });
     } 
     

@@ -97,40 +97,61 @@ describe("ProjectView", () => {
         expect(screen.getByRole("button", { name: "Add"})).toBeInTheDocument()
     })
 
-    it("adds a new project when Create button is clicked", async () => {
-        const client = new TestClient()
-        client.Projects = [
-            {id: 1, name: "Project X" }
-        ]
-        render(<ProjectView client={client} />)
+    const testCases = [
+        {
+            newProjectName: "Project Y",
+            later: true
+        },
+        {
+            newProjectName: "Project Z",
+            later: false
+        }
+    ]
+    testCases.forEach(testCase => {
+        const { newProjectName, later } = testCase
+        it("adds a new project when Create button is clicked", async () => {
+            const client = new TestClient()
+            client.Projects = [
+                {id: 1, name: "Project X", later: false }
+            ]
+            render(<ProjectView client={client} />)
 
-        await sleep(1)
+            await sleep(1)
 
-        let projects = screen.queryAllByTestId("project")
-        expect(projects.length).toBe(1)
-        expect(projects[0].querySelector('[data-testid="name"]')?.textContent).toBe("Project X")
-        
-        const addItemButton = screen.getByRole("button", { name: "Add"})
-        fireEvent.click(addItemButton)
+            let projects = screen.queryAllByTestId("project")
+            expect(projects.length).toBe(1)
+            expect(projects[0].querySelector('[data-testid="name"]')?.textContent).toBe("Project X")
+            
+            const addItemButton = screen.getByRole("button", { name: "Add"})
+            fireEvent.click(addItemButton)
 
-        fireEvent.change(screen.getByRole("textbox", { name: "Name"}), { target: { value: "Project Y" } })
-        fireEvent.click(screen.getByRole("button", { name: "Create"}))
+            fireEvent.change(screen.getByRole("textbox", { name: "Name"}), { target: { value: newProjectName } })
+            if(later) {
+                fireEvent.click(screen.getByTestId("addProjectLaterField"))
+            }
+            fireEvent.click(screen.getByRole("button", { name: "Create"}))
 
-        await sleep(1)
+            await sleep(1)
 
-        projects = screen.queryAllByTestId("project")
-        expect(projects.length).toBe(2)
+            projects = screen.queryAllByTestId("project")
+            expect(projects.length).toBe(2)
 
-        expect(projects[0].querySelector('[data-testid="name"]')?.textContent).toBe("Project X")
-        expect(projects[1].querySelector('[data-testid="name"]')?.textContent).toBe("Project Y")
+            expect(projects[0].querySelector('[data-testid="name"]')?.textContent).toBe("Project X")
+            expect(projects[1].querySelector('[data-testid="name"]')?.textContent).toBe(newProjectName)
+            if(later) {
+                expect(projects[1].querySelector('[data-testid="later"]')).toBeChecked()
+            }else {
+                expect(projects[1].querySelector('[data-testid="later"]')).not.toBeChecked()
+            }
+        })
     })
 
     it("deletes a project when delete is clicked and confirmed", async () => {
         const client = new TestClient()
         client.Projects = [
-            {id: 1, name: "Project X" },
-            {id: 2, name: "Project Y" },
-            {id: 3, name: "Project Z" }
+            {id: 1, name: "Project X", later: false },
+            {id: 2, name: "Project Y", later: false },
+            {id: 3, name: "Project Z", later: false }
         ]
         render(<ProjectView client={client} />)
 

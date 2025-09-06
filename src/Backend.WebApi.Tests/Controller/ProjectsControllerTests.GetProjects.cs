@@ -38,8 +38,8 @@ namespace Backend.WebApi.Tests.Controller
             manager.Setup(pm => pm.GetProjects(userId))
                 .Returns(new List<Project>()
                 {
-                    new() { Id = 1, Name = "Project A", UserId = userId },
-                    new() { Id = 2, Name = "Project B", UserId = userId }
+                    new() { Id = 1, Name = "Project A", UserId = userId, Later = false },
+                    new() { Id = 2, Name = "Project B", UserId = userId, Later = true }
                 });
             var sut = new ProjectsController(manager.Object);
             sut.ControllerContext = new ControllerContext();
@@ -59,8 +59,8 @@ namespace Backend.WebApi.Tests.Controller
             
             okObjectResult?.Value.ShouldBe(new List<Project>()
             {
-                new() { Id = 1, Name = "Project A", UserId = userId },
-                new() { Id = 2, Name = "Project B", UserId = userId }
+                new() { Id = 1, Name = "Project A", UserId = userId, Later = false, },
+                new() { Id = 2, Name = "Project B", UserId = userId, Later = true }
             });
         }
     }

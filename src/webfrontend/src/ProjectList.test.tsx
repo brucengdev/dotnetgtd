@@ -6,8 +6,8 @@ import { ProjectList } from "./ProjectList";
 describe("ProjectList", () => {
     it("shows the list of projects", () => {
         const projects = [
-            { id: 1, name: "Project A" },
-            { id: 2, name: "Project B" }
+            { id: 1, name: "Project A", later: true },
+            { id: 2, name: "Project B", later: false }
         ]
         render(<ProjectList projects={projects} />)
         
@@ -17,16 +17,18 @@ describe("ProjectList", () => {
         const projectA = projectItems[0]
         expect(projectA.querySelector("[data-testId='name']")?.textContent)
             .toBe('Project A')
+        expect(projectA.querySelector("[data-testId='later']")).toBeChecked()
 
         const projectB = projectItems[1]
         expect(projectB.querySelector("[data-testId='name']")?.textContent)
             .toBe('Project B')
+        expect(projectB.querySelector("[data-testId='later']")).not.toBeChecked()
     })
 
     it("calls onDelete when a project is deleted", () => {
         const projects = [
-            { id: 1, name: "Project A" },
-            { id: 2, name: "Project B" }
+            { id: 1, name: "Project A", later: true },
+            { id: 2, name: "Project B", later: false }
         ]
         const onDelete = vitest.fn()
         render(<ProjectList projects={projects} onDelete={onDelete} />)
