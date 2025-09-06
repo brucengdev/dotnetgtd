@@ -4,14 +4,21 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import '@testing-library/jest-dom'
 
 describe("ProjectListItem", () => {
-    it("shows project data and delete button", () => {
-        render(<ProjectListItem name="Test Project" later={false} />)
+    [true, false]
+    .forEach(later => {
+        it("shows project data and delete button", () => {
+            render(<ProjectListItem name="Test Project" later={later} />)
 
-        expect(screen.getByTestId("name")).toBeInTheDocument()
-        expect(screen.getByTestId("name").textContent).toBe("Test Project")
-        expect(screen.getByTestId("later")).toBeInTheDocument()
-        expect(screen.getByTestId("later")).not.toBeChecked()
-        expect(screen.getByRole("button", { name: "Delete" })).toBeInTheDocument()
+            expect(screen.getByTestId("name")).toBeInTheDocument()
+            expect(screen.getByTestId("name").textContent).toBe("Test Project")
+            expect(screen.getByTestId("later")).toBeInTheDocument()
+            if(later) {
+                expect(screen.getByTestId("later")).toBeChecked()
+            } else {
+                expect(screen.getByTestId("later")).not.toBeChecked()
+            }
+            expect(screen.getByRole("button", { name: "Delete" })).toBeInTheDocument()
+        })
     })
     
     it("shows confirms delete form when delete is clicked", () => {
