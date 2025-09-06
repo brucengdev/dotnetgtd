@@ -23,6 +23,10 @@ export default function AddProjectForm(props: AddProjectFormProps) {
             className="mb-1"
             onChange={e => setName(e.target.value)}
         />
+        <label>
+            <input type="checkbox" />
+            Later
+        </label>
         <div className="flex justify-end gap-2">
             <Button 
                 mode={ButtonMode.PRIMARY}

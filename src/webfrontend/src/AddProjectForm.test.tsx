@@ -11,6 +11,7 @@ describe("AddProjectForm", () => {
 
         expect(screen.getByRole("heading", {name: "New project"})).toBeInTheDocument()
         expect(screen.getByRole("textbox", {name: "Name"})).toBeInTheDocument()
+        expect(screen.getByRole("checkbox", {name: "Later"})).toBeInTheDocument()
         expect(screen.getByRole("button", {name: "Create"})).toBeInTheDocument()
         expect(screen.getByRole("button", {name: "Cancel"})).toBeInTheDocument()
     })
