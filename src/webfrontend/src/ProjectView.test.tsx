@@ -100,7 +100,7 @@ describe("ProjectView", () => {
     it("adds a new project when Create button is clicked", async () => {
         const client = new TestClient()
         client.Projects = [
-            {id: 1, name: "Project X" }
+            {id: 1, name: "Project X", later: false }
         ]
         render(<ProjectView client={client} />)
 
