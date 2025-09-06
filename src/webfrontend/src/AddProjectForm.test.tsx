@@ -57,7 +57,8 @@ describe("AddProjectForm", () => {
 
             expect(client.Projects).toContainEqual({
                 id: 0,
-                name
+                name,
+                later
             })
 
             await sleep(10)
