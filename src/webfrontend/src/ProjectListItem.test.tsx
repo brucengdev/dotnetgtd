@@ -22,7 +22,7 @@ describe("ProjectListItem", () => {
     })
     
     it("shows confirms delete form when delete is clicked", () => {
-        render(<ProjectListItem name="Test Project" />)
+        render(<ProjectListItem name="Test Project" later={false} />)
 
         expect(screen.queryByTestId("confirmDeleteView")).not.toBeInTheDocument()
 
@@ -33,7 +33,7 @@ describe("ProjectListItem", () => {
     })
 
     it("hides confirm delete form when no is clicked", () => {
-        render(<ProjectListItem name="Test Project" />)
+        render(<ProjectListItem name="Test Project" later={false} />)
 
         fireEvent.click(screen.getByRole("button", { name: "Delete" }))
 
@@ -45,7 +45,8 @@ describe("ProjectListItem", () => {
 
     it("must calls onDelete when yes is clicked", () => {
         const onDelete = vitest.fn()
-        render(<ProjectListItem name="Test Project" onDelete={onDelete} />)
+        render(<ProjectListItem name="Test Project" 
+            onDelete={onDelete} later={false} />)
 
         fireEvent.click(screen.getByRole("button", { name: "Delete" }))
 
