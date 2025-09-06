@@ -25,7 +25,8 @@ export default function AddProjectForm(props: AddProjectFormProps) {
             onChange={e => setName(e.target.value)}
         />
         <label>
-            <input type="checkbox" onChange={e => setLater(e.target.checked)}/>
+            <input type="checkbox" data-testId="addProjectLaterField"
+                 onChange={e => setLater(e.target.checked)}/>
             Later
         </label>
         <div className="flex justify-end gap-2">

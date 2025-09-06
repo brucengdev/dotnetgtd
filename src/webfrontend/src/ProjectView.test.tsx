@@ -114,6 +114,7 @@ describe("ProjectView", () => {
         fireEvent.click(addItemButton)
 
         fireEvent.change(screen.getByRole("textbox", { name: "Name"}), { target: { value: "Project Y" } })
+        fireEvent.click(screen.getByTestId("addProjectLaterField"))
         fireEvent.click(screen.getByRole("button", { name: "Create"}))
 
         await sleep(1)
@@ -123,6 +124,7 @@ describe("ProjectView", () => {
 
         expect(projects[0].querySelector('[data-testid="name"]')?.textContent).toBe("Project X")
         expect(projects[1].querySelector('[data-testid="name"]')?.textContent).toBe("Project Y")
+        expect(projects[1].querySelector('[data-testid="later"]')).toBeChecked()
     })
 
     it("deletes a project when delete is clicked and confirmed", async () => {
