@@ -4,11 +4,13 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import '@testing-library/jest-dom'
 
 describe("ProjectListItem", () => {
-    it("shows the name and delete button", () => {
-        render(<ProjectListItem name="Test Project" />)
+    it("shows project data and delete button", () => {
+        render(<ProjectListItem name="Test Project" later={false} />)
 
         expect(screen.getByTestId("name")).toBeInTheDocument()
         expect(screen.getByTestId("name").textContent).toBe("Test Project")
+        expect(screen.getByTestId("later")).toBeInTheDocument()
+        expect(screen.getByTestId("later")).not.toBeChecked()
         expect(screen.getByRole("button", { name: "Delete" })).toBeInTheDocument()
     })
     
