@@ -63,7 +63,7 @@ describe("TaskView", () => {
             { id: 1, description: "Task A", projectId: 0, done: false, later: false }
         ]
         client.Projects = [
-            { id: 1, name: "Project X"}
+            { id: 1, name: "Project X", later: false }
         ]
         client.Tags = [
             { id: 1, name: "Tag 1" },
