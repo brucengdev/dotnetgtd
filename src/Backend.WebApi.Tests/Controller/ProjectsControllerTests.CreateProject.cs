@@ -45,7 +45,8 @@ namespace Backend.WebApi.Tests.Controller
             //act
             var project = new Project
             {
-                Name = "Foo"
+                Name = "Foo",
+                Later = true
             };
             var response = sut.CreateProject(project);
         
