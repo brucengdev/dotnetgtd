@@ -21,9 +21,9 @@ public partial class ProjectManagerTests
         var projectRepo = new TestProjectRepository();
         projectRepo.Projects = new List<Project>
         {
-            new() { Id = 1, Name = "Project A", UserId = 123 },
+            new() { Id = 1, Name = "Project A", UserId = 123, Later = true },
             new() { Id = 2, Name = "Project B", UserId = 456 },
-            new() { Id = 3, Name = "Project C", UserId = 123 },
+            new() { Id = 3, Name = "Project C", UserId = 123, Later = false },
             new() { Id = 4, Name = "Project D", UserId = 111 },
             new() { Id = 5, Name = "Project E", UserId = 23 }
         };
@@ -35,8 +35,8 @@ public partial class ProjectManagerTests
         //assert
         projects.ShouldBe(new List<Project>
         {
-            new() { Id = 1, Name = "Project A", UserId = 123 },
-            new() { Id = 3, Name = "Project C", UserId = 123 }
+            new() { Id = 1, Name = "Project A", UserId = 123, Later = true },
+            new() { Id = 3, Name = "Project C", UserId = 123, Later = false }
         });
     } 
 }
