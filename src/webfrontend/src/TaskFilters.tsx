@@ -2,7 +2,6 @@ import { useState } from "react"
 import { IClient } from "./api/Client"
 import { Project } from "./models/Project"
 import { Tag } from "./models/Tag"
-import { Link } from "./controls/Link"
 import { CheckBox } from "./controls/CheckBox"
 
 interface TaskFiltersProps {
