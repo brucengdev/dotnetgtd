@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { ConfirmDeleteView } from "./ConfirmDeleteView"
 import { Button } from "./controls/Button"
+import { CheckBox } from "./controls/CheckBox"
 
 interface ProjectListItemProps {
     name: string,
@@ -12,10 +13,11 @@ export function ProjectListItem(props: ProjectListItemProps) {
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
     return <div data-testid="project"  className="grid grid-cols-3 mb-1">
         <div data-testid="name">{name}</div>
-        <label>
-            Later
-            <input type="checkbox" data-testId="later" checked={later} />
-        </label>
+        <CheckBox
+            label="Later"
+            dataTestId="later"
+            checked={later}
+        />
         {!showConfirmDelete 
             && <Button text="Delete" 
                 onClick={() => setShowConfirmDelete(true)} /> }
