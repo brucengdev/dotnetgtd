@@ -10,5 +10,6 @@ describe("TaskFilters views", () => {
         render(<TaskFilters client={client} />)
 
         expect(screen.getByRole("link", {name: "No project"})).toBeInTheDocument()
+        expect(screen.getByRole("link", {name: "No tag"})).toBeInTheDocument()
     })
 })

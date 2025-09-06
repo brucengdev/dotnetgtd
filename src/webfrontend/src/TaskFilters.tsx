@@ -6,5 +6,6 @@ interface TaskFiltersProps {
 export function TaskFilters(props: TaskFiltersProps) {
     return <div data-testId="task-filters">
         <a href="#">No project</a>
+        <a href="#">No tag</a>
     </div>
 }
