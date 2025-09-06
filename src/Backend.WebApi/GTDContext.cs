@@ -18,14 +18,20 @@ namespace Backend.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Item>()
-                .HasOne(e => e.User);
+            modelBuilder.Entity<Item>(e =>
+            {
+                e.HasOne(e => e.User);
+                e.HasOne(e => e.Project);
+                e.HasMany<ItemTagMapping>(e => e.ItemTagMappings);
+            });
 
-            modelBuilder.Entity<Item>()
-                .HasOne(e => e.Project);
-
-            modelBuilder.Entity<Tag>()
-                .HasOne(e => e.User);
+            modelBuilder.Entity<Tag>(e =>
+            {
+                e.HasOne(e => e.User);
+                e.HasMany<ItemTagMapping>()
+                    .WithOne(e => e.Tag)
+                    .OnDelete(DeleteBehavior.NoAction);
+            });
         }
     }
 }
