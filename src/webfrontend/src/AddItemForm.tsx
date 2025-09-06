@@ -4,6 +4,9 @@ import { Button, ButtonMode } from "./controls/Button";
 import { TextBox } from "./controls/TextBox";
 import { Project } from "./models/Project";
 import { Tag } from "./models/Tag";
+import { CheckBox } from "./controls/CheckBox";
+import { Select } from "./controls/Select";
+import { MultiSelect } from "./controls/MultiSelect";
 
 interface AddItemFormProps {
     onCancel: () => any
@@ -41,43 +44,42 @@ export function AddItemForm(props: AddItemFormProps) {
             className="mb-1"
             onChange={e => setDescription(e.target.value)}
         />
-        <label>
-            Project
-            <select onChange={(e) => {
-                setProjectId(Number(e.target.value))
-            }}>
-                <option value={0} selected={projectId === 0}>[No project]</option>
-                {projects?.map(p => <option value={p.id} selected={projectId === p.id}>{p.name}</option>)}
-            </select>
-        </label>
-        <label>
-            Tags
-            <select multiple onChange={e => {
-                const options = e.target.options
-                const tagIds = []
-                for(let i = 0; i < options.length; i++) {
-                    if(options[i].selected) {
-                        tagIds.push(Number(options[i].value))
-                    }
+        <Select
+            label="Project"
+            onChange={value => setProjectId(Number(value))} 
+            options={
+                [{ text: "[No project]", value: "0"}]
+                .concat(
+                (projects|| []).map(p => {
+                return {
+                    value: p.id.toString(),
+                    text: p.name
                 }
-                setSelectedTagIds(tagIds)
-            }}>
-                {tags?.map(t => <option 
-                    value={t.id} 
-                    selected={selectedTagIds.includes(t.id)}
-                >{t.name}</option>)}
-            </select>
-        </label>
-        <label>
-            Done
-            <input data-testId="addItemDoneField" type="checkbox" checked={done} 
-                onClick={() => setDone(!done)} />
-        </label>
-        <label>
-            Later
-            <input data-testId="addItemLaterField" type="checkbox" checked={later} 
-                onClick={() => setLater(!later)} />
-        </label>
+            }))}
+            selectedValue={projectId.toString()}
+        />
+        <MultiSelect
+            label="Tags"
+            onChange={values => setSelectedTagIds(values.map(v => Number(v)))}
+            selectedValues={selectedTagIds.map(id => id.toString())}
+            options={
+                (tags || []).map(t => {
+                    return { value: t.id.toString(), text: t.name }
+                })
+            }
+        />
+        <CheckBox
+            label="Done"
+            checked={done}
+            onChange={checked => setDone(checked)}
+            dataTestId="addItemDoneField"
+        />
+        <CheckBox
+            label="Later"
+            checked={later}
+            onChange={checked => setLater(checked)}
+            dataTestId="addItemLaterField"
+        />
         <div className="flex justify-end gap-2">
             <Button 
                 mode={ButtonMode.PRIMARY}

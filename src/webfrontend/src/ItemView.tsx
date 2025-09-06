@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { ConfirmDeleteView } from "./ConfirmDeleteView"
 import { Button, ButtonMode } from "./controls/Button"
+import { CheckBox } from "./controls/CheckBox"
 
 interface ItemViewProps {
     description: string
@@ -18,14 +19,16 @@ export default function ItemView(props: ItemViewProps) {
             <div data-testId="description">{description}</div>
             <div data-testId="project">{props.projectName??""}</div>
             <div data-testId="tags">{props.tagNames?.join(",") ?? ""}</div>
-            <label>
-                Done
-                <input type="checkbox" data-testId="done" checked={done} />
-            </label>
-            <label>
-                Later
-                <input type="checkbox" data-testId="later" checked={later} />
-            </label>
+            <CheckBox
+                label="Done"
+                checked={done}
+                dataTestId="done"
+            />
+            <CheckBox
+                label="Later"
+                checked={later}
+                dataTestId="later"
+            />
             {showConfirmDelete
                 ? <></>
                 : <Button text="Delete" className="justify-self-end" 

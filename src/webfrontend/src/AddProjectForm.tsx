@@ -2,6 +2,7 @@ import { useState } from "react";
 import { IClient } from "./api/Client";
 import { Button, ButtonMode } from "./controls/Button";
 import { TextBox } from "./controls/TextBox";
+import { CheckBox } from "./controls/CheckBox";
 
 interface AddProjectFormProps {
     onCancel?: () => any
@@ -24,11 +25,12 @@ export default function AddProjectForm(props: AddProjectFormProps) {
             className="mb-1"
             onChange={e => setName(e.target.value)}
         />
-        <label>
-            <input type="checkbox" data-testId="addProjectLaterField"
-                 onChange={e => setLater(e.target.checked)}/>
-            Later
-        </label>
+        <CheckBox
+            label="Later"
+            checked={later}
+            onChange={checked => setLater(checked)}
+            dataTestId="addProjectLaterField"
+            />
         <div className="flex justify-end gap-2">
             <Button 
                 mode={ButtonMode.PRIMARY}
