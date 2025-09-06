@@ -2,6 +2,7 @@ import { useState } from "react"
 import { IClient } from "./api/Client"
 import { Project } from "./models/Project"
 import { Tag } from "./models/Tag"
+import { Link } from "./controls/Link"
 
 interface TaskFiltersProps {
     client: IClient
@@ -19,10 +20,10 @@ export function TaskFilters(props: TaskFiltersProps) {
         .then(retrievedTags => setTags(retrievedTags))
     }
     return <div data-testId="task-filters">
-        <a href="#">No project</a>
-        {(projects || []).map(p => <a key={p.id} href="#">{p.name}</a>)}
+        <Link text="No project" />
+        {(projects || []).map(p => <Link key={p.id} text={p.name} />)}
 
-        <a href="#">No tag</a>
-        {(tags || []).map(t => <a key={t.id} href="#">{t.name}</a>)}
+        <Link text="No tag" />
+        {(tags || []).map(t => <Link key={t.id} text={t.name} />)}
     </div>
 }
