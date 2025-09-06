@@ -16,6 +16,7 @@ describe("TaskView", () => {
         expect(screen.queryByRole("heading", { name: "New task"})).not.toBeInTheDocument()
 
         expect(screen.getByTestId("item-list")).toBeInTheDocument()
+        expect(screen.getByTestId("task-filters")).toBeInTheDocument()
     })
 
     it("shows add item form when button Add is clicked", () => {
