@@ -20,6 +20,12 @@ export function TaskFilters(props: TaskFiltersProps) {
         .then(retrievedTags => setTags(retrievedTags))
     }
     return <div data-testId="task-filters">
+        <CheckBox label="Active tasks" checked={false} />
+        <CheckBox label="Inactive tasks" checked={false} />
+
+        <CheckBox label="Completed tasks" checked={false} />
+        <CheckBox label="Uncompleted tasks" checked={false} />
+
         <CheckBox label="All projects" checked={false} />
         <CheckBox label="No project" checked={false} />
         {(projects || []).map(p => <CheckBox key={p.id} label={p.name} checked={false} />)}

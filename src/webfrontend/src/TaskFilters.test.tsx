@@ -19,6 +19,12 @@ describe("TaskFilters views", () => {
         render(<TaskFilters client={client} />)
         await sleep(1)
 
+        expect(screen.getByRole("checkbox", {name: "Active tasks"})).toBeInTheDocument()
+        expect(screen.getByRole("checkbox", {name: "Inactive tasks"})).toBeInTheDocument()
+
+        expect(screen.getByRole("checkbox", {name: "Completed tasks"})).toBeInTheDocument()
+        expect(screen.getByRole("checkbox", {name: "Uncompleted tasks"})).toBeInTheDocument()
+
         expect(screen.getByRole("checkbox", {name: "All projects"})).toBeInTheDocument()
         expect(screen.getByRole("checkbox", {name: "No project"})).toBeInTheDocument()
         expect(screen.getByRole("checkbox", {name: "Project 1"})).toBeInTheDocument()
