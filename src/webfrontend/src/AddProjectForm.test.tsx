@@ -24,25 +24,38 @@ describe("AddProjectForm", () => {
         expect(fn).toHaveBeenCalled()
     })
 
-    it("submits item to backend when clicking Create", async () => {
-        const client = new TestClient()
-        const onCompleted = vitest.fn()
-        render(<AddProjectForm onCancel={() => {}} client={client} onCompleted={onCompleted} />)
+    const testCases = [
+        {
+            name: "Project A",
+            later: true
+        },
+        {
+            name: "Project B",
+            later: false
+        }
+    ]
+    testCases.forEach(testCase => {
+        const { name, later } = testCase
+        it(`submits item to backend when clicking Create with name = ${name} and later = ${later}`, async () => {
+            const client = new TestClient()
+            const onCompleted = vitest.fn()
+            render(<AddProjectForm onCancel={() => {}} client={client} onCompleted={onCompleted} />)
 
-        const nameTextBox = screen.getByRole("textbox", { name: "Name"})
-        fireEvent.change(nameTextBox, { target: { value: "name of a project"}})
+            const nameTextBox = screen.getByRole("textbox", { name: "Name"})
+            fireEvent.change(nameTextBox, { target: { value: name}})
 
-        expect(nameTextBox).toHaveValue("name of a project")
+            expect(nameTextBox).toHaveValue(name)
 
-        fireEvent.click(screen.getByRole("button", { name: "Create"}))
+            fireEvent.click(screen.getByRole("button", { name: "Create"}))
 
-        expect(client.Projects).toContainEqual({
-            id: 0,
-            name: "name of a project"
+            expect(client.Projects).toContainEqual({
+                id: 0,
+                name
+            })
+
+            await sleep(10)
+
+            expect(onCompleted).toHaveBeenCalled()
         })
-
-        await sleep(10)
-
-        expect(onCompleted).toHaveBeenCalled()
     })
 })
