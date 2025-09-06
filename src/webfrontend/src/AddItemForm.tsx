@@ -5,6 +5,7 @@ import { TextBox } from "./controls/TextBox";
 import { Project } from "./models/Project";
 import { Tag } from "./models/Tag";
 import { CheckBox } from "./controls/CheckBox";
+import { Select } from "./controls/Select";
 
 interface AddItemFormProps {
     onCancel: () => any
@@ -42,15 +43,20 @@ export function AddItemForm(props: AddItemFormProps) {
             className="mb-1"
             onChange={e => setDescription(e.target.value)}
         />
-        <label>
-            Project
-            <select onChange={(e) => {
-                setProjectId(Number(e.target.value))
-            }}>
-                <option value={0} selected={projectId === 0}>[No project]</option>
-                {projects?.map(p => <option value={p.id} selected={projectId === p.id}>{p.name}</option>)}
-            </select>
-        </label>
+        <Select
+            label="Project"
+            onChange={value => setProjectId(Number(value))} 
+            options={
+                [{ text: "[No project]", value: "0"}]
+                .concat(
+                (projects|| []).map(p => {
+                return {
+                    value: p.id.toString(),
+                    text: p.name
+                }
+            }))}
+            selectedValue={projectId.toString()}
+        />
         <label>
             Tags
             <select multiple onChange={e => {
