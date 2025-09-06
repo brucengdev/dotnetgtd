@@ -4,6 +4,7 @@ import { Button, ButtonMode } from "./controls/Button";
 import { TextBox } from "./controls/TextBox";
 import { Project } from "./models/Project";
 import { Tag } from "./models/Tag";
+import { CheckBox } from "./controls/CheckBox";
 
 interface AddItemFormProps {
     onCancel: () => any
@@ -68,11 +69,12 @@ export function AddItemForm(props: AddItemFormProps) {
                 >{t.name}</option>)}
             </select>
         </label>
-        <label>
-            Done
-            <input data-testId="addItemDoneField" type="checkbox" checked={done} 
-                onClick={() => setDone(!done)} />
-        </label>
+        <CheckBox
+            label="Done"
+            checked={done}
+            onChange={checked => setDone(checked)}
+            dataTestId="addItemDoneField"
+        />
         <label>
             Later
             <input data-testId="addItemLaterField" type="checkbox" checked={later} 
