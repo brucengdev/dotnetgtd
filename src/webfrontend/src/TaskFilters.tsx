@@ -3,6 +3,7 @@ import { IClient } from "./api/Client"
 import { Project } from "./models/Project"
 import { Tag } from "./models/Tag"
 import { Link } from "./controls/Link"
+import { CheckBox } from "./controls/CheckBox"
 
 interface TaskFiltersProps {
     client: IClient
@@ -20,10 +21,12 @@ export function TaskFilters(props: TaskFiltersProps) {
         .then(retrievedTags => setTags(retrievedTags))
     }
     return <div data-testId="task-filters">
-        <Link text="No project" />
-        {(projects || []).map(p => <Link key={p.id} text={p.name} />)}
+        <CheckBox label="All projects" checked={false} />
+        <CheckBox label="No project" checked={false} />
+        {(projects || []).map(p => <CheckBox key={p.id} label={p.name} checked={false} />)}
 
-        <Link text="No tag" />
-        {(tags || []).map(t => <Link key={t.id} text={t.name} />)}
+        <CheckBox label="All tags" checked={false} />
+        <CheckBox label="No tag" checked={false} />
+        {(tags || []).map(t => <CheckBox key={t.id} label={t.name} checked={false} />)}
     </div>
 }
