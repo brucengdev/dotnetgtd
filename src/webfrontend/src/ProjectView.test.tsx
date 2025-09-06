@@ -149,9 +149,9 @@ describe("ProjectView", () => {
     it("deletes a project when delete is clicked and confirmed", async () => {
         const client = new TestClient()
         client.Projects = [
-            {id: 1, name: "Project X" },
-            {id: 2, name: "Project Y" },
-            {id: 3, name: "Project Z" }
+            {id: 1, name: "Project X", later: false },
+            {id: 2, name: "Project Y", later: false },
+            {id: 3, name: "Project Z", later: false }
         ]
         render(<ProjectView client={client} />)
 
