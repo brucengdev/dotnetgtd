@@ -6,6 +6,7 @@ import { Project } from "./models/Project";
 import { Tag } from "./models/Tag";
 import { CheckBox } from "./controls/CheckBox";
 import { Select } from "./controls/Select";
+import { MultiSelect } from "./controls/MultiSelect";
 
 interface AddItemFormProps {
     onCancel: () => any
@@ -57,24 +58,16 @@ export function AddItemForm(props: AddItemFormProps) {
             }))}
             selectedValue={projectId.toString()}
         />
-        <label>
-            Tags
-            <select multiple onChange={e => {
-                const options = e.target.options
-                const tagIds = []
-                for(let i = 0; i < options.length; i++) {
-                    if(options[i].selected) {
-                        tagIds.push(Number(options[i].value))
-                    }
-                }
-                setSelectedTagIds(tagIds)
-            }}>
-                {tags?.map(t => <option 
-                    value={t.id} 
-                    selected={selectedTagIds.includes(t.id)}
-                >{t.name}</option>)}
-            </select>
-        </label>
+        <MultiSelect
+            label="Tags"
+            onChange={values => setSelectedTagIds(values.map(v => Number(v)))}
+            selectedValues={selectedTagIds.map(id => id.toString())}
+            options={
+                (tags || []).map(t => {
+                    return { value: t.id.toString(), text: t.name }
+                })
+            }
+        />
         <CheckBox
             label="Done"
             checked={done}
