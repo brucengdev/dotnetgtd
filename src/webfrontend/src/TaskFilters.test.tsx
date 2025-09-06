@@ -12,6 +12,10 @@ describe("TaskFilters views", () => {
             { id: 1, name: "Project 1", later: false },
             { id: 2, name: "Project 2", later: false },
         ]
+        client.Tags = [
+            { id: 1, name: "Tag 1" },
+            { id: 2, name: "Tag 2" },
+        ]
         render(<TaskFilters client={client} />)
         await sleep(1)
 
@@ -20,5 +24,7 @@ describe("TaskFilters views", () => {
         expect(screen.getByRole("link", {name: "Project 2"})).toBeInTheDocument()
 
         expect(screen.getByRole("link", {name: "No tag"})).toBeInTheDocument()
+        expect(screen.getByRole("link", {name: "Tag 1"})).toBeInTheDocument()
+        expect(screen.getByRole("link", {name: "Tag 2"})).toBeInTheDocument()
     })
 })
