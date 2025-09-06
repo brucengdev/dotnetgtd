@@ -75,11 +75,12 @@ export function AddItemForm(props: AddItemFormProps) {
             onChange={checked => setDone(checked)}
             dataTestId="addItemDoneField"
         />
-        <label>
-            Later
-            <input data-testId="addItemLaterField" type="checkbox" checked={later} 
-                onClick={() => setLater(!later)} />
-        </label>
+        <CheckBox
+            label="Later"
+            checked={later}
+            onChange={checked => setLater(checked)}
+            dataTestId="addItemLaterField"
+        />
         <div className="flex justify-end gap-2">
             <Button 
                 mode={ButtonMode.PRIMARY}
