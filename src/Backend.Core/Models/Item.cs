@@ -41,13 +41,14 @@ public class Item
         var otherItem = obj as Item;
         var hasSameTagMappings = (ItemTagMappings == null && otherItem.ItemTagMappings == null)
             || (ItemTagMappings != null && ItemTagMappings.SequenceEqual(otherItem.ItemTagMappings));
-        return Id == otherItem.Id
+        var result = Id == otherItem.Id
                && Description == otherItem.Description
                && UserId == otherItem.UserId
                && ProjectId == otherItem.ProjectId
                && hasSameTagMappings
                && Done == otherItem.Done
                && Later == otherItem.Later;
+        return result;
     }
 
     public static Item FromServiceModel(ItemServiceModel newItemServiceModel)

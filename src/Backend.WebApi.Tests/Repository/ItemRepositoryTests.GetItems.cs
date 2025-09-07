@@ -8,31 +8,35 @@ namespace Backend.WebApi.Tests.Repository;
 public partial class ItemRepositoryTests
 {
     [Fact]
-    public void TestCreateItem()
+    public void GetItems_must_return_values()
     {
         //arrange
         var dbContextOptionsBuilder = new DbContextOptionsBuilder<GTDContext>();
-        dbContextOptionsBuilder.UseInMemoryDatabase("TestCreateItems");
+        dbContextOptionsBuilder.UseInMemoryDatabase("TestGetItems");
         var dbContext = new GTDContext(dbContextOptionsBuilder.Options);
         var sut = new ItemRepository(dbContext);
-        
-        //act
-        var itemId = sut.CreateItem(new()
+        dbContext.Items.Add(new()
         {
             Id = 0,
-            Description = "Test task",
+            Description = "Task A",
             Done = true,
-            Later = false,
+            UserId = 1
         });
+        dbContext.SaveChanges();
+        var itemId = dbContext.Items.First().Id;
+
+        //act
+        var items = sut.GetItems(1, [], false);
         
         //assert
-        dbContext.Items.Count().ShouldBe(1);
-        dbContext.Items.First().ShouldBe(new()
+        items.Count().ShouldBe(1);
+        var item = items.First();
+        item.ShouldBe(new()
         {
             Id = itemId,
-            Description = "Test task",
+            Description = "Task A",
             Done = true,
-            Later = false,
+            UserId = 1
         });
     }
 }
