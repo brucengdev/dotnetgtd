@@ -5,7 +5,7 @@ using Shouldly;
 
 namespace Backend.WebApi.Tests.Repository;
 
-public class ItemRepositoryTests
+public partial class ItemRepositoryTests
 {
     [Fact]
     public void TestCreateItem()
