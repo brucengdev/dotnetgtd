@@ -33,7 +33,7 @@ namespace Backend.WebApi.Tests.Controller
         [InlineData("completed,uncompleted")]
         [InlineData("completed")]
         [InlineData("uncompleted")]
-        public void GetItems_must_return_all_items(string completionFilter)
+        public void GetItems_must_return_items(string completionFilter)
         {
             //arrange
             var itemManager = new Mock<IItemManager>();
