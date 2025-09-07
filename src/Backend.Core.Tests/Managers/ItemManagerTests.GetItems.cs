@@ -49,7 +49,7 @@ public partial class ItemManagerTests
         var expectedUserId = 123;
 
         //act
-        var items = sut.GetItems(expectedUserId, "");
+        var items = sut.GetItems(expectedUserId, []);
 
         //assert
         items.ShouldBe(new List<ItemServiceModel>()
@@ -70,6 +70,63 @@ public partial class ItemManagerTests
                 TagIds = [],
                 Done = false,
                 Later = true
+            }
+        });
+    }
+
+    [Fact]
+    public void Filter_completed_items()
+    {
+        //arrange
+        var repo = new TestItemRepository(Data);
+        Data.Items.Add(new Item
+        {
+            Id = 1,
+            Description = "Task 1",
+            UserId = 123,
+            Done = true,
+            Later = false
+        });
+        Data.Items.Add(new Item
+        {
+            Id = 2,
+            Description = "Task 2",
+            UserId = 234,
+            Done = false,
+            Later = true
+        });
+        Data.Items.Add(new Item
+        {
+            Id = 3,
+            Description = "Task 3",
+            UserId = 123,
+            Done = false,
+            Later = true
+        });
+        var itemTagMappingRepo = new TestItemTagMappingRepo(Data);
+        Data.ItemTagMappings =
+        [
+            new() { Id = 1, ItemId = 1, TagId = 1 },
+            new() { Id = 2, ItemId = 1, TagId = 2 },
+            new() { Id = 3, ItemId = 2, TagId = 2 },
+        ];
+        var sut = new ItemManager(repo, new Mock<IUserRepository>().Object, itemTagMappingRepo);
+        var expectedUserId = 123;
+
+        //act
+        var items = sut.GetItems(expectedUserId, [true]);
+
+        //assert
+        items.ShouldBe(new List<ItemServiceModel>()
+        {
+            new()
+            {
+                Id = 1,
+                Description = "Task 1",
+                UserId = 123,
+                TagIds = [1, 2],
+                Done = true,
+                Later = false
             }
         });
     }

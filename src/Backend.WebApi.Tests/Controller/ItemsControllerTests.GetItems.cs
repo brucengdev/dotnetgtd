@@ -27,17 +27,22 @@ namespace Backend.WebApi.Tests.Controller
             attributes = method?.GetCustomAttributes(typeof(ServiceFilterAttribute<SecurityFilterAttribute>), true);
             attributes.Length.ShouldBeGreaterThan(0, "Must require authorization");
         }
-        
+
+        public static IEnumerable<object[]> GetItemsCases =
+        [
+            [ "", new List<bool>()],
+            [ "completed,uncompleted", new List<bool>{ true, false }],
+            [ "uncompleted,completed", new List<bool>{ false, true }],
+            [ "completed", new List<bool>{ true }],
+            [ "uncompleted", new List<bool>{ false }]
+        ];
         [Theory]
-        [InlineData("")]
-        [InlineData("completed,uncompleted")]
-        [InlineData("completed")]
-        [InlineData("uncompleted")]
-        public void GetItems_must_return_items(string completionFilter)
+        [MemberData(nameof(GetItemsCases))]
+        public void GetItems_must_return_items(string completionFilter, List<bool> completionStatuses)
         {
             //arrange
             var itemManager = new Mock<IItemManager>();
-            itemManager.Setup(im => im.GetItems(It.IsAny<int>(), It.IsAny<string>()))
+            itemManager.Setup(im => im.GetItems(It.IsAny<int>(), It.IsAny<IEnumerable<bool>>()))
                 .Returns(new List<ItemServiceModel>()
                 {
                     new () 
@@ -60,7 +65,7 @@ namespace Backend.WebApi.Tests.Controller
             var response = sut.GetItems(completionFilter);
         
             //assert
-            itemManager.Verify(im => im.GetItems(123, completionFilter), Times.Once);
+            itemManager.Verify(im => im.GetItems(123, completionStatuses), Times.Once);
             itemManager.VerifyNoOtherCalls();
             
             response.ShouldBeOfType<OkObjectResult>();

@@ -17,9 +17,15 @@ public class TestItemRepository: IItemRepository
         return item.Id;
     }
 
-    public IEnumerable<Item> GetItems(int userId, bool fetchTagMappings = false)
+    public IEnumerable<Item> GetItems(int userId,
+        IEnumerable<bool> completionStatuses,
+        bool fetchTagMappings = false)
     {
         var results = _data.Items.Where(i => i.UserId == userId);
+        if (completionStatuses.Count() > 0)
+        {
+            results = results.Where(i => completionStatuses.Contains(i.Done));
+        }
         if (fetchTagMappings)
         {
             results = results.Select(i =>

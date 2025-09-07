@@ -29,7 +29,10 @@ namespace Backend.WebApi.Controllers
         public ActionResult GetItems(string complete)
         {
             var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
-            return Ok(_itemManager.GetItems(userId, complete));
+            var completionStatuses = complete.Split(",")
+                .Where(statusName => !string.IsNullOrEmpty(statusName))
+                .Select(statusName => statusName == Constants.COMPLETED);
+            return Ok(_itemManager.GetItems(userId, completionStatuses));
         }
 
         [HttpDelete("[action]")]

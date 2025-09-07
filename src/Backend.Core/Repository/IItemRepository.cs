@@ -5,7 +5,9 @@ namespace Backend.Core.Repository;
 public interface IItemRepository
 {
     int CreateItem(Item item);
-    IEnumerable<Item> GetItems(int userId, bool fetchTagMappings = false);
+    IEnumerable<Item> GetItems(int userId, 
+        IEnumerable<bool> completionStatuses,
+        bool fetchTagMappings = false);
     void DeleteItem(int itemId);
     Item? GetItem(int itemId);
 }

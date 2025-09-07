@@ -18,7 +18,9 @@ public class ItemRepository: IItemRepository
         return item.Id;
     }
 
-    public IEnumerable<Item> GetItems(int userId, bool fetchTagMappings = false)
+    public IEnumerable<Item> GetItems(int userId,
+        IEnumerable<bool> completionStatuses,
+        bool fetchTagMappings = false)
     {
         var results =  _dbContext.Items.Where(i => i.UserId == userId);
         if (fetchTagMappings)
