@@ -49,7 +49,7 @@ public partial class ItemManagerTests
         var expectedUserId = 123;
 
         //act
-        var items = sut.GetItems(expectedUserId);
+        var items = sut.GetItems(expectedUserId, "");
 
         //assert
         items.ShouldBe(new List<ItemServiceModel>()

@@ -26,10 +26,10 @@ namespace Backend.WebApi.Controllers
         
         [HttpGet("[action]")]
         [ServiceFilter<SecurityFilterAttribute>]
-        public ActionResult GetItems()
+        public ActionResult GetItems(string complete)
         {
             var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
-            return Ok(_itemManager.GetItems(userId));
+            return Ok(_itemManager.GetItems(userId, complete));
         }
 
         [HttpDelete("[action]")]

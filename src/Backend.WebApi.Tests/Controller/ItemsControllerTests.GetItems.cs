@@ -28,12 +28,16 @@ namespace Backend.WebApi.Tests.Controller
             attributes.Length.ShouldBeGreaterThan(0, "Must require authorization");
         }
         
-        [Fact]
-        public void GetItems_must_return_all_items()
+        [Theory]
+        [InlineData("")]
+        [InlineData("completed,uncompleted")]
+        [InlineData("completed")]
+        [InlineData("uncompleted")]
+        public void GetItems_must_return_all_items(string completionFilter)
         {
             //arrange
             var itemManager = new Mock<IItemManager>();
-            itemManager.Setup(im => im.GetItems(It.IsAny<int>()))
+            itemManager.Setup(im => im.GetItems(It.IsAny<int>(), It.IsAny<string>()))
                 .Returns(new List<ItemServiceModel>()
                 {
                     new () 
@@ -53,10 +57,10 @@ namespace Backend.WebApi.Tests.Controller
             sut.HttpContext.Items["UserId"] = 123;
         
             //act
-            var response = sut.GetItems();
+            var response = sut.GetItems(completionFilter);
         
             //assert
-            itemManager.Verify(im => im.GetItems(123), Times.Once);
+            itemManager.Verify(im => im.GetItems(123, completionFilter), Times.Once);
             itemManager.VerifyNoOtherCalls();
             
             response.ShouldBeOfType<OkObjectResult>();
