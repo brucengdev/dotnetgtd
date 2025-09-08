@@ -29,7 +29,7 @@ namespace Backend.WebApi.Controllers
         public ActionResult GetItems(string? complete)
         {
             var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
-            var completionStatuses = complete.Split(",")
+            var completionStatuses = (complete??"").Split(",")
                 .Where(statusName => !string.IsNullOrEmpty(statusName))
                 .Select(statusName => statusName == Constants.COMPLETED);
             return Ok(_itemManager.GetItems(userId, completionStatuses));

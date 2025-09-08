@@ -41,6 +41,7 @@ namespace Backend.WebApi.Tests.Controller
 
         public static IEnumerable<object[]> GetItemsCases =
         [
+            (object[])[(string?)null, new List<bool>()],
             [ "", new List<bool>()],
             [ "completed,uncompleted", new List<bool>{ true, false }],
             [ "uncompleted,completed", new List<bool>{ false, true }],
