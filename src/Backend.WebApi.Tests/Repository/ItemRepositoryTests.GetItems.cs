@@ -54,6 +54,17 @@ public partial class ItemRepositoryTests
                 UserId = 1,
                 ItemTagMappings = []
             }
+        }],
+        [ 1, new List<bool>{ true }, true, new List<Item>
+        {
+            new()
+            {
+                Id = 1,
+                Description = "Task A",
+                Done = true,
+                UserId = 1,
+                ItemTagMappings = []
+            }
         }]
     ];
 
@@ -67,7 +78,7 @@ public partial class ItemRepositoryTests
     {
         //arrange
         var dbContextOptionsBuilder = new DbContextOptionsBuilder<GTDContext>();
-        dbContextOptionsBuilder.UseInMemoryDatabase("TestGetItems");
+        dbContextOptionsBuilder.UseInMemoryDatabase(Guid.NewGuid().ToString());
         var dbContext = new GTDContext(dbContextOptionsBuilder.Options);
         var sut = new ItemRepository(dbContext);
         var testData = CreateTestData();
