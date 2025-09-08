@@ -65,6 +65,17 @@ public partial class ItemRepositoryTests
                 UserId = 1,
                 ItemTagMappings = []
             }
+        }],
+        [ 1, new List<bool>{ false }, true, new List<Item>
+        {
+            new()
+            {
+                Id = 2,
+                Description = "Task B",
+                Done = false,
+                UserId = 1,
+                ItemTagMappings = []
+            }
         }]
     ];
 
