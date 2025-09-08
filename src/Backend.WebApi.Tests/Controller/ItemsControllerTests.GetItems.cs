@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Reflection;
 using Backend.Core.Manager;
 using Backend.Models;
 using Backend.WebApi.ActionFilters;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Shouldly;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Backend.WebApi.Tests.Controller
 {
@@ -26,6 +28,15 @@ namespace Backend.WebApi.Tests.Controller
         
             attributes = method?.GetCustomAttributes(typeof(ServiceFilterAttribute<SecurityFilterAttribute>), true);
             attributes.Length.ShouldBeGreaterThan(0, "Must require authorization");
+            
+            var args = method.GetParameters();
+            args.Length.ShouldBe(1);
+            var completeArg = args[0];
+            completeArg.Name.ShouldBe("complete");
+            completeArg.ParameterType.ShouldBe(typeof(string));
+            
+            var isNullable = new NullabilityInfoContext().Create(completeArg).WriteState is NullabilityState.Nullable;
+            isNullable.ShouldBeTrue();
         }
 
         public static IEnumerable<object[]> GetItemsCases =
