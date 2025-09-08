@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Reflection;
 using Backend.Core.Manager;
 using Backend.Models;
 using Backend.WebApi.ActionFilters;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Shouldly;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Backend.WebApi.Tests.Controller
 {
@@ -26,14 +28,33 @@ namespace Backend.WebApi.Tests.Controller
         
             attributes = method?.GetCustomAttributes(typeof(ServiceFilterAttribute<SecurityFilterAttribute>), true);
             attributes.Length.ShouldBeGreaterThan(0, "Must require authorization");
+            
+            var args = method.GetParameters();
+            args.Length.ShouldBe(1);
+            var completeArg = args[0];
+            completeArg.Name.ShouldBe("complete");
+            completeArg.ParameterType.ShouldBe(typeof(string));
+            
+            var isNullable = new NullabilityInfoContext().Create(completeArg).WriteState is NullabilityState.Nullable;
+            isNullable.ShouldBeTrue();
         }
-        
-        [Fact]
-        public void GetItems_must_return_all_items()
+
+        public static IEnumerable<object[]> GetItemsCases =
+        [
+            (object[])[(string?)null, new List<bool>()],
+            [ "", new List<bool>()],
+            [ "completed,uncompleted", new List<bool>{ true, false }],
+            [ "uncompleted,completed", new List<bool>{ false, true }],
+            [ "completed", new List<bool>{ true }],
+            [ "uncompleted", new List<bool>{ false }]
+        ];
+        [Theory]
+        [MemberData(nameof(GetItemsCases))]
+        public void GetItems_must_return_items(string completionFilter, List<bool> completionStatuses)
         {
             //arrange
             var itemManager = new Mock<IItemManager>();
-            itemManager.Setup(im => im.GetItems(It.IsAny<int>()))
+            itemManager.Setup(im => im.GetItems(It.IsAny<int>(), It.IsAny<IEnumerable<bool>>()))
                 .Returns(new List<ItemServiceModel>()
                 {
                     new () 
@@ -53,10 +74,10 @@ namespace Backend.WebApi.Tests.Controller
             sut.HttpContext.Items["UserId"] = 123;
         
             //act
-            var response = sut.GetItems();
+            var response = sut.GetItems(completionFilter);
         
             //assert
-            itemManager.Verify(im => im.GetItems(123), Times.Once);
+            itemManager.Verify(im => im.GetItems(123, completionStatuses), Times.Once);
             itemManager.VerifyNoOtherCalls();
             
             response.ShouldBeOfType<OkObjectResult>();

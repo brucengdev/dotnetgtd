@@ -1,6 +1,7 @@
 ﻿using Backend.Core.Manager;
 using Backend.Core.Tests.Mocks;
 using Backend.Models;
+using Microsoft.EntityFrameworkCore;
 using Shouldly;
 
 namespace Backend.Core.Tests;

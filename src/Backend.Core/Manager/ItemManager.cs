@@ -1,5 +1,6 @@
 ﻿using Backend.Core.Repository;
 using Backend.Models;
+using Microsoft.VisualBasic;
 
 namespace Backend.Core.Manager;
 
@@ -42,9 +43,13 @@ public class ItemManager: IItemManager
         return itemId;
     }
 
-    public IEnumerable<ItemServiceModel> GetItems(int userId)
+    public IEnumerable<ItemServiceModel> GetItems(int userId,
+        IEnumerable<bool> completionStatuses)
     {
-        var items = _itemRepo.GetItems(userId, fetchTagMappings: true);
+        var items = _itemRepo.GetItems(
+            userId, 
+            completionStatuses,
+            fetchTagMappings: true);
         return items.Select(i => ItemServiceModel.FromItem(i));
     }
 

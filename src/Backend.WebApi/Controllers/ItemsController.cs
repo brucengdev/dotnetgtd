@@ -26,10 +26,13 @@ namespace Backend.WebApi.Controllers
         
         [HttpGet("[action]")]
         [ServiceFilter<SecurityFilterAttribute>]
-        public ActionResult GetItems()
+        public ActionResult GetItems(string? complete)
         {
             var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
-            return Ok(_itemManager.GetItems(userId));
+            var completionStatuses = (complete??"").Split(",")
+                .Where(statusName => !string.IsNullOrEmpty(statusName))
+                .Select(statusName => statusName == Constants.COMPLETED);
+            return Ok(_itemManager.GetItems(userId, completionStatuses));
         }
 
         [HttpDelete("[action]")]
