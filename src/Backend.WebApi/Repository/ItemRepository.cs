@@ -23,6 +23,10 @@ public class ItemRepository: IItemRepository
         bool fetchTagMappings = false)
     {
         var results =  _dbContext.Items.Where(i => i.UserId == userId);
+        if (completionStatuses.Any())
+        {
+            results = results.Where(i => completionStatuses.Contains(i.Done));
+        }
         if (fetchTagMappings)
         {
             results = results.Include(i => i.ItemTagMappings);

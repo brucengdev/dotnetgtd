@@ -48,6 +48,10 @@ public class Item
                && hasSameTagMappings
                && Done == otherItem.Done
                && Later == otherItem.Later;
+        if (result == false)
+        {
+            
+        }
         return result;
     }
 

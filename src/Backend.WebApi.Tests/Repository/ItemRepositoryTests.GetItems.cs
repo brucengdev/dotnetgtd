@@ -7,36 +7,78 @@ namespace Backend.WebApi.Tests.Repository;
 
 public partial class ItemRepositoryTests
 {
-    [Fact]
-    public void GetItems_must_return_values()
+    private List<Item> CreateTestData()
+    {
+        return
+        [
+            new()
+            {
+                Id = 1,
+                Description = "Task A",
+                Done = true,
+                UserId = 1
+            },
+            new()
+            {
+                Id = 2,
+                Description = "Task B",
+                Done = false,
+                UserId = 1
+            },
+            new()
+            {
+                Id = 3,
+                Description = "Task C",
+                Done = false,
+                UserId = 2
+            },
+        ];
+    }
+    public static IEnumerable<object[]> GetItemsCases =
+    [
+        [ 1, new List<bool>{}, true, new List<Item>
+        {
+            new()
+            {
+                Id = 1,
+                Description = "Task A",
+                Done = true,
+                UserId = 1,
+                ItemTagMappings = []
+            },
+            new()
+            {
+                Id = 2,
+                Description = "Task B",
+                Done = false,
+                UserId = 1,
+                ItemTagMappings = []
+            }
+        }]
+    ];
+
+    [Theory]
+    [MemberData(nameof(GetItemsCases))]
+    public void GetItems_must_return_values(
+        int userId,
+        List<bool> completionStatuses,
+        bool fetchTagMappings,
+        List<Item> expectedItems)
     {
         //arrange
         var dbContextOptionsBuilder = new DbContextOptionsBuilder<GTDContext>();
         dbContextOptionsBuilder.UseInMemoryDatabase("TestGetItems");
         var dbContext = new GTDContext(dbContextOptionsBuilder.Options);
         var sut = new ItemRepository(dbContext);
-        dbContext.Items.Add(new()
-        {
-            Id = 0,
-            Description = "Task A",
-            Done = true,
-            UserId = 1
-        });
+        var testData = CreateTestData();
+        testData.ForEach(item => dbContext.Items.Add(item));
         dbContext.SaveChanges();
-        var itemId = dbContext.Items.First().Id;
 
         //act
-        var items = sut.GetItems(1, [], false);
-        
+        var items = sut.GetItems(userId, completionStatuses, fetchTagMappings);
+
         //assert
-        items.Count().ShouldBe(1);
-        var item = items.First();
-        item.ShouldBe(new()
-        {
-            Id = itemId,
-            Description = "Task A",
-            Done = true,
-            UserId = 1
-        });
+        items.Count().ShouldBe(expectedItems.Count);
+        items.ShouldBe(expectedItems);
     }
 }
