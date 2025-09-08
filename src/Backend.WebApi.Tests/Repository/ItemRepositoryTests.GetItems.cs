@@ -55,6 +55,44 @@ public partial class ItemRepositoryTests
                 ItemTagMappings = []
             }
         }],
+        [ 1, new List<bool>{ true, false }, true, new List<Item>
+        {
+            new()
+            {
+                Id = 1,
+                Description = "Task A",
+                Done = true,
+                UserId = 1,
+                ItemTagMappings = []
+            },
+            new()
+            {
+                Id = 2,
+                Description = "Task B",
+                Done = false,
+                UserId = 1,
+                ItemTagMappings = []
+            }
+        }],
+        [ 1, new List<bool>{ false, true }, true, new List<Item>
+        {
+            new()
+            {
+                Id = 1,
+                Description = "Task A",
+                Done = true,
+                UserId = 1,
+                ItemTagMappings = []
+            },
+            new()
+            {
+                Id = 2,
+                Description = "Task B",
+                Done = false,
+                UserId = 1,
+                ItemTagMappings = []
+            }
+        }],
         [ 1, new List<bool>{ true }, true, new List<Item>
         {
             new()
