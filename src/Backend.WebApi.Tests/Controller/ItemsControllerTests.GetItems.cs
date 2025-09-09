@@ -30,13 +30,21 @@ namespace Backend.WebApi.Tests.Controller
             attributes.Length.ShouldBeGreaterThan(0, "Must require authorization");
             
             var args = method.GetParameters();
-            args.Length.ShouldBe(1);
+            args.Length.ShouldBe(2);
+            
             var completeArg = args[0];
             completeArg.Name.ShouldBe("complete");
             completeArg.ParameterType.ShouldBe(typeof(string));
             
-            var isNullable = new NullabilityInfoContext().Create(completeArg).WriteState is NullabilityState.Nullable;
-            isNullable.ShouldBeTrue();
+            var isCompleteNullable = new NullabilityInfoContext().Create(completeArg).WriteState is NullabilityState.Nullable;
+            isCompleteNullable.ShouldBeTrue();
+            
+            var laterArg = args[1];
+            laterArg.Name.ShouldBe("later");
+            laterArg.ParameterType.ShouldBe(typeof(string));
+            
+            var isLaterNullable = new NullabilityInfoContext().Create(laterArg).WriteState is NullabilityState.Nullable;
+            isLaterNullable.ShouldBeTrue();
         }
 
         public static IEnumerable<object[]> GetItemsCases =
@@ -50,7 +58,9 @@ namespace Backend.WebApi.Tests.Controller
         ];
         [Theory]
         [MemberData(nameof(GetItemsCases))]
-        public void GetItems_must_return_items(string completionFilter, List<bool> completionStatuses)
+        public void GetItems_must_return_items(
+            string completionFilter, 
+            List<bool> completionStatuses)
         {
             //arrange
             var itemManager = new Mock<IItemManager>();
@@ -74,7 +84,7 @@ namespace Backend.WebApi.Tests.Controller
             sut.HttpContext.Items["UserId"] = 123;
         
             //act
-            var response = sut.GetItems(completionFilter);
+            var response = sut.GetItems(completionFilter, null);
         
             //assert
             itemManager.Verify(im => im.GetItems(123, completionStatuses), Times.Once);

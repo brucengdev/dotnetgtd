@@ -26,7 +26,7 @@ namespace Backend.WebApi.Controllers
         
         [HttpGet("[action]")]
         [ServiceFilter<SecurityFilterAttribute>]
-        public ActionResult GetItems(string? complete)
+        public ActionResult GetItems(string? complete, string? later)
         {
             var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
             var completionStatuses = (complete??"").Split(",")
