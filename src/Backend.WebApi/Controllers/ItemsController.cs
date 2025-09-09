@@ -32,7 +32,7 @@ namespace Backend.WebApi.Controllers
             var completionStatuses = (complete??"").Split(",")
                 .Where(statusName => !string.IsNullOrEmpty(statusName))
                 .Select(statusName => statusName == Constants.COMPLETED);
-            return Ok(_itemManager.GetItems(userId, completionStatuses));
+            return Ok(_itemManager.GetItems(userId, completionStatuses, []));
         }
 
         [HttpDelete("[action]")]

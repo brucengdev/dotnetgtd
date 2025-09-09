@@ -44,7 +44,7 @@ public partial class ItemManagerTests
             mockItemTagMappingRepo.Object);
 
         //act
-        var items = sut.GetItems(expectedUserId, completionStatuses);
+        var items = sut.GetItems(expectedUserId, completionStatuses, []);
 
         //assert
         mockItemRepo.Verify(ir => 
