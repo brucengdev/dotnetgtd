@@ -8,7 +8,8 @@ public interface IItemManager
     IEnumerable<ItemServiceModel> GetItems(
         int userId,
         IEnumerable<bool> completionStatuses,
-        IEnumerable<bool> laterStatuses);
+        IEnumerable<bool> laterStatuses,
+        int? projectId);
 
     void DeleteItem(int itemId, int userId);
 }

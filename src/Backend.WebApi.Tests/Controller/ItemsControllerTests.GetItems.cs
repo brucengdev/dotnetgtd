@@ -18,13 +18,15 @@ namespace Backend.WebApi.Tests.Controller
         public string? Later;
         public IEnumerable<bool> CompletionStatuses;
         public IEnumerable<bool> LaterStatuses;
+        public int? ProjectId;
 
         public object[] ToObjectArray()
         {
             return
             [
                 Complete, CompletionStatuses,
-                Later, LaterStatuses
+                Later, LaterStatuses,
+                ProjectId
             ];
         }
     }
@@ -46,7 +48,7 @@ namespace Backend.WebApi.Tests.Controller
             attributes.Length.ShouldBeGreaterThan(0, "Must require authorization");
             
             var args = method.GetParameters();
-            args.Length.ShouldBe(2);
+            args.Length.ShouldBe(3);
             
             var completeArg = args[0];
             completeArg.Name.ShouldBe("complete");
@@ -61,6 +63,10 @@ namespace Backend.WebApi.Tests.Controller
             
             var isLaterNullable = new NullabilityInfoContext().Create(laterArg).WriteState is NullabilityState.Nullable;
             isLaterNullable.ShouldBeTrue();
+            
+            var projectIdArg = args[2];
+            projectIdArg.Name.ShouldBe("projectId");
+            projectIdArg.ParameterType.ShouldBe(typeof(int?));
         }
 
         public static IEnumerable<object[]> GetItemsCases = (new List<GetItemTestCase>
@@ -121,6 +127,12 @@ namespace Backend.WebApi.Tests.Controller
             {
                 Complete = "completed,uncompleted", CompletionStatuses = new List<bool> { true, false },
                 Later = "now,later", LaterStatuses = new List<bool> { false, true }
+            },
+            new()
+            {
+                Complete = null, CompletionStatuses = [],
+                Later = null, LaterStatuses = [],
+                ProjectId = 12
             }
         }).Select(testCase => testCase.ToObjectArray());
         
@@ -128,16 +140,18 @@ namespace Backend.WebApi.Tests.Controller
         [MemberData(nameof(GetItemsCases))]
         public void GetItems_must_return_items(
             string completionFilter, 
-            List<bool> completionStatuses,
+            IEnumerable<bool> completionStatuses,
             string? laterFilter,
-            List<bool> laterStatuses
+            IEnumerable<bool> laterStatuses,
+            int? projectId
             )
         {
             //arrange
             var itemManager = new Mock<IItemManager>();
             itemManager.Setup(im => im.GetItems(It.IsAny<int>(), 
                     It.IsAny<IEnumerable<bool>>(),
-                    It.IsAny<IEnumerable<bool>>()))
+                    It.IsAny<IEnumerable<bool>>(),
+                    It.IsAny<int?>()))
                 .Returns(new List<ItemServiceModel>
                 {
                     new () 
@@ -157,10 +171,10 @@ namespace Backend.WebApi.Tests.Controller
             sut.HttpContext.Items["UserId"] = 123;
         
             //act
-            var response = sut.GetItems(completionFilter, laterFilter);
+            var response = sut.GetItems(completionFilter, laterFilter, projectId);
         
             //assert
-            itemManager.Verify(im => im.GetItems(123, completionStatuses, laterStatuses), Times.Once);
+            itemManager.Verify(im => im.GetItems(123, completionStatuses, laterStatuses, projectId), Times.Once);
             itemManager.VerifyNoOtherCalls();
             
             response.ShouldBeOfType<OkObjectResult>();

@@ -26,7 +26,7 @@ namespace Backend.WebApi.Controllers
         
         [HttpGet("[action]")]
         [ServiceFilter<SecurityFilterAttribute>]
-        public ActionResult GetItems(string? complete, string? later)
+        public ActionResult GetItems(string? complete, string? later, int? projectId)
         {
             var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
             var completionStatuses = (complete??"").Split(",")
@@ -35,7 +35,7 @@ namespace Backend.WebApi.Controllers
             var laterStatuses = (later ?? "").Split(",")
                 .Where(statusName => !string.IsNullOrEmpty(statusName))
                 .Select(statusName => statusName == Constants.LATER);
-            return Ok(_itemManager.GetItems(userId, completionStatuses, laterStatuses));
+            return Ok(_itemManager.GetItems(userId, completionStatuses, laterStatuses, projectId));
         }
 
         [HttpDelete("[action]")]
