@@ -28,6 +28,11 @@ public class ItemRepository: IItemRepository
         {
             results = results.Where(i => completionStatuses.Contains(i.Done));
         }
+
+        if (laterStatuses.Any())
+        {
+            results = results.Where(i => laterStatuses.Contains(i.Later));
+        }
         if (fetchTagMappings)
         {
             results = results.Include(i => i.ItemTagMappings);
