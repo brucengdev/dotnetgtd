@@ -72,7 +72,23 @@ namespace Backend.WebApi.Tests.Controller
             [ 
                 "uncompleted", new List<bool>{ false },
                 (string?)null, new List<bool>()
-            ]
+            ],
+            (object[])[
+                (string?)null, new List<bool>(),
+                "later", new List<bool>{true}
+            ],
+            (object[])[
+                (string?)null, new List<bool>(),
+                "now", new List<bool>{false}
+            ],
+            (object[])[
+                (string?)null, new List<bool>(),
+                "later,now", new List<bool>{true, false}
+            ],
+            (object[])[
+                (string?)null, new List<bool>(),
+                "now,later", new List<bool>{false,true}
+            ],
         ];
         [Theory]
         [MemberData(nameof(GetItemsCases))]
