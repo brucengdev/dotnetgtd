@@ -50,6 +50,7 @@ public class ItemManager: IItemManager
         var items = _itemRepo.GetItems(
             userId, 
             completionStatuses,
+            laterStatuses,
             fetchTagMappings: true);
         return items.Select(i => ItemServiceModel.FromItem(i));
     }

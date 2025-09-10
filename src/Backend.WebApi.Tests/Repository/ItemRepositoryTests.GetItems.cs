@@ -135,7 +135,7 @@ public partial class ItemRepositoryTests
         dbContext.SaveChanges();
 
         //act
-        var items = sut.GetItems(userId, completionStatuses, fetchTagMappings);
+        var items = sut.GetItems(userId, completionStatuses, [], fetchTagMappings);
 
         //assert
         items.Count().ShouldBe(expectedItems.Count);
