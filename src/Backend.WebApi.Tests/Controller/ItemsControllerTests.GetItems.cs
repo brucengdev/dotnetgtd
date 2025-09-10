@@ -12,6 +12,22 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Backend.WebApi.Tests.Controller
 {
+    public class GetItemTestCase
+    {
+        public string? Complete;
+        public string? Later;
+        public IEnumerable<bool> CompletionStatuses;
+        public IEnumerable<bool> LaterStatuses;
+
+        public object[] ToObjectArray()
+        {
+            return
+            [
+                Complete, CompletionStatuses,
+                Later, LaterStatuses
+            ];
+        }
+    }
     public partial class ItemsControllerTests
     {
         [Fact]
@@ -47,53 +63,67 @@ namespace Backend.WebApi.Tests.Controller
             isLaterNullable.ShouldBeTrue();
         }
 
-        public static IEnumerable<object[]> GetItemsCases =
-        [
-            (object[])[
-                (string?)null, new List<bool>(),
-                (string?)null, new List<bool>()
-            ],
-            [ 
-                "", new List<bool>(),
-                (string?)null, new List<bool>()
-            ],
-            [ 
-                "completed,uncompleted", new List<bool>{ true, false },
-                (string?)null, new List<bool>()
-            ],
-            [ 
-                "uncompleted,completed", new List<bool>{ false, true },
-                (string?)null, new List<bool>()
-            ],
-            [ 
-                "completed", new List<bool>{ true },
-                (string?)null, new List<bool>()
-            ],
-            [ 
-                "uncompleted", new List<bool>{ false },
-                (string?)null, new List<bool>()
-            ],
-            [
-                (string?)null, new List<bool>(),
-                "later", new List<bool>{true}
-            ],
-            [
-                (string?)null, new List<bool>(),
-                "now", new List<bool>{false}
-            ],
-            [
-                (string?)null, new List<bool>(),
-                "later,now", new List<bool>{true, false}
-            ],
-            [
-                (string?)null, new List<bool>(),
-                "now,later", new List<bool>{false,true}
-            ],
-            [
-                "completed,uncompleted", new List<bool>() {true, false},
-                "now,later", new List<bool>{false,true}
-            ],
-        ];
+        public static IEnumerable<object[]> GetItemsCases = (new List<GetItemTestCase>
+        {
+            new()
+            {
+                Complete = null, CompletionStatuses = new List<bool>(),
+                Later = null, LaterStatuses = new List<bool>()
+            },
+            new()
+            {
+                Complete = "", CompletionStatuses = new List<bool>(),
+                Later = null, LaterStatuses = new List<bool>()
+            },
+            new()
+            {
+                Complete = "completed,uncompleted", CompletionStatuses = new List<bool> { true, false },
+                Later = null, LaterStatuses = new List<bool>()
+            },
+            new()
+            {
+                Complete = "uncompleted,completed", CompletionStatuses = new List<bool> { false, true },
+                Later = null, LaterStatuses = new List<bool>()
+            },
+            new()
+            {
+                Complete = "completed", CompletionStatuses = new List<bool> { true },
+                Later = null, LaterStatuses = new List<bool>()
+            },
+
+            new()
+            {
+                Complete = "uncompleted", CompletionStatuses = new List<bool> { false },
+                Later = null, LaterStatuses = new List<bool>()
+            },
+
+            new()
+            {
+                Complete = null, CompletionStatuses = new List<bool>(),
+                Later = "later", LaterStatuses = new List<bool> { true }
+            },
+            new()
+            {
+                Complete = null, CompletionStatuses = new List<bool>(),
+                Later = "now", LaterStatuses = new List<bool> { false }
+            },
+            new ()
+            {
+                Complete = null, CompletionStatuses = new List<bool>(),
+                Later = "later,now", LaterStatuses = new List<bool> { true, false }
+            },
+            new()
+            {
+                Complete = null, CompletionStatuses = new List<bool>(),
+                Later = "now,later", LaterStatuses = new List<bool> { false, true }
+            },
+            new()
+            {
+                Complete = "completed,uncompleted", CompletionStatuses = new List<bool> { true, false },
+                Later = "now,later", LaterStatuses = new List<bool> { false, true }
+            }
+        }).Select(testCase => testCase.ToObjectArray());
+        
         [Theory]
         [MemberData(nameof(GetItemsCases))]
         public void GetItems_must_return_items(
@@ -108,7 +138,7 @@ namespace Backend.WebApi.Tests.Controller
             itemManager.Setup(im => im.GetItems(It.IsAny<int>(), 
                     It.IsAny<IEnumerable<bool>>(),
                     It.IsAny<IEnumerable<bool>>()))
-                .Returns(new List<ItemServiceModel>()
+                .Returns(new List<ItemServiceModel>
                 {
                     new () 
                     {
@@ -136,7 +166,7 @@ namespace Backend.WebApi.Tests.Controller
             response.ShouldBeOfType<OkObjectResult>();
             var result = response as OkObjectResult;
             result?.StatusCode.ShouldBe((int)HttpStatusCode.OK);
-            result?.Value.ShouldBe(new List<ItemServiceModel>()
+            result?.Value.ShouldBe(new List<ItemServiceModel>
             {
                 new ()
                 {
