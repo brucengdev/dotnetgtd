@@ -11,19 +11,21 @@ public partial class ItemManagerTests
 {
     public static IEnumerable<object[]> GetItemsCases =
     [
-        [ 123, new List<bool> { }],
-        [ 23, new List<bool> { true }],
-        [ 25, new List<bool> { false }],
-        [ 5, new List<bool> { true, false }],
-        [ 10, new List<bool> { false, true }],
+        [ 123, new List<bool> { }, new List<bool>{true, false}],
+        [ 23, new List<bool> { true }, new List<bool>{false, true}],
+        [ 25, new List<bool> { false }, new List<bool>{true}],
+        [ 5, new List<bool> { true, false }, new List<bool>{false}],
+        [ 10, new List<bool> { false, true }, new List<bool>()],
     ];
     [Theory]
     [MemberData(nameof(GetItemsCases))]
-    public void GetItems_is_successful(int expectedUserId, List<bool> completionStatuses)
+    public void GetItems_is_successful(int expectedUserId, 
+        List<bool> completionStatuses,
+        List<bool> laterStatuses)
     {
         //arrange
         var mockItemRepo = new Mock<IItemRepository>();
-        mockItemRepo.Setup(ir => ir.GetItems(expectedUserId, completionStatuses, true))
+        mockItemRepo.Setup(ir => ir.GetItems(expectedUserId, completionStatuses, laterStatuses, true))
             .Returns([
                 new()
                 {
@@ -44,11 +46,11 @@ public partial class ItemManagerTests
             mockItemTagMappingRepo.Object);
 
         //act
-        var items = sut.GetItems(expectedUserId, completionStatuses);
+        var items = sut.GetItems(expectedUserId, completionStatuses, laterStatuses);
 
         //assert
         mockItemRepo.Verify(ir => 
-            ir.GetItems(expectedUserId, completionStatuses, true), 
+            ir.GetItems(expectedUserId, completionStatuses,laterStatuses, true), 
             Times.Once);
         mockItemRepo.VerifyNoOtherCalls();
         items.ShouldBe([

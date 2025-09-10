@@ -30,31 +30,84 @@ namespace Backend.WebApi.Tests.Controller
             attributes.Length.ShouldBeGreaterThan(0, "Must require authorization");
             
             var args = method.GetParameters();
-            args.Length.ShouldBe(1);
+            args.Length.ShouldBe(2);
+            
             var completeArg = args[0];
             completeArg.Name.ShouldBe("complete");
             completeArg.ParameterType.ShouldBe(typeof(string));
             
-            var isNullable = new NullabilityInfoContext().Create(completeArg).WriteState is NullabilityState.Nullable;
-            isNullable.ShouldBeTrue();
+            var isCompleteNullable = new NullabilityInfoContext().Create(completeArg).WriteState is NullabilityState.Nullable;
+            isCompleteNullable.ShouldBeTrue();
+            
+            var laterArg = args[1];
+            laterArg.Name.ShouldBe("later");
+            laterArg.ParameterType.ShouldBe(typeof(string));
+            
+            var isLaterNullable = new NullabilityInfoContext().Create(laterArg).WriteState is NullabilityState.Nullable;
+            isLaterNullable.ShouldBeTrue();
         }
 
         public static IEnumerable<object[]> GetItemsCases =
         [
-            (object[])[(string?)null, new List<bool>()],
-            [ "", new List<bool>()],
-            [ "completed,uncompleted", new List<bool>{ true, false }],
-            [ "uncompleted,completed", new List<bool>{ false, true }],
-            [ "completed", new List<bool>{ true }],
-            [ "uncompleted", new List<bool>{ false }]
+            (object[])[
+                (string?)null, new List<bool>(),
+                (string?)null, new List<bool>()
+            ],
+            [ 
+                "", new List<bool>(),
+                (string?)null, new List<bool>()
+            ],
+            [ 
+                "completed,uncompleted", new List<bool>{ true, false },
+                (string?)null, new List<bool>()
+            ],
+            [ 
+                "uncompleted,completed", new List<bool>{ false, true },
+                (string?)null, new List<bool>()
+            ],
+            [ 
+                "completed", new List<bool>{ true },
+                (string?)null, new List<bool>()
+            ],
+            [ 
+                "uncompleted", new List<bool>{ false },
+                (string?)null, new List<bool>()
+            ],
+            [
+                (string?)null, new List<bool>(),
+                "later", new List<bool>{true}
+            ],
+            [
+                (string?)null, new List<bool>(),
+                "now", new List<bool>{false}
+            ],
+            [
+                (string?)null, new List<bool>(),
+                "later,now", new List<bool>{true, false}
+            ],
+            [
+                (string?)null, new List<bool>(),
+                "now,later", new List<bool>{false,true}
+            ],
+            [
+                "completed,uncompleted", new List<bool>() {true, false},
+                "now,later", new List<bool>{false,true}
+            ],
         ];
         [Theory]
         [MemberData(nameof(GetItemsCases))]
-        public void GetItems_must_return_items(string completionFilter, List<bool> completionStatuses)
+        public void GetItems_must_return_items(
+            string completionFilter, 
+            List<bool> completionStatuses,
+            string? laterFilter,
+            List<bool> laterStatuses
+            )
         {
             //arrange
             var itemManager = new Mock<IItemManager>();
-            itemManager.Setup(im => im.GetItems(It.IsAny<int>(), It.IsAny<IEnumerable<bool>>()))
+            itemManager.Setup(im => im.GetItems(It.IsAny<int>(), 
+                    It.IsAny<IEnumerable<bool>>(),
+                    It.IsAny<IEnumerable<bool>>()))
                 .Returns(new List<ItemServiceModel>()
                 {
                     new () 
@@ -74,10 +127,10 @@ namespace Backend.WebApi.Tests.Controller
             sut.HttpContext.Items["UserId"] = 123;
         
             //act
-            var response = sut.GetItems(completionFilter);
+            var response = sut.GetItems(completionFilter, laterFilter);
         
             //assert
-            itemManager.Verify(im => im.GetItems(123, completionStatuses), Times.Once);
+            itemManager.Verify(im => im.GetItems(123, completionStatuses, laterStatuses), Times.Once);
             itemManager.VerifyNoOtherCalls();
             
             response.ShouldBeOfType<OkObjectResult>();

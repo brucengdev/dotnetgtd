@@ -16,14 +16,16 @@ public partial class ItemRepositoryTests
                 Id = 1,
                 Description = "Task A",
                 Done = true,
-                UserId = 1
+                UserId = 1,
+                Later = true
             },
             new()
             {
                 Id = 2,
                 Description = "Task B",
                 Done = false,
-                UserId = 1
+                UserId = 1,
+                Later = false
             },
             new()
             {
@@ -36,85 +38,34 @@ public partial class ItemRepositoryTests
     }
     public static IEnumerable<object[]> GetItemsCases =
     [
-        [ 1, new List<bool>{}, true, new List<Item>
-        {
-            new()
-            {
-                Id = 1,
-                Description = "Task A",
-                Done = true,
-                UserId = 1,
-                ItemTagMappings = []
-            },
-            new()
-            {
-                Id = 2,
-                Description = "Task B",
-                Done = false,
-                UserId = 1,
-                ItemTagMappings = []
-            }
-        }],
-        [ 1, new List<bool>{ true, false }, true, new List<Item>
-        {
-            new()
-            {
-                Id = 1,
-                Description = "Task A",
-                Done = true,
-                UserId = 1,
-                ItemTagMappings = []
-            },
-            new()
-            {
-                Id = 2,
-                Description = "Task B",
-                Done = false,
-                UserId = 1,
-                ItemTagMappings = []
-            }
-        }],
-        [ 1, new List<bool>{ false, true }, true, new List<Item>
-        {
-            new()
-            {
-                Id = 1,
-                Description = "Task A",
-                Done = true,
-                UserId = 1,
-                ItemTagMappings = []
-            },
-            new()
-            {
-                Id = 2,
-                Description = "Task B",
-                Done = false,
-                UserId = 1,
-                ItemTagMappings = []
-            }
-        }],
-        [ 1, new List<bool>{ true }, true, new List<Item>
-        {
-            new()
-            {
-                Id = 1,
-                Description = "Task A",
-                Done = true,
-                UserId = 1,
-                ItemTagMappings = []
-            }
-        }],
-        [ 1, new List<bool>{ false }, true, new List<Item>
-        {
-            new()
-            {
-                Id = 2,
-                Description = "Task B",
-                Done = false,
-                UserId = 1,
-                ItemTagMappings = []
-            }
-        }]
+        [ 1, new List<bool>{}, true, new List<bool>{},
+            new List<string>{"Task A","Task B"}],
+        [ 1, new List<bool>{ true, false }, true, new List<bool>{}, 
+            new List<string>{"Task A","Task B"}],
+        [ 1, new List<bool>{ false, true }, true, new List<bool>{}, 
+            new List<string>{"Task A","Task B"}],
+        [ 1, new List<bool>{ true }, true, new List<bool>{},
+            new List<string>{"Task A"}],
+        [ 1, new List<bool>{ false }, true, new List<bool>{},
+            new List<string>{"Task B"}],
+        [ 1, new List<bool>{}, true, new List<bool>{ true, false },
+            new List<string> {"Task A", "Task B"}
+        ],
+        [ 1, new List<bool>{}, true, new List<bool>{ true },
+            new List<string> {"Task A"}
+        ],
+        [ 1, new List<bool>{}, true, new List<bool>{ false },
+            new List<string> {"Task B"}
+        ],
+        [ 1, new List<bool>{true}, true, new List<bool>{ true },
+            new List<string> {"Task A"}
+        ],
+        [ 1, new List<bool>{false}, true, new List<bool>{ false },
+            new List<string> {"Task B"}
+        ],
+        [ 1, new List<bool>{true}, true, new List<bool>{ false },
+            new List<string> {}
+        ]
     ];
 
     [Theory]
@@ -123,7 +74,8 @@ public partial class ItemRepositoryTests
         int userId,
         List<bool> completionStatuses,
         bool fetchTagMappings,
-        List<Item> expectedItems)
+        List<bool> laterStatuses,
+        List<string> expectedItemDescriptions)
     {
         //arrange
         var dbContextOptionsBuilder = new DbContextOptionsBuilder<GTDContext>();
@@ -135,10 +87,11 @@ public partial class ItemRepositoryTests
         dbContext.SaveChanges();
 
         //act
-        var items = sut.GetItems(userId, completionStatuses, fetchTagMappings);
+        var items = sut.GetItems(userId, completionStatuses, laterStatuses, fetchTagMappings);
 
         //assert
-        items.Count().ShouldBe(expectedItems.Count);
-        items.ShouldBe(expectedItems);
+        items.Count().ShouldBe(expectedItemDescriptions.Count);
+        items.Select(i => i.Description)
+            .ShouldBe(expectedItemDescriptions);
     }
 }
