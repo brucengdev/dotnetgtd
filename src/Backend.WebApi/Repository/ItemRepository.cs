@@ -34,6 +34,11 @@ public class ItemRepository: IItemRepository
         {
             results = results.Where(i => laterStatuses.Contains(i.Later));
         }
+
+        if (projectId.HasValue)
+        {
+            results = results.Where(i => i.ProjectId == projectId.Value);
+        }
         if (fetchTagMappings)
         {
             results = results.Include(i => i.ItemTagMappings);
