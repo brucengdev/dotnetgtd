@@ -7,25 +7,67 @@ using Shouldly;
 
 namespace Backend.Core.Tests;
 
+class GetItemTestCase
+{
+    public int UserId;
+    public IEnumerable<bool> CompletionStatuses;
+    public IEnumerable<bool> LaterStatuses;
+    public int? ProjectId;
+
+    public object[] ToObjectArray()
+    {
+        return
+        [
+            UserId, CompletionStatuses, LaterStatuses, ProjectId
+        ];
+    }
+}
+
 public partial class ItemManagerTests
 {
-    public static IEnumerable<object[]> GetItemsCases =
-    [
-        [ 123, new List<bool> { }, new List<bool>{true, false}],
-        [ 23, new List<bool> { true }, new List<bool>{false, true}],
-        [ 25, new List<bool> { false }, new List<bool>{true}],
-        [ 5, new List<bool> { true, false }, new List<bool>{false}],
-        [ 10, new List<bool> { false, true }, new List<bool>()],
-    ];
+    public static IEnumerable<object[]> GetItemsCases = new List<GetItemTestCase>()
+    {
+        new() {
+            UserId = 123, 
+            CompletionStatuses = [ ], LaterStatuses = [true, false]
+        },
+        new() {
+            UserId = 23, 
+            CompletionStatuses = [ true ], LaterStatuses = [false, true]
+        },
+        new() {
+            UserId = 25, 
+            CompletionStatuses = [ false ], LaterStatuses = [true]
+        },
+        new() {
+            UserId = 5, 
+            CompletionStatuses = [ true, false ], LaterStatuses = [false],
+            ProjectId = 4
+        },
+        new() {
+            UserId = 10, 
+            CompletionStatuses = [ false, true ], LaterStatuses = [],
+            ProjectId = 11
+        },
+        new() {
+            UserId = 10, 
+            CompletionStatuses = [], LaterStatuses = [],
+            ProjectId = 12
+        },
+    }.Select(tc => tc.ToObjectArray());
+    
     [Theory]
     [MemberData(nameof(GetItemsCases))]
     public void GetItems_is_successful(int expectedUserId, 
-        List<bool> completionStatuses,
-        List<bool> laterStatuses)
+        IEnumerable<bool> completionStatuses,
+        IEnumerable<bool> laterStatuses,
+        int? projectId)
     {
         //arrange
         var mockItemRepo = new Mock<IItemRepository>();
-        mockItemRepo.Setup(ir => ir.GetItems(expectedUserId, completionStatuses, laterStatuses, true))
+        mockItemRepo.Setup(ir => ir.GetItems(expectedUserId, 
+                completionStatuses, laterStatuses, 
+                projectId, true))
             .Returns([
                 new()
                 {
@@ -46,11 +88,11 @@ public partial class ItemManagerTests
             mockItemTagMappingRepo.Object);
 
         //act
-        var items = sut.GetItems(expectedUserId, completionStatuses, laterStatuses);
+        var items = sut.GetItems(expectedUserId, completionStatuses, laterStatuses, projectId);
 
         //assert
         mockItemRepo.Verify(ir => 
-            ir.GetItems(expectedUserId, completionStatuses,laterStatuses, true), 
+            ir.GetItems(expectedUserId, completionStatuses,laterStatuses, projectId, true), 
             Times.Once);
         mockItemRepo.VerifyNoOtherCalls();
         items.ShouldBe([

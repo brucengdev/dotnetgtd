@@ -20,6 +20,7 @@ public class TestItemRepository: IItemRepository
     public IEnumerable<Item> GetItems(int userId,
         IEnumerable<bool> completionStatuses,
         IEnumerable<bool> laterStatuses,
+        int? projectId,
         bool fetchTagMappings = false)
     {
         var results = _data.Items.Where(i => i.UserId == userId);

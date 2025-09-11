@@ -45,12 +45,14 @@ public class ItemManager: IItemManager
 
     public IEnumerable<ItemServiceModel> GetItems(int userId,
         IEnumerable<bool> completionStatuses,
-        IEnumerable<bool> laterStatuses)
+        IEnumerable<bool> laterStatuses,
+        int? projectId)
     {
         var items = _itemRepo.GetItems(
             userId, 
             completionStatuses,
             laterStatuses,
+            projectId,
             fetchTagMappings: true);
         return items.Select(i => ItemServiceModel.FromItem(i));
     }
