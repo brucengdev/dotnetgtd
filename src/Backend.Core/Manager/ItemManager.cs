@@ -52,6 +52,7 @@ public class ItemManager: IItemManager
             userId, 
             completionStatuses,
             laterStatuses,
+            projectId,
             fetchTagMappings: true);
         return items.Select(i => ItemServiceModel.FromItem(i));
     }
