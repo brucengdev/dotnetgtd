@@ -67,19 +67,19 @@ public partial class ItemRepositoryTests
             UserId = 1, 
             CompletionStatuses = [], LaterStatuses = [], 
             FetchTagMappings = true,
-            ExpectedItemDescriptions = [ "Task A","Task B"]
+            ExpectedItemDescriptions = [ "Task A","Task B", "Task D"]
         },
         new() { 
             UserId = 1, 
             CompletionStatuses = [ true, false ], LaterStatuses = [],
             FetchTagMappings = true,
-             ExpectedItemDescriptions = [ "Task A","Task B"]
+             ExpectedItemDescriptions = [ "Task A","Task B", "Task D"]
         },
         new() { 
             UserId = 1, 
             CompletionStatuses = [ false, true ], LaterStatuses = [], 
             FetchTagMappings = true,
-            ExpectedItemDescriptions = [ "Task A","Task B" ]
+            ExpectedItemDescriptions = [ "Task A","Task B", "Task D" ]
         },
         new() {
             UserId = 1, 
@@ -91,13 +91,13 @@ public partial class ItemRepositoryTests
             UserId = 1,
             CompletionStatuses = [ false ], LaterStatuses = [],
             FetchTagMappings = true,
-            ExpectedItemDescriptions = [ "Task B"]
+            ExpectedItemDescriptions = [ "Task B", "Task D"]
         },
         new() {
             UserId = 1, 
             CompletionStatuses = [], LaterStatuses = [ true, false ],
             FetchTagMappings = true,
-            ExpectedItemDescriptions = [ "Task A", "Task B" ]
+            ExpectedItemDescriptions = [ "Task A", "Task B", "Task D" ]
         },
         new() {
             UserId = 1, 
@@ -109,7 +109,7 @@ public partial class ItemRepositoryTests
             UserId = 1,
             CompletionStatuses = [], LaterStatuses = [ false ],
             FetchTagMappings = true,
-            ExpectedItemDescriptions = [ "Task B" ]
+            ExpectedItemDescriptions = [ "Task B", "Task D" ]
         },
         new() {
             UserId = 1, 
@@ -121,7 +121,7 @@ public partial class ItemRepositoryTests
             UserId = 1, 
             CompletionStatuses = [false], LaterStatuses = [ false ],
             FetchTagMappings = true,
-            ExpectedItemDescriptions = [ "Task B" ]
+            ExpectedItemDescriptions = [ "Task B", "Task D" ]
         },
         new() {
             UserId = 1, 
