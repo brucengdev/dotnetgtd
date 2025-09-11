@@ -51,6 +51,14 @@ public partial class ItemRepositoryTests
                 Done = false,
                 UserId = 2
             },
+            new()
+            {
+                Id = 4,
+                Description = "Task D",
+                Done = false,
+                UserId = 1,
+                ProjectId = 12
+            }
         ];
     }
     public static IEnumerable<object[]> GetItemsCases = new List<GetItemsCase>
@@ -126,7 +134,7 @@ public partial class ItemRepositoryTests
             CompletionStatuses = [], LaterStatuses = [],
             FetchTagMappings = true,
             ProjectId = 12,
-            ExpectedItemDescriptions = ["Task A"]
+            ExpectedItemDescriptions = ["Task A", "Task D"]
         }
     }.Select(tc => tc.ToObjectArray());
 
