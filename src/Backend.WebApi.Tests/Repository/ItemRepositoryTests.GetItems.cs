@@ -5,6 +5,21 @@ using Shouldly;
 
 namespace Backend.WebApi.Tests.Repository;
 
+class GetItemsCase
+{
+    public int UserId;
+    public IEnumerable<bool> CompletionStatuses;
+    public IEnumerable<bool> LaterStatuses;
+    public bool FetchTagMappings;
+    public IEnumerable<string> ExpectedItemDescriptions;
+
+    public object[] ToObjectArray() =>
+    [
+        UserId, CompletionStatuses, LaterStatuses, FetchTagMappings,
+        ExpectedItemDescriptions
+    ];
+}
+
 public partial class ItemRepositoryTests
 {
     private List<Item> CreateTestData()
@@ -36,46 +51,84 @@ public partial class ItemRepositoryTests
             },
         ];
     }
-    public static IEnumerable<object[]> GetItemsCases =
-    [
-        [ 1, new List<bool>{}, true, new List<bool>{},
-            new List<string>{"Task A","Task B"}],
-        [ 1, new List<bool>{ true, false }, true, new List<bool>{}, 
-            new List<string>{"Task A","Task B"}],
-        [ 1, new List<bool>{ false, true }, true, new List<bool>{}, 
-            new List<string>{"Task A","Task B"}],
-        [ 1, new List<bool>{ true }, true, new List<bool>{},
-            new List<string>{"Task A"}],
-        [ 1, new List<bool>{ false }, true, new List<bool>{},
-            new List<string>{"Task B"}],
-        [ 1, new List<bool>{}, true, new List<bool>{ true, false },
-            new List<string> {"Task A", "Task B"}
-        ],
-        [ 1, new List<bool>{}, true, new List<bool>{ true },
-            new List<string> {"Task A"}
-        ],
-        [ 1, new List<bool>{}, true, new List<bool>{ false },
-            new List<string> {"Task B"}
-        ],
-        [ 1, new List<bool>{true}, true, new List<bool>{ true },
-            new List<string> {"Task A"}
-        ],
-        [ 1, new List<bool>{false}, true, new List<bool>{ false },
-            new List<string> {"Task B"}
-        ],
-        [ 1, new List<bool>{true}, true, new List<bool>{ false },
-            new List<string> {}
-        ]
-    ];
+    public static IEnumerable<object[]> GetItemsCases = new List<GetItemsCase>
+    {
+        new() { 
+            UserId = 1, 
+            CompletionStatuses = [], LaterStatuses = [], 
+            FetchTagMappings = true,
+            ExpectedItemDescriptions = [ "Task A","Task B"]
+        },
+        new() { 
+            UserId = 1, 
+            CompletionStatuses = [ true, false ], LaterStatuses = [],
+            FetchTagMappings = true,
+             ExpectedItemDescriptions = [ "Task A","Task B"]
+        },
+        new() { 
+            UserId = 1, 
+            CompletionStatuses = [ false, true ], LaterStatuses = [], 
+            FetchTagMappings = true,
+            ExpectedItemDescriptions = [ "Task A","Task B" ]
+        },
+        new() {
+            UserId = 1, 
+            CompletionStatuses = [ true ], LaterStatuses = [],
+            FetchTagMappings = true,
+            ExpectedItemDescriptions = [ "Task A"]
+        },
+        new() {
+            UserId = 1,
+            CompletionStatuses = [ false ], LaterStatuses = [],
+            FetchTagMappings = true,
+            ExpectedItemDescriptions = [ "Task B"]
+        },
+        new() {
+            UserId = 1, 
+            CompletionStatuses = [], LaterStatuses = [ true, false ],
+            FetchTagMappings = true,
+            ExpectedItemDescriptions = [ "Task A", "Task B" ]
+        },
+        new() {
+            UserId = 1, 
+            CompletionStatuses = [], LaterStatuses = [ true ],
+            FetchTagMappings = true,
+            ExpectedItemDescriptions = [ "Task A" ]
+        },
+        new() {
+            UserId = 1,
+            CompletionStatuses = [], LaterStatuses = [ false ],
+            FetchTagMappings = true,
+            ExpectedItemDescriptions = [ "Task B" ]
+        },
+        new() {
+            UserId = 1, 
+            CompletionStatuses = [true], LaterStatuses = [ true ],
+            FetchTagMappings = true,
+            ExpectedItemDescriptions = [ "Task A" ]
+        },
+        new() {
+            UserId = 1, 
+            CompletionStatuses = [false], LaterStatuses = [ false ],
+            FetchTagMappings = true,
+            ExpectedItemDescriptions = [ "Task B" ]
+        },
+        new() {
+            UserId = 1, 
+            CompletionStatuses = [true], LaterStatuses = [ false ],
+            FetchTagMappings = true,
+            ExpectedItemDescriptions = [ ]
+        }
+    }.Select(tc => tc.ToObjectArray());
 
     [Theory]
     [MemberData(nameof(GetItemsCases))]
     public void GetItems_must_return_values(
         int userId,
-        List<bool> completionStatuses,
+        IEnumerable<bool> completionStatuses,
+        IEnumerable<bool> laterStatuses,
         bool fetchTagMappings,
-        List<bool> laterStatuses,
-        List<string> expectedItemDescriptions)
+        IEnumerable<string> expectedItemDescriptions)
     {
         //arrange
         var dbContextOptionsBuilder = new DbContextOptionsBuilder<GTDContext>();
@@ -90,7 +143,7 @@ public partial class ItemRepositoryTests
         var items = sut.GetItems(userId, completionStatuses, laterStatuses, 1, fetchTagMappings);
 
         //assert
-        items.Count().ShouldBe(expectedItemDescriptions.Count);
+        items.Count().ShouldBe(expectedItemDescriptions.Count());
         items.Select(i => i.Description)
             .ShouldBe(expectedItemDescriptions);
     }
