@@ -11,24 +11,6 @@ using Shouldly;
 
 namespace Backend.WebApi.Tests.Controller
 {
-    public class GetItemTestCase
-    {
-        public string? Complete;
-        public string? Later;
-        public IEnumerable<bool> CompletionStatuses;
-        public IEnumerable<bool> LaterStatuses;
-        public int? ProjectId;
-
-        public object[] ToObjectArray()
-        {
-            return
-            [
-                Complete, CompletionStatuses,
-                Later, LaterStatuses,
-                ProjectId
-            ];
-        }
-    }
     public partial class ItemsControllerTests
     {
         [Fact]
@@ -77,7 +59,8 @@ namespace Backend.WebApi.Tests.Controller
                 string? laterFilter,
             [CombinatorialValues(1, 2, 3, null)]
                 int? projectId,
-                int[]? tagIds
+            [CombinatorialValues(null, "", "12,22", "2,3,4")]
+                string? tagFilter
             )
         {
             //arrange
@@ -103,9 +86,16 @@ namespace Backend.WebApi.Tests.Controller
             sut.ControllerContext = new ControllerContext();
             sut.ControllerContext.HttpContext = new DefaultHttpContext();
             sut.HttpContext.Items["UserId"] = 123;
+
+            int[]? tagIds = null;
+            if (tagFilter != null)
+            {
+                tagIds = tagFilter == ""? new int[0] 
+                    : tagFilter?.Split(",").Select(int.Parse).ToArray();
+            }
         
             //act
-            var response = sut.GetItems(completionFilter, laterFilter, projectId);
+            var response = sut.GetItems(completionFilter, laterFilter, projectId, tagIds);
         
             //assert
             IEnumerable<bool> completionStatuses = [];
