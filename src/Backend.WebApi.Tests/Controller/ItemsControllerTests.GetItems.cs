@@ -53,16 +53,12 @@ namespace Backend.WebApi.Tests.Controller
             var completeArg = args[0];
             completeArg.Name.ShouldBe("complete");
             completeArg.ParameterType.ShouldBe(typeof(string));
-            
-            var isCompleteNullable = new NullabilityInfoContext().Create(completeArg).WriteState is NullabilityState.Nullable;
-            isCompleteNullable.ShouldBeTrue();
+            Utils.ShouldBeNullable(completeArg);
             
             var laterArg = args[1];
             laterArg.Name.ShouldBe("later");
             laterArg.ParameterType.ShouldBe(typeof(string));
-            
-            var isLaterNullable = new NullabilityInfoContext().Create(laterArg).WriteState is NullabilityState.Nullable;
-            isLaterNullable.ShouldBeTrue();
+            Utils.ShouldBeNullable(laterArg);
             
             var projectIdArg = args[2];
             projectIdArg.Name.ShouldBe("projectId");
@@ -71,8 +67,7 @@ namespace Backend.WebApi.Tests.Controller
             var tagIdsArg = args[3];
             tagIdsArg.Name.ShouldBe("tagIds");
             tagIdsArg.ParameterType.ShouldBe(typeof(int[]));
-            var isTagIdsNullable = new NullabilityInfoContext().Create(tagIdsArg).WriteState is NullabilityState.Nullable;
-            isTagIdsNullable.ShouldBeTrue();
+            Utils.ShouldBeNullable(tagIdsArg);
         }
 
         public static IEnumerable<object[]> GetItemsCases = (new List<GetItemTestCase>
