@@ -36,7 +36,7 @@ namespace Backend.WebApi.Controllers
             var laterStatuses = (later ?? "").Split(",")
                 .Where(statusName => !string.IsNullOrEmpty(statusName))
                 .Select(statusName => statusName == Constants.LATER);
-            return Ok(_itemManager.GetItems(userId, completionStatuses, laterStatuses, projectId));
+            return Ok(_itemManager.GetItems(userId, completionStatuses, laterStatuses, projectId, tagIds));
         }
 
         [HttpDelete("[action]")]

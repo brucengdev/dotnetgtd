@@ -68,7 +68,8 @@ namespace Backend.WebApi.Tests.Controller
             itemManager.Setup(im => im.GetItems(It.IsAny<int>(), 
                     It.IsAny<IEnumerable<bool>>(),
                     It.IsAny<IEnumerable<bool>>(),
-                    It.IsAny<int?>()))
+                    It.IsAny<int?>(),
+                            It.IsAny<int[]?>()))
                 .Returns(new List<ItemServiceModel>
                 {
                     new () 
@@ -108,7 +109,7 @@ namespace Backend.WebApi.Tests.Controller
             {
                 laterStatuses = laterFilter.Split(",").Select(f => f == "later");
             }
-            itemManager.Verify(im => im.GetItems(123, completionStatuses, laterStatuses, projectId), Times.Once);
+            itemManager.Verify(im => im.GetItems(123, completionStatuses, laterStatuses, projectId, tagIds), Times.Once);
             itemManager.VerifyNoOtherCalls();
             
             response.ShouldBeOfType<OkObjectResult>();
