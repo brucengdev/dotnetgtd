@@ -76,7 +76,8 @@ namespace Backend.WebApi.Tests.Controller
             [CombinatorialValues("later", "now", "later,now", "now,later", "", null)] 
                 string? laterFilter,
             [CombinatorialValues(1, 2, 3, null)]
-            int? projectId
+                int? projectId,
+                int[]? tagIds
             )
         {
             //arrange
