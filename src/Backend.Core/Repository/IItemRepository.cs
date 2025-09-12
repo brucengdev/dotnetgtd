@@ -9,6 +9,7 @@ public interface IItemRepository
         IEnumerable<bool> completionStatuses,
         IEnumerable<bool> laterStatuses,
         int? projectId,
+        int[]? tagIds,
         bool fetchTagMappings = false);
     void DeleteItem(int itemId);
     Item? GetItem(int itemId);

@@ -18,17 +18,31 @@ public partial class ItemManagerTests
         [CombinatorialValues("", "true,false", "false,true", "true", "false")]
         string laterFilter,
         [CombinatorialValues(null, 10,2,4)]
-        int? projectId)
+        int? projectId,
+        [CombinatorialValues(null, "", "1", "2", "1,2,3")]
+        string? tagIdFilter
+        )
     {
         //arrange
         var completionStatuses = completionFilter.Split(",")
             .Select(f => f == "true");
         var laterStatuses = laterFilter.Split(",")
             .Select(f => f == "true");
+        int[]? tagIds = null;
+        if (tagIdFilter == "")
+        {
+            tagIds = [];
+        }
+        else
+        if(tagIds != null)
+        {
+            tagIds = tagIdFilter.Split(",").Select(int.Parse).ToArray();
+        }
+
         var mockItemRepo = new Mock<IItemRepository>();
         mockItemRepo.Setup(ir => ir.GetItems(expectedUserId, 
                 completionStatuses, laterStatuses, 
-                projectId, true))
+                projectId, tagIds, true))
             .Returns([
                 new()
                 {
@@ -50,11 +64,12 @@ public partial class ItemManagerTests
 
         //act
         var items = sut.GetItems(expectedUserId, 
-            completionStatuses, laterStatuses, projectId);
+            completionStatuses, laterStatuses, projectId, tagIds);
 
         //assert
         mockItemRepo.Verify(ir => 
-            ir.GetItems(expectedUserId, completionStatuses,laterStatuses, projectId, true), 
+            ir.GetItems(expectedUserId, completionStatuses,laterStatuses,
+                projectId, tagIds, true), 
             Times.Once);
         mockItemRepo.VerifyNoOtherCalls();
         items.ShouldBe([

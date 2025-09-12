@@ -21,6 +21,7 @@ public class TestItemRepository: IItemRepository
         IEnumerable<bool> completionStatuses,
         IEnumerable<bool> laterStatuses,
         int? projectId,
+        int[]? tagIds = null,
         bool fetchTagMappings = false)
     {
         var results = _data.Items.Where(i => i.UserId == userId);

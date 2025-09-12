@@ -22,6 +22,7 @@ public class ItemRepository: IItemRepository
         IEnumerable<bool> completionStatuses,
         IEnumerable<bool> laterStatuses,
         int? projectId,
+        int[]? tagIds,
         bool fetchTagMappings = false)
     {
         var results =  _dbContext.Items.Where(i => i.UserId == userId);
