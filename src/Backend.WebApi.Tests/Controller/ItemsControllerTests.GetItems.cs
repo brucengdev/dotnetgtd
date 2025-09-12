@@ -48,7 +48,7 @@ namespace Backend.WebApi.Tests.Controller
             attributes.Length.ShouldBeGreaterThan(0, "Must require authorization");
             
             var args = method.GetParameters();
-            args.Length.ShouldBe(3);
+            args.Length.ShouldBe(4);
             
             var completeArg = args[0];
             completeArg.Name.ShouldBe("complete");
@@ -67,6 +67,12 @@ namespace Backend.WebApi.Tests.Controller
             var projectIdArg = args[2];
             projectIdArg.Name.ShouldBe("projectId");
             projectIdArg.ParameterType.ShouldBe(typeof(int?));
+            
+            var tagIdsArg = args[3];
+            tagIdsArg.Name.ShouldBe("tagIds");
+            tagIdsArg.ParameterType.ShouldBe(typeof(int[]));
+            var isTagIdsNullable = new NullabilityInfoContext().Create(tagIdsArg).WriteState is NullabilityState.Nullable;
+            isTagIdsNullable.ShouldBeTrue();
         }
 
         public static IEnumerable<object[]> GetItemsCases = (new List<GetItemTestCase>
