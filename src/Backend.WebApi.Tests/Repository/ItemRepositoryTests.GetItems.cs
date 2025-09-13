@@ -12,12 +12,13 @@ class GetItemsCase
     public IEnumerable<bool> LaterStatuses;
     public bool FetchTagMappings;
     public int? ProjectId;
+    public int[]? TagIds;
     public IEnumerable<string> ExpectedItemDescriptions;
 
     public object[] ToObjectArray() =>
     [
-        UserId, CompletionStatuses, LaterStatuses, FetchTagMappings, ProjectId,
-        ExpectedItemDescriptions
+        UserId, CompletionStatuses, LaterStatuses, FetchTagMappings, 
+        ProjectId, TagIds, ExpectedItemDescriptions
     ];
 }
 
@@ -135,6 +136,12 @@ public partial class ItemRepositoryTests
             FetchTagMappings = true,
             ProjectId = 12,
             ExpectedItemDescriptions = ["Task A", "Task D"]
+        },
+        new() {
+            UserId = 2, 
+            CompletionStatuses = [], LaterStatuses = [],
+            FetchTagMappings = true,
+            ExpectedItemDescriptions = ["Task C"]
         }
     }.Select(tc => tc.ToObjectArray());
 
@@ -146,6 +153,7 @@ public partial class ItemRepositoryTests
         IEnumerable<bool> laterStatuses,
         bool fetchTagMappings,
         int? projectId,
+        int[]? tagIds,
         IEnumerable<string> expectedItemDescriptions)
     {
         //arrange
@@ -159,11 +167,12 @@ public partial class ItemRepositoryTests
 
         //act
         var items = sut.GetItems(userId, completionStatuses, 
-            laterStatuses, projectId, [], fetchTagMappings);
+            laterStatuses, projectId, tagIds, fetchTagMappings);
 
         //assert
         items.Count().ShouldBe(expectedItemDescriptions.Count());
         items.Select(i => i.Description)
-            .ShouldBe(expectedItemDescriptions);
+            .ShouldBe(expectedItemDescriptions, 
+                "Actual: " + string.Join(',', items.Select(i => i.Description).ToList()));
     }
 }
