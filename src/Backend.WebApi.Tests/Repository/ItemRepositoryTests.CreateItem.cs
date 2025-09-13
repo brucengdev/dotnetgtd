@@ -11,9 +11,7 @@ public partial class ItemRepositoryTests
     public void TestCreateItem()
     {
         //arrange
-        var dbContextOptionsBuilder = new DbContextOptionsBuilder<GTDContext>();
-        dbContextOptionsBuilder.UseInMemoryDatabase("TestCreateItems");
-        var dbContext = new GTDContext(dbContextOptionsBuilder.Options);
+        var dbContext = Utils.CreateTestDB();
         var sut = new ItemRepository(dbContext);
         
         //act

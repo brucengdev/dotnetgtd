@@ -12,10 +12,7 @@ public class SeedDataTests
     public void Must_add_admin_user_with_specified_salt_and_password()
     {
         //arrange
-        var dbContextOptionsBuilder = new DbContextOptionsBuilder<GTDContext>();
-        dbContextOptionsBuilder.UseInMemoryDatabase("testdb");
-        var contextOptions = dbContextOptionsBuilder.Options;
-        var context = new GTDContext(contextOptions);
+        var context = Utils.CreateTestDB();
         var salt = "abcdef";
         var adminPassword = "adminPassword";
         

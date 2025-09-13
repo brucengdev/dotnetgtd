@@ -191,9 +191,7 @@ public partial class ItemRepositoryTests
         IEnumerable<string> expectedItemDescriptions)
     {
         //arrange
-        var dbContextOptionsBuilder = new DbContextOptionsBuilder<GTDContext>();
-        dbContextOptionsBuilder.UseInMemoryDatabase(Guid.NewGuid().ToString());
-        var dbContext = new GTDContext(dbContextOptionsBuilder.Options);
+        var dbContext = Utils.CreateTestDB();
         var sut = new ItemRepository(dbContext);
         var testData = CreateTestData();
         testData.Items.ForEach(item => dbContext.Items.Add(item));
@@ -209,5 +207,11 @@ public partial class ItemRepositoryTests
         items.Select(i => i.Description)
             .ShouldBe(expectedItemDescriptions, 
                 "Actual: " + string.Join(',', items.Select(i => i.Description).ToList()));
+    }
+
+    [Fact]
+    public void Must_not_fetch_tag_mappings_if_fetchTagMappings_is_false()
+    {
+        
     }
 }
