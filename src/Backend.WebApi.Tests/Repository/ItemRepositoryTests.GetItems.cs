@@ -10,14 +10,13 @@ class GetItemsCase
     public int UserId;
     public IEnumerable<bool> CompletionStatuses;
     public IEnumerable<bool> LaterStatuses;
-    public bool FetchTagMappings;
     public int? ProjectId;
     public int[]? TagIds;
     public IEnumerable<string> ExpectedItemDescriptions;
 
     public object[] ToObjectArray() =>
     [
-        UserId, CompletionStatuses, LaterStatuses, FetchTagMappings, 
+        UserId, CompletionStatuses, LaterStatuses, 
         ProjectId, TagIds, ExpectedItemDescriptions
     ];
 }
@@ -88,87 +87,73 @@ public partial class ItemRepositoryTests
         new() { 
             UserId = 1, 
             CompletionStatuses = [], LaterStatuses = [], 
-            FetchTagMappings = true,
             ExpectedItemDescriptions = [ "Task A","Task B", "Task D"]
         },
         new() { 
             UserId = 1, 
             CompletionStatuses = [ true, false ], LaterStatuses = [],
-            FetchTagMappings = true,
              ExpectedItemDescriptions = [ "Task A","Task B", "Task D"]
         },
         new() { 
             UserId = 1, 
             CompletionStatuses = [ false, true ], LaterStatuses = [], 
-            FetchTagMappings = true,
             ExpectedItemDescriptions = [ "Task A","Task B", "Task D" ]
         },
         new() {
             UserId = 1, 
             CompletionStatuses = [ true ], LaterStatuses = [],
-            FetchTagMappings = true,
             ExpectedItemDescriptions = [ "Task A"]
         },
         new() {
             UserId = 1,
             CompletionStatuses = [ false ], LaterStatuses = [],
-            FetchTagMappings = true,
             ExpectedItemDescriptions = [ "Task B", "Task D"]
         },
         new() {
             UserId = 1, 
             CompletionStatuses = [], LaterStatuses = [ true, false ],
-            FetchTagMappings = true,
             ExpectedItemDescriptions = [ "Task A", "Task B", "Task D" ]
         },
         new() {
             UserId = 1, 
             CompletionStatuses = [], LaterStatuses = [ true ],
-            FetchTagMappings = true,
             ExpectedItemDescriptions = [ "Task A" ]
         },
         new() {
             UserId = 1,
             CompletionStatuses = [], LaterStatuses = [ false ],
-            FetchTagMappings = true,
             ExpectedItemDescriptions = [ "Task B", "Task D" ]
         },
         new() {
             UserId = 1, 
             CompletionStatuses = [true], LaterStatuses = [ true ],
-            FetchTagMappings = true,
             ExpectedItemDescriptions = [ "Task A" ]
         },
         new() {
             UserId = 1, 
             CompletionStatuses = [false], LaterStatuses = [ false ],
-            FetchTagMappings = true,
             ExpectedItemDescriptions = [ "Task B", "Task D" ]
         },
         new() {
             UserId = 1, 
             CompletionStatuses = [true], LaterStatuses = [ false ],
-            FetchTagMappings = true,
             ExpectedItemDescriptions = [ ]
         },
         new() {
             UserId = 1, 
             CompletionStatuses = [], LaterStatuses = [],
-            FetchTagMappings = true,
             ProjectId = 12,
             ExpectedItemDescriptions = ["Task A", "Task D"]
         },
         new() {
             UserId = 2, 
             CompletionStatuses = [], LaterStatuses = [],
-            FetchTagMappings = true,
             ExpectedItemDescriptions = ["Task C"]
         },
         new()
         {
             UserId = 1,
             CompletionStatuses = [], LaterStatuses = [],
-            FetchTagMappings = true,
             TagIds = [ 2, 3 ],
             ExpectedItemDescriptions = ["Task B", "Task D"]
         },
@@ -176,7 +161,6 @@ public partial class ItemRepositoryTests
         {
             UserId = 1,
             CompletionStatuses = [], LaterStatuses = [],
-            FetchTagMappings = true,
             TagIds = [ 2 ],
             ExpectedItemDescriptions = ["Task B"]
         },
@@ -184,7 +168,6 @@ public partial class ItemRepositoryTests
         {
             UserId = 1,
             CompletionStatuses = [], LaterStatuses = [],
-            FetchTagMappings = true,
             TagIds = [ 3 ],
             ExpectedItemDescriptions = ["Task D"]
         },
@@ -192,7 +175,6 @@ public partial class ItemRepositoryTests
         {
             UserId = 1,
             CompletionStatuses = [], LaterStatuses = [],
-            FetchTagMappings = true,
             TagIds = [ 4 ],
             ExpectedItemDescriptions = []
         }
@@ -204,15 +186,12 @@ public partial class ItemRepositoryTests
         int userId,
         IEnumerable<bool> completionStatuses,
         IEnumerable<bool> laterStatuses,
-        bool fetchTagMappings,
         int? projectId,
         int[]? tagIds,
         IEnumerable<string> expectedItemDescriptions)
     {
         //arrange
-        var dbContextOptionsBuilder = new DbContextOptionsBuilder<GTDContext>();
-        dbContextOptionsBuilder.UseInMemoryDatabase(Guid.NewGuid().ToString());
-        var dbContext = new GTDContext(dbContextOptionsBuilder.Options);
+        var dbContext = Utils.CreateTestDB();
         var sut = new ItemRepository(dbContext);
         var testData = CreateTestData();
         testData.Items.ForEach(item => dbContext.Items.Add(item));
@@ -222,11 +201,56 @@ public partial class ItemRepositoryTests
 
         //act
         var items = sut.GetItems(userId, completionStatuses, 
-            laterStatuses, projectId, tagIds, fetchTagMappings);
+            laterStatuses, projectId, tagIds);
 
         //assert
         items.Select(i => i.Description)
             .ShouldBe(expectedItemDescriptions, 
                 "Actual: " + string.Join(',', items.Select(i => i.Description).ToList()));
+    }
+
+    [Fact]
+    public void GetItems_Must_fetch_related_entities()
+    {
+        //arrange
+        var dbContext = Utils.CreateTestDB();
+        dbContext.Items.Add(new()
+        {
+            Id = 1,
+            Description = "Test task",
+            UserId = 1
+        });
+        dbContext.Users.Add(new()
+        {
+            Id = 1,
+            Username = "testuser",
+            PasswordHash = "testhash"
+        });
+        dbContext.Tags.Add(new() { Id = 1, Name = "TagA", UserId = 1 });
+        dbContext.ItemTagMappings.Add(new() { Id = 1, TagId = 1, ItemId = 1 });
+        dbContext.SaveChanges();
+        
+        //act
+        var sut = new ItemRepository(dbContext);
+        var result = sut.GetItems(1, [], [], null, []);
+        
+        //assert
+        result.ShouldBe([
+            new ()
+            {
+                Id = 1,
+                Description = "Test task",
+                UserId = 1,
+                ItemTagMappings = [
+                    new() { Id = 1, TagId = 1, ItemId = 1 }
+                ],
+                User = new()
+                {
+                    Id = 1,
+                    Username = "testuser",
+                    PasswordHash = "testhash"
+                }
+            }
+        ]);
     }
 }

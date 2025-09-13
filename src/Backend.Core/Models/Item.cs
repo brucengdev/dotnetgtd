@@ -41,13 +41,16 @@ public class Item
         var otherItem = obj as Item;
         var hasSameTagMappings = (ItemTagMappings == null && otherItem.ItemTagMappings == null)
             || (ItemTagMappings != null && ItemTagMappings.SequenceEqual(otherItem.ItemTagMappings));
+        var hasSameUser = (User == null && otherItem.User == null)
+                          || (User != null && User.Equals(otherItem.User));
         var result = Id == otherItem.Id
-               && Description == otherItem.Description
-               && UserId == otherItem.UserId
-               && ProjectId == otherItem.ProjectId
-               && hasSameTagMappings
-               && Done == otherItem.Done
-               && Later == otherItem.Later;
+                     && Description == otherItem.Description
+                     && UserId == otherItem.UserId
+                     && ProjectId == otherItem.ProjectId
+                     && hasSameTagMappings
+                     && Done == otherItem.Done
+                     && Later == otherItem.Later
+                     && hasSameUser;
         return result;
     }
 

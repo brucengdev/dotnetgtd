@@ -1,4 +1,6 @@
 using System.Reflection;
+using Backend.Models;
+using Microsoft.EntityFrameworkCore;
 using Shouldly;
 
 namespace Backend.WebApi.Tests;
@@ -19,5 +21,13 @@ public class Utils
     public static void ShouldBeNullable(ParameterInfo parameterInfo)
     {
         IsNullable(parameterInfo).ShouldBeTrue();
+    }
+
+    public static GTDContext CreateTestDB()
+    {
+        var dbContextOptionsBuilder = new DbContextOptionsBuilder<GTDContext>();
+        dbContextOptionsBuilder.UseInMemoryDatabase(Guid.NewGuid().ToString());
+        var dbContext = new GTDContext(dbContextOptionsBuilder.Options);
+        return dbContext;
     }
 }

@@ -21,23 +21,19 @@ public class TestItemRepository: IItemRepository
         IEnumerable<bool> completionStatuses,
         IEnumerable<bool> laterStatuses,
         int? projectId,
-        int[]? tagIds = null,
-        bool fetchTagMappings = false)
+        int[]? tagIds = null)
     {
         var results = _data.Items.Where(i => i.UserId == userId);
         if (completionStatuses.Count() > 0)
         {
             results = results.Where(i => completionStatuses.Contains(i.Done));
         }
-        if (fetchTagMappings)
+        results = results.Select(i =>
         {
-            results = results.Select(i =>
-            {
-                var clone = new Item(i);
-                clone.ItemTagMappings = _data.ItemTagMappings.Where(m => m.ItemId == i.Id).ToList();
-                return clone;
-            });
-        }
+            var clone = new Item(i);
+            clone.ItemTagMappings = _data.ItemTagMappings.Where(m => m.ItemId == i.Id).ToList();
+            return clone;
+        });
         return results;
     }
 
