@@ -22,6 +22,31 @@ public partial class ItemRepositoryTests
             {
                 UserId = 1, ProjectId = [null],
                 ExpectedItemDescriptions = ["Task C"]
+            },
+            new()
+            {
+                UserId = 1, ProjectId = [1],
+                ExpectedItemDescriptions = ["Task A"]
+            },
+            new()
+            {
+                UserId = 1, ProjectId = [2],
+                ExpectedItemDescriptions = ["Task B"]
+            },
+            new()
+            {
+                UserId = 1, ProjectId = null,
+                ExpectedItemDescriptions = ["Task A", "Task B", "Task C"]
+            },
+            new()
+            {
+                UserId = 1, ProjectId = [null, 1],
+                ExpectedItemDescriptions = ["Task A", "Task C"]
+            },
+            new()
+            {
+                UserId = 1, ProjectId = [1, 2],
+                ExpectedItemDescriptions = ["Task A", "Task B"]
             }
         }.Select(tc => tc.ToObjectArray());
     }
