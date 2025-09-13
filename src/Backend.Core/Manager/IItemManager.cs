@@ -9,8 +9,8 @@ public interface IItemManager
         int userId,
         IEnumerable<bool> completionStatuses,
         IEnumerable<bool> laterStatuses,
-        int? projectId,
-        int[]? tagIds);
+        IEnumerable<int>? projectId,
+        IEnumerable<int>? tagIds);
 
     void DeleteItem(int itemId, int userId);
 }

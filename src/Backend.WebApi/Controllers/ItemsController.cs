@@ -27,16 +27,60 @@ namespace Backend.WebApi.Controllers
         
         [HttpGet("[action]")]
         [ServiceFilter<SecurityFilterAttribute>]
-        public ActionResult GetItems(string? complete, string? later, int? projectId, int[]? tagIds = null)
+        public ActionResult GetItems(string? complete, string? later, string? projectId, string? tagIds = null)
         {
             var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
-            var completionStatuses = (complete??"").Split(",")
-                .Where(statusName => !string.IsNullOrEmpty(statusName))
-                .Select(statusName => statusName == Constants.COMPLETED);
-            var laterStatuses = (later ?? "").Split(",")
-                .Where(statusName => !string.IsNullOrEmpty(statusName))
-                .Select(statusName => statusName == Constants.LATER);
-            return Ok(_itemManager.GetItems(userId, completionStatuses, laterStatuses, projectId, tagIds));
+            IEnumerable<bool> completionStatuses;
+            if (complete == null || complete == "*")
+            {
+                completionStatuses = [true, false];
+            }else if (complete == "")
+            {
+                completionStatuses = [];
+            }
+            else 
+            {
+                completionStatuses = complete.Split(",").Select(f => f == "completed");
+            }
+            IEnumerable<bool> laterStatuses = [];
+            if (later == null || later == "*")
+            {
+                laterStatuses = [true, false];
+            } else if (later == "")
+            {
+                laterStatuses = [];
+            } else
+            {
+                laterStatuses = later.Split(",").Select(f => f == "later");
+            }
+
+            IEnumerable<int>? projectIdValues;
+            if (projectId == null || projectId == "*")
+            {
+                projectIdValues = null;
+            } else if (projectId == "")
+            {
+                projectIdValues = [];
+            }
+            else
+            {
+                projectIdValues = [Convert.ToInt32(projectId)];
+            }
+
+            IEnumerable<int>? tagIdValues;
+            if (tagIds == null || tagIds == "*")
+            {
+                tagIdValues = null;
+            } else if (tagIds == "")
+            {
+                tagIdValues = [];
+            }
+            else
+            {
+                tagIdValues = tagIds.Split(",").Select(t => Convert.ToInt32(t));
+            }
+            return Ok(_itemManager.GetItems(userId, completionStatuses, laterStatuses, 
+                projectIdValues, tagIdValues));
         }
 
         [HttpDelete("[action]")]

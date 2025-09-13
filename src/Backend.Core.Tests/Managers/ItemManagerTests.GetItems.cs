@@ -64,7 +64,7 @@ public partial class ItemManagerTests
 
         //act
         var items = sut.GetItems(expectedUserId, 
-            completionStatuses, laterStatuses, projectId, tagIds);
+            completionStatuses, laterStatuses, [], tagIds);
 
         //assert
         mockItemRepo.Verify(ir => 

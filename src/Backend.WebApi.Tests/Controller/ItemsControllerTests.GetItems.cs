@@ -43,23 +43,30 @@ namespace Backend.WebApi.Tests.Controller
             
             var projectIdArg = args[2];
             projectIdArg.Name.ShouldBe("projectId");
-            projectIdArg.ParameterType.ShouldBe(typeof(int?));
+            projectIdArg.ParameterType.ShouldBe(typeof(string));
             
             var tagIdsArg = args[3];
             tagIdsArg.Name.ShouldBe("tagIds");
-            tagIdsArg.ParameterType.ShouldBe(typeof(int[]));
+            tagIdsArg.ParameterType.ShouldBe(typeof(string));
             Utils.ShouldBeNullable(tagIdsArg);
         }
         
         [Theory, CombinatorialData]
         public void GetItems_must_return_items(
-            [CombinatorialValues("completed", "uncompleted", "completed,uncompleted", "uncompleted,completed", "", null)] 
+            [CombinatorialValues("completed", "uncompleted",
+                "completed,uncompleted", 
+                "uncompleted,completed", 
+                "", 
+                null)] 
                 string completionFilter, 
-            [CombinatorialValues("later", "now", "later,now", "now,later", "", null)] 
+            [CombinatorialValues("later", "now", 
+                "later,now", 
+                "now,later", 
+                "", null)] 
                 string? laterFilter,
-            [CombinatorialValues(1, 2, 3, null)]
-                int? projectId,
-            [CombinatorialValues(null, "", "12,22", "2,3,4")]
+            [CombinatorialValues("1", "2", "3", "*","", null)]
+                string? projectId,
+            [CombinatorialValues(null, "", "12,22", "2,3,4", "*")]
                 string? tagFilter
             )
         {
@@ -68,8 +75,8 @@ namespace Backend.WebApi.Tests.Controller
             itemManager.Setup(im => im.GetItems(It.IsAny<int>(), 
                     It.IsAny<IEnumerable<bool>>(),
                     It.IsAny<IEnumerable<bool>>(),
-                    It.IsAny<int?>(),
-                            It.IsAny<int[]?>()))
+                    It.IsAny<IEnumerable<int>?>(),
+                    It.IsAny<IEnumerable<int>?>()))
                 .Returns(new List<ItemServiceModel>
                 {
                     new () 
@@ -87,29 +94,62 @@ namespace Backend.WebApi.Tests.Controller
             sut.ControllerContext = new ControllerContext();
             sut.ControllerContext.HttpContext = new DefaultHttpContext();
             sut.HttpContext.Items["UserId"] = 123;
-
-            int[]? tagIds = null;
-            if (tagFilter != null)
-            {
-                tagIds = tagFilter == ""? new int[0] 
-                    : tagFilter?.Split(",").Select(int.Parse).ToArray();
-            }
-        
+            
             //act
-            var response = sut.GetItems(completionFilter, laterFilter, projectId, tagIds);
+            var response = sut.GetItems(completionFilter, laterFilter, projectId, tagFilter);
         
             //assert
-            IEnumerable<bool> completionStatuses = [];
-            if (!completionFilter.IsNullOrEmpty())
+            IEnumerable<bool> completionStatuses;
+            if (completionFilter == null || completionFilter == "*")
+            {
+                completionStatuses = [true, false];
+            }else if (completionFilter == "")
+            {
+                completionStatuses = [];
+            }
+            else 
             {
                 completionStatuses = completionFilter.Split(",").Select(f => f == "completed");
             }
             IEnumerable<bool> laterStatuses = [];
-            if (!laterFilter.IsNullOrEmpty())
+            if (laterFilter == null || laterFilter == "*")
+            {
+                laterStatuses = [true, false];
+            } else if (laterFilter == "")
+            {
+                laterStatuses = [];
+            } else
             {
                 laterStatuses = laterFilter.Split(",").Select(f => f == "later");
             }
-            itemManager.Verify(im => im.GetItems(123, completionStatuses, laterStatuses, projectId, tagIds), Times.Once);
+
+            IEnumerable<int>? projectIds;
+            if (projectId == null || projectId == "*")
+            {
+                projectIds = null;
+            } else if (projectId == "")
+            {
+                projectIds = [];
+            }
+            else
+            {
+                projectIds = [Convert.ToInt32(projectId)];
+            }
+
+            IEnumerable<int>? tagIds;
+            if (tagFilter == null || tagFilter == "*")
+            {
+                tagIds = null;
+            } else if (tagFilter == "")
+            {
+                tagIds = [];
+            }
+            else
+            {
+                tagIds = tagFilter.Split(",").Select(t => Convert.ToInt32(t));
+            }
+            
+            itemManager.Verify(im => im.GetItems(123, completionStatuses, laterStatuses, projectIds, tagIds), Times.Once);
             itemManager.VerifyNoOtherCalls();
             
             response.ShouldBeOfType<OkObjectResult>();
