@@ -20,27 +20,27 @@ public partial class ItemRepositoryTests
         {
             new()
             {
-                UserId = 1, CompletionStatuses = [true], LaterStatuses = [true, false],
+                UserId = 1, CompletionStatuses = [true],
                 ExpectedItemDescriptions = ["Task B"]
             },
             new()
             {
-                UserId = 1, CompletionStatuses = [false], LaterStatuses = [true, false],
+                UserId = 1, CompletionStatuses = [false],
                 ExpectedItemDescriptions = ["Task A", "Task C"]
             },
             new()
             {
-                UserId = 1, CompletionStatuses = [true, false], LaterStatuses = [true, false],
+                UserId = 1, CompletionStatuses = [true, false],
                 ExpectedItemDescriptions = ["Task A", "Task B", "Task C"]
             },
             new()
             {
-                UserId = 1, CompletionStatuses = [], LaterStatuses = [true, false],
+                UserId = 1, CompletionStatuses = [],
                 ExpectedItemDescriptions = []
             },
             new()
             {
-                UserId = 1, CompletionStatuses = null, LaterStatuses = [true, false],
+                UserId = 1, CompletionStatuses = null,
                 ExpectedItemDescriptions = ["Task A", "Task B", "Task C"]
             }
         }.Select(tc => tc.ToObjectArray());

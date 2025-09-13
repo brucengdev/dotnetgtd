@@ -33,7 +33,7 @@ public class ItemRepository: IItemRepository
             results = results.Where(i => completionStatuses.Contains(i.Done));
         }
 
-        if (laterStatuses.Any())
+        if (laterStatuses != null)
         {
             results = results.Where(i => laterStatuses.Contains(i.Later));
         }
