@@ -22,8 +22,7 @@ public class ItemRepository: IItemRepository
         IEnumerable<bool> completionStatuses,
         IEnumerable<bool> laterStatuses,
         int? projectId,
-        int[]? tagIds,
-        bool fetchTagMappings = false)
+        int[]? tagIds)
     {
         //eagerly load the item tag mappings
         var results =  _dbContext.Items

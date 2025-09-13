@@ -54,8 +54,7 @@ public class ItemManager: IItemManager
             completionStatuses,
             laterStatuses,
             projectId,
-            tagIds,
-            fetchTagMappings: true);
+            tagIds);
         return items.Select(i => ItemServiceModel.FromItem(i));
     }
 

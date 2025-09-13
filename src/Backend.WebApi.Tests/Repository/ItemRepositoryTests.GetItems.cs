@@ -201,7 +201,7 @@ public partial class ItemRepositoryTests
 
         //act
         var items = sut.GetItems(userId, completionStatuses, 
-            laterStatuses, projectId, tagIds, false);
+            laterStatuses, projectId, tagIds);
 
         //assert
         items.Select(i => i.Description)
@@ -232,7 +232,7 @@ public partial class ItemRepositoryTests
         
         //act
         var sut = new ItemRepository(dbContext);
-        var result = sut.GetItems(1, [], [], null, [], fetchTagMappings: false);
+        var result = sut.GetItems(1, [], [], null, []);
         
         //assert
         result.ShouldBe([
