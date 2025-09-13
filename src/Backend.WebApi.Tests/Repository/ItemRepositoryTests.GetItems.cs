@@ -94,42 +94,42 @@ public partial class ItemRepositoryTests
     {
         new() { 
             UserId = 1, 
-            CompletionStatuses = [], LaterStatuses = [], 
+            CompletionStatuses = [true, false], LaterStatuses = [true, false], 
             ExpectedItemDescriptions = [ "Task A","Task B", "Task D"]
         },
         new() { 
             UserId = 1, 
-            CompletionStatuses = [ true, false ], LaterStatuses = [],
-             ExpectedItemDescriptions = [ "Task A","Task B", "Task D"]
+            CompletionStatuses = [ true, false ], LaterStatuses = [true, false],
+            ExpectedItemDescriptions = [ "Task A","Task B", "Task D"]
         },
         new() { 
             UserId = 1, 
-            CompletionStatuses = [ false, true ], LaterStatuses = [], 
+            CompletionStatuses = [ false, true ], LaterStatuses = [true, false], 
             ExpectedItemDescriptions = [ "Task A","Task B", "Task D" ]
         },
         new() {
             UserId = 1, 
-            CompletionStatuses = [ true ], LaterStatuses = [],
+            CompletionStatuses = [ true ], LaterStatuses = [true, false],
             ExpectedItemDescriptions = [ "Task A"]
         },
         new() {
             UserId = 1,
-            CompletionStatuses = [ false ], LaterStatuses = [],
+            CompletionStatuses = [ false ], LaterStatuses = [true, false],
             ExpectedItemDescriptions = [ "Task B", "Task D"]
         },
         new() {
             UserId = 1, 
-            CompletionStatuses = [], LaterStatuses = [ true, false ],
+            CompletionStatuses = [true, false], LaterStatuses = [ true, false ],
             ExpectedItemDescriptions = [ "Task A", "Task B", "Task D" ]
         },
         new() {
             UserId = 1, 
-            CompletionStatuses = [], LaterStatuses = [ true ],
+            CompletionStatuses = [true, false], LaterStatuses = [ true ],
             ExpectedItemDescriptions = [ "Task A" ]
         },
         new() {
             UserId = 1,
-            CompletionStatuses = [], LaterStatuses = [ false ],
+            CompletionStatuses = [true, false], LaterStatuses = [ false ],
             ExpectedItemDescriptions = [ "Task B", "Task D" ]
         },
         new() {
@@ -149,40 +149,40 @@ public partial class ItemRepositoryTests
         },
         new() {
             UserId = 1, 
-            CompletionStatuses = [], LaterStatuses = [],
+            CompletionStatuses = [true, false], LaterStatuses = [true, false],
             ProjectId = 12,
             ExpectedItemDescriptions = ["Task A", "Task D"]
         },
         new() {
             UserId = 2, 
-            CompletionStatuses = [], LaterStatuses = [],
+            CompletionStatuses = [true, false], LaterStatuses = [true, false],
             ExpectedItemDescriptions = ["Task C"]
         },
         new()
         {
             UserId = 1,
-            CompletionStatuses = [], LaterStatuses = [],
+            CompletionStatuses = [true, false], LaterStatuses = [true, false],
             TagIds = [ 2, 3 ],
             ExpectedItemDescriptions = ["Task B", "Task D"]
         },
         new()
         {
             UserId = 1,
-            CompletionStatuses = [], LaterStatuses = [],
+            CompletionStatuses = [true, false], LaterStatuses = [true, false],
             TagIds = [ 2 ],
             ExpectedItemDescriptions = ["Task B"]
         },
         new()
         {
             UserId = 1,
-            CompletionStatuses = [], LaterStatuses = [],
+            CompletionStatuses = [true, false], LaterStatuses = [true, false],
             TagIds = [ 3 ],
             ExpectedItemDescriptions = ["Task D"]
         },
         new()
         {
             UserId = 1,
-            CompletionStatuses = [], LaterStatuses = [],
+            CompletionStatuses = [true, false], LaterStatuses = [true, false],
             TagIds = [ 4 ],
             ExpectedItemDescriptions = []
         }
