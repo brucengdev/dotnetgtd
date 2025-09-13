@@ -198,14 +198,28 @@ public partial class ItemRepositoryTests
         int[]? tagIds,
         IEnumerable<string> expectedItemDescriptions)
     {
-        //arrange
         var dbContext = Utils.CreateTestDB();
-        var sut = new ItemRepository(dbContext);
         var testData = CreateTestData();
         testData.Items.ForEach(item => dbContext.Items.Add(item));
         testData.Tags.ForEach(tag => dbContext.Tags.Add(tag));
         testData.ItemTagMappings.ForEach(mapping =>  dbContext.ItemTagMappings.Add(mapping));
         dbContext.SaveChanges();
+        ExecuteGetItemTests(dbContext, 
+            userId, completionStatuses, laterStatuses, 
+            projectIds, tagIds, expectedItemDescriptions);
+    }
+
+    private void ExecuteGetItemTests(
+        GTDContext dbContext,
+        int userId, 
+        IEnumerable<bool> completionStatuses, 
+        IEnumerable<bool> laterStatuses,
+        int[]? projectIds, 
+        int[]? tagIds, 
+        IEnumerable<string> expectedItemDescriptions)
+    {
+        //arrange
+        var sut = new ItemRepository(dbContext);
 
         //act
         var items = sut.GetItems(userId, completionStatuses, 
