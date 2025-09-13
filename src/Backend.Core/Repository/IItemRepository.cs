@@ -6,10 +6,10 @@ public interface IItemRepository
 {
     int CreateItem(Item item);
     IEnumerable<Item> GetItems(int userId, 
-        IEnumerable<bool> completionStatuses,
-        IEnumerable<bool> laterStatuses,
-        IEnumerable<int>? projectIds,
-        IEnumerable<int>? tagIds);
+        IEnumerable<bool>? completionStatuses = null,
+        IEnumerable<bool>? laterStatuses = null,
+        IEnumerable<int>? projectIds = null,
+        IEnumerable<int>? tagIds = null);
     void DeleteItem(int itemId);
     Item? GetItem(int itemId);
 }

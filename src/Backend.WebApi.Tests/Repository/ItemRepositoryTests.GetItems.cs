@@ -94,7 +94,7 @@ public partial class ItemRepositoryTests
         
         //act
         var sut = new ItemRepository(dbContext);
-        var result = sut.GetItems(1, [], [], null, []);
+        var result = sut.GetItems(1);
         
         //assert
         result.ShouldBe([

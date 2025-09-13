@@ -32,6 +32,16 @@ public partial class ItemRepositoryTests
             {
                 UserId = 1, CompletionStatuses = [true, false], LaterStatuses = [true, false],
                 ExpectedItemDescriptions = ["Task A", "Task B", "Task C"]
+            },
+            new()
+            {
+                UserId = 1, CompletionStatuses = [], LaterStatuses = [true, false],
+                ExpectedItemDescriptions = []
+            },
+            new()
+            {
+                UserId = 1, CompletionStatuses = null, LaterStatuses = [true, false],
+                ExpectedItemDescriptions = ["Task A", "Task B", "Task C"]
             }
         }.Select(tc => tc.ToObjectArray());
     }
