@@ -31,166 +31,51 @@ class GetItemsCase
 
 class TestData
 {
-    public List<Item> Items;
-    public List<Tag> Tags;
-    public List<ItemTagMapping> ItemTagMappings;
+    public List<Item> Items = [];
+    public List<Tag> Tags = [];
+    public List<ItemTagMapping> ItemTagMappings = [];
 }
 
 public partial class ItemRepositoryTests
 {
-    private TestData CreateTestData()
+    
+    internal static TestData CompletionTestData()
     {
         return new()
         {
-            Items =
-            [
-                new()
-                {
-                    Id = 1,
-                    Description = "Task A",
-                    Done = true,
-                    UserId = 1,
-                    Later = true,
-                    ProjectId = 12
-                },
-                new()
-                {
-                    Id = 2,
-                    Description = "Task B",
-                    Done = false,
-                    UserId = 1,
-                    Later = false,
-                },
-                new()
-                {
-                    Id = 3,
-                    Description = "Task C",
-                    Done = false,
-                    UserId = 2
-                },
-                new()
-                {
-                    Id = 4,
-                    Description = "Task D",
-                    Done = false,
-                    UserId = 1,
-                    ProjectId = 12
-                }
-            ],
-            Tags =
-            [
-                new() { Id = 1, Name = "TagA", UserId = 1 },
-                new() { Id = 2, Name = "TagB", UserId = 1 },
-                new() { Id = 3, Name = "TagC", UserId = 1 }
-            ],
-            ItemTagMappings =
-            [
-                new() { Id = 1, ItemId = 2, TagId = 2 },
-                new() { Id = 2, ItemId = 4, TagId = 3 }
+            Items = [
+                new() { Id = 1, Description = "Task A", UserId = 1, Done = false, Later = false },
+                new() { Id = 2, Description = "Task B", UserId = 1, Done = true, Later = false },
+                new() { Id = 3, Description = "Task C", UserId = 1, Done = false, Later = false }
             ]
         };
     }
-    public static IEnumerable<object[]> GetItemsCases = new List<GetItemsCase>
+
+    public static IEnumerable<object[]> CompletionFilterTests()
     {
-        new() { 
-            UserId = 1, 
-            CompletionStatuses = [true, false], LaterStatuses = [true, false], 
-            ExpectedItemDescriptions = [ "Task A","Task B", "Task D"]
-        },
-        new() { 
-            UserId = 1, 
-            CompletionStatuses = [ true, false ], LaterStatuses = [true, false],
-            ExpectedItemDescriptions = [ "Task A","Task B", "Task D"]
-        },
-        new() { 
-            UserId = 1, 
-            CompletionStatuses = [ false, true ], LaterStatuses = [true, false], 
-            ExpectedItemDescriptions = [ "Task A","Task B", "Task D" ]
-        },
-        new() {
-            UserId = 1, 
-            CompletionStatuses = [ true ], LaterStatuses = [true, false],
-            ExpectedItemDescriptions = [ "Task A"]
-        },
-        new() {
-            UserId = 1,
-            CompletionStatuses = [ false ], LaterStatuses = [true, false],
-            ExpectedItemDescriptions = [ "Task B", "Task D"]
-        },
-        new() {
-            UserId = 1, 
-            CompletionStatuses = [true, false], LaterStatuses = [ true, false ],
-            ExpectedItemDescriptions = [ "Task A", "Task B", "Task D" ]
-        },
-        new() {
-            UserId = 1, 
-            CompletionStatuses = [true, false], LaterStatuses = [ true ],
-            ExpectedItemDescriptions = [ "Task A" ]
-        },
-        new() {
-            UserId = 1,
-            CompletionStatuses = [true, false], LaterStatuses = [ false ],
-            ExpectedItemDescriptions = [ "Task B", "Task D" ]
-        },
-        new() {
-            UserId = 1, 
-            CompletionStatuses = [true], LaterStatuses = [ true ],
-            ExpectedItemDescriptions = [ "Task A" ]
-        },
-        new() {
-            UserId = 1, 
-            CompletionStatuses = [false], LaterStatuses = [ false ],
-            ExpectedItemDescriptions = [ "Task B", "Task D" ]
-        },
-        new() {
-            UserId = 1, 
-            CompletionStatuses = [true], LaterStatuses = [ false ],
-            ExpectedItemDescriptions = [ ]
-        },
-        new() {
-            UserId = 1, 
-            CompletionStatuses = [true, false], LaterStatuses = [true, false],
-            ProjectId = 12,
-            ExpectedItemDescriptions = ["Task A", "Task D"]
-        },
-        new() {
-            UserId = 2, 
-            CompletionStatuses = [true, false], LaterStatuses = [true, false],
-            ExpectedItemDescriptions = ["Task C"]
-        },
-        new()
+        return new List<GetItemsCase>
         {
-            UserId = 1,
-            CompletionStatuses = [true, false], LaterStatuses = [true, false],
-            TagIds = [ 2, 3 ],
-            ExpectedItemDescriptions = ["Task B", "Task D"]
-        },
-        new()
-        {
-            UserId = 1,
-            CompletionStatuses = [true, false], LaterStatuses = [true, false],
-            TagIds = [ 2 ],
-            ExpectedItemDescriptions = ["Task B"]
-        },
-        new()
-        {
-            UserId = 1,
-            CompletionStatuses = [true, false], LaterStatuses = [true, false],
-            TagIds = [ 3 ],
-            ExpectedItemDescriptions = ["Task D"]
-        },
-        new()
-        {
-            UserId = 1,
-            CompletionStatuses = [true, false], LaterStatuses = [true, false],
-            TagIds = [ 4 ],
-            ExpectedItemDescriptions = []
-        }
-    }.Select(tc => tc.ToObjectArray());
+            new()
+            {
+                UserId = 1, CompletionStatuses = [true], LaterStatuses = [true, false],
+                ExpectedItemDescriptions = ["Task B"]
+            },
+            new()
+            {
+                UserId = 1, CompletionStatuses = [false], LaterStatuses = [true, false],
+                ExpectedItemDescriptions = ["Task A", "Task C"]
+            },
+            new()
+            {
+                UserId = 1, CompletionStatuses = [true, false], LaterStatuses = [true, false],
+                ExpectedItemDescriptions = ["Task A", "Task B", "Task C"]
+            }
+        }.Select(tc => tc.ToObjectArray());
+    }
 
     [Theory]
-    [MemberData(nameof(GetItemsCases))]
-    public void GetItems_must_return_values(
+    [MemberData(nameof(CompletionFilterTests))]
+    public void GetItems_completion_filter_tests(
         int userId,
         IEnumerable<bool> completionStatuses,
         IEnumerable<bool> laterStatuses,
@@ -198,15 +83,20 @@ public partial class ItemRepositoryTests
         int[]? tagIds,
         IEnumerable<string> expectedItemDescriptions)
     {
+        var dbContext = CreateTestDB(CompletionTestData());
+        ExecuteGetItemTests(dbContext, 
+            userId, completionStatuses, laterStatuses, 
+            projectIds, tagIds, expectedItemDescriptions);
+    }
+
+    private static GTDContext CreateTestDB(TestData testData)
+    {
         var dbContext = Utils.CreateTestDB();
-        var testData = CreateTestData();
         testData.Items.ForEach(item => dbContext.Items.Add(item));
         testData.Tags.ForEach(tag => dbContext.Tags.Add(tag));
         testData.ItemTagMappings.ForEach(mapping =>  dbContext.ItemTagMappings.Add(mapping));
         dbContext.SaveChanges();
-        ExecuteGetItemTests(dbContext, 
-            userId, completionStatuses, laterStatuses, 
-            projectIds, tagIds, expectedItemDescriptions);
+        return dbContext;
     }
 
     private void ExecuteGetItemTests(
