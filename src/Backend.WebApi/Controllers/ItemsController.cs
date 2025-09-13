@@ -1,4 +1,5 @@
-﻿using Backend.Core.Manager;
+﻿using System.Collections.Concurrent;
+using Backend.Core.Manager;
 using Backend.Models;
 using Backend.WebApi.ActionFilters;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,7 @@ namespace Backend.WebApi.Controllers
         
         [HttpGet("[action]")]
         [ServiceFilter<SecurityFilterAttribute>]
-        public ActionResult GetItems(string? complete, string? later, int? projectId)
+        public ActionResult GetItems(string? complete, string? later, int? projectId, int[]? tagIds = null)
         {
             var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
             var completionStatuses = (complete??"").Split(",")
@@ -35,7 +36,7 @@ namespace Backend.WebApi.Controllers
             var laterStatuses = (later ?? "").Split(",")
                 .Where(statusName => !string.IsNullOrEmpty(statusName))
                 .Select(statusName => statusName == Constants.LATER);
-            return Ok(_itemManager.GetItems(userId, completionStatuses, laterStatuses, projectId));
+            return Ok(_itemManager.GetItems(userId, completionStatuses, laterStatuses, projectId, tagIds));
         }
 
         [HttpDelete("[action]")]

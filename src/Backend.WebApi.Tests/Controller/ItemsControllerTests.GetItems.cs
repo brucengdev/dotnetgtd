@@ -1,35 +1,16 @@
 ﻿using System.Net;
-using System.Reflection;
 using Backend.Core.Manager;
 using Backend.Models;
 using Backend.WebApi.ActionFilters;
 using Backend.WebApi.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Moq;
 using Shouldly;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Backend.WebApi.Tests.Controller
 {
-    public class GetItemTestCase
-    {
-        public string? Complete;
-        public string? Later;
-        public IEnumerable<bool> CompletionStatuses;
-        public IEnumerable<bool> LaterStatuses;
-        public int? ProjectId;
-
-        public object[] ToObjectArray()
-        {
-            return
-            [
-                Complete, CompletionStatuses,
-                Later, LaterStatuses,
-                ProjectId
-            ];
-        }
-    }
     public partial class ItemsControllerTests
     {
         [Fact]
@@ -48,102 +29,38 @@ namespace Backend.WebApi.Tests.Controller
             attributes.Length.ShouldBeGreaterThan(0, "Must require authorization");
             
             var args = method.GetParameters();
-            args.Length.ShouldBe(3);
+            args.Length.ShouldBe(4);
             
             var completeArg = args[0];
             completeArg.Name.ShouldBe("complete");
             completeArg.ParameterType.ShouldBe(typeof(string));
-            
-            var isCompleteNullable = new NullabilityInfoContext().Create(completeArg).WriteState is NullabilityState.Nullable;
-            isCompleteNullable.ShouldBeTrue();
+            Utils.ShouldBeNullable(completeArg);
             
             var laterArg = args[1];
             laterArg.Name.ShouldBe("later");
             laterArg.ParameterType.ShouldBe(typeof(string));
-            
-            var isLaterNullable = new NullabilityInfoContext().Create(laterArg).WriteState is NullabilityState.Nullable;
-            isLaterNullable.ShouldBeTrue();
+            Utils.ShouldBeNullable(laterArg);
             
             var projectIdArg = args[2];
             projectIdArg.Name.ShouldBe("projectId");
             projectIdArg.ParameterType.ShouldBe(typeof(int?));
+            
+            var tagIdsArg = args[3];
+            tagIdsArg.Name.ShouldBe("tagIds");
+            tagIdsArg.ParameterType.ShouldBe(typeof(int[]));
+            Utils.ShouldBeNullable(tagIdsArg);
         }
-
-        public static IEnumerable<object[]> GetItemsCases = (new List<GetItemTestCase>
-        {
-            new()
-            {
-                Complete = null, CompletionStatuses = new List<bool>(),
-                Later = null, LaterStatuses = new List<bool>()
-            },
-            new()
-            {
-                Complete = "", CompletionStatuses = new List<bool>(),
-                Later = null, LaterStatuses = new List<bool>()
-            },
-            new()
-            {
-                Complete = "completed,uncompleted", CompletionStatuses = new List<bool> { true, false },
-                Later = null, LaterStatuses = new List<bool>()
-            },
-            new()
-            {
-                Complete = "uncompleted,completed", CompletionStatuses = new List<bool> { false, true },
-                Later = null, LaterStatuses = new List<bool>()
-            },
-            new()
-            {
-                Complete = "completed", CompletionStatuses = new List<bool> { true },
-                Later = null, LaterStatuses = new List<bool>()
-            },
-
-            new()
-            {
-                Complete = "uncompleted", CompletionStatuses = new List<bool> { false },
-                Later = null, LaterStatuses = new List<bool>()
-            },
-
-            new()
-            {
-                Complete = null, CompletionStatuses = new List<bool>(),
-                Later = "later", LaterStatuses = new List<bool> { true }
-            },
-            new()
-            {
-                Complete = null, CompletionStatuses = new List<bool>(),
-                Later = "now", LaterStatuses = new List<bool> { false }
-            },
-            new ()
-            {
-                Complete = null, CompletionStatuses = new List<bool>(),
-                Later = "later,now", LaterStatuses = new List<bool> { true, false }
-            },
-            new()
-            {
-                Complete = null, CompletionStatuses = new List<bool>(),
-                Later = "now,later", LaterStatuses = new List<bool> { false, true }
-            },
-            new()
-            {
-                Complete = "completed,uncompleted", CompletionStatuses = new List<bool> { true, false },
-                Later = "now,later", LaterStatuses = new List<bool> { false, true }
-            },
-            new()
-            {
-                Complete = null, CompletionStatuses = [],
-                Later = null, LaterStatuses = [],
-                ProjectId = 12
-            }
-        }).Select(testCase => testCase.ToObjectArray());
         
-        [Theory]
-        [MemberData(nameof(GetItemsCases))]
+        [Theory, CombinatorialData]
         public void GetItems_must_return_items(
-            string completionFilter, 
-            IEnumerable<bool> completionStatuses,
-            string? laterFilter,
-            IEnumerable<bool> laterStatuses,
-            int? projectId
+            [CombinatorialValues("completed", "uncompleted", "completed,uncompleted", "uncompleted,completed", "", null)] 
+                string completionFilter, 
+            [CombinatorialValues("later", "now", "later,now", "now,later", "", null)] 
+                string? laterFilter,
+            [CombinatorialValues(1, 2, 3, null)]
+                int? projectId,
+            [CombinatorialValues(null, "", "12,22", "2,3,4")]
+                string? tagFilter
             )
         {
             //arrange
@@ -151,7 +68,8 @@ namespace Backend.WebApi.Tests.Controller
             itemManager.Setup(im => im.GetItems(It.IsAny<int>(), 
                     It.IsAny<IEnumerable<bool>>(),
                     It.IsAny<IEnumerable<bool>>(),
-                    It.IsAny<int?>()))
+                    It.IsAny<int?>(),
+                            It.IsAny<int[]?>()))
                 .Returns(new List<ItemServiceModel>
                 {
                     new () 
@@ -169,12 +87,29 @@ namespace Backend.WebApi.Tests.Controller
             sut.ControllerContext = new ControllerContext();
             sut.ControllerContext.HttpContext = new DefaultHttpContext();
             sut.HttpContext.Items["UserId"] = 123;
+
+            int[]? tagIds = null;
+            if (tagFilter != null)
+            {
+                tagIds = tagFilter == ""? new int[0] 
+                    : tagFilter?.Split(",").Select(int.Parse).ToArray();
+            }
         
             //act
-            var response = sut.GetItems(completionFilter, laterFilter, projectId);
+            var response = sut.GetItems(completionFilter, laterFilter, projectId, tagIds);
         
             //assert
-            itemManager.Verify(im => im.GetItems(123, completionStatuses, laterStatuses, projectId), Times.Once);
+            IEnumerable<bool> completionStatuses = [];
+            if (!completionFilter.IsNullOrEmpty())
+            {
+                completionStatuses = completionFilter.Split(",").Select(f => f == "completed");
+            }
+            IEnumerable<bool> laterStatuses = [];
+            if (!laterFilter.IsNullOrEmpty())
+            {
+                laterStatuses = laterFilter.Split(",").Select(f => f == "later");
+            }
+            itemManager.Verify(im => im.GetItems(123, completionStatuses, laterStatuses, projectId, tagIds), Times.Once);
             itemManager.VerifyNoOtherCalls();
             
             response.ShouldBeOfType<OkObjectResult>();

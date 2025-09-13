@@ -7,67 +7,42 @@ using Shouldly;
 
 namespace Backend.Core.Tests;
 
-class GetItemTestCase
-{
-    public int UserId;
-    public IEnumerable<bool> CompletionStatuses;
-    public IEnumerable<bool> LaterStatuses;
-    public int? ProjectId;
-
-    public object[] ToObjectArray()
-    {
-        return
-        [
-            UserId, CompletionStatuses, LaterStatuses, ProjectId
-        ];
-    }
-}
-
 public partial class ItemManagerTests
 {
-    public static IEnumerable<object[]> GetItemsCases = new List<GetItemTestCase>()
-    {
-        new() {
-            UserId = 123, 
-            CompletionStatuses = [ ], LaterStatuses = [true, false]
-        },
-        new() {
-            UserId = 23, 
-            CompletionStatuses = [ true ], LaterStatuses = [false, true]
-        },
-        new() {
-            UserId = 25, 
-            CompletionStatuses = [ false ], LaterStatuses = [true]
-        },
-        new() {
-            UserId = 5, 
-            CompletionStatuses = [ true, false ], LaterStatuses = [false],
-            ProjectId = 4
-        },
-        new() {
-            UserId = 10, 
-            CompletionStatuses = [ false, true ], LaterStatuses = [],
-            ProjectId = 11
-        },
-        new() {
-            UserId = 10, 
-            CompletionStatuses = [], LaterStatuses = [],
-            ProjectId = 12
-        },
-    }.Select(tc => tc.ToObjectArray());
-    
-    [Theory]
-    [MemberData(nameof(GetItemsCases))]
-    public void GetItems_is_successful(int expectedUserId, 
-        IEnumerable<bool> completionStatuses,
-        IEnumerable<bool> laterStatuses,
-        int? projectId)
+    [Theory, CombinatorialData]
+    public void GetItems_is_successful(
+        [CombinatorialValues(1,2,3)]
+        int expectedUserId, 
+        [CombinatorialValues("", "true,false", "false,true", "true", "false")]
+        string completionFilter,
+        [CombinatorialValues("", "true,false", "false,true", "true", "false")]
+        string laterFilter,
+        [CombinatorialValues(null, 10,2,4)]
+        int? projectId,
+        [CombinatorialValues(null, "", "1", "2", "1,2,3")]
+        string? tagIdFilter
+        )
     {
         //arrange
+        var completionStatuses = completionFilter.Split(",")
+            .Select(f => f == "true");
+        var laterStatuses = laterFilter.Split(",")
+            .Select(f => f == "true");
+        int[]? tagIds = null;
+        if (tagIdFilter == "")
+        {
+            tagIds = [];
+        }
+        else
+        if(tagIds != null)
+        {
+            tagIds = tagIdFilter.Split(",").Select(int.Parse).ToArray();
+        }
+
         var mockItemRepo = new Mock<IItemRepository>();
         mockItemRepo.Setup(ir => ir.GetItems(expectedUserId, 
                 completionStatuses, laterStatuses, 
-                projectId, true))
+                projectId, tagIds, true))
             .Returns([
                 new()
                 {
@@ -88,11 +63,13 @@ public partial class ItemManagerTests
             mockItemTagMappingRepo.Object);
 
         //act
-        var items = sut.GetItems(expectedUserId, completionStatuses, laterStatuses, projectId);
+        var items = sut.GetItems(expectedUserId, 
+            completionStatuses, laterStatuses, projectId, tagIds);
 
         //assert
         mockItemRepo.Verify(ir => 
-            ir.GetItems(expectedUserId, completionStatuses,laterStatuses, projectId, true), 
+            ir.GetItems(expectedUserId, completionStatuses,laterStatuses,
+                projectId, tagIds, true), 
             Times.Once);
         mockItemRepo.VerifyNoOtherCalls();
         items.ShouldBe([
