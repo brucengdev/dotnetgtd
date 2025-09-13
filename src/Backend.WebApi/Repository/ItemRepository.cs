@@ -19,33 +19,38 @@ public class ItemRepository: IItemRepository
     }
 
     public IEnumerable<Item> GetItems(int userId,
-        IEnumerable<bool> completionStatuses,
-        IEnumerable<bool> laterStatuses,
-        int? projectId,
-        int[]? tagIds)
+        IEnumerable<bool>? completionStatuses = null,
+        IEnumerable<bool>? laterStatuses = null,
+        IEnumerable<int?>? projectIds = null,
+        IEnumerable<int>? tagIds = null)
     {
         //eagerly load the item tag mappings
         var results =  _dbContext.Items
             .Include(i => i.ItemTagMappings)
             .Where(i => i.UserId == userId);
-        if (completionStatuses.Any())
+        if (completionStatuses != null)
         {
             results = results.Where(i => completionStatuses.Contains(i.Done));
         }
 
-        if (laterStatuses.Any())
+        if (laterStatuses != null)
         {
             results = results.Where(i => laterStatuses.Contains(i.Later));
         }
 
-        if (projectId.HasValue)
+        if (projectIds != null)
         {
-            results = results.Where(i => i.ProjectId == projectId.Value);
+            results = results.Where(i => projectIds.Contains(i.ProjectId));
         }
 
         if (tagIds != null && tagIds.Any())
         {
             results = results.Where(i => i.ItemTagMappings.Where(m => tagIds.Contains(m.TagId)).Any());
+        }
+
+        if (tagIds != null && !tagIds.Any())
+        {
+            results = results.Where(i => !i.ItemTagMappings.Any());
         }
 
         return results;

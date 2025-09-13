@@ -20,8 +20,8 @@ public class TestItemRepository: IItemRepository
     public IEnumerable<Item> GetItems(int userId,
         IEnumerable<bool> completionStatuses,
         IEnumerable<bool> laterStatuses,
-        int? projectId,
-        int[]? tagIds = null)
+        IEnumerable<int?>? projectIds,
+        IEnumerable<int>? tagIds = null)
     {
         var results = _data.Items.Where(i => i.UserId == userId);
         if (completionStatuses.Count() > 0)
