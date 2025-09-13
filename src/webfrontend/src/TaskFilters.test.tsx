@@ -4,8 +4,28 @@ import { TaskFilters } from "./TaskFilters";
 import { TestClient } from "./__test__/TestClient";
 import '@testing-library/jest-dom'
 import { sleep } from "./__test__/testutils";
+import { product } from 'cartesian-product-generator';
 
 describe("TaskFilters views", () => {
+    const filterStates = [
+        "Active tasks",
+        "Inactive tasks",
+
+        "Completed tasks",
+        "Uncompleted tasks",
+
+        "All projects",
+        "No project",
+        "Project 1",
+        "Project 2",
+
+        "All tags",
+        "No tag",
+        "Tag 1",
+        "Tag 2"
+    ].map(filter => [true, false])
+
+    const testData = [...product(...filterStates)]
     it("shows tag and project filters", async () => {
         const client = new TestClient()
         client.Projects = [
