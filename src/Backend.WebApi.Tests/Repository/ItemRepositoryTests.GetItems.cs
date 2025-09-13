@@ -171,6 +171,30 @@ public partial class ItemRepositoryTests
             FetchTagMappings = true,
             TagIds = [ 2, 3 ],
             ExpectedItemDescriptions = ["Task B", "Task D"]
+        },
+        new()
+        {
+            UserId = 1,
+            CompletionStatuses = [], LaterStatuses = [],
+            FetchTagMappings = true,
+            TagIds = [ 2 ],
+            ExpectedItemDescriptions = ["Task B"]
+        },
+        new()
+        {
+            UserId = 1,
+            CompletionStatuses = [], LaterStatuses = [],
+            FetchTagMappings = true,
+            TagIds = [ 3 ],
+            ExpectedItemDescriptions = ["Task D"]
+        },
+        new()
+        {
+            UserId = 1,
+            CompletionStatuses = [], LaterStatuses = [],
+            FetchTagMappings = true,
+            TagIds = [ 4 ],
+            ExpectedItemDescriptions = []
         }
     }.Select(tc => tc.ToObjectArray());
 
