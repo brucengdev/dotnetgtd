@@ -48,13 +48,13 @@ public partial class ItemManagerTests
             laterStatuses = laterFilter.Split(",").Select(f => f == "later");
         }
 
-        IEnumerable<int>? projectIds;
+        IEnumerable<int?>? projectIds;
         if (projectFilter == null || projectFilter == "*")
         {
             projectIds = null;
         } else if (projectFilter == "")
         {
-            projectIds = [];
+            projectIds = [null];
         }
         else
         {

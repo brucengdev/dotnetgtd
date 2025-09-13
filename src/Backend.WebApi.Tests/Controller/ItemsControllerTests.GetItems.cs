@@ -75,7 +75,7 @@ namespace Backend.WebApi.Tests.Controller
             itemManager.Setup(im => im.GetItems(It.IsAny<int>(), 
                     It.IsAny<IEnumerable<bool>>(),
                     It.IsAny<IEnumerable<bool>>(),
-                    It.IsAny<IEnumerable<int>?>(),
+                    It.IsAny<IEnumerable<int?>?>(),
                     It.IsAny<IEnumerable<int>?>()))
                 .Returns(new List<ItemServiceModel>
                 {
@@ -123,13 +123,13 @@ namespace Backend.WebApi.Tests.Controller
                 laterStatuses = laterFilter.Split(",").Select(f => f == "later");
             }
 
-            IEnumerable<int>? projectIds;
+            IEnumerable<int?>? projectIds;
             if (projectId == null || projectId == "*")
             {
                 projectIds = null;
             } else if (projectId == "")
             {
-                projectIds = [];
+                projectIds = [null];
             }
             else
             {

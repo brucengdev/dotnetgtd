@@ -52,7 +52,7 @@ public partial class ItemRepositoryTests
         int userId,
         IEnumerable<bool> completionStatuses,
         IEnumerable<bool> laterStatuses,
-        int[]? projectIds,
+        IEnumerable<int?>? projectIds,
         int[]? tagIds,
         IEnumerable<string> expectedItemDescriptions)
     {

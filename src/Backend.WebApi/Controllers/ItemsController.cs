@@ -54,13 +54,13 @@ namespace Backend.WebApi.Controllers
                 laterStatuses = later.Split(",").Select(f => f == "later");
             }
 
-            IEnumerable<int>? projectIdValues;
+            IEnumerable<int?>? projectIdValues;
             if (projectId == null || projectId == "*")
             {
                 projectIdValues = null;
             } else if (projectId == "")
             {
-                projectIdValues = [];
+                projectIdValues = [null];
             }
             else
             {

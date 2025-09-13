@@ -10,21 +10,16 @@ class GetItemsCase
     public int UserId;
     public IEnumerable<bool> CompletionStatuses;
     public IEnumerable<bool> LaterStatuses;
-    public int? ProjectId;
+    public IEnumerable<int?>? ProjectId;
     public int[]? TagIds;
     public IEnumerable<string> ExpectedItemDescriptions;
 
-    public object[] ToObjectArray() {
-        int[]? projectIds = null;
-        if (ProjectId != null)
-        {
-            projectIds = new int[1];
-            projectIds[0] = ProjectId.Value;
-        }
+    public object[] ToObjectArray()
+    {
         return
         [
             UserId, CompletionStatuses, LaterStatuses,
-            projectIds, TagIds, ExpectedItemDescriptions
+            ProjectId, TagIds, ExpectedItemDescriptions
         ];
     }
 }
@@ -54,7 +49,7 @@ public partial class ItemRepositoryTests
         int userId, 
         IEnumerable<bool> completionStatuses, 
         IEnumerable<bool> laterStatuses,
-        int[]? projectIds, 
+        IEnumerable<int?>? projectIds, 
         int[]? tagIds, 
         IEnumerable<string> expectedItemDescriptions)
     {
