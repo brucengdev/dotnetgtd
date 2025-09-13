@@ -25,7 +25,10 @@ public class ItemRepository: IItemRepository
         int[]? tagIds,
         bool fetchTagMappings = false)
     {
-        var results =  _dbContext.Items.Where(i => i.UserId == userId);
+        //eagerly load the item tag mappings
+        var results =  _dbContext.Items
+            .Include(i => i.ItemTagMappings)
+            .Where(i => i.UserId == userId);
         if (completionStatuses.Any())
         {
             results = results.Where(i => completionStatuses.Contains(i.Done));
@@ -44,10 +47,6 @@ public class ItemRepository: IItemRepository
         if (tagIds != null && tagIds.Any())
         {
             results = results.Where(i => i.ItemTagMappings.Where(m => tagIds.Contains(m.TagId)).Any());
-        }
-        if (fetchTagMappings)
-        {
-            results = results.Include(i => i.ItemTagMappings);
         }
 
         return results;

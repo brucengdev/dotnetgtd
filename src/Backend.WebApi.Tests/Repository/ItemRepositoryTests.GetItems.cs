@@ -210,8 +210,47 @@ public partial class ItemRepositoryTests
     }
 
     [Fact]
-    public void Must_not_fetch_tag_mappings_if_fetchTagMappings_is_false()
+    public void GetItems_Must_fetch_related_entities()
     {
+        //arrange
+        var dbContext = Utils.CreateTestDB();
+        dbContext.Items.Add(new()
+        {
+            Id = 1,
+            Description = "Test task",
+            UserId = 1
+        });
+        dbContext.Users.Add(new()
+        {
+            Id = 1,
+            Username = "testuser",
+            PasswordHash = "testhash"
+        });
+        dbContext.Tags.Add(new() { Id = 1, Name = "TagA", UserId = 1 });
+        dbContext.ItemTagMappings.Add(new() { Id = 1, TagId = 1, ItemId = 1 });
+        dbContext.SaveChanges();
         
+        //act
+        var sut = new ItemRepository(dbContext);
+        var result = sut.GetItems(1, [], [], null, [], fetchTagMappings: false);
+        
+        //assert
+        result.ShouldBe([
+            new ()
+            {
+                Id = 1,
+                Description = "Test task",
+                UserId = 1,
+                ItemTagMappings = [
+                    new() { Id = 1, TagId = 1, ItemId = 1 }
+                ],
+                User = new()
+                {
+                    Id = 1,
+                    Username = "testuser",
+                    PasswordHash = "testhash"
+                }
+            }
+        ]);
     }
 }
