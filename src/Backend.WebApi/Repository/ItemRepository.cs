@@ -40,7 +40,8 @@ public class ItemRepository: IItemRepository
 
         if (projectIds != null && projectIds.Any())
         {
-            results = results.Where(i => i.ProjectId == projectIds.First());
+            var projectId = projectIds.First();
+            results = results.Where(i => i.ProjectId == projectId);
         }
 
         if (tagIds != null && tagIds.Any())

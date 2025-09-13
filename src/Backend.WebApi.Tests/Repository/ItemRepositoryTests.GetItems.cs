@@ -14,11 +14,19 @@ class GetItemsCase
     public int[]? TagIds;
     public IEnumerable<string> ExpectedItemDescriptions;
 
-    public object[] ToObjectArray() =>
-    [
-        UserId, CompletionStatuses, LaterStatuses, 
-        ProjectId, TagIds, ExpectedItemDescriptions
-    ];
+    public object[] ToObjectArray() {
+        int[]? projectIds = null;
+        if (ProjectId != null)
+        {
+            projectIds = new int[1];
+            projectIds[0] = ProjectId.Value;
+        }
+        return
+        [
+            UserId, CompletionStatuses, LaterStatuses,
+            projectIds, TagIds, ExpectedItemDescriptions
+        ];
+    }
 }
 
 class TestData
@@ -186,7 +194,7 @@ public partial class ItemRepositoryTests
         int userId,
         IEnumerable<bool> completionStatuses,
         IEnumerable<bool> laterStatuses,
-        int? projectId,
+        int[]? projectIds,
         int[]? tagIds,
         IEnumerable<string> expectedItemDescriptions)
     {
@@ -201,7 +209,7 @@ public partial class ItemRepositoryTests
 
         //act
         var items = sut.GetItems(userId, completionStatuses, 
-            laterStatuses, [], tagIds);
+            laterStatuses, projectIds, tagIds);
 
         //assert
         items.Select(i => i.Description)
