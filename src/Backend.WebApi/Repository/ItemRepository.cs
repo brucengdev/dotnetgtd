@@ -21,8 +21,8 @@ public class ItemRepository: IItemRepository
     public IEnumerable<Item> GetItems(int userId,
         IEnumerable<bool> completionStatuses,
         IEnumerable<bool> laterStatuses,
-        int? projectId,
-        int[]? tagIds)
+        IEnumerable<int>? projectIds,
+        IEnumerable<int>? tagIds)
     {
         //eagerly load the item tag mappings
         var results =  _dbContext.Items
@@ -38,9 +38,9 @@ public class ItemRepository: IItemRepository
             results = results.Where(i => laterStatuses.Contains(i.Later));
         }
 
-        if (projectId.HasValue)
+        if (projectIds != null && projectIds.Any())
         {
-            results = results.Where(i => i.ProjectId == projectId.Value);
+            results = results.Where(i => i.ProjectId == projectIds.First());
         }
 
         if (tagIds != null && tagIds.Any())

@@ -201,7 +201,7 @@ public partial class ItemRepositoryTests
 
         //act
         var items = sut.GetItems(userId, completionStatuses, 
-            laterStatuses, projectId, tagIds);
+            laterStatuses, [], tagIds);
 
         //assert
         items.Select(i => i.Description)

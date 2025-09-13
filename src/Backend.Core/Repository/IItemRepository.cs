@@ -8,8 +8,8 @@ public interface IItemRepository
     IEnumerable<Item> GetItems(int userId, 
         IEnumerable<bool> completionStatuses,
         IEnumerable<bool> laterStatuses,
-        int? projectId,
-        int[]? tagIds);
+        IEnumerable<int>? projectIds,
+        IEnumerable<int>? tagIds);
     void DeleteItem(int itemId);
     Item? GetItem(int itemId);
 }

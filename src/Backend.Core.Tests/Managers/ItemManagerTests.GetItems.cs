@@ -13,36 +13,71 @@ public partial class ItemManagerTests
     public void GetItems_is_successful(
         [CombinatorialValues(1,2,3)]
         int expectedUserId, 
-        [CombinatorialValues("", "true,false", "false,true", "true", "false")]
-        string completionFilter,
-        [CombinatorialValues("", "true,false", "false,true", "true", "false")]
-        string laterFilter,
-        [CombinatorialValues(null, 10,2,4)]
-        int? projectId,
-        [CombinatorialValues(null, "", "1", "2", "1,2,3")]
+        [CombinatorialValues(null, "*", "", "true,false", "false,true", "true", "false")]
+        string? completionFilter,
+        [CombinatorialValues(null, "*", "", "true,false", "false,true", "true", "false")]
+        string? laterFilter,
+        [CombinatorialValues(null, "", "*", "10","2","4")]
+        string? projectFilter,
+        [CombinatorialValues(null, "", "*", "1", "2", "1,2,3")]
         string? tagIdFilter
         )
     {
         //arrange
-        var completionStatuses = completionFilter.Split(",")
-            .Select(f => f == "true");
-        var laterStatuses = laterFilter.Split(",")
-            .Select(f => f == "true");
-        int[]? tagIds = null;
-        if (tagIdFilter == "")
+        IEnumerable<bool> completionStatuses;
+        if (completionFilter == null || completionFilter == "*")
+        {
+            completionStatuses = [true, false];
+        }else if (completionFilter == "")
+        {
+            completionStatuses = [];
+        }
+        else 
+        {
+            completionStatuses = completionFilter.Split(",").Select(f => f == "completed");
+        }
+        IEnumerable<bool> laterStatuses = [];
+        if (laterFilter == null || laterFilter == "*")
+        {
+            laterStatuses = [true, false];
+        } else if (laterFilter == "")
+        {
+            laterStatuses = [];
+        } else
+        {
+            laterStatuses = laterFilter.Split(",").Select(f => f == "later");
+        }
+
+        IEnumerable<int>? projectIds;
+        if (projectFilter == null || projectFilter == "*")
+        {
+            projectIds = null;
+        } else if (projectFilter == "")
+        {
+            projectIds = [];
+        }
+        else
+        {
+            projectIds = [Convert.ToInt32(projectFilter)];
+        }
+
+        IEnumerable<int>? tagIds;
+        if (tagIdFilter == null || tagIdFilter == "*")
+        {
+            tagIds = null;
+        } else if (tagIdFilter == "")
         {
             tagIds = [];
         }
         else
-        if(tagIds != null)
         {
-            tagIds = tagIdFilter.Split(",").Select(int.Parse).ToArray();
+            tagIds = tagIdFilter.Split(",").Select(t => Convert.ToInt32(t));
         }
 
         var mockItemRepo = new Mock<IItemRepository>();
         mockItemRepo.Setup(ir => ir.GetItems(expectedUserId, 
                 completionStatuses, laterStatuses, 
-                projectId, tagIds))
+                projectIds, tagIds))
             .Returns([
                 new()
                 {
@@ -64,12 +99,12 @@ public partial class ItemManagerTests
 
         //act
         var items = sut.GetItems(expectedUserId, 
-            completionStatuses, laterStatuses, [], tagIds);
+            completionStatuses, laterStatuses, projectIds, tagIds);
 
         //assert
         mockItemRepo.Verify(ir => 
             ir.GetItems(expectedUserId, completionStatuses,laterStatuses,
-                projectId, tagIds), 
+                projectIds, tagIds), 
             Times.Once);
         mockItemRepo.VerifyNoOtherCalls();
         items.ShouldBe([

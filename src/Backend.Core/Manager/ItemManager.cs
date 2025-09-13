@@ -53,8 +53,8 @@ public class ItemManager: IItemManager
             userId, 
             completionStatuses,
             laterStatuses,
-            null,
-            []);
+            projectIds,
+            tagIds);
         return items.Select(i => ItemServiceModel.FromItem(i));
     }
 
