@@ -22,45 +22,66 @@ class GetItemsCase
     ];
 }
 
+class TestData
+{
+    public List<Item> Items;
+    public List<Tag> Tags;
+    public List<ItemTagMapping> ItemTagMappings;
+}
+
 public partial class ItemRepositoryTests
 {
-    private List<Item> CreateTestData()
+    private TestData CreateTestData()
     {
-        return
-        [
-            new()
-            {
-                Id = 1,
-                Description = "Task A",
-                Done = true,
-                UserId = 1,
-                Later = true,
-                ProjectId = 12
-            },
-            new()
-            {
-                Id = 2,
-                Description = "Task B",
-                Done = false,
-                UserId = 1,
-                Later = false
-            },
-            new()
-            {
-                Id = 3,
-                Description = "Task C",
-                Done = false,
-                UserId = 2
-            },
-            new()
-            {
-                Id = 4,
-                Description = "Task D",
-                Done = false,
-                UserId = 1,
-                ProjectId = 12
-            }
-        ];
+        return new()
+        {
+            Items =
+            [
+                new()
+                {
+                    Id = 1,
+                    Description = "Task A",
+                    Done = true,
+                    UserId = 1,
+                    Later = true,
+                    ProjectId = 12
+                },
+                new()
+                {
+                    Id = 2,
+                    Description = "Task B",
+                    Done = false,
+                    UserId = 1,
+                    Later = false,
+                },
+                new()
+                {
+                    Id = 3,
+                    Description = "Task C",
+                    Done = false,
+                    UserId = 2
+                },
+                new()
+                {
+                    Id = 4,
+                    Description = "Task D",
+                    Done = false,
+                    UserId = 1,
+                    ProjectId = 12
+                }
+            ],
+            Tags =
+            [
+                new() { Id = 1, Name = "TagA", UserId = 1 },
+                new() { Id = 2, Name = "TagB", UserId = 1 },
+                new() { Id = 3, Name = "TagC", UserId = 1 }
+            ],
+            ItemTagMappings =
+            [
+                new() { Id = 1, ItemId = 2, TagId = 2 },
+                new() { Id = 2, ItemId = 4, TagId = 3 }
+            ]
+        };
     }
     public static IEnumerable<object[]> GetItemsCases = new List<GetItemsCase>
     {
@@ -142,6 +163,14 @@ public partial class ItemRepositoryTests
             CompletionStatuses = [], LaterStatuses = [],
             FetchTagMappings = true,
             ExpectedItemDescriptions = ["Task C"]
+        },
+        new()
+        {
+            UserId = 1,
+            CompletionStatuses = [], LaterStatuses = [],
+            FetchTagMappings = true,
+            TagIds = [ 2, 3 ],
+            ExpectedItemDescriptions = ["Task B", "Task D"]
         }
     }.Select(tc => tc.ToObjectArray());
 
@@ -162,7 +191,9 @@ public partial class ItemRepositoryTests
         var dbContext = new GTDContext(dbContextOptionsBuilder.Options);
         var sut = new ItemRepository(dbContext);
         var testData = CreateTestData();
-        testData.ForEach(item => dbContext.Items.Add(item));
+        testData.Items.ForEach(item => dbContext.Items.Add(item));
+        testData.Tags.ForEach(tag => dbContext.Tags.Add(tag));
+        testData.ItemTagMappings.ForEach(mapping =>  dbContext.ItemTagMappings.Add(mapping));
         dbContext.SaveChanges();
 
         //act
@@ -170,7 +201,6 @@ public partial class ItemRepositoryTests
             laterStatuses, projectId, tagIds, fetchTagMappings);
 
         //assert
-        items.Count().ShouldBe(expectedItemDescriptions.Count());
         items.Select(i => i.Description)
             .ShouldBe(expectedItemDescriptions, 
                 "Actual: " + string.Join(',', items.Select(i => i.Description).ToList()));

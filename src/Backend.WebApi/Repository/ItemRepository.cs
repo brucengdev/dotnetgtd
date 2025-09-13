@@ -40,6 +40,11 @@ public class ItemRepository: IItemRepository
         {
             results = results.Where(i => i.ProjectId == projectId.Value);
         }
+
+        if (tagIds != null && tagIds.Any())
+        {
+            results = results.Where(i => i.ItemTagMappings.Where(m => tagIds.Contains(m.TagId)).Any());
+        }
         if (fetchTagMappings)
         {
             results = results.Include(i => i.ItemTagMappings);
