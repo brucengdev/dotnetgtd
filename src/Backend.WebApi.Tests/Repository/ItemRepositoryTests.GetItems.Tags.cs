@@ -32,6 +32,11 @@ public partial class ItemRepositoryTests
             {
                 UserId = 1, TagIds = null,
                 ExpectedItemDescriptions = ["Task A", "Task B", "Task C", "Task D"]
+            },
+            new()
+            {
+                UserId = 1, TagIds = [1],
+                ExpectedItemDescriptions = ["Task A", "Task D"]
             }
         }.Select(tc => tc.ToObjectArray());
     }
