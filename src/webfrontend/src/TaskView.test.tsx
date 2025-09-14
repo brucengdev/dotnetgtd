@@ -130,5 +130,4 @@ describe("TaskView", () => {
 
         expect(client.Items.length).toBe(2)
     })
-
 })

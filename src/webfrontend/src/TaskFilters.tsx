@@ -6,9 +6,10 @@ import { CheckBox } from "./controls/CheckBox"
 
 interface TaskFiltersProps {
     client: IClient
+    completed?: boolean
 }
 export function TaskFilters(props: TaskFiltersProps) {
-    const { client } = props
+    const { client, completed } = props
     const [projects, setProjects] = useState<Project[] | undefined>(undefined)
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
     if(projects === undefined) {
@@ -23,7 +24,7 @@ export function TaskFilters(props: TaskFiltersProps) {
         <CheckBox label="Active tasks" checked={false} />
         <CheckBox label="Inactive tasks" checked={false} />
 
-        <CheckBox label="Completed tasks" checked={false} />
+        <CheckBox label="Completed tasks" checked={completed??false} />
         <CheckBox label="Uncompleted tasks" checked={false} />
 
         <CheckBox label="All projects" checked={false} />
