@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vitest } from "vitest";
+import { beforeEach, describe, expect, it, vitest } from "vitest";
 import { Filter, TaskFilters } from "./TaskFilters";
 import { TestClient } from "./__test__/TestClient";
 import '@testing-library/jest-dom'
@@ -36,26 +36,41 @@ describe("TaskFilters views", () => {
         expect(screen.getByRole("checkbox", {name: "Tag 2"})).toBeInTheDocument()
     })
 
-    it("execute callback when filters are changed", async () => {
-        const client = new TestClient()
-        client.Projects = [
-            { id: 1, name: "Project 1", later: false },
-            { id: 2, name: "Project 2", later: false },
-        ]
-        client.Tags = [
-            { id: 1, name: "Tag 1" },
-            { id: 2, name: "Tag 2" },
-        ]
-        let changedFilters: Filter;
-        const fn = vitest.fn((filter: any) => { changedFilters = filter })
-        render(<TaskFilters client={client} onFiltersChanged={fn} />)
-        await sleep(1)
 
-        const completedCheckbox = screen.getByRole("checkbox", {name: "Completed tasks"})
-        expect(completedCheckbox).toBeInTheDocument()
-        expect(completedCheckbox).not.toBeChecked()
-        completedCheckbox.click()
-        expect(fn).toHaveBeenCalled()
-        expect(changedFilters!.completed).toBe(true)
+    describe("execute callback when filters are changed", async () => {
+        let changedFilters: Filter;
+            const fn = vitest.fn((filter: any) => { changedFilters = filter })
+            
+            beforeEach(async () => {
+            const client = new TestClient()
+            client.Projects = [
+                { id: 1, name: "Project 1", later: false },
+                { id: 2, name: "Project 2", later: false },
+            ]
+            client.Tags = [
+                { id: 1, name: "Tag 1" },
+                { id: 2, name: "Tag 2" },
+            ]
+            render(<TaskFilters client={client} onFiltersChanged={fn} />)
+            await sleep(1)
+        })
+
+        it("completed filter", async() => {
+            const completedCheckbox = screen.getByRole("checkbox", {name: "Completed tasks"})
+            expect(completedCheckbox).toBeInTheDocument()
+            expect(completedCheckbox).not.toBeChecked()
+            completedCheckbox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters!.completed).toBe(true)
+        })
+
+        it("uncompleted filter", async() => {
+            const uncompletedCheckbox = screen.getByRole("checkbox", {name: "Uncompleted tasks"})
+            expect(uncompletedCheckbox).toBeInTheDocument()
+            expect(uncompletedCheckbox).not.toBeChecked()
+            uncompletedCheckbox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters!.uncompleted).toBe(true)
+        })
     })
 })

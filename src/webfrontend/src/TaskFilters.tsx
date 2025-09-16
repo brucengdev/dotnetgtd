@@ -37,7 +37,13 @@ export function TaskFilters(props: TaskFiltersProps) {
                 }
             }}
          />
-        <CheckBox label="Uncompleted tasks" checked={filter?.uncompleted ?? false} />
+        <CheckBox label="Uncompleted tasks" checked={filter?.uncompleted ?? false} 
+            onChange={(newValue) => {
+                if(props.onFiltersChanged) {
+                    props.onFiltersChanged({ uncompleted: newValue })
+                }
+            }}
+        />
 
         <CheckBox label="All projects" checked={false} />
         <CheckBox label="No project" checked={false} />
