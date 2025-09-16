@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vitest } from "vitest";
 import { TaskFilters } from "./TaskFilters";
 import { TestClient } from "./__test__/TestClient";
 import '@testing-library/jest-dom'
@@ -34,5 +34,20 @@ describe("TaskFilters views", () => {
         expect(screen.getByRole("checkbox", {name: "No tag"})).toBeInTheDocument()
         expect(screen.getByRole("checkbox", {name: "Tag 1"})).toBeInTheDocument()
         expect(screen.getByRole("checkbox", {name: "Tag 2"})).toBeInTheDocument()
+    })
+
+    it("execute callback when filters are changed", async () => {
+        const client = new TestClient()
+        client.Projects = [
+            { id: 1, name: "Project 1", later: false },
+            { id: 2, name: "Project 2", later: false },
+        ]
+        client.Tags = [
+            { id: 1, name: "Tag 1" },
+            { id: 2, name: "Tag 2" },
+        ]
+        const fn = vitest.fn()
+        render(<TaskFilters client={client} onFiltersChanged={fn} />)
+        await sleep(1)
     })
 })

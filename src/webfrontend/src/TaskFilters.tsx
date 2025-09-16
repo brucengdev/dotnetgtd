@@ -4,9 +4,14 @@ import { Project } from "./models/Project"
 import { Tag } from "./models/Tag"
 import { CheckBox } from "./controls/CheckBox"
 
+export interface Filter {
+    completed?: boolean
+}
+
 interface TaskFiltersProps {
     client: IClient
     completed?: boolean
+    onFiltersChanged?: (filter: Filter) => void
 }
 export function TaskFilters(props: TaskFiltersProps) {
     const { client, completed } = props
