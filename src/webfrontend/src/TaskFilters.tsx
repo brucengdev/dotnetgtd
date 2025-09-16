@@ -6,15 +6,16 @@ import { CheckBox } from "./controls/CheckBox"
 
 export interface Filter {
     completed?: boolean
+    uncompleted?: boolean
 }
 
 interface TaskFiltersProps {
     client: IClient
-    completed?: boolean
+    filter?: Filter
     onFiltersChanged?: (filter: Filter) => void
 }
 export function TaskFilters(props: TaskFiltersProps) {
-    const { client, completed } = props
+    const { client, filter } = props
     const [projects, setProjects] = useState<Project[] | undefined>(undefined)
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
     if(projects === undefined) {
@@ -29,8 +30,14 @@ export function TaskFilters(props: TaskFiltersProps) {
         <CheckBox label="Active tasks" checked={false} />
         <CheckBox label="Inactive tasks" checked={false} />
 
-        <CheckBox label="Completed tasks" checked={completed??false} />
-        <CheckBox label="Uncompleted tasks" checked={false} />
+        <CheckBox label="Completed tasks" checked={filter?.completed?? false}
+            onChange={(newValue) => {
+                if(props.onFiltersChanged) {
+                    props.onFiltersChanged({ completed: newValue })
+                }
+            }}
+         />
+        <CheckBox label="Uncompleted tasks" checked={filter?.uncompleted ?? false} />
 
         <CheckBox label="All projects" checked={false} />
         <CheckBox label="No project" checked={false} />

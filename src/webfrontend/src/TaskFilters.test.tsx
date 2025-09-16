@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vitest } from "vitest";
-import { TaskFilters } from "./TaskFilters";
+import { Filter, TaskFilters } from "./TaskFilters";
 import { TestClient } from "./__test__/TestClient";
 import '@testing-library/jest-dom'
 import { sleep } from "./__test__/testutils";
@@ -46,8 +46,16 @@ describe("TaskFilters views", () => {
             { id: 1, name: "Tag 1" },
             { id: 2, name: "Tag 2" },
         ]
-        const fn = vitest.fn()
+        let changedFilters: Filter;
+        const fn = vitest.fn((filter: any) => { changedFilters = filter })
         render(<TaskFilters client={client} onFiltersChanged={fn} />)
         await sleep(1)
+
+        const completedCheckbox = screen.getByRole("checkbox", {name: "Completed tasks"})
+        expect(completedCheckbox).toBeInTheDocument()
+        expect(completedCheckbox).not.toBeChecked()
+        completedCheckbox.click()
+        expect(fn).toHaveBeenCalled()
+        expect(changedFilters!.completed).toBe(true)
     })
 })

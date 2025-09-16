@@ -30,7 +30,7 @@ export function TaskView({ client} : TaskViewProps) {
           .then(tags => setTags(tags))
     }
     return <div data-testid="task-view" className="row-auto">
-      <TaskFilters client={client} completed={true} />
+      <TaskFilters client={client} filter={{uncompleted: true}} />
       <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-2xl font-semibold text-gray-900">GTD</h2>
       </div>

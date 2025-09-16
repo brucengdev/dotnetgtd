@@ -1,4 +1,4 @@
-import { screen, render, fireEvent } from "@testing-library/react";
+import { screen, render } from "@testing-library/react";
 import {describe, expect, it} from 'vitest'
 import '@testing-library/jest-dom'
 import { TaskView } from "./TaskView";
@@ -16,7 +16,7 @@ describe("TaskView", () => {
 
         await sleep(1)
 
-        expect(screen.getByRole("checkbox", { name: "Uncompleted tasks"})).not.toBeChecked()
-        expect(screen.getByRole("checkbox", { name: "Completed tasks"})).toBeChecked()
+        expect(screen.getByRole("checkbox", { name: "Uncompleted tasks"})).toBeChecked()
+        expect(screen.getByRole("checkbox", { name: "Completed tasks"})).not.toBeChecked()
     })
 })
