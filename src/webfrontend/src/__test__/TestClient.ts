@@ -48,6 +48,9 @@ export class TestClient implements IClient {
                 if(filter.uncompleted && !i.done) {
                     return true
                 }
+                if(filter.completed && i.done) {
+                    return true
+                }
                 return false
             })
             .map(i =>{

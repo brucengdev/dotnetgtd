@@ -31,7 +31,7 @@ export function TaskView({ client} : TaskViewProps) {
           .then(tags => setTags(tags))
     }
     return <div data-testid="task-view" className="row-auto">
-      <TaskFilters client={client} filter={{uncompleted: true}}
+      <TaskFilters client={client} filter={filter}
         onFiltersChanged={filter => {
           setItems(undefined) //to reload
           setFilter(filter)

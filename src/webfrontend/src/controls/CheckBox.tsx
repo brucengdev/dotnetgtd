@@ -16,7 +16,7 @@ export function CheckBox(props: CheckBoxProps) {
             checked={checked} 
             onChange={e => {
                 if(onChange) {
-                    onChange(e.target.value === "on")
+                    onChange(!checked)
                 }
             }}
         />

@@ -33,14 +33,14 @@ export function TaskFilters(props: TaskFiltersProps) {
         <CheckBox label="Completed tasks" checked={filter?.completed?? false}
             onChange={(newValue) => {
                 if(props.onFiltersChanged) {
-                    props.onFiltersChanged({ completed: newValue })
+                    props.onFiltersChanged({ ...filter, completed: newValue })
                 }
             }}
          />
         <CheckBox label="Uncompleted tasks" checked={filter?.uncompleted ?? false} 
             onChange={(newValue) => {
                 if(props.onFiltersChanged) {
-                    props.onFiltersChanged({ uncompleted: newValue })
+                    props.onFiltersChanged({ ...filter, uncompleted: newValue })
                 }
             }}
         />
