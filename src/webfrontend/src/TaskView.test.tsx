@@ -87,8 +87,6 @@ describe("TaskView", () => {
         fireEvent.change(screen.getByRole("textbox", { name: "Description"}), { target: { value: "Task B"}})
         fireEvent.change(screen.getByRole("combobox", { name: "Project"}), { target: { value: 1 } })
         userEvent.selectOptions(screen.getByRole("listbox", { name: "Tags"}), ["1", "2"])
-        fireEvent.click(screen.getByTestId("addItemDoneField"))
-        fireEvent.click(screen.getByTestId("addItemLaterField"))
 
         await sleep(1)
 
@@ -103,8 +101,6 @@ describe("TaskView", () => {
         expect(items[1].querySelector('[data-testId="description"]')?.textContent).toBe("Task B")
         expect(items[1].querySelector('[data-testId="project"]')?.textContent).toBe("Project X")
         expect(items[1].querySelector('[data-testId="tags"]')?.textContent).toBe("Tag 1,Tag 2")
-        expect(items[1].querySelector('[data-testId="done"]')).toBeChecked()
-        expect(items[1].querySelector('[data-testId="later"]')).toBeChecked()
     })
 
 

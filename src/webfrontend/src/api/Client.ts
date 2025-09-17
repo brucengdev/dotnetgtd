@@ -1,6 +1,7 @@
 import { Item } from "../models/Item"
 import { Project } from "../models/Project"
 import { Tag } from "../models/Tag"
+import { Filter } from "../TaskFilters"
 
 export interface IClient {
     Token: () => string | undefined
@@ -9,7 +10,7 @@ export interface IClient {
     LoginByToken: (token:string) => Promise<boolean>
     Logout: () => void
     AddItem: (item: Item) => Promise<boolean>
-    GetItems: () => Promise<Item[]>
+    GetItems: (filter:Filter) => Promise<Item[]>
     DeleteItem: (id: number) => Promise<boolean>
 
     AddProject: (item: Project) => Promise<boolean>
@@ -79,9 +80,9 @@ export class Client implements IClient {
         return result.ok
     }
 
-    public async GetItems(): Promise<Item[]> {
+    public async GetItems(filter: Filter): Promise<Item[]> {
         const result = await fetch(`${url}/Items/GetItems?${new URLSearchParams({
-            accessToken: this.token,
+            accessToken: this.token
         }).toString()}`, {
             method: "GET"
         })

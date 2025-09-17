@@ -2,6 +2,7 @@ import { IClient } from "../api/Client";
 import { Item } from "../models/Item";
 import { Project } from "../models/Project";
 import { Tag } from "../models/Tag";
+import { Filter } from "../TaskFilters";
 
 export const TEST_USER_NAME = "valid_user"
 export const TEST_PASSWORD = "correct_pass"
@@ -41,8 +42,15 @@ export class TestClient implements IClient {
         return true
     }
 
-    async GetItems() {
-        return [...this.Items.map(i =>{
+    async GetItems(filter:Filter): Promise<Item[]> {
+        return [...this.Items
+            .filter(i => {
+                if(filter.uncompleted && !i.done) {
+                    return true
+                }
+                return false
+            })
+            .map(i =>{
             return {...i}
         })]
     }

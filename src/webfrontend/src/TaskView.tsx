@@ -6,7 +6,7 @@ import ItemList from "./ItemList"
 import { Item } from "./models/Item"
 import { Project } from "./models/Project"
 import { Tag } from "./models/Tag"
-import { TaskFilters } from "./TaskFilters"
+import { Filter, TaskFilters } from "./TaskFilters"
 
 export interface TaskViewProps {
   client: IClient
@@ -17,8 +17,9 @@ export function TaskView({ client} : TaskViewProps) {
     const [items, setItems] = useState(undefined as (Item[]|undefined))
     const [projects, setProjects] = useState<Project[] | undefined>(undefined)
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
+    const [filter, setFilter] = useState<Filter>({uncompleted: true})
     if(items === undefined) {
-        client.GetItems()
+        client.GetItems(filter)
             .then(items => setItems(items))
     }
     if(projects === undefined) {
@@ -30,7 +31,12 @@ export function TaskView({ client} : TaskViewProps) {
           .then(tags => setTags(tags))
     }
     return <div data-testid="task-view" className="row-auto">
-      <TaskFilters client={client} filter={{uncompleted: true}} />
+      <TaskFilters client={client} filter={{uncompleted: true}}
+        onFiltersChanged={filter => {
+          setItems(undefined) //to reload
+          setFilter(filter)
+        }}
+      />
       <div className="mx-auto max-w-2xl text-center">
             <h2 className="text-2xl font-semibold text-gray-900">GTD</h2>
       </div>
