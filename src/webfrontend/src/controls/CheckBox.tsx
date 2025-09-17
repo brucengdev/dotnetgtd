@@ -14,7 +14,7 @@ export function CheckBox(props: CheckBoxProps) {
             data-testId={dataTestId}
             type="checkbox" 
             checked={checked} 
-            onChange={e => {
+            onChange={_ => {
                 if(onChange) {
                     onChange(!checked)
                 }
