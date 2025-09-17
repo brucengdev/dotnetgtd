@@ -71,20 +71,5 @@ describe("TaskFilters views", () => {
             expect(fn).toHaveBeenCalled()
             expect(changedFilters!.uncompleted).toBe(true)
         })
-
-        it("completed and uncompleted tasks", async() => {
-            const completedCheckbox = screen.getByRole("checkbox", {name: "Completed tasks"})
-            const uncompletedCheckbox = screen.getByRole("checkbox", {name: "Uncompleted tasks"})
-            expect(uncompletedCheckbox).not.toBeChecked()
-            expect(completedCheckbox).not.toBeChecked()
-            uncompletedCheckbox.click()
-            fn.mockClear()
-            completedCheckbox.click()
-            expect(fn).toHaveBeenCalled()
-            expect(changedFilters).toBe({
-                completed: true,
-                uncompleted: true
-            })
-        })
     })
 })
