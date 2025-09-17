@@ -38,10 +38,11 @@ describe("TaskFilters views", () => {
 
 
     describe("execute callback when filters are changed", async () => {
-        let changedFilters: Filter;
-            const fn = vitest.fn((filter: any) => { changedFilters = filter })
+        let changedFilters: Filter
+        const fn = vitest.fn((filter: any) => { changedFilters = filter })
+        let initialFilter: Filter = { }
             
-            beforeEach(async () => {
+        beforeEach(async () => {
             const client = new TestClient()
             client.Projects = [
                 { id: 1, name: "Project 1", later: false },
@@ -51,13 +52,12 @@ describe("TaskFilters views", () => {
                 { id: 1, name: "Tag 1" },
                 { id: 2, name: "Tag 2" },
             ]
-            render(<TaskFilters client={client} onFiltersChanged={fn} />)
+            render(<TaskFilters client={client} filter={initialFilter} onFiltersChanged={fn} />)
             await sleep(1)
         })
 
         it("completed filter", async() => {
             const completedCheckbox = screen.getByRole("checkbox", {name: "Completed tasks"})
-            expect(completedCheckbox).toBeInTheDocument()
             expect(completedCheckbox).not.toBeChecked()
             completedCheckbox.click()
             expect(fn).toHaveBeenCalled()
@@ -66,11 +66,25 @@ describe("TaskFilters views", () => {
 
         it("uncompleted filter", async() => {
             const uncompletedCheckbox = screen.getByRole("checkbox", {name: "Uncompleted tasks"})
-            expect(uncompletedCheckbox).toBeInTheDocument()
             expect(uncompletedCheckbox).not.toBeChecked()
             uncompletedCheckbox.click()
             expect(fn).toHaveBeenCalled()
             expect(changedFilters!.uncompleted).toBe(true)
+        })
+
+        it("completed and uncompleted tasks", async() => {
+            const completedCheckbox = screen.getByRole("checkbox", {name: "Completed tasks"})
+            const uncompletedCheckbox = screen.getByRole("checkbox", {name: "Uncompleted tasks"})
+            expect(uncompletedCheckbox).not.toBeChecked()
+            expect(completedCheckbox).not.toBeChecked()
+            uncompletedCheckbox.click()
+            fn.mockClear()
+            completedCheckbox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toBe({
+                completed: true,
+                uncompleted: true
+            })
         })
     })
 })
