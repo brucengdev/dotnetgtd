@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
-import { TaskFilters } from "./TaskFilters";
+import { beforeEach, describe, expect, it, vitest } from "vitest";
+import { Filter, TaskFilters } from "./TaskFilters";
 import { TestClient } from "./__test__/TestClient";
 import '@testing-library/jest-dom'
 import { sleep } from "./__test__/testutils";
@@ -34,5 +34,42 @@ describe("TaskFilters views", () => {
         expect(screen.getByRole("checkbox", {name: "No tag"})).toBeInTheDocument()
         expect(screen.getByRole("checkbox", {name: "Tag 1"})).toBeInTheDocument()
         expect(screen.getByRole("checkbox", {name: "Tag 2"})).toBeInTheDocument()
+    })
+
+
+    describe("execute callback when filters are changed", async () => {
+        let changedFilters: Filter
+        const fn = vitest.fn((filter: any) => { changedFilters = filter })
+        let initialFilter: Filter = { }
+            
+        beforeEach(async () => {
+            const client = new TestClient()
+            client.Projects = [
+                { id: 1, name: "Project 1", later: false },
+                { id: 2, name: "Project 2", later: false },
+            ]
+            client.Tags = [
+                { id: 1, name: "Tag 1" },
+                { id: 2, name: "Tag 2" },
+            ]
+            render(<TaskFilters client={client} filter={initialFilter} onFiltersChanged={fn} />)
+            await sleep(1)
+        })
+
+        it("completed filter", async() => {
+            const completedCheckbox = screen.getByRole("checkbox", {name: "Completed tasks"})
+            expect(completedCheckbox).not.toBeChecked()
+            completedCheckbox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters!.completed).toBe(true)
+        })
+
+        it("uncompleted filter", async() => {
+            const uncompletedCheckbox = screen.getByRole("checkbox", {name: "Uncompleted tasks"})
+            expect(uncompletedCheckbox).not.toBeChecked()
+            uncompletedCheckbox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters!.uncompleted).toBe(true)
+        })
     })
 })

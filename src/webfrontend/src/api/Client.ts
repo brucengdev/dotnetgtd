@@ -1,6 +1,7 @@
 import { Item } from "../models/Item"
 import { Project } from "../models/Project"
 import { Tag } from "../models/Tag"
+import { Filter } from "../TaskFilters"
 
 export interface IClient {
     Token: () => string | undefined
@@ -9,7 +10,7 @@ export interface IClient {
     LoginByToken: (token:string) => Promise<boolean>
     Logout: () => void
     AddItem: (item: Item) => Promise<boolean>
-    GetItems: () => Promise<Item[]>
+    GetItems: (filter:Filter) => Promise<Item[]>
     DeleteItem: (id: number) => Promise<boolean>
 
     AddProject: (item: Project) => Promise<boolean>
@@ -79,9 +80,10 @@ export class Client implements IClient {
         return result.ok
     }
 
-    public async GetItems(): Promise<Item[]> {
+    public async GetItems(filter: Filter): Promise<Item[]> {
         const result = await fetch(`${url}/Items/GetItems?${new URLSearchParams({
             accessToken: this.token,
+            complete: buildCompleteFilter(filter.completed, filter.uncompleted)
         }).toString()}`, {
             method: "GET"
         })
@@ -171,3 +173,17 @@ export class Client implements IClient {
         return result.ok
     }
 }
+
+function buildCompleteFilter(completed: boolean | undefined, 
+    uncompleted: boolean | undefined): string {
+        if(completed && uncompleted) {
+            return "*"
+        } 
+        if(!completed && !uncompleted) {
+            return ""
+        } 
+        if(completed) {
+            return "true"
+        } 
+        return "false"
+    }
