@@ -82,7 +82,8 @@ export class Client implements IClient {
 
     public async GetItems(filter: Filter): Promise<Item[]> {
         const result = await fetch(`${url}/Items/GetItems?${new URLSearchParams({
-            accessToken: this.token
+            accessToken: this.token,
+            complete: buildCompleteFilter(filter.completed, filter.uncompleted)
         }).toString()}`, {
             method: "GET"
         })
@@ -172,3 +173,17 @@ export class Client implements IClient {
         return result.ok
     }
 }
+
+function buildCompleteFilter(completed: boolean | undefined, 
+    uncompleted: boolean | undefined): string {
+        if(completed && uncompleted) {
+            return "*"
+        } 
+        if(!completed && !uncompleted) {
+            return ""
+        } 
+        if(completed) {
+            return "true"
+        } 
+        return "false"
+    }
