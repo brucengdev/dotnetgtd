@@ -19,12 +19,12 @@ describe("TaskView", () => {
         expect(screen.getByRole("checkbox", { name: "Active tasks"})).toBeChecked()
         expect(screen.getByRole("checkbox", { name: "Inactive tasks"})).not.toBeChecked()
 
-        // const items = screen.queryAllByTestId("item")
-        // expect(items.length).toBe(1)
-        // expect(items[0].querySelector('[data-testId="description"]')?.textContent).toBe("Task A")
-        // expect(items[0].querySelector('[data-testId="project"]')?.textContent).toBe("")
-        // expect(items[0].querySelector('[data-testId="done"]')).not.toBeChecked()
-        // expect(items[0].querySelector('[data-testId="later"]')).not.toBeChecked()
+        const items = screen.queryAllByTestId("item")
+        expect(items.length).toBe(1)
+        expect(items[0].querySelector('[data-testId="description"]')?.textContent).toBe("Task A")
+        expect(items[0].querySelector('[data-testId="project"]')?.textContent).toBe("")
+        expect(items[0].querySelector('[data-testId="done"]')).not.toBeChecked()
+        expect(items[0].querySelector('[data-testId="later"]')).not.toBeChecked()
     })
 
     // it("get completed tasks", async () => {
