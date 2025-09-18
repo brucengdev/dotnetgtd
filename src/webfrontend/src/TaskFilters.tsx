@@ -8,6 +8,7 @@ export interface Filter {
     completed?: boolean
     uncompleted?: boolean
     active?: boolean
+    inactive?: boolean
 }
 
 interface TaskFiltersProps {
@@ -28,11 +29,14 @@ export function TaskFilters(props: TaskFiltersProps) {
         .then(retrievedTags => setTags(retrievedTags))
     }
     return <div data-testId="task-filters">
-        <CheckBox label="Active tasks" checked={filter?.active ?? false}
+        <CheckBox label="Active tasks" checked={false}
             onChange={(newValue) =>
                 executeFilterChangeCallback(props, { ...filter, active: newValue })} 
         />
-        <CheckBox label="Inactive tasks" checked={false} />
+        <CheckBox label="Inactive tasks" checked={false} 
+            onChange={(newValue) =>
+                executeFilterChangeCallback(props, { ...filter, inactive: newValue })} 
+        />
 
         <CheckBox label="Completed tasks" checked={filter?.completed?? false}
             onChange={(newValue) => 

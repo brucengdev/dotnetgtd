@@ -79,5 +79,13 @@ describe("TaskFilters views", () => {
             expect(fn).toHaveBeenCalled()
             expect(changedFilters!.active).toBe(true)
         })
+
+        it("inactive filter", async() => {
+            const inactiveCheckbox = screen.getByRole("checkbox", {name: "Inactive tasks"})
+            expect(inactiveCheckbox).not.toBeChecked()
+            inactiveCheckbox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters!.inactive).toBe(true)
+        })
     })
 })
