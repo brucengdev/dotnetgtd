@@ -12,12 +12,17 @@ export interface TaskViewProps {
   client: IClient
 }
 
+const defaultFilter: Filter = {
+  active: true,
+  uncompleted: true
+}
+
 export function TaskView({ client} : TaskViewProps) {
     const [showNewTaskForm, setShowNewTaskForm] = useState(false)
     const [items, setItems] = useState(undefined as (Item[]|undefined))
     const [projects, setProjects] = useState<Project[] | undefined>(undefined)
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
-    const [filter, setFilter] = useState<Filter>({uncompleted: true})
+    const [filter, setFilter] = useState<Filter>(defaultFilter)
     if(items === undefined) {
         client.GetItems(filter)
             .then(items => setItems(items))
