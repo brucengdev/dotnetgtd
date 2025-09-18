@@ -183,7 +183,7 @@ function buildCompleteFilter(completed: boolean | undefined,
             return ""
         } 
         if(completed) {
-            return "true"
+            return "completed"
         } 
-        return "false"
+        return "uncompleted"
     }
