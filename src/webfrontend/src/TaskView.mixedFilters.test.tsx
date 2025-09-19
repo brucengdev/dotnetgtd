@@ -20,6 +20,8 @@ describe("TaskView", () => {
 
         expect(screen.getByRole("checkbox", { name: "Active tasks"})).toBeChecked()
         expect(screen.getByRole("checkbox", { name: "Uncompleted tasks"})).toBeChecked()
+        expect(screen.getByRole("checkbox", { name: "Inactive tasks"})).not.toBeChecked()
+        expect(screen.getByRole("checkbox", { name: "Completed tasks"})).not.toBeChecked()
 
         const items = screen.queryAllByTestId("item")
         expect(items.length).toBe(1)
