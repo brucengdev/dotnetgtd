@@ -83,7 +83,8 @@ export class Client implements IClient {
     public async GetItems(filter: Filter): Promise<Item[]> {
         const result = await fetch(`${url}/Items/GetItems?${new URLSearchParams({
             accessToken: this.token,
-            complete: buildCompleteFilter(filter.completed, filter.uncompleted)
+            complete: buildCompleteFilter(filter.completed, filter.uncompleted),
+            later: buildLaterFilter(filter.active, filter.inactive)
         }).toString()}`, {
             method: "GET"
         })
@@ -176,14 +177,27 @@ export class Client implements IClient {
 
 function buildCompleteFilter(completed: boolean | undefined, 
     uncompleted: boolean | undefined): string {
-        if(completed && uncompleted) {
-            return "*"
-        } 
-        if(!completed && !uncompleted) {
-            return ""
-        } 
-        if(completed) {
-            return "completed"
-        } 
-        return "uncompleted"
-    }
+    if(completed && uncompleted) {
+        return "*"
+    } 
+    if(!completed && !uncompleted) {
+        return ""
+    } 
+    if(completed) {
+        return "completed"
+    } 
+    return "uncompleted"
+}
+
+function buildLaterFilter(active: boolean | undefined, inactive: boolean | undefined): string {
+    if(active && inactive) {
+        return "*"
+    } 
+    if(!active && !inactive) {
+        return ""
+    } 
+    if(active) {
+        return "now"
+    } 
+    return "later"
+}
