@@ -53,35 +53,35 @@ describe("TaskView", () => {
         expect(items[0].querySelector('[data-testId="later"]')).toBeChecked()
     })
 
-    // it("get both completed and uncompleted tasks", async () => {
-    //     const client = new TestClient()
-    //     client.Items = [
-    //         { id: 1, description: "Task A", projectId: 0, done: false, later: false },
-    //         { id: 2, description: "Task B", projectId: 0, done: true, later: false }
-    //     ]
-    //     render(<TaskView client={client} />)
+    it("get both active and inactive tasks", async () => {
+        const client = new TestClient()
+        client.Items = [
+            { id: 1, description: "Task A", projectId: 0, done: false, later: false },
+            { id: 2, description: "Task B", projectId: 0, done: false, later: true }
+        ]
+        render(<TaskView client={client} />)
 
-    //     await sleep(1)
+        await sleep(1)
 
-    //     screen.getByRole("checkbox", { name: "Completed tasks"}).click()
+        screen.getByRole("checkbox", { name: "Inactive tasks"}).click()
 
-    //     await sleep(1)
+        await sleep(1)
 
-    //     expect(screen.getByRole("checkbox", { name: "Uncompleted tasks"})).toBeChecked()
-    //     expect(screen.getByRole("checkbox", { name: "Completed tasks"})).toBeChecked()
+        expect(screen.getByRole("checkbox", { name: "Active tasks"})).toBeChecked()
+        expect(screen.getByRole("checkbox", { name: "Inactive tasks"})).toBeChecked()
 
-    //     const items = screen.queryAllByTestId("item")
-    //     expect(items.length).toBe(2)
-    //     expect(items[0].querySelector('[data-testId="description"]')?.textContent).toBe("Task A")
-    //     expect(items[0].querySelector('[data-testId="project"]')?.textContent).toBe("")
-    //     expect(items[0].querySelector('[data-testId="done"]')).not.toBeChecked()
-    //     expect(items[0].querySelector('[data-testId="later"]')).not.toBeChecked()
+        const items = screen.queryAllByTestId("item")
+        expect(items.length).toBe(2)
+        expect(items[0].querySelector('[data-testId="description"]')?.textContent).toBe("Task A")
+        expect(items[0].querySelector('[data-testId="project"]')?.textContent).toBe("")
+        expect(items[0].querySelector('[data-testId="done"]')).not.toBeChecked()
+        expect(items[0].querySelector('[data-testId="later"]')).not.toBeChecked()
 
-    //     expect(items[1].querySelector('[data-testId="description"]')?.textContent).toBe("Task B")
-    //     expect(items[1].querySelector('[data-testId="project"]')?.textContent).toBe("")
-    //     expect(items[1].querySelector('[data-testId="done"]')).toBeChecked()
-    //     expect(items[1].querySelector('[data-testId="later"]')).not.toBeChecked()
-    // })
+        expect(items[1].querySelector('[data-testId="description"]')?.textContent).toBe("Task B")
+        expect(items[1].querySelector('[data-testId="project"]')?.textContent).toBe("")
+        expect(items[1].querySelector('[data-testId="done"]')).not.toBeChecked()
+        expect(items[1].querySelector('[data-testId="later"]')).toBeChecked()
+    })
 
     // it("get no tasks when both filters are inactive", async () => {
     //     const client = new TestClient()
