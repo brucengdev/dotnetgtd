@@ -1,10 +1,11 @@
 import { screen, render, fireEvent } from "@testing-library/react";
-import {describe, expect, it} from 'vitest'
+import {describe, expect, it, vitest} from 'vitest'
 import '@testing-library/jest-dom'
 import { TaskView } from "./TaskView";
 import { TestClient } from "./__test__/TestClient";
 import { sleep } from "./__test__/testutils";
 import userEvent from "@testing-library/user-event";
+import { Filter } from "./TaskFilters";
 
 describe("TaskView", () => {
     it("has necessary ui components", () => {
@@ -125,5 +126,22 @@ describe("TaskView", () => {
         await sleep(10)
 
         expect(client.Items.length).toBe(2)
+    })
+
+    it("calls server to fetch items", async () => {
+        const client = new TestClient()
+        let passedInFilter: Filter | undefined = undefined
+        client.GetItems = async (filter:Filter) => {
+            passedInFilter = filter
+            return []
+        }
+        client.Items = [
+            { id: 1, description: "Task A", projectId: 0, done: false, later: false}
+        ]
+        render(<TaskView client={client} />)
+
+        await sleep(1)
+
+        expect(passedInFilter).not.toBeFalsy()
     })
 })
