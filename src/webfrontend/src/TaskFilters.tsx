@@ -33,7 +33,7 @@ export function TaskFilters(props: TaskFiltersProps) {
             onChange={(newValue) =>
                 executeFilterChangeCallback(props, { ...filter, active: newValue })} 
         />
-        <CheckBox label="Inactive tasks" checked={false} 
+        <CheckBox label="Inactive tasks" checked={filter?.inactive ?? false} 
             onChange={(newValue) =>
                 executeFilterChangeCallback(props, { ...filter, inactive: newValue })} 
         />
