@@ -1,5 +1,5 @@
 import { screen, render, fireEvent } from "@testing-library/react";
-import {describe, expect, it, vitest} from 'vitest'
+import {describe, expect, it} from 'vitest'
 import '@testing-library/jest-dom'
 import { TaskView } from "./TaskView";
 import { TestClient } from "./__test__/TestClient";
