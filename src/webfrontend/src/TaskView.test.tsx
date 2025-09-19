@@ -5,6 +5,8 @@ import { TaskView } from "./TaskView";
 import { TestClient } from "./__test__/TestClient";
 import { sleep } from "./__test__/testutils";
 import userEvent from "@testing-library/user-event";
+import { Filter } from "./TaskFilters";
+import cartesian from "fast-cartesian";
 
 describe("TaskView", () => {
     it("has necessary ui components", () => {
@@ -125,5 +127,54 @@ describe("TaskView", () => {
         await sleep(10)
 
         expect(client.Items.length).toBe(2)
+    })
+
+    cartesian([
+        [true, undefined],//active
+        [true, undefined],//inactive
+        [true, undefined],//completed
+        [true, undefined] //uncompleted
+    ]).forEach(([active, inactive, completed, uncompleted]) => {
+
+        it(`calls server to fetch items when active=${active}`
+            +`,inactive=${inactive},completed=${completed}`
+            +`,uncompleted=${uncompleted}`, async () => {
+            const client = new TestClient()
+            let passedInFilter: Filter | undefined = undefined
+            client.GetItems = async (filter:Filter) => {
+                passedInFilter = filter
+                return []
+            }
+            client.Items = [
+                { id: 1, description: "Task A", projectId: 0, done: false, later: false}
+            ]
+            render(<TaskView client={client} filter={{}} />)
+
+            await sleep(1)
+
+            if(active) {
+                fireEvent.click(screen.getByRole("checkbox", { name: "Active tasks"}))
+            }
+            if(inactive) {
+                fireEvent.click(screen.getByRole("checkbox", { name: "Inactive tasks"}))
+            }
+            if(completed) {
+                fireEvent.click(screen.getByRole("checkbox", { name: "Completed tasks"}))
+            }
+            if(uncompleted) {
+                fireEvent.click(screen.getByRole("checkbox", { name: "Uncompleted tasks"}))
+            }
+
+            await sleep(1)
+
+            const expectedFilter: Filter = {active, inactive, completed, uncompleted}
+            Object.keys(expectedFilter).forEach(key => {
+                const k = key as keyof Filter
+                if(expectedFilter[k] === undefined) {
+                    delete expectedFilter[k]
+                }
+            })
+            expect(passedInFilter).toStrictEqual(expectedFilter)
+        })
     })
 })

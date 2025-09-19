@@ -43,19 +43,36 @@ export class TestClient implements IClient {
     }
 
     async GetItems(filter:Filter): Promise<Item[]> {
-        return [...this.Items
+        let filteredItems = this.Items
             .filter(i => {
-                if(filter.uncompleted && !i.done) {
-                    return true
-                }
-                if(filter.completed && i.done) {
-                    return true
-                }
-                return false
+                return this.completionFilter(filter, i) 
+                    && this.activeFilter(filter, i)
             })
-            .map(i =>{
+
+            filteredItems = filteredItems.map(i =>{
             return {...i}
-        })]
+        })
+        return [...filteredItems]
+    }
+
+    private completionFilter(filter: Filter, i: Item): boolean {
+        if(filter.uncompleted && !i.done) {
+            return true
+        }
+        if(filter.completed && i.done) {
+            return true
+        }
+        return false
+    }
+
+    private activeFilter(filter: Filter, i: Item): boolean {
+        if(filter.active && !i.later) {
+            return true
+        }
+        if(filter.inactive && i.later) {
+            return true
+        }
+        return false
     }
 
     async DeleteItem(id: number) {

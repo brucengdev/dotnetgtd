@@ -7,6 +7,8 @@ import { CheckBox } from "./controls/CheckBox"
 export interface Filter {
     completed?: boolean
     uncompleted?: boolean
+    active?: boolean
+    inactive?: boolean
 }
 
 interface TaskFiltersProps {
@@ -27,22 +29,22 @@ export function TaskFilters(props: TaskFiltersProps) {
         .then(retrievedTags => setTags(retrievedTags))
     }
     return <div data-testId="task-filters">
-        <CheckBox label="Active tasks" checked={false} />
-        <CheckBox label="Inactive tasks" checked={false} />
+        <CheckBox label="Active tasks" checked={filter?.active ?? false}
+            onChange={(newValue) =>
+                executeFilterChangeCallback(props, { ...filter, active: newValue })} 
+        />
+        <CheckBox label="Inactive tasks" checked={filter?.inactive ?? false} 
+            onChange={(newValue) =>
+                executeFilterChangeCallback(props, { ...filter, inactive: newValue })} 
+        />
 
         <CheckBox label="Completed tasks" checked={filter?.completed?? false}
-            onChange={(newValue) => {
-                if(props.onFiltersChanged) {
-                    props.onFiltersChanged({ ...filter, completed: newValue })
-                }
-            }}
+            onChange={(newValue) => 
+                executeFilterChangeCallback(props, { ...filter, completed: newValue })}
          />
         <CheckBox label="Uncompleted tasks" checked={filter?.uncompleted ?? false} 
-            onChange={(newValue) => {
-                if(props.onFiltersChanged) {
-                    props.onFiltersChanged({ ...filter, uncompleted: newValue })
-                }
-            }}
+            onChange={(newValue) =>
+                executeFilterChangeCallback(props, { ...filter, uncompleted: newValue })}
         />
 
         <CheckBox label="All projects" checked={false} />
@@ -53,4 +55,10 @@ export function TaskFilters(props: TaskFiltersProps) {
         <CheckBox label="No tag" checked={false} />
         {(tags || []).map(t => <CheckBox key={t.id} label={t.name} checked={false} />)}
     </div>
+}
+
+function executeFilterChangeCallback(props: TaskFiltersProps, newFilter: Filter) {
+    if(props.onFiltersChanged) {
+        props.onFiltersChanged(newFilter)
+    }
 }
