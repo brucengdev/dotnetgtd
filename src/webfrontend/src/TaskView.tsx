@@ -9,7 +9,8 @@ import { Tag } from "./models/Tag"
 import { Filter, TaskFilters } from "./TaskFilters"
 
 export interface TaskViewProps {
-  client: IClient
+  client: IClient,
+  filter?: Filter
 }
 
 const defaultFilter: Filter = {
@@ -17,12 +18,13 @@ const defaultFilter: Filter = {
   uncompleted: true
 }
 
-export function TaskView({ client} : TaskViewProps) {
+export function TaskView(props: TaskViewProps) {
+    const { client } = props
     const [showNewTaskForm, setShowNewTaskForm] = useState(false)
     const [items, setItems] = useState(undefined as (Item[]|undefined))
     const [projects, setProjects] = useState<Project[] | undefined>(undefined)
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
-    const [filter, setFilter] = useState<Filter>(defaultFilter)
+    const [filter, setFilter] = useState<Filter>(props.filter ?? defaultFilter)
     if(items === undefined) {
         client.GetItems(filter)
             .then(items => setItems(items))
