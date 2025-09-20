@@ -52,7 +52,6 @@ describe("TaskView", () => {
         expect(allProjectCheckbox).toBeChecked()
 
         allProjectCheckbox.click()
-        noProjectCheckbox.click()
 
         await sleep(1)
 
