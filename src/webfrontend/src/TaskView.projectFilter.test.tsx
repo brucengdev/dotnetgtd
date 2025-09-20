@@ -6,7 +6,7 @@ import { TestClient } from "./__test__/TestClient";
 import { sleep } from "./__test__/testutils";
 
 describe("TaskView", () => {
-    it("shows all tasks initially", async () => {
+    it("shows all tasks initially and all project filters are checked", async () => {
         const client = new TestClient()
         client.Items = [
             { id: 1, description: "Task A", projectId: 0, done: false, later: false },
@@ -23,6 +23,7 @@ describe("TaskView", () => {
 
         expect(screen.getByRole("checkbox", { name: "All projects"})).toBeChecked()
         expect(screen.getByRole("checkbox", { name: "Project 1"})).toBeChecked()
+        expect(screen.getByRole("checkbox", { name: "Project 2"})).toBeChecked()
 
         const items = screen.queryAllByTestId("item")
         expect(items.length).toBe(3)
