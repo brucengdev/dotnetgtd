@@ -80,8 +80,9 @@ describe("TaskView", () => {
 
         await sleep(1)
 
-        const project1CheckBox = screen.getByRole("checkbox", { name: "Project 1"})
-        project1CheckBox.click()
+        screen.getByRole("checkbox", { name: "All projects"}).click()
+        screen.getByRole("checkbox", { name: "Project 1"}).click()
+        screen.getByRole("checkbox", { name: "No project"}).click()
 
         await sleep(1)
 
