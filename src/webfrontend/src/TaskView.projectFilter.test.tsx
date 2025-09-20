@@ -45,20 +45,21 @@ describe("TaskView", () => {
             { id: 2, name: "Project 2", later: false }
         ]
         render(<TaskView client={client} />)
-
-        const noProjectCheckbox = screen.getByRole("checkbox", { name: "No project"})
-        expect(noProjectCheckbox).not.toBeChecked()
-
         await sleep(1)
+        const noProjectCheckbox = screen.getByRole("checkbox", { name: "No project"})
+        expect(noProjectCheckbox).toBeChecked()
+        const allProjectCheckbox = screen.getByRole("checkbox", { name: "All projects"})
+        expect(allProjectCheckbox).toBeChecked()
 
+        allProjectCheckbox.click()
         noProjectCheckbox.click()
 
         await sleep(1)
 
-        expect(screen.getByRole("checkbox", { name: "All projects"})).not.toBeChecked()
+        expect(allProjectCheckbox).not.toBeChecked()
         expect(screen.getByRole("checkbox", { name: "Project 1"})).not.toBeChecked()
         expect(screen.getByRole("checkbox", { name: "Project 2"})).not.toBeChecked()
-        expect(screen.getByRole("checkbox", { name: "No project"})).toBeChecked()
+        expect(noProjectCheckbox).toBeChecked()
 
         const items = screen.queryAllByTestId("item")
         expect(items.length).toBe(1)
