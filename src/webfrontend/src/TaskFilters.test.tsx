@@ -61,7 +61,9 @@ describe("TaskFilters views", () => {
             expect(completedCheckbox).not.toBeChecked()
             completedCheckbox.click()
             expect(fn).toHaveBeenCalled()
-            expect(changedFilters!.completed).toBe(true)
+            expect(changedFilters).toEqual({
+                completed: true
+            })
         })
 
         it("uncompleted filter", async() => {
@@ -70,7 +72,9 @@ describe("TaskFilters views", () => {
             expect(uncompletedCheckbox).not.toBeChecked()
             uncompletedCheckbox.click()
             expect(fn).toHaveBeenCalled()
-            expect(changedFilters!.uncompleted).toBe(true)
+            expect(changedFilters).toEqual({
+                uncompleted: true
+            })
         })
 
         it("active filter", async() => {
@@ -79,7 +83,9 @@ describe("TaskFilters views", () => {
             expect(activeCheckbox).not.toBeChecked()
             activeCheckbox.click()
             expect(fn).toHaveBeenCalled()
-            expect(changedFilters!.active).toBe(true)
+            expect(changedFilters).toEqual({
+                active: true
+            })
         })
 
         it("inactive filter", async() => {
@@ -89,6 +95,9 @@ describe("TaskFilters views", () => {
             inactiveCheckbox.click()
             expect(fn).toHaveBeenCalled()
             expect(changedFilters!.inactive).toBe(true)
+            expect(changedFilters).toEqual({
+                inactive: true
+            })
         })
 
         it("all projects filter", async() => {
@@ -97,7 +106,10 @@ describe("TaskFilters views", () => {
             expect(allProjectsCheckbox).not.toBeChecked()
             allProjectsCheckbox.click()
             expect(fn).toHaveBeenCalled()
-            expect(changedFilters!.projectIds).toBe(undefined)
+            expect(changedFilters).toEqual({
+                projectIds: undefined,
+                tasksInNoProject: undefined
+            })
         })
 
         it("project 1 filter", async() => {
@@ -106,7 +118,10 @@ describe("TaskFilters views", () => {
             expect(project1CheckBox).not.toBeChecked()
             project1CheckBox.click()
             expect(fn).toHaveBeenCalled()
-            expect(changedFilters!.projectIds).toStrictEqual([1])
+            expect(changedFilters).toEqual({
+                projectIds: [1],
+                tasksInNoProject: undefined
+            })
         })
 
         it("2 projects filters", async() => {
@@ -119,7 +134,10 @@ describe("TaskFilters views", () => {
             project2CheckBox.click()
 
             expect(fn).toHaveBeenCalled()
-            expect(changedFilters!.projectIds).toStrictEqual([1,2])
+            expect(changedFilters).toEqual({
+                projectIds: [1,2],
+                tasksInNoProject: undefined
+            })
         })
 
         it("no project filter", async() => {
@@ -128,7 +146,7 @@ describe("TaskFilters views", () => {
             expect(noProjectCheckBox).not.toBeChecked()
             noProjectCheckBox.click()
             expect(fn).toHaveBeenCalled()
-            expect(changedFilters).toStrictEqual({
+            expect(changedFilters).toEqual({
                 projectIds: undefined,
                 tasksInNoProject: true
             })
