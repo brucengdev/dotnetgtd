@@ -9,7 +9,7 @@ export interface Filter {
     uncompleted?: boolean
     active?: boolean
     inactive?: boolean
-    projectIds?: number[]
+    projectIds?: (number | undefined)[]
 }
 
 interface TaskFiltersProps {
@@ -52,7 +52,7 @@ export function TaskFilters(props: TaskFiltersProps) {
         <CheckBox label="All projects" checked={filter?.projectIds === undefined} />
         <CheckBox label="No project" checked={filter?.projectIds?.length === 0} 
             onChange={(newValue) => 
-                executeFilterChangeCallback(props, { ...filter, projectIds: newValue ? []: undefined })}
+                executeFilterChangeCallback(props, { ...filter, projectIds: buildProjectIdsFilter(filter?.projectIds, undefined, newValue) })}
         />
 
         {(projects || []).map(p => 
@@ -76,16 +76,17 @@ function executeFilterChangeCallback(props: TaskFiltersProps, newFilter: Filter)
     }
 }
 
-function buildProjectIdsFilter(currentProjectIds: number[] | undefined, projectId: number, projectSelected: boolean): number[] | undefined {
+function buildProjectIdsFilter(currentProjectIds: (number | undefined)[] | undefined, projectId: number | undefined, projectSelected: boolean)
+    : (number | undefined)[] | undefined {
     if(currentProjectIds === undefined) {
         //all were selected, now one is being unselected
-        if(projectSelected === false) {
+        if(projectSelected === true) {
             return [projectId]
         }
     }
     if(projectSelected) {
         return [...(currentProjectIds || []), projectId]
     } else {
-        return (currentProjectIds || []).filter(x => x !== projectId)
+        return [...(currentProjectIds || [])].filter(x => x !== projectId)
     }
 }

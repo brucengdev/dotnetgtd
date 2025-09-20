@@ -128,7 +128,7 @@ describe("TaskFilters views", () => {
             expect(noProjectCheckBox).not.toBeChecked()
             noProjectCheckBox.click()
             expect(fn).toHaveBeenCalled()
-            expect(changedFilters!.projectIds).toStrictEqual([])
+            expect(changedFilters!.projectIds).toStrictEqual([undefined])
         })
     })
 })
