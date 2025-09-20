@@ -84,7 +84,8 @@ export class Client implements IClient {
         const result = await fetch(`${url}/Items/GetItems?${new URLSearchParams({
             accessToken: this.token,
             complete: buildCompleteFilter(filter.completed, filter.uncompleted),
-            later: buildLaterFilter(filter.active, filter.inactive)
+            later: buildLaterFilter(filter.active, filter.inactive),
+            projectId: buildProjectIdFilter(filter)
         }).toString()}`, {
             method: "GET"
         })
@@ -201,3 +202,10 @@ function buildLaterFilter(active: boolean | undefined, inactive: boolean | undef
     } 
     return "later"
 }
+
+function buildProjectIdFilter(filter: Filter): string {
+    const { projectIds, tasksInNoProject } = filter
+    if(projectIds === undefined) { return "*" }
+    return projectIds.join(",") + (tasksInNoProject ? ",null" : "")
+}
+

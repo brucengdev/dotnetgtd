@@ -9,6 +9,8 @@ export interface Filter {
     uncompleted?: boolean
     active?: boolean
     inactive?: boolean
+    projectIds?: number[]
+    tasksInNoProject?: boolean
 }
 
 interface TaskFiltersProps {
@@ -28,6 +30,27 @@ export function TaskFilters(props: TaskFiltersProps) {
         client.GetTags()
         .then(retrievedTags => setTags(retrievedTags))
     }
+
+    function buildProjectIdsFilter(projectId: number, projectSelected: boolean)
+        : number[] | undefined {
+        if(filter?.projectIds === undefined) {
+            //all were selected, now one is being unselected
+            if(projectSelected === true) {
+                return [projectId]
+            }
+        }
+        if(projectSelected) {
+            let result = [...(filter?.projectIds || []), projectId]
+            if(result.length === (projects?.length ?? 0))//all projects are selected 
+            {
+                return undefined
+            }
+            return result
+        } else {
+            return [...(filter?.projectIds || [])].filter(x => x !== projectId)
+        }
+    }
+
     return <div data-testId="task-filters">
         <CheckBox label="Active tasks" checked={filter?.active ?? false}
             onChange={(newValue) =>
@@ -47,9 +70,23 @@ export function TaskFilters(props: TaskFiltersProps) {
                 executeFilterChangeCallback(props, { ...filter, uncompleted: newValue })}
         />
 
-        <CheckBox label="All projects" checked={false} />
-        <CheckBox label="No project" checked={false} />
-        {(projects || []).map(p => <CheckBox key={p.id} label={p.name} checked={false} />)}
+        <CheckBox label="All projects" checked={filter?.projectIds === undefined}
+            onChange={newValue => {
+                executeFilterChangeCallback(props, { ...filter, projectIds: newValue ? undefined : [] })
+            }} />
+        <CheckBox label="No project" checked={filter?.tasksInNoProject ?? false} 
+            onChange={(newValue) => 
+                executeFilterChangeCallback(props, { ...filter, tasksInNoProject: newValue })}
+        />
+
+        {(projects || []).map(p => 
+            <CheckBox key={p.id} label={p.name} 
+                checked={filter?.projectIds === undefined || filter?.projectIds?.includes(p.id) || false} 
+                onChange={(newValue) => {
+                    executeFilterChangeCallback(props, { ...filter, projectIds: buildProjectIdsFilter(p.id, newValue) })
+                }}
+            />
+        )}
 
         <CheckBox label="All tags" checked={false} />
         <CheckBox label="No tag" checked={false} />
@@ -62,3 +99,4 @@ function executeFilterChangeCallback(props: TaskFiltersProps, newFilter: Filter)
         props.onFiltersChanged(newFilter)
     }
 }
+
