@@ -10,6 +10,7 @@ export interface Filter {
     active?: boolean
     inactive?: boolean
     projectIds?: (number | undefined)[]
+    tasksInNoProject?: boolean
 }
 
 interface TaskFiltersProps {
@@ -52,7 +53,7 @@ export function TaskFilters(props: TaskFiltersProps) {
         <CheckBox label="All projects" checked={filter?.projectIds === undefined} />
         <CheckBox label="No project" checked={filter?.projectIds?.length === 0} 
             onChange={(newValue) => 
-                executeFilterChangeCallback(props, { ...filter, projectIds: buildProjectIdsFilter(filter?.projectIds, undefined, newValue) })}
+                executeFilterChangeCallback(props, { ...filter, tasksInNoProject: newValue })}
         />
 
         {(projects || []).map(p => 

@@ -128,7 +128,10 @@ describe("TaskFilters views", () => {
             expect(noProjectCheckBox).not.toBeChecked()
             noProjectCheckBox.click()
             expect(fn).toHaveBeenCalled()
-            expect(changedFilters!.projectIds).toStrictEqual([undefined])
+            expect(changedFilters).toStrictEqual({
+                projectIds: undefined,
+                tasksInNoProject: true
+            })
         })
     })
 })
