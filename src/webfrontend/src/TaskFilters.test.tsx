@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vitest } from "vitest";
+import { describe, expect, it, vitest } from "vitest";
 import { Filter, TaskFilters } from "./TaskFilters";
 import { TestClient } from "./__test__/TestClient";
 import '@testing-library/jest-dom'
@@ -101,7 +101,7 @@ describe("TaskFilters views", () => {
         })
 
         it("project 1 filter", async() => {
-            await setupTest()
+            await setupTest({ projectIds: [] })
             const project1CheckBox = screen.getByRole("checkbox", {name: "Project 1"})
             expect(project1CheckBox).not.toBeChecked()
             project1CheckBox.click()

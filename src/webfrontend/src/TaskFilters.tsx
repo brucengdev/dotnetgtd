@@ -51,7 +51,8 @@ export function TaskFilters(props: TaskFiltersProps) {
         <CheckBox label="All projects" checked={filter?.projectIds === undefined} />
         <CheckBox label="No project" checked={false} />
         {(projects || []).map(p => 
-            <CheckBox key={p.id} label={p.name} checked={false} 
+            <CheckBox key={p.id} label={p.name} 
+                checked={filter?.projectIds === undefined} 
                 onChange={(newValue) => {
                     executeFilterChangeCallback(props, { ...filter, projectIds: newValue ? [p.id]: undefined})
                 }}
