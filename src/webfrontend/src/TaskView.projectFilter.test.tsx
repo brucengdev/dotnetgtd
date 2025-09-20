@@ -112,6 +112,8 @@ describe("TaskView", () => {
 
         await sleep(1)
 
+        screen.getByRole("checkbox", { name: "All projects"}).click()
+        screen.getByRole("checkbox", { name: "No project"}).click()
         screen.getByRole("checkbox", { name: "Project 1"}).click()
         screen.getByRole("checkbox", { name: "Project 2"}).click()
 
