@@ -24,6 +24,7 @@ describe("TaskView", () => {
         expect(screen.getByRole("checkbox", { name: "All projects"})).toBeChecked()
         expect(screen.getByRole("checkbox", { name: "Project 1"})).toBeChecked()
         expect(screen.getByRole("checkbox", { name: "Project 2"})).toBeChecked()
+        expect(screen.getByRole("checkbox", { name: "No project"})).toBeChecked()
 
         const items = screen.queryAllByTestId("item")
         expect(items.length).toBe(3)

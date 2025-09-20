@@ -15,7 +15,8 @@ export interface TaskViewProps {
 
 const defaultFilter: Filter = {
   active: true,
-  uncompleted: true
+  uncompleted: true,
+  tasksInNoProject: true
 }
 
 export function TaskView(props: TaskViewProps) {
