@@ -47,12 +47,25 @@ export class TestClient implements IClient {
             .filter(i => {
                 return this.completionFilter(filter, i) 
                     && this.activeFilter(filter, i)
+                    && this.projectFilter(filter, i)
             })
 
             filteredItems = filteredItems.map(i =>{
             return {...i}
         })
         return [...filteredItems]
+    }
+    projectFilter(filter: Filter, i: Item): unknown {
+        if(filter.projectIds === undefined) {
+            return true
+        }
+        if(filter.projectIds.length === 0 && i.projectId === undefined) {
+            return true
+        }
+        if(i.projectId !== undefined && filter.projectIds.includes(i.projectId)) {
+            return true
+        }
+        return false
     }
 
     private completionFilter(filter: Filter, i: Item): boolean {
