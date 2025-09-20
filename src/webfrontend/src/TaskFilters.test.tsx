@@ -40,23 +40,23 @@ describe("TaskFilters views", () => {
     describe("execute callback when filters are changed", async () => {
         let changedFilters: Filter
         const fn = vitest.fn((filter: any) => { changedFilters = filter })
-        let initialFilter: Filter = { }
             
-        beforeEach(async () => {
-            const client = new TestClient()
+        async function setupTest(initialFilter: Filter = {}) {
+            const client = new TestClient();
             client.Projects = [
                 { id: 1, name: "Project 1", later: false },
                 { id: 2, name: "Project 2", later: false },
-            ]
+            ];
             client.Tags = [
                 { id: 1, name: "Tag 1" },
                 { id: 2, name: "Tag 2" },
-            ]
-            render(<TaskFilters client={client} filter={initialFilter} onFiltersChanged={fn} />)
-            await sleep(1)
-        })
+            ];
+            render(<TaskFilters client={client} filter={initialFilter} onFiltersChanged={fn} />);
+            await sleep(1);
+        }
 
         it("completed filter", async() => {
+            await setupTest()
             const completedCheckbox = screen.getByRole("checkbox", {name: "Completed tasks"})
             expect(completedCheckbox).not.toBeChecked()
             completedCheckbox.click()
@@ -65,6 +65,7 @@ describe("TaskFilters views", () => {
         })
 
         it("uncompleted filter", async() => {
+            await setupTest()
             const uncompletedCheckbox = screen.getByRole("checkbox", {name: "Uncompleted tasks"})
             expect(uncompletedCheckbox).not.toBeChecked()
             uncompletedCheckbox.click()
@@ -73,6 +74,7 @@ describe("TaskFilters views", () => {
         })
 
         it("active filter", async() => {
+            await setupTest()
             const activeCheckbox = screen.getByRole("checkbox", {name: "Active tasks"})
             expect(activeCheckbox).not.toBeChecked()
             activeCheckbox.click()
@@ -81,6 +83,7 @@ describe("TaskFilters views", () => {
         })
 
         it("inactive filter", async() => {
+            await setupTest()
             const inactiveCheckbox = screen.getByRole("checkbox", {name: "Inactive tasks"})
             expect(inactiveCheckbox).not.toBeChecked()
             inactiveCheckbox.click()
@@ -89,6 +92,7 @@ describe("TaskFilters views", () => {
         })
 
         it("all projects filter", async() => {
+            await setupTest({ projectIds: [1]})
             const allProjectsCheckbox = screen.getByRole("checkbox", {name: "All projects"})
             expect(allProjectsCheckbox).not.toBeChecked()
             allProjectsCheckbox.click()
@@ -97,6 +101,7 @@ describe("TaskFilters views", () => {
         })
 
         it("project 1 filter", async() => {
+            await setupTest()
             const project1CheckBox = screen.getByRole("checkbox", {name: "Project 1"})
             expect(project1CheckBox).not.toBeChecked()
             project1CheckBox.click()
