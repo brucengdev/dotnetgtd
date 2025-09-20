@@ -87,5 +87,13 @@ describe("TaskFilters views", () => {
             expect(fn).toHaveBeenCalled()
             expect(changedFilters!.inactive).toBe(true)
         })
+
+        it("all projects filter", async() => {
+            const allProjectsCheckbox = screen.getByRole("checkbox", {name: "All projects"})
+            expect(allProjectsCheckbox).not.toBeChecked()
+            allProjectsCheckbox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters!.projectIds).toBe(undefined)
+        })
     })
 })

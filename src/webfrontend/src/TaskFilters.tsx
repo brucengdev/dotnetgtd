@@ -9,6 +9,7 @@ export interface Filter {
     uncompleted?: boolean
     active?: boolean
     inactive?: boolean
+    projectIds?: number[]
 }
 
 interface TaskFiltersProps {

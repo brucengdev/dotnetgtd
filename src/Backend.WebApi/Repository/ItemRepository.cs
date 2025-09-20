@@ -61,7 +61,7 @@ public class ItemRepository: IItemRepository
         var item = _dbContext.Items.Find(itemId);
         if (item != null)
         {
-            _dbContext.Items.Remove(item);
+            _dbContext.Items.Remove(item);  
             _dbContext.SaveChanges();
         }
     }
