@@ -9,7 +9,7 @@ export interface Filter {
     uncompleted?: boolean
     active?: boolean
     inactive?: boolean
-    projectIds?: (number | undefined)[]
+    projectIds?: number[]
     tasksInNoProject?: boolean
 }
 
@@ -31,8 +31,8 @@ export function TaskFilters(props: TaskFiltersProps) {
         .then(retrievedTags => setTags(retrievedTags))
     }
 
-    function buildProjectIdsFilter(projectId: number | undefined, projectSelected: boolean)
-        : (number | undefined)[] | undefined {
+    function buildProjectIdsFilter(projectId: number, projectSelected: boolean)
+        : number[] | undefined {
         if(filter?.projectIds === undefined) {
             //all were selected, now one is being unselected
             if(projectSelected === true) {
