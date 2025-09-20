@@ -31,6 +31,26 @@ export function TaskFilters(props: TaskFiltersProps) {
         .then(retrievedTags => setTags(retrievedTags))
     }
 
+    function buildProjectIdsFilter(projectId: number | undefined, projectSelected: boolean)
+        : (number | undefined)[] | undefined {
+        if(filter?.projectIds === undefined) {
+            //all were selected, now one is being unselected
+            if(projectSelected === true) {
+                return [projectId]
+            }
+        }
+        if(projectSelected) {
+            let result = [...(filter?.projectIds || []), projectId]
+            if(result.length === (projects?.length ?? 0))//all projects are selected 
+            {
+                return undefined
+            }
+            return result
+        } else {
+            return [...(filter?.projectIds || [])].filter(x => x !== projectId)
+        }
+    }
+
     return <div data-testId="task-filters">
         <CheckBox label="Active tasks" checked={filter?.active ?? false}
             onChange={(newValue) =>
@@ -63,7 +83,7 @@ export function TaskFilters(props: TaskFiltersProps) {
             <CheckBox key={p.id} label={p.name} 
                 checked={filter?.projectIds === undefined || filter?.projectIds?.includes(p.id) || false} 
                 onChange={(newValue) => {
-                    executeFilterChangeCallback(props, { ...filter, projectIds: buildProjectIdsFilter(filter?.projectIds, p.id, newValue) })
+                    executeFilterChangeCallback(props, { ...filter, projectIds: buildProjectIdsFilter(p.id, newValue) })
                 }}
             />
         )}
@@ -80,17 +100,3 @@ function executeFilterChangeCallback(props: TaskFiltersProps, newFilter: Filter)
     }
 }
 
-function buildProjectIdsFilter(currentProjectIds: (number | undefined)[] | undefined, projectId: number | undefined, projectSelected: boolean)
-    : (number | undefined)[] | undefined {
-    if(currentProjectIds === undefined) {
-        //all were selected, now one is being unselected
-        if(projectSelected === true) {
-            return [projectId]
-        }
-    }
-    if(projectSelected) {
-        return [...(currentProjectIds || []), projectId]
-    } else {
-        return [...(currentProjectIds || [])].filter(x => x !== projectId)
-    }
-}

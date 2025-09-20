@@ -10,11 +10,11 @@ describe("TaskFilters views", () => {
         const client = new TestClient()
         client.Projects = [
             { id: 1, name: "Project 1", later: false },
-            { id: 2, name: "Project 2", later: false },
+            { id: 2, name: "Project 2", later: false }
         ]
         client.Tags = [
             { id: 1, name: "Tag 1" },
-            { id: 2, name: "Tag 2" },
+            { id: 2, name: "Tag 2" }
         ]
         render(<TaskFilters client={client} />)
         await sleep(1)
@@ -46,6 +46,7 @@ describe("TaskFilters views", () => {
             client.Projects = [
                 { id: 1, name: "Project 1", later: false },
                 { id: 2, name: "Project 2", later: false },
+                { id: 3, name: "Project 3", later: false },
             ];
             client.Tags = [
                 { id: 1, name: "Tag 1" },
@@ -135,8 +136,7 @@ describe("TaskFilters views", () => {
 
             expect(fn).toHaveBeenCalled()
             expect(changedFilters).toEqual({
-                projectIds: [1,2],
-                tasksInNoProject: undefined
+                projectIds: [1,2]
             })
         })
 
@@ -149,6 +149,18 @@ describe("TaskFilters views", () => {
             expect(changedFilters).toEqual({
                 projectIds: undefined,
                 tasksInNoProject: true
+            })
+        })
+
+        it("select all projects when all individual project filters are checked", async() => {
+            await setupTest({ projectIds: [1,2] })
+            const project3CheckBox = screen.getByRole("checkbox", {name: "Project 3"})
+            expect(project3CheckBox).not.toBeChecked()
+            project3CheckBox.click()
+
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                projectIds: undefined
             })
         })
     })
