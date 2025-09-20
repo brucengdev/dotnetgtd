@@ -80,7 +80,7 @@ function buildProjectIdsFilter(currentProjectIds: number[] | undefined, projectI
     if(currentProjectIds === undefined) {
         //all were selected, now one is being unselected
         if(projectSelected === false) {
-            return []
+            return [projectId]
         }
     }
     if(projectSelected) {
