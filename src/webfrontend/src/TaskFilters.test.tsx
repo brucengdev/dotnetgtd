@@ -121,5 +121,14 @@ describe("TaskFilters views", () => {
             expect(fn).toHaveBeenCalled()
             expect(changedFilters!.projectIds).toStrictEqual([1,2])
         })
+
+        it("no project filter", async() => {
+            await setupTest({ projectIds: undefined })
+            const noProjectCheckBox = screen.getByRole("checkbox", {name: "No project"})
+            expect(noProjectCheckBox).not.toBeChecked()
+            noProjectCheckBox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters!.projectIds).toStrictEqual([])
+        })
     })
 })
