@@ -108,5 +108,18 @@ describe("TaskFilters views", () => {
             expect(fn).toHaveBeenCalled()
             expect(changedFilters!.projectIds).toStrictEqual([1])
         })
+
+        it("2 projects filters", async() => {
+            await setupTest({ projectIds: [1] })
+            const project1CheckBox = screen.getByRole("checkbox", {name: "Project 1"})
+            const project2CheckBox = screen.getByRole("checkbox", {name: "Project 2"})
+            expect(project1CheckBox).toBeChecked()
+            expect(project2CheckBox).not.toBeChecked()
+
+            project2CheckBox.click()
+
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters!.projectIds).toStrictEqual([1,2])
+        })
     })
 })

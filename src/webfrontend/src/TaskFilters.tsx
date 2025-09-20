@@ -29,6 +29,7 @@ export function TaskFilters(props: TaskFiltersProps) {
         client.GetTags()
         .then(retrievedTags => setTags(retrievedTags))
     }
+
     return <div data-testId="task-filters">
         <CheckBox label="Active tasks" checked={filter?.active ?? false}
             onChange={(newValue) =>
@@ -52,9 +53,9 @@ export function TaskFilters(props: TaskFiltersProps) {
         <CheckBox label="No project" checked={false} />
         {(projects || []).map(p => 
             <CheckBox key={p.id} label={p.name} 
-                checked={filter?.projectIds === undefined} 
+                checked={filter?.projectIds === undefined || filter?.projectIds?.includes(p.id) || false} 
                 onChange={(newValue) => {
-                    executeFilterChangeCallback(props, { ...filter, projectIds: newValue ? [p.id]: undefined})
+                    executeFilterChangeCallback(props, { ...filter, projectIds: buildProjectIdsFilter(filter?.projectIds, p.id, newValue) })
                 }}
             />
         )}
@@ -68,5 +69,19 @@ export function TaskFilters(props: TaskFiltersProps) {
 function executeFilterChangeCallback(props: TaskFiltersProps, newFilter: Filter) {
     if(props.onFiltersChanged) {
         props.onFiltersChanged(newFilter)
+    }
+}
+
+function buildProjectIdsFilter(currentProjectIds: number[] | undefined, projectId: number, projectSelected: boolean): number[] | undefined {
+    if(currentProjectIds === undefined) {
+        //all were selected, now one is being unselected
+        if(projectSelected === false) {
+            return []
+        }
+    }
+    if(projectSelected) {
+        return [...(currentProjectIds || []), projectId]
+    } else {
+        return (currentProjectIds || []).filter(x => x !== projectId)
     }
 }
