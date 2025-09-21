@@ -64,7 +64,7 @@ namespace Backend.WebApi.Tests.Controller
                 "now,later", 
                 "", null)] 
                 string? laterFilter,
-            [CombinatorialValues("1", "2", "3", "*","", null)]
+            [CombinatorialValues("1", "2", "3", "2,3", "nonnull", "2,null", "*","", null)]
                 string? projectId,
             [CombinatorialValues(null, "", "12,22", "2,3,4", "*")]
                 string? tagFilter
@@ -75,7 +75,8 @@ namespace Backend.WebApi.Tests.Controller
             itemManager.Setup(im => im.GetItems(It.IsAny<int>(), 
                     It.IsAny<IEnumerable<bool>>(),
                     It.IsAny<IEnumerable<bool>>(),
-                    It.IsAny<IEnumerable<int?>?>(),
+                    It.IsAny<IEnumerable<int>?>(),
+                    It.IsAny<bool>(),
                     It.IsAny<IEnumerable<int>?>()))
                 .Returns(new List<ItemServiceModel>
                 {
@@ -123,17 +124,32 @@ namespace Backend.WebApi.Tests.Controller
                 laterStatuses = laterFilter.Split(",").Select(f => f == "later");
             }
 
-            IEnumerable<int?>? projectIds;
+            IEnumerable<int>? projectIds;
+            bool tasksWithNoProject = false;
             if (projectId == null || projectId == "*")
             {
                 projectIds = null;
+                tasksWithNoProject = true;
             } else if (projectId == "")
             {
-                projectIds = [null];
+                projectIds = [];
+                tasksWithNoProject = false;
             }
             else
             {
-                projectIds = [Convert.ToInt32(projectId)];
+                var tokens = projectId.Split(",");
+                projectIds = tokens
+                    .Where(v => v != "nonnull" && v != "null")
+                    .Select(v => Convert.ToInt32(v))
+                    .ToList();
+                if (tokens.Contains("nonnull"))
+                {
+                    projectIds = null;
+                }
+                if (tokens.Contains("null"))
+                {
+                    tasksWithNoProject = true;
+                }
             }
 
             IEnumerable<int>? tagIds;
@@ -149,7 +165,11 @@ namespace Backend.WebApi.Tests.Controller
                 tagIds = tagFilter.Split(",").Select(t => Convert.ToInt32(t));
             }
             
-            itemManager.Verify(im => im.GetItems(123, completionStatuses, laterStatuses, projectIds, tagIds), Times.Once);
+            itemManager.Verify(im => im.GetItems(123, 
+                completionStatuses, laterStatuses, 
+                projectIds,
+                tasksWithNoProject,
+                tagIds), Times.Once);
             itemManager.VerifyNoOtherCalls();
             
             response.ShouldBeOfType<OkObjectResult>();

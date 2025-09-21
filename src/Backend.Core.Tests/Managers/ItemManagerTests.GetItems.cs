@@ -48,13 +48,13 @@ public partial class ItemManagerTests
             laterStatuses = laterFilter.Split(",").Select(f => f == "later");
         }
 
-        IEnumerable<int?>? projectIds;
+        IEnumerable<int>? projectIds;
         if (projectFilter == null || projectFilter == "*")
         {
             projectIds = null;
         } else if (projectFilter == "")
         {
-            projectIds = [null];
+            projectIds = [];
         }
         else
         {
@@ -99,7 +99,7 @@ public partial class ItemManagerTests
 
         //act
         var items = sut.GetItems(expectedUserId, 
-            completionStatuses, laterStatuses, projectIds, tagIds);
+            completionStatuses, laterStatuses, projectIds, false, tagIds);
 
         //assert
         mockItemRepo.Verify(ir => 

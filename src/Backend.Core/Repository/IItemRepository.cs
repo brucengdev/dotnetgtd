@@ -8,7 +8,7 @@ public interface IItemRepository
     IEnumerable<Item> GetItems(int userId, 
         IEnumerable<bool>? completionStatuses = null,
         IEnumerable<bool>? laterStatuses = null,
-        IEnumerable<int?>? projectIds = null,
+        IEnumerable<int>? projectIds = null,
         IEnumerable<int>? tagIds = null);
     void DeleteItem(int itemId);
     Item? GetItem(int itemId);
