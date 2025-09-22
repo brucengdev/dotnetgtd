@@ -10,7 +10,8 @@ class GetItemsCase
     public int UserId;
     public IEnumerable<bool> CompletionStatuses;
     public IEnumerable<bool> LaterStatuses;
-    public IEnumerable<int?>? ProjectId;
+    public IEnumerable<int>? ProjectId;
+    public bool TasksWithNoProjects = true;
     public int[]? TagIds;
     public IEnumerable<string> ExpectedItemDescriptions;
 
@@ -19,7 +20,7 @@ class GetItemsCase
         return
         [
             UserId, CompletionStatuses, LaterStatuses,
-            ProjectId, TagIds, ExpectedItemDescriptions
+            ProjectId, TasksWithNoProjects, TagIds, ExpectedItemDescriptions
         ];
     }
 }
