@@ -22,7 +22,7 @@ public class ItemRepository: IItemRepository
         IEnumerable<bool>? completionStatuses = null,
         IEnumerable<bool>? laterStatuses = null,
         IEnumerable<int>? projectIds = null,
-        bool tasksWithNoProject = false,
+        bool tasksWithNoProject = true,
         IEnumerable<int>? tagIds = null)
     {
         //eagerly load the item tag mappings
@@ -39,10 +39,15 @@ public class ItemRepository: IItemRepository
             results = results.Where(i => laterStatuses.Contains(i.Later));
         }
 
-        if (projectIds != null)
+        if (projectIds == null)
         {
-            results = results.Where(i => i.ProjectId != null 
-                                         && projectIds.Contains(i.ProjectId.Value));
+            results = results.Where(i => tasksWithNoProject || i.ProjectId != null);
+        }
+        else
+        {
+            results = results.Where(i =>
+                i.ProjectId != null && projectIds.Contains(i.ProjectId.Value)
+            );
         }
 
         if (tagIds != null && tagIds.Any())
