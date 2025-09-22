@@ -50,6 +50,7 @@ public partial class ItemRepositoryTests
         IEnumerable<bool> completionStatuses, 
         IEnumerable<bool> laterStatuses,
         IEnumerable<int>? projectIds, 
+        bool tasksWithNoProjects,
         int[]? tagIds, 
         IEnumerable<string> expectedItemDescriptions)
     {
@@ -58,7 +59,7 @@ public partial class ItemRepositoryTests
 
         //act
         var items = sut.GetItems(userId, completionStatuses, 
-            laterStatuses, projectIds, tagIds);
+            laterStatuses, projectIds, tasksWithNoProjects, tagIds);
 
         //assert
         items.Select(i => i.Description)

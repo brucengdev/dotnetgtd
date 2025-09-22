@@ -55,6 +55,7 @@ public class ItemManager: IItemManager
             completionStatuses,
             laterStatuses,
             projectIds,
+            tasksWithNoProject,
             tagIds);
         return items.Select(i => ItemServiceModel.FromItem(i));
     }

@@ -17,8 +17,10 @@ public partial class ItemManagerTests
         string? completionFilter,
         [CombinatorialValues(null, "*", "", "true,false", "false,true", "true", "false")]
         string? laterFilter,
-        [CombinatorialValues(null, "", "*", "10","2","4")]
+        [CombinatorialValues(null, "", "10","2","4,2")]
         string? projectFilter,
+        [CombinatorialValues(true, false)]
+        bool tasksWithNoProject,
         [CombinatorialValues(null, "", "*", "1", "2", "1,2,3")]
         string? tagIdFilter
         )
@@ -49,7 +51,7 @@ public partial class ItemManagerTests
         }
 
         IEnumerable<int>? projectIds;
-        if (projectFilter == null || projectFilter == "*")
+        if (projectFilter == null)
         {
             projectIds = null;
         } else if (projectFilter == "")
@@ -58,7 +60,7 @@ public partial class ItemManagerTests
         }
         else
         {
-            projectIds = [Convert.ToInt32(projectFilter)];
+            projectIds = projectFilter.Split(",").Select(f => Convert.ToInt32(f));
         }
 
         IEnumerable<int>? tagIds;
@@ -77,7 +79,7 @@ public partial class ItemManagerTests
         var mockItemRepo = new Mock<IItemRepository>();
         mockItemRepo.Setup(ir => ir.GetItems(expectedUserId, 
                 completionStatuses, laterStatuses, 
-                projectIds, tagIds))
+                projectIds, tasksWithNoProject, tagIds))
             .Returns([
                 new()
                 {
@@ -99,12 +101,12 @@ public partial class ItemManagerTests
 
         //act
         var items = sut.GetItems(expectedUserId, 
-            completionStatuses, laterStatuses, projectIds, false, tagIds);
+            completionStatuses, laterStatuses, projectIds, tasksWithNoProject, tagIds);
 
         //assert
         mockItemRepo.Verify(ir => 
             ir.GetItems(expectedUserId, completionStatuses,laterStatuses,
-                projectIds, tagIds), 
+                projectIds, tasksWithNoProject, tagIds), 
             Times.Once);
         mockItemRepo.VerifyNoOtherCalls();
         items.ShouldBe([

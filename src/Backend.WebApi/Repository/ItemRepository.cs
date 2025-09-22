@@ -22,6 +22,7 @@ public class ItemRepository: IItemRepository
         IEnumerable<bool>? completionStatuses = null,
         IEnumerable<bool>? laterStatuses = null,
         IEnumerable<int>? projectIds = null,
+        bool tasksWithNoProject = false,
         IEnumerable<int>? tagIds = null)
     {
         //eagerly load the item tag mappings
