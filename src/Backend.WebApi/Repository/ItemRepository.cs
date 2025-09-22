@@ -46,7 +46,9 @@ public class ItemRepository: IItemRepository
         else
         {
             results = results.Where(i =>
-                i.ProjectId != null && projectIds.Contains(i.ProjectId.Value)
+                (i.ProjectId != null && projectIds.Contains(i.ProjectId.Value))
+                ||( i.ProjectId == null && tasksWithNoProject)
+                || (i.ProjectId != null && !tasksWithNoProject)
             );
         }
 

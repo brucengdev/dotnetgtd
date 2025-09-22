@@ -20,7 +20,7 @@ public partial class ItemRepositoryTests
         {
             new()
             {
-                UserId = 1, ProjectId = null, TasksWithNoProjects = true,
+                UserId = 1, ProjectId = [], TasksWithNoProjects = true,
                 ExpectedItemDescriptions = ["Task C"]
             },
             new()
