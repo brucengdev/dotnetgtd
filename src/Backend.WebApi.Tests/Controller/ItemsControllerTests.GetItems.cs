@@ -79,6 +79,34 @@ namespace Backend.WebApi.Tests.Controller
                 tasksWithNoProject: true);
         }
         
+        [Fact]
+        public void GetItems_must_return_tasks_in_selected_project_list()
+        {
+            TestGetItems(
+                completionFilter: null,
+                laterFilter: null,
+                projectId: "1,null,2",
+                tagFilter: null,
+                completionStatuses: [true, false],
+                laterStatuses: [true, false],
+                projectIds: [1,2],
+                tasksWithNoProject: true);
+        }
+        
+        [Fact]
+        public void GetItems_must_return_all_projects_if_non_null_is_specified()
+        {
+            TestGetItems(
+                completionFilter: null,
+                laterFilter: null,
+                projectId: "null,1,2,nonnull",
+                tagFilter: null,
+                completionStatuses: [true, false],
+                laterStatuses: [true, false],
+                projectIds: null,
+                tasksWithNoProject: true);
+        }
+        
         
         [Theory, CombinatorialData]
         public void GetItems_must_return_items(
