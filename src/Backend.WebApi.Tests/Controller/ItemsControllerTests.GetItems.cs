@@ -54,14 +54,29 @@ namespace Backend.WebApi.Tests.Controller
         [Fact]
         public void GetItems_must_return_all_tasks_that_have_project()
         {
-            TestGetItems(null,
-                null,
-                "nonnull",
-                null,
-                [true, false],
-                [true, false],
-                null,
-                false);
+            TestGetItems(
+                completionFilter: null,
+                laterFilter: null,
+                projectId: "nonnull",
+                tagFilter: null,
+                completionStatuses: [true, false],
+                laterStatuses: [true, false],
+                projectIds: null,
+                tasksWithNoProject: false);
+        }
+        
+        [Fact]
+        public void GetItems_must_return_all_tasks_that_dont_have_project()
+        {
+            TestGetItems(
+                completionFilter: null,
+                laterFilter: null,
+                projectId: "null",
+                tagFilter: null,
+                completionStatuses: [true, false],
+                laterStatuses: [true, false],
+                projectIds: [],
+                tasksWithNoProject: true);
         }
         
         
