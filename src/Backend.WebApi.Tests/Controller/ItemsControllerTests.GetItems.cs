@@ -94,12 +94,26 @@ namespace Backend.WebApi.Tests.Controller
         }
         
         [Fact]
-        public void GetItems_must_return_all_projects_if_non_null_is_specified()
+        public void GetItems_must_return_tasks_from_all_projects_if_non_null_is_specified()
         {
             TestGetItems(
                 completionFilter: null,
                 laterFilter: null,
-                projectId: "null,1,2,nonnull",
+                projectId: "1,2,nonnull",
+                tagFilter: null,
+                completionStatuses: [true, false],
+                laterStatuses: [true, false],
+                projectIds: null,
+                tasksWithNoProject: false);
+        }
+        
+        [Fact]
+        public void GetItems_must_return_all_tasks_if_both_null_and_nonnull_is_specified()
+        {
+            TestGetItems(
+                completionFilter: null,
+                laterFilter: null,
+                projectId: "1,null,2,nonnull",
                 tagFilter: null,
                 completionStatuses: [true, false],
                 laterStatuses: [true, false],
