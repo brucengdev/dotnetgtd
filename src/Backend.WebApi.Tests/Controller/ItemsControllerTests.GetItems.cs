@@ -70,36 +70,6 @@ namespace Backend.WebApi.Tests.Controller
                 string? tagFilter
             )
         {
-            //arrange
-            var itemManager = new Mock<IItemManager>();
-            itemManager.Setup(im => im.GetItems(It.IsAny<int>(), 
-                    It.IsAny<IEnumerable<bool>>(),
-                    It.IsAny<IEnumerable<bool>>(),
-                    It.IsAny<IEnumerable<int>?>(),
-                    It.IsAny<bool>(),
-                    It.IsAny<IEnumerable<int>?>()))
-                .Returns(new List<ItemServiceModel>
-                {
-                    new () 
-                    {
-                        Id=1, Description = "Task A", UserId = 123, ProjectId = 1, 
-                        Done = true, Later = false 
-                    },
-                    new ()
-                    {
-                        Id=2, Description = "Task B", UserId = 123, ProjectId = 2,
-                        Done = false, Later = true 
-                    }
-                });
-            var sut = new ItemsController(itemManager.Object);
-            sut.ControllerContext = new ControllerContext();
-            sut.ControllerContext.HttpContext = new DefaultHttpContext();
-            sut.HttpContext.Items["UserId"] = 123;
-            
-            //act
-            var response = sut.GetItems(completionFilter, laterFilter, projectId, tagFilter);
-        
-            //assert
             IEnumerable<bool> completionStatuses;
             if (completionFilter == null || completionFilter == "*")
             {
@@ -152,6 +122,19 @@ namespace Backend.WebApi.Tests.Controller
                 }
             }
 
+            TestGetItems(completionFilter, laterFilter, projectId, tagFilter, completionStatuses, laterStatuses, projectIds, tasksWithNoProject);
+        }
+
+        private static void TestGetItems(
+            string? completionFilter, 
+            string? laterFilter, 
+            string? projectId, 
+            string? tagFilter,
+            IEnumerable<bool> completionStatuses, 
+            IEnumerable<bool> laterStatuses, 
+            IEnumerable<int>? projectIds, 
+            bool tasksWithNoProject)
+        {
             IEnumerable<int>? tagIds;
             if (tagFilter == null || tagFilter == "*")
             {
@@ -165,6 +148,36 @@ namespace Backend.WebApi.Tests.Controller
                 tagIds = tagFilter.Split(",").Select(t => Convert.ToInt32(t));
             }
             
+            //arrange
+            var itemManager = new Mock<IItemManager>();
+            itemManager.Setup(im => im.GetItems(It.IsAny<int>(), 
+                    It.IsAny<IEnumerable<bool>>(),
+                    It.IsAny<IEnumerable<bool>>(),
+                    It.IsAny<IEnumerable<int>?>(),
+                    It.IsAny<bool>(),
+                    It.IsAny<IEnumerable<int>?>()))
+                .Returns(new List<ItemServiceModel>
+                {
+                    new () 
+                    {
+                        Id=1, Description = "Task A", UserId = 123, ProjectId = 1, 
+                        Done = true, Later = false 
+                    },
+                    new ()
+                    {
+                        Id=2, Description = "Task B", UserId = 123, ProjectId = 2,
+                        Done = false, Later = true 
+                    }
+                });
+            var sut = new ItemsController(itemManager.Object);
+            sut.ControllerContext = new ControllerContext();
+            sut.ControllerContext.HttpContext = new DefaultHttpContext();
+            sut.HttpContext.Items["UserId"] = 123;
+            
+            //act
+            var response = sut.GetItems(completionFilter, laterFilter, projectId, tagFilter);
+        
+            //assert
             itemManager.Verify(im => im.GetItems(123, 
                 completionStatuses, laterStatuses, 
                 projectIds,
@@ -174,7 +187,7 @@ namespace Backend.WebApi.Tests.Controller
             
             response.ShouldBeOfType<OkObjectResult>();
             var result = response as OkObjectResult;
-            result?.StatusCode.ShouldBe((int)HttpStatusCode.OK);
+            result?.StatusCode?.ShouldBe<int>((int)HttpStatusCode.OK);
             result?.Value.ShouldBe(new List<ItemServiceModel>
             {
                 new ()
