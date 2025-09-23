@@ -43,13 +43,15 @@ public partial class ItemRepositoryTests
         int userId,
         IEnumerable<bool> completionStatuses,
         IEnumerable<bool> laterStatuses,
-        IEnumerable<int?>? projectIds,
+        IEnumerable<int>? projectIds,
+        bool tasksWithNoProjects,
         int[]? tagIds,
         IEnumerable<string> expectedItemDescriptions)
     {
         var dbContext = CreateTestDB(UserIdTestData());
         ExecuteGetItemTests(dbContext, 
             userId, completionStatuses, laterStatuses, 
-            projectIds, tagIds, expectedItemDescriptions);
+            projectIds, tasksWithNoProjects, 
+            tagIds, expectedItemDescriptions);
     }
 }

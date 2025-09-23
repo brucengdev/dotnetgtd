@@ -54,17 +54,32 @@ namespace Backend.WebApi.Controllers
                 laterStatuses = later.Split(",").Select(f => f == "later");
             }
 
-            IEnumerable<int?>? projectIdValues;
+            IEnumerable<int>? projectIds;
+            bool tasksWithNoProject = false;
             if (projectId == null || projectId == "*")
             {
-                projectIdValues = null;
+                projectIds = null;
+                tasksWithNoProject = true;
             } else if (projectId == "")
             {
-                projectIdValues = [null];
+                projectIds = [];
+                tasksWithNoProject = false;
             }
             else
             {
-                projectIdValues = [Convert.ToInt32(projectId)];
+                var tokens = projectId.Split(",");
+                projectIds = tokens
+                    .Where(v => v != "nonnull" && v != "null")
+                    .Select(v => Convert.ToInt32(v))
+                    .ToList();
+                if (tokens.Contains("nonnull"))
+                {
+                    projectIds = null;
+                }
+                if (tokens.Contains("null"))
+                {
+                    tasksWithNoProject = true;
+                }
             }
 
             IEnumerable<int>? tagIdValues;
@@ -79,8 +94,10 @@ namespace Backend.WebApi.Controllers
             {
                 tagIdValues = tagIds.Split(",").Select(t => Convert.ToInt32(t));
             }
-            return Ok(_itemManager.GetItems(userId, completionStatuses, laterStatuses, 
-                projectIdValues, tagIdValues));
+
+            var items = _itemManager.GetItems(userId, completionStatuses, laterStatuses,
+                projectIds, tasksWithNoProject, tagIdValues);
+            return Ok(items);
         }
 
         [HttpDelete("[action]")]

@@ -50,6 +50,77 @@ namespace Backend.WebApi.Tests.Controller
             tagIdsArg.ParameterType.ShouldBe(typeof(string));
             Utils.ShouldBeNullable(tagIdsArg);
         }
+
+        [Fact]
+        public void GetItems_must_return_all_tasks_that_have_project()
+        {
+            TestGetItems(
+                completionFilter: null,
+                laterFilter: null,
+                projectId: "nonnull",
+                tagFilter: null,
+                completionStatuses: [true, false],
+                laterStatuses: [true, false],
+                projectIds: null,
+                tasksWithNoProject: false);
+        }
+        
+        [Fact]
+        public void GetItems_must_return_all_tasks_that_dont_have_project()
+        {
+            TestGetItems(
+                completionFilter: null,
+                laterFilter: null,
+                projectId: "null",
+                tagFilter: null,
+                completionStatuses: [true, false],
+                laterStatuses: [true, false],
+                projectIds: [],
+                tasksWithNoProject: true);
+        }
+        
+        [Fact]
+        public void GetItems_must_return_tasks_in_selected_project_list()
+        {
+            TestGetItems(
+                completionFilter: null,
+                laterFilter: null,
+                projectId: "1,null,2",
+                tagFilter: null,
+                completionStatuses: [true, false],
+                laterStatuses: [true, false],
+                projectIds: [1,2],
+                tasksWithNoProject: true);
+        }
+        
+        [Fact]
+        public void GetItems_must_return_tasks_from_all_projects_if_non_null_is_specified()
+        {
+            TestGetItems(
+                completionFilter: null,
+                laterFilter: null,
+                projectId: "1,2,nonnull",
+                tagFilter: null,
+                completionStatuses: [true, false],
+                laterStatuses: [true, false],
+                projectIds: null,
+                tasksWithNoProject: false);
+        }
+        
+        [Fact]
+        public void GetItems_must_return_all_tasks_if_both_null_and_nonnull_is_specified()
+        {
+            TestGetItems(
+                completionFilter: null,
+                laterFilter: null,
+                projectId: "1,null,2,nonnull",
+                tagFilter: null,
+                completionStatuses: [true, false],
+                laterStatuses: [true, false],
+                projectIds: null,
+                tasksWithNoProject: true);
+        }
+        
         
         [Theory, CombinatorialData]
         public void GetItems_must_return_items(
@@ -64,41 +135,12 @@ namespace Backend.WebApi.Tests.Controller
                 "now,later", 
                 "", null)] 
                 string? laterFilter,
-            [CombinatorialValues("1", "2", "3", "*","", null)]
+            [CombinatorialValues("1", "2", "3", "2,3", "nonnull", "2,null", "*","", null)]
                 string? projectId,
             [CombinatorialValues(null, "", "12,22", "2,3,4", "*")]
                 string? tagFilter
             )
         {
-            //arrange
-            var itemManager = new Mock<IItemManager>();
-            itemManager.Setup(im => im.GetItems(It.IsAny<int>(), 
-                    It.IsAny<IEnumerable<bool>>(),
-                    It.IsAny<IEnumerable<bool>>(),
-                    It.IsAny<IEnumerable<int?>?>(),
-                    It.IsAny<IEnumerable<int>?>()))
-                .Returns(new List<ItemServiceModel>
-                {
-                    new () 
-                    {
-                        Id=1, Description = "Task A", UserId = 123, ProjectId = 1, 
-                        Done = true, Later = false 
-                    },
-                    new ()
-                    {
-                        Id=2, Description = "Task B", UserId = 123, ProjectId = 2,
-                        Done = false, Later = true 
-                    }
-                });
-            var sut = new ItemsController(itemManager.Object);
-            sut.ControllerContext = new ControllerContext();
-            sut.ControllerContext.HttpContext = new DefaultHttpContext();
-            sut.HttpContext.Items["UserId"] = 123;
-            
-            //act
-            var response = sut.GetItems(completionFilter, laterFilter, projectId, tagFilter);
-        
-            //assert
             IEnumerable<bool> completionStatuses;
             if (completionFilter == null || completionFilter == "*")
             {
@@ -123,19 +165,47 @@ namespace Backend.WebApi.Tests.Controller
                 laterStatuses = laterFilter.Split(",").Select(f => f == "later");
             }
 
-            IEnumerable<int?>? projectIds;
+            IEnumerable<int>? projectIds;
+            bool tasksWithNoProject = false;
             if (projectId == null || projectId == "*")
             {
                 projectIds = null;
+                tasksWithNoProject = true;
             } else if (projectId == "")
             {
-                projectIds = [null];
+                projectIds = [];
+                tasksWithNoProject = false;
             }
             else
             {
-                projectIds = [Convert.ToInt32(projectId)];
+                var tokens = projectId.Split(",");
+                projectIds = tokens
+                    .Where(v => v != "nonnull" && v != "null")
+                    .Select(v => Convert.ToInt32(v))
+                    .ToList();
+                if (tokens.Contains("nonnull"))
+                {
+                    projectIds = null;
+                }
+                if (tokens.Contains("null"))
+                {
+                    tasksWithNoProject = true;
+                }
             }
 
+            TestGetItems(completionFilter, laterFilter, projectId, tagFilter, completionStatuses, laterStatuses, projectIds, tasksWithNoProject);
+        }
+
+        private static void TestGetItems(
+            string? completionFilter, 
+            string? laterFilter, 
+            string? projectId, 
+            string? tagFilter,
+            IEnumerable<bool> completionStatuses, 
+            IEnumerable<bool> laterStatuses, 
+            IEnumerable<int>? projectIds, 
+            bool tasksWithNoProject)
+        {
             IEnumerable<int>? tagIds;
             if (tagFilter == null || tagFilter == "*")
             {
@@ -149,12 +219,46 @@ namespace Backend.WebApi.Tests.Controller
                 tagIds = tagFilter.Split(",").Select(t => Convert.ToInt32(t));
             }
             
-            itemManager.Verify(im => im.GetItems(123, completionStatuses, laterStatuses, projectIds, tagIds), Times.Once);
+            //arrange
+            var itemManager = new Mock<IItemManager>();
+            itemManager.Setup(im => im.GetItems(It.IsAny<int>(), 
+                    It.IsAny<IEnumerable<bool>>(),
+                    It.IsAny<IEnumerable<bool>>(),
+                    It.IsAny<IEnumerable<int>?>(),
+                    It.IsAny<bool>(),
+                    It.IsAny<IEnumerable<int>?>()))
+                .Returns(new List<ItemServiceModel>
+                {
+                    new () 
+                    {
+                        Id=1, Description = "Task A", UserId = 123, ProjectId = 1, 
+                        Done = true, Later = false 
+                    },
+                    new ()
+                    {
+                        Id=2, Description = "Task B", UserId = 123, ProjectId = 2,
+                        Done = false, Later = true 
+                    }
+                });
+            var sut = new ItemsController(itemManager.Object);
+            sut.ControllerContext = new ControllerContext();
+            sut.ControllerContext.HttpContext = new DefaultHttpContext();
+            sut.HttpContext.Items["UserId"] = 123;
+            
+            //act
+            var response = sut.GetItems(completionFilter, laterFilter, projectId, tagFilter);
+        
+            //assert
+            itemManager.Verify(im => im.GetItems(123, 
+                completionStatuses, laterStatuses, 
+                projectIds,
+                tasksWithNoProject,
+                tagIds), Times.Once);
             itemManager.VerifyNoOtherCalls();
             
             response.ShouldBeOfType<OkObjectResult>();
             var result = response as OkObjectResult;
-            result?.StatusCode.ShouldBe((int)HttpStatusCode.OK);
+            result?.StatusCode?.ShouldBe<int>((int)HttpStatusCode.OK);
             result?.Value.ShouldBe(new List<ItemServiceModel>
             {
                 new ()
