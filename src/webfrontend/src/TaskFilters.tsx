@@ -32,7 +32,7 @@ export function TaskFilters(props: TaskFiltersProps) {
 
     function buildProjectIdsFilter(projectId: number, projectSelected: boolean)
         : string[] | undefined {
-        if(filter?.projectIds === undefined) {
+        if(filter?.projectIds === undefined || filter?.projectIds?.includes("nonnull")) {
             //all were selected, now one is being unselected
             if(projectSelected === true) {
                 return [projectId.toString()]
@@ -77,7 +77,8 @@ export function TaskFilters(props: TaskFiltersProps) {
             onChange={newValue => {
                 executeFilterChangeCallback(props, { ...filter, projectIds: newValue ? undefined : [] })
             }} />
-        <CheckBox label="No project" checked={filter?.projectIds?.includes("null") ?? false} 
+        <CheckBox label="No project" checked={filter?.projectIds?.includes("null") 
+            || false } 
             onChange={(newValue) => 
                 executeFilterChangeCallback(props, { ...filter, projectIds: newValue ? ["null"] : [] })}
         />
