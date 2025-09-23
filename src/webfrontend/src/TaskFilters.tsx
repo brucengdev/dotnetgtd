@@ -40,6 +40,7 @@ export function TaskFilters(props: TaskFiltersProps) {
         }
         if(projectSelected) {
             let result = [...(filter?.projectIds || []), projectId.toString()]
+                .filter(pId => pId !== "null" && pId !== "nonnull")
             if(result.length === (projects?.length ?? 0))//all projects are selected
             {
                 return ["nonnull"]
