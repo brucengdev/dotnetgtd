@@ -50,6 +50,20 @@ namespace Backend.WebApi.Tests.Controller
             tagIdsArg.ParameterType.ShouldBe(typeof(string));
             Utils.ShouldBeNullable(tagIdsArg);
         }
+
+        [Fact]
+        public void GetItems_must_return_all_tasks_that_have_project()
+        {
+            TestGetItems(null,
+                null,
+                "nonnull",
+                null,
+                [true, false],
+                [true, false],
+                null,
+                false);
+        }
+        
         
         [Theory, CombinatorialData]
         public void GetItems_must_return_items(
