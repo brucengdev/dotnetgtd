@@ -80,8 +80,12 @@ describe("TaskView", () => {
 
         await sleep(1)
 
+        expect(screen.getByRole("checkbox", { name: "No project"})).toBeChecked()
+
         screen.getByRole("checkbox", { name: "All projects"}).click()
+        await sleep(1)
         screen.getByRole("checkbox", { name: "Project 1"}).click()
+        await sleep(1)
         screen.getByRole("checkbox", { name: "No project"}).click()
 
         await sleep(1)
