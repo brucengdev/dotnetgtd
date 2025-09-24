@@ -160,5 +160,46 @@ describe("TaskFilters views", () => {
                 projectIds: ["nonnull"]
             })
         })
+
+        it("deselect all projects when all project filter is unchecked.", async() => {
+            await setupTest({ projectIds: ["nonnull"] })
+            const allProjectsCheckbox = screen.getByRole("checkbox", {name: "All projects"})
+            expect(allProjectsCheckbox).toBeChecked()
+
+            allProjectsCheckbox.click()
+
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                projectIds: []
+            })
+        })
+
+        it("still select other filters when all project filter is unchecked. 1", async() => {
+            await setupTest({ projectIds: ["nonnull", "null"] })
+            const allProjectsCheckbox = screen.getByRole("checkbox", {name: "All projects"})
+            expect(allProjectsCheckbox).toBeChecked()
+            expect(screen.getByRole("checkbox", {name: "No project"})).toBeChecked()
+
+            allProjectsCheckbox.click()
+
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                projectIds: ["null"]
+            })
+        })
+
+        it("still select other filters when all project filter is unchecked. 2", async() => {
+            await setupTest({ projectIds: ["null", "nonnull", "1", "2"] })
+            const allProjectsCheckbox = screen.getByRole("checkbox", {name: "All projects"})
+            expect(allProjectsCheckbox).toBeChecked()
+            expect(screen.getByRole("checkbox", {name: "No project"})).toBeChecked()
+            
+            allProjectsCheckbox.click()
+
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                projectIds: ["null"]
+            })
+        })
     })
 })
