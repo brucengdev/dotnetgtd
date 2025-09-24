@@ -108,7 +108,7 @@ describe("TaskFilters views", () => {
             allProjectsCheckbox.click()
             expect(fn).toHaveBeenCalled()
             expect(changedFilters).toEqual({
-                projectIds: undefined
+                projectIds: ["nonnull"]
             })
         })
 

@@ -3,6 +3,7 @@ import { IClient } from "./api/Client"
 import { Project } from "./models/Project"
 import { Tag } from "./models/Tag"
 import { CheckBox } from "./controls/CheckBox"
+import { isAnIntId } from "./utils"
 
 export interface Filter {
     completed?: boolean
@@ -76,7 +77,12 @@ export function TaskFilters(props: TaskFiltersProps) {
                 || filter?.projectIds?.includes("nonnull")
             }
             onChange={newValue => {
-                executeFilterChangeCallback(props, { ...filter, projectIds: newValue ? undefined : [] })
+                let newProjectIds = [...filter?.projectIds??[]]
+                if(newValue) {
+                    newProjectIds.push("nonnull")
+                    newProjectIds = newProjectIds.filter(pId => !isAnIntId(pId))
+                }
+                executeFilterChangeCallback(props, { ...filter, projectIds: newProjectIds})
             }} />
         <CheckBox label="No project" checked={filter?.projectIds?.includes("null") 
             || false } 
