@@ -81,6 +81,9 @@ export function TaskFilters(props: TaskFiltersProps) {
                 if(newValue) {
                     newProjectIds.push("nonnull")
                     newProjectIds = newProjectIds.filter(pId => !isAnIntId(pId))
+                } else {
+                    //remove all project filters accept "null" (for tasks with no project)
+                    newProjectIds = newProjectIds.filter(pId => pId !== "nonnull" && !isAnIntId(pId))
                 }
                 executeFilterChangeCallback(props, { ...filter, projectIds: newProjectIds})
             }} />
