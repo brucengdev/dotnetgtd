@@ -41,10 +41,11 @@ export function TaskFilters(props: TaskFiltersProps) {
         }
         if(projectSelected) {
             let result = [...(filter?.projectIds || []), projectId.toString()]
-                .filter(pId => pId !== "null" && pId !== "nonnull")
-            if(result.length === (projects?.length ?? 0))//all projects are selected
+                .filter(pId => pId !== "nonnull")
+            const numberOfProjects = result.filter(pId => isAnIntId(pId)).length
+            if(numberOfProjects === (projects?.length ?? 0))//all projects are selected
             {
-                return ["nonnull"]
+                result = result.filter(pId => !isAnIntId(pId)).concat("nonnull")
             }
             return result
         } else {
