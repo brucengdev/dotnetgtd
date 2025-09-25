@@ -204,8 +204,8 @@ function buildLaterFilter(active: boolean | undefined, inactive: boolean | undef
 }
 
 function buildProjectIdFilter(filter: Filter): string {
-    const { projectIds, tasksInNoProject } = filter
+    const { projectIds } = filter
     if(projectIds === undefined) { return "*" }
-    return projectIds.join(",") + (tasksInNoProject ? ",null" : "")
+    return projectIds.join(",")
 }
 

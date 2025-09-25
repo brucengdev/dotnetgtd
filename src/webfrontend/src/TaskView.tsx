@@ -16,7 +16,7 @@ export interface TaskViewProps {
 const defaultFilter: Filter = {
   active: true,
   uncompleted: true,
-  tasksInNoProject: true
+  projectIds: ["nonnull", "null"]
 }
 
 export function TaskView(props: TaskViewProps) {
@@ -41,8 +41,8 @@ export function TaskView(props: TaskViewProps) {
     return <div data-testid="task-view" className="row-auto">
       <TaskFilters client={client} filter={filter}
         onFiltersChanged={filter => {
-          setItems(undefined) //to reload
           setFilter(filter)
+          setItems(undefined) //to reload
         }}
       />
       <div className="mx-auto max-w-2xl text-center">

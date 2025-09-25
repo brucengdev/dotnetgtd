@@ -62,7 +62,13 @@ export class TestClient implements IClient {
         if(filter.projectIds.length === 0 && i.projectId === undefined) {
             return true
         }
-        if(i.projectId !== undefined && filter.projectIds.includes(i.projectId)) {
+        if(i.projectId !== undefined && filter.projectIds.includes(i.projectId.toString())) {
+            return true
+        }
+        if(i.projectId === undefined && filter.projectIds.includes("null")) {
+            return true
+        }
+        if(i.projectId !== undefined && filter.projectIds.includes("nonnull")) {
             return true
         }
         return false

@@ -41,3 +41,5 @@ export function areSame<T extends Comparable<T>>(first: T[], second: T[]): boole
 
     return true
 }
+
+export const isAnIntId = (id: string) => !isNaN(Number(id))
