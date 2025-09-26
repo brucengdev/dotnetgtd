@@ -63,7 +63,8 @@ namespace Backend.WebApi.Tests.Controller
                 laterStatuses: [true, false],
                 projectIds: null,
                 tasksWithNoProject: false,
-                tagIds: null);
+                tagIds: null,
+                tasksWithNoTags: true);
         }
         
         [Fact]
@@ -78,7 +79,8 @@ namespace Backend.WebApi.Tests.Controller
                 laterStatuses: [true, false],
                 projectIds: [],
                 tasksWithNoProject: true,
-                tagIds: null);
+                tagIds: null,
+                tasksWithNoTags: true);
         }
         
         [Fact]
@@ -93,7 +95,8 @@ namespace Backend.WebApi.Tests.Controller
                 laterStatuses: [true, false],
                 projectIds: [1,2],
                 tasksWithNoProject: true,
-                tagIds: null);
+                tagIds: null,
+                tasksWithNoTags: true);
         }
         
         [Fact]
@@ -108,7 +111,8 @@ namespace Backend.WebApi.Tests.Controller
                 laterStatuses: [true, false],
                 projectIds: null,
                 tasksWithNoProject: false,
-                tagIds: null);
+                tagIds: null,
+                tasksWithNoTags: true);
         }
         
         [Fact]
@@ -123,7 +127,8 @@ namespace Backend.WebApi.Tests.Controller
                 laterStatuses: [true, false],
                 projectIds: null,
                 tasksWithNoProject: true,
-                tagIds: null);
+                tagIds: null,
+                tasksWithNoTags: true);
         }
         
         
@@ -199,24 +204,34 @@ namespace Backend.WebApi.Tests.Controller
             }
             
             IEnumerable<int>? tagIds;
+            bool tasksWithNoTags = true;
             if (tagFilter == null || tagFilter == "*")
             {
                 tagIds = null;
+                tasksWithNoTags = true;
             } else if (tagFilter == "")
             {
                 tagIds = [];
+                tasksWithNoTags = false;
             }
             else
             {
-                tagIds = tagFilter.Split(",")
+                var tagFilters = tagFilter.Split(",");
+                tagIds = tagFilters
                     .Where(t => t != "null" && t != "nonnull")
                     .Select(t => Convert.ToInt32(t));
+                if (tagFilters.Contains("nonnull"))
+                {
+                    tagIds = null;
+                }
+
+                tasksWithNoTags = tagFilters.Contains("null");
             }
 
             TestGetItems(completionFilter, laterFilter, projectId, tagFilter, 
                 completionStatuses, laterStatuses, 
                 projectIds, tasksWithNoProject,
-                tagIds);
+                tagIds, tasksWithNoTags);
         }
 
         private static void TestGetItems(
@@ -228,7 +243,8 @@ namespace Backend.WebApi.Tests.Controller
             IEnumerable<bool> laterStatuses, 
             IEnumerable<int>? projectIds, 
             bool tasksWithNoProject,
-            IEnumerable<int>? tagIds)
+            IEnumerable<int>? tagIds,
+            bool tasksWithNoTags)
         {
             
             //arrange
@@ -238,7 +254,8 @@ namespace Backend.WebApi.Tests.Controller
                     It.IsAny<IEnumerable<bool>>(),
                     It.IsAny<IEnumerable<int>?>(),
                     It.IsAny<bool>(),
-                    It.IsAny<IEnumerable<int>?>()))
+                    It.IsAny<IEnumerable<int>?>(),
+                    It.IsAny<bool>()))
                 .Returns(new List<ItemServiceModel>
                 {
                     new () 
@@ -263,9 +280,8 @@ namespace Backend.WebApi.Tests.Controller
             //assert
             itemManager.Verify(im => im.GetItems(123, 
                 completionStatuses, laterStatuses, 
-                projectIds,
-                tasksWithNoProject,
-                tagIds), Times.Once);
+                projectIds, tasksWithNoProject,
+                tagIds, tasksWithNoTags), Times.Once);
             itemManager.VerifyNoOtherCalls();
             
             response.ShouldBeOfType<OkObjectResult>();

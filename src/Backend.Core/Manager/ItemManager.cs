@@ -48,7 +48,8 @@ public class ItemManager: IItemManager
         IEnumerable<bool> laterStatuses,
         IEnumerable<int>? projectIds,
         bool tasksWithNoProject,
-        IEnumerable<int>? tagIds = null)
+        IEnumerable<int>? tagIds = null,
+        bool tasksWithNoTags = true)
     {
         var items = _itemRepo.GetItems(
             userId, 
