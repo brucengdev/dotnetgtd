@@ -92,5 +92,21 @@ namespace Backend.WebApi.Tests.Controller
                 tagIds: null,
                 tasksWithNoTags: true);
         }
+        
+        [Fact]
+        public void GetItems_must_return_no_tasks_if_project_filter_is_empty()
+        {
+            TestGetItems(
+                completionFilter: null,
+                laterFilter: null,
+                projectId: "",
+                tagFilter: null,
+                completionStatuses: [true, false],
+                laterStatuses: [true, false],
+                projectIds: [],
+                tasksWithNoProject: false,
+                tagIds: null,
+                tasksWithNoTags: true);
+        }
     }
 }
