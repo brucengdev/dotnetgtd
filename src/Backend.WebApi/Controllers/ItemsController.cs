@@ -90,6 +90,7 @@ namespace Backend.WebApi.Controllers
             } else if (tagIds == "")
             {
                 tagIdValues = [];
+                tasksWithNoTags = false;
             }
             else
             {
