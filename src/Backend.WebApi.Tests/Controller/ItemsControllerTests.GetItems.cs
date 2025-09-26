@@ -62,7 +62,8 @@ namespace Backend.WebApi.Tests.Controller
                 completionStatuses: [true, false],
                 laterStatuses: [true, false],
                 projectIds: null,
-                tasksWithNoProject: false);
+                tasksWithNoProject: false,
+                tagIds: null);
         }
         
         [Fact]
@@ -76,7 +77,8 @@ namespace Backend.WebApi.Tests.Controller
                 completionStatuses: [true, false],
                 laterStatuses: [true, false],
                 projectIds: [],
-                tasksWithNoProject: true);
+                tasksWithNoProject: true,
+                tagIds: null);
         }
         
         [Fact]
@@ -90,7 +92,8 @@ namespace Backend.WebApi.Tests.Controller
                 completionStatuses: [true, false],
                 laterStatuses: [true, false],
                 projectIds: [1,2],
-                tasksWithNoProject: true);
+                tasksWithNoProject: true,
+                tagIds: null);
         }
         
         [Fact]
@@ -104,7 +107,8 @@ namespace Backend.WebApi.Tests.Controller
                 completionStatuses: [true, false],
                 laterStatuses: [true, false],
                 projectIds: null,
-                tasksWithNoProject: false);
+                tasksWithNoProject: false,
+                tagIds: null);
         }
         
         [Fact]
@@ -118,7 +122,8 @@ namespace Backend.WebApi.Tests.Controller
                 completionStatuses: [true, false],
                 laterStatuses: [true, false],
                 projectIds: null,
-                tasksWithNoProject: true);
+                tasksWithNoProject: true,
+                tagIds: null);
         }
         
         
@@ -192,21 +197,7 @@ namespace Backend.WebApi.Tests.Controller
                     tasksWithNoProject = true;
                 }
             }
-
-            TestGetItems(completionFilter, laterFilter, projectId, tagFilter, 
-                completionStatuses, laterStatuses, projectIds, tasksWithNoProject);
-        }
-
-        private static void TestGetItems(
-            string? completionFilter, 
-            string? laterFilter, 
-            string? projectId, 
-            string? tagFilter,
-            IEnumerable<bool> completionStatuses, 
-            IEnumerable<bool> laterStatuses, 
-            IEnumerable<int>? projectIds, 
-            bool tasksWithNoProject)
-        {
+            
             IEnumerable<int>? tagIds;
             if (tagFilter == null || tagFilter == "*")
             {
@@ -221,6 +212,24 @@ namespace Backend.WebApi.Tests.Controller
                     .Where(t => t != "null" && t != "nonnull")
                     .Select(t => Convert.ToInt32(t));
             }
+
+            TestGetItems(completionFilter, laterFilter, projectId, tagFilter, 
+                completionStatuses, laterStatuses, 
+                projectIds, tasksWithNoProject,
+                tagIds);
+        }
+
+        private static void TestGetItems(
+            string? completionFilter, 
+            string? laterFilter, 
+            string? projectId, 
+            string? tagFilter,
+            IEnumerable<bool> completionStatuses, 
+            IEnumerable<bool> laterStatuses, 
+            IEnumerable<int>? projectIds, 
+            bool tasksWithNoProject,
+            IEnumerable<int>? tagIds)
+        {
             
             //arrange
             var itemManager = new Mock<IItemManager>();
