@@ -92,7 +92,9 @@ namespace Backend.WebApi.Controllers
             }
             else
             {
-                tagIdValues = tagIds.Split(",").Select(t => Convert.ToInt32(t));
+                tagIdValues = tagIds.Split(",")
+                    .Where(t => t != "null" && t != "nonnull")
+                    .Select(t => Convert.ToInt32(t));
             }
 
             var items = _itemManager.GetItems(userId, completionStatuses, laterStatuses,

@@ -137,7 +137,7 @@ namespace Backend.WebApi.Tests.Controller
                 string? laterFilter,
             [CombinatorialValues("1", "2", "3", "2,3", "nonnull", "2,null", "*","", null)]
                 string? projectId,
-            [CombinatorialValues(null, "", "12,22", "2,3,4", "*")]
+            [CombinatorialValues(null, "", "2,3,null", "nonnull", "*")]
                 string? tagFilter
             )
         {
@@ -193,7 +193,8 @@ namespace Backend.WebApi.Tests.Controller
                 }
             }
 
-            TestGetItems(completionFilter, laterFilter, projectId, tagFilter, completionStatuses, laterStatuses, projectIds, tasksWithNoProject);
+            TestGetItems(completionFilter, laterFilter, projectId, tagFilter, 
+                completionStatuses, laterStatuses, projectIds, tasksWithNoProject);
         }
 
         private static void TestGetItems(
@@ -216,7 +217,9 @@ namespace Backend.WebApi.Tests.Controller
             }
             else
             {
-                tagIds = tagFilter.Split(",").Select(t => Convert.ToInt32(t));
+                tagIds = tagFilter.Split(",")
+                    .Where(t => t != "null" && t != "nonnull")
+                    .Select(t => Convert.ToInt32(t));
             }
             
             //arrange
