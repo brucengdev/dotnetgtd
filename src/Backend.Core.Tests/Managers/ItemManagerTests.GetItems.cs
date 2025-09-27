@@ -9,8 +9,41 @@ namespace Backend.Core.Tests;
 
 public partial class ItemManagerTests
 {
-    [Theory(Skip = "Takes too long to run"), CombinatorialData]
+    [Theory]
+    //completion filter
+    [InlineData(1, null, null, null, true, null)]
+    [InlineData(1, "", null, null, true, null)]
+    [InlineData(1, "*", null, null, true, null)]
+    [InlineData(1, "true", null, null, true, null)]
+    [InlineData(1, "false", null, null, true, null)]
+    [InlineData(1, "true,false", null, null, true, null)]
+    
+    //laterFilter
+    [InlineData(1, null, "", null, true, null)]
+    [InlineData(1, null, "*", null, true, null)]
+    [InlineData(1, null, "true", null, true, null)]
+    [InlineData(1, null, "false", null, true, null)]
+    [InlineData(1, null, "true,false", null, true, null)]
+    
+    //project filter
+    [InlineData(1, null, null, "1", true, null)]
+    [InlineData(1, null, null, "1", false, null)]
+    [InlineData(1, null, null, "2,3", true, null)]
+    [InlineData(1, null, null, "*", true, null)]
     public void GetItems_is_successful(
+        int expectedUserId, 
+        string? completionFilter,
+        string? laterFilter,
+        string? projectFilter,
+        bool tasksWithNoProject,
+        string? tagIdFilter
+        )
+    {
+        TestGetItems(expectedUserId, completionFilter, laterFilter, projectFilter, tasksWithNoProject, tagIdFilter);
+    }
+    
+    [Theory(Skip = "Takes too long to run"), CombinatorialData]
+    public void GetItems_is_successful_exhaustive(
         [CombinatorialValues(1,2,3)]
         int expectedUserId, 
         [CombinatorialValues(null, "*", "", "true,false", "false,true", "true", "false")]
@@ -24,6 +57,12 @@ public partial class ItemManagerTests
         [CombinatorialValues(null, "", "*", "1", "2", "1,2,3")]
         string? tagIdFilter
         )
+    {
+        TestGetItems(expectedUserId, completionFilter, laterFilter, projectFilter, tasksWithNoProject, tagIdFilter);
+    }
+
+    private static void TestGetItems(int expectedUserId, string? completionFilter, string? laterFilter,
+        string? projectFilter, bool tasksWithNoProject, string? tagIdFilter)
     {
         //arrange
         IEnumerable<bool> completionStatuses;
@@ -105,8 +144,8 @@ public partial class ItemManagerTests
 
         //assert
         mockItemRepo.Verify(ir => 
-            ir.GetItems(expectedUserId, completionStatuses,laterStatuses,
-                projectIds, tasksWithNoProject, tagIds), 
+                ir.GetItems(expectedUserId, completionStatuses,laterStatuses,
+                    projectIds, tasksWithNoProject, tagIds), 
             Times.Once);
         mockItemRepo.VerifyNoOtherCalls();
         items.ShouldBe([
