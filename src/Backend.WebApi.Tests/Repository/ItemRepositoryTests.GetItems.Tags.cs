@@ -10,7 +10,7 @@ public partial class ItemRepositoryTests
                 new() { Id = 1, Description = "Task with Tag AB", UserId = 1 },
                 new() { Id = 2, Description = "Task with no tag 1", UserId = 1 },
                 new() { Id = 3, Description = "Task with no tag 2", UserId = 1 },
-                new() { Id = 4, Description = "Task with Tag B", UserId = 1 }
+                new() { Id = 4, Description = "Task with Tag A", UserId = 1 }
             ],
             Tags = [
                 new() {Id = 1, UserId = 1, Name = "Tag A" },
@@ -31,12 +31,12 @@ public partial class ItemRepositoryTests
             new()
             {
                 UserId = 1, TagIds = null, TasksWithNoTags = true,
-                ExpectedItemDescriptions = ["Task with Tag AB", "Task with no tag 1", "Task with no tag 2", "Task with Tag B"]
+                ExpectedItemDescriptions = ["Task with Tag AB", "Task with no tag 1", "Task with no tag 2", "Task with Tag A"]
             },
             new()
             {
                 UserId = 1, TagIds = [1], TasksWithNoTags = true,
-                ExpectedItemDescriptions = ["Task with Tag AB", "Task with Tag B"]
+                ExpectedItemDescriptions = ["Task with Tag AB", "Task with Tag A"]
             },
             new()
             {
@@ -46,7 +46,7 @@ public partial class ItemRepositoryTests
             new()
             {
                 UserId = 1, TagIds = [1, 2], TasksWithNoTags = true,
-                ExpectedItemDescriptions = ["Task with Tag AB", "Task with Tag B"]
+                ExpectedItemDescriptions = ["Task with Tag AB", "Task with Tag A"]
             },
             new()
             {
