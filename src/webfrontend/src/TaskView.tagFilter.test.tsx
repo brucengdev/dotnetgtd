@@ -33,6 +33,40 @@ describe("TaskView", () => {
         expect(items[2].querySelector('[data-testId="description"]')?.textContent).toBe("Task C")
     })
 
+    it("shows only tasks that has at least 1 tag", async () => {
+        const client = new TestClient()
+        client.Items = [
+            { id: 1, description: "Task A", done: false, later: false, tagIds: [1,2] },
+            { id: 2, description: "Task B", done: false, later: false, tagIds: [2] },
+            { id: 3, description: "Task C", done: false, later: false, tagIds: [] }
+        ]
+        client.Tags = [
+            { id: 1, name: "Tag 1" },
+            { id: 2, name: "Tag 2" }
+        ]
+        render(<TaskView client={client} />)
+
+        await sleep(1)
+
+        expect(screen.getByRole("checkbox", { name: "All tags"})).toBeChecked()
+        expect(screen.getByRole("checkbox", { name: "Tag 1"})).toBeChecked()
+        expect(screen.getByRole("checkbox", { name: "Tag 2"})).toBeChecked()
+        expect(screen.getByRole("checkbox", { name: "No tag"})).toBeChecked()
+
+        screen.getByRole("checkbox", { name: "No tag"}).click()
+
+        await sleep(1)
+        expect(screen.getByRole("checkbox", { name: "All tags"})).toBeChecked()
+        expect(screen.getByRole("checkbox", { name: "Tag 1"})).toBeChecked()
+        expect(screen.getByRole("checkbox", { name: "Tag 2"})).toBeChecked()
+        expect(screen.getByRole("checkbox", { name: "No tag"})).not.toBeChecked()
+
+        const items = screen.queryAllByTestId("item")
+        expect(items.length).toBe(2)
+        expect(items[0].querySelector('[data-testId="description"]')?.textContent).toBe("Task A")
+        expect(items[1].querySelector('[data-testId="description"]')?.textContent).toBe("Task B")
+    })
+
     it("shows only tasks not having any tag", async () => {
         const client = new TestClient()
         client.Items = [
