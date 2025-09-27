@@ -136,7 +136,7 @@ public partial class ItemManagerTests
         var mockItemRepo = new Mock<IItemRepository>();
         mockItemRepo.Setup(ir => ir.GetItems(expectedUserId, 
                 completionStatuses, laterStatuses, 
-                projectIds, tasksWithNoProject, tagIds))
+                projectIds, tasksWithNoProject, tagIds, tasksWithNoTag))
             .Returns([
                 new()
                 {
@@ -165,7 +165,7 @@ public partial class ItemManagerTests
         //assert
         mockItemRepo.Verify(ir => 
                 ir.GetItems(expectedUserId, completionStatuses,laterStatuses,
-                    projectIds, tasksWithNoProject, tagIds), 
+                    projectIds, tasksWithNoProject, tagIds, tasksWithNoTag), 
             Times.Once);
         mockItemRepo.VerifyNoOtherCalls();
         items.ShouldBe([

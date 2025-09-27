@@ -35,24 +35,29 @@ public partial class ItemRepositoryTests
             },
             new()
             {
-                UserId = 1, TagIds = [1], TasksWithNoTags = true,
+                UserId = 1, TagIds = [1], TasksWithNoTags = false,
                 ExpectedItemDescriptions = ["Task with Tag AB", "Task with Tag A"]
             },
             new()
             {
-                UserId = 1, TagIds = [2], TasksWithNoTags = true,
+                UserId = 1, TagIds = [2], TasksWithNoTags = false,
                 ExpectedItemDescriptions = ["Task with Tag AB"]
             },
             new()
             {
-                UserId = 1, TagIds = [1, 2], TasksWithNoTags = true,
+                UserId = 1, TagIds = [1, 2], TasksWithNoTags = false,
                 ExpectedItemDescriptions = ["Task with Tag AB", "Task with Tag A"]
             },
             new()
             {
                 UserId = 1, TagIds = [], TasksWithNoTags = true,
                 ExpectedItemDescriptions = ["Task with no tag 1", "Task with no tag 2"]
-            }
+            },
+            new()
+            {
+                UserId = 1, TagIds = [2], TasksWithNoTags = true,
+                ExpectedItemDescriptions = ["Task with Tag AB", "Task with no tag 1", "Task with no tag 2"]
+            },
         }.Select(tc => tc.ToObjectArray());
     }
 

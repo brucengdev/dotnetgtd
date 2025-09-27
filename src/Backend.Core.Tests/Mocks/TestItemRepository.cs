@@ -22,7 +22,8 @@ public class TestItemRepository: IItemRepository
         IEnumerable<bool> laterStatuses,
         IEnumerable<int>? projectIds,
         bool tasksWithNoProjects,
-        IEnumerable<int>? tagIds = null)
+        IEnumerable<int>? tagIds = null,
+        bool tasksWithNoTag = true)
     {
         var results = _data.Items.Where(i => i.UserId == userId);
         if (completionStatuses.Count() > 0)

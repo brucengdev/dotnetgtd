@@ -10,7 +10,8 @@ public interface IItemRepository
         IEnumerable<bool>? laterStatuses = null,
         IEnumerable<int>? projectIds = null,
         bool tasksWithNoProject = true,
-        IEnumerable<int>? tagIds = null);
+        IEnumerable<int>? tagIds = null,
+        bool tasksWithNoTag = true);
     void DeleteItem(int itemId);
     Item? GetItem(int itemId);
 }
