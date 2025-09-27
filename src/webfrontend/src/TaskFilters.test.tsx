@@ -307,5 +307,18 @@ describe("TaskFilters views", () => {
                 tagIds: ["null", "nonnull"]
             })
         })
+
+        it("a tag is unselected when all tag filter is checked", async() => {
+            await setupTest({ tagIds: ["nonnull", "null"]})
+            
+            const tag1CheckBox = screen.getByRole("checkbox", {name: "Tag 1"})
+            expect(tag1CheckBox).toBeChecked()
+
+            tag1CheckBox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                tagIds: ["null", "2", "3"]
+            })
+        })
     })
 })
