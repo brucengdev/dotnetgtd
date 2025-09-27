@@ -3,6 +3,7 @@ import { Item } from "../models/Item";
 import { Project } from "../models/Project";
 import { Tag } from "../models/Tag";
 import { Filter } from "../TaskFilters";
+import { isAnIntId } from "../utils";
 
 export const TEST_USER_NAME = "valid_user"
 export const TEST_PASSWORD = "correct_pass"
@@ -48,6 +49,7 @@ export class TestClient implements IClient {
                 return this.completionFilter(filter, i) 
                     && this.activeFilter(filter, i)
                     && this.projectFilter(filter, i)
+                    && this.tagFilter(filter, i)
             })
 
             filteredItems = filteredItems.map(i =>{
@@ -69,6 +71,22 @@ export class TestClient implements IClient {
             return true
         }
         if(i.projectId !== undefined && filter.projectIds.includes("nonnull")) {
+            return true
+        }
+        return false
+    }
+
+    tagFilter(filter: Filter, i: Item): boolean {
+        if(filter.tagIds === undefined) {
+            return true
+        }
+        if(filter.tagIds.includes("nonnull") && (i.tagIds?.length?? 0) > 0) {
+            return true
+        }
+        if(filter.tagIds.includes("null") && (i.tagIds?.length?? 0) === 0) {
+            return true
+        }
+        if(filter.tagIds.some(tId => isAnIntId(tId) && i.tagIds?.includes(parseInt(tId)))) {
             return true
         }
         return false

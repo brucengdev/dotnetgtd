@@ -51,6 +51,7 @@ describe("TaskFilters views", () => {
             client.Tags = [
                 { id: 1, name: "Tag 1" },
                 { id: 2, name: "Tag 2" },
+                { id: 3, name: "Tag 3" }
             ];
             render(<TaskFilters client={client} filter={initialFilter} onFiltersChanged={fn} />);
             await sleep(1);
@@ -199,6 +200,140 @@ describe("TaskFilters views", () => {
             expect(fn).toHaveBeenCalled()
             expect(changedFilters).toEqual({
                 projectIds: ["null"]
+            })
+        })
+
+        it("all tags filter is checked", async() => {
+            await setupTest({ tagIds: ["1", "null"]})
+            
+            const allTagsCheckbox = screen.getByRole("checkbox", {name: "All tags"})
+            expect(allTagsCheckbox).not.toBeChecked()
+
+            allTagsCheckbox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                tagIds: ["null", "nonnull"]
+            })
+        })
+
+        it("all tags filter is unchecked", async() => {
+            await setupTest({ tagIds: ["nonnull", "null"]})
+            
+            const allTagsCheckbox = screen.getByRole("checkbox", {name: "All tags"})
+            expect(allTagsCheckbox).toBeChecked()
+
+            allTagsCheckbox.click()
+            
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                tagIds: ["null"]
+            })
+        })
+
+        it("no tag filter is checked", async() => {
+            await setupTest({ tagIds: ["1"]})
+            
+            const noTagCheckbox = screen.getByRole("checkbox", {name: "No tag"})
+            expect(noTagCheckbox).not.toBeChecked()
+
+            noTagCheckbox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                tagIds: ["1", "null"]
+            })
+        })
+
+        it("no tag filter is unchecked 1", async() => {
+            await setupTest({ tagIds: ["null", "1"]})
+            
+            const noTagCheckbox = screen.getByRole("checkbox", {name: "No tag"})
+            expect(noTagCheckbox).toBeChecked()
+
+            noTagCheckbox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                tagIds: ["1"]
+            })
+        })
+
+        it("no tag filter is unchecked 2", async() => {
+            await setupTest({ tagIds: ["null", "nonnull"]})
+            
+            const noTagCheckbox = screen.getByRole("checkbox", {name: "No tag"})
+            expect(noTagCheckbox).toBeChecked()
+
+            noTagCheckbox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                tagIds: ["nonnull"]
+            })
+        })
+
+        it("a tag is selected", async() => {
+            await setupTest({ tagIds: ["null"]})
+            
+            const tag1CheckBox = screen.getByRole("checkbox", {name: "Tag 1"})
+            expect(tag1CheckBox).not.toBeChecked()
+
+            tag1CheckBox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                tagIds: ["null", "1"]
+            })
+        })
+
+        it("two tags are selected", async() => {
+            await setupTest({ tagIds: ["1", "null"]})
+            
+            const tag2CheckBox = screen.getByRole("checkbox", {name: "Tag 2"})
+            expect(tag2CheckBox).not.toBeChecked()
+
+            tag2CheckBox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                tagIds: ["1", "null", "2"]
+            })
+        })
+
+        it("last tag is selected so all tags are selected", async() => {
+            await setupTest({ tagIds: ["1", "2", "null"]})
+            
+            const tag3CheckBox = screen.getByRole("checkbox", {name: "Tag 3"})
+            expect(tag3CheckBox).not.toBeChecked()
+
+            tag3CheckBox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                tagIds: ["null", "nonnull"]
+            })
+        })
+
+        it("a tag is unselected when all tag filter is unchecked", async() => {
+            await setupTest({ tagIds: ["1", "2", "null"]})
+            
+            expect(screen.getByRole("checkbox", {name: "All tags"})).not.toBeChecked()
+            const tag1CheckBox = screen.getByRole("checkbox", {name: "Tag 1"})
+            expect(tag1CheckBox).toBeChecked()
+            expect(screen.getByRole("checkbox", {name: "Tag 2"})).toBeChecked()
+            expect(screen.getByRole("checkbox", {name: "Tag 3"})).not.toBeChecked()
+
+            tag1CheckBox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                tagIds: ["2", "null"]
+            })
+        })
+
+        it("a tag is unselected when all tag filter is checked", async() => {
+            await setupTest({ tagIds: ["nonnull", "null"]})
+            
+            const tag1CheckBox = screen.getByRole("checkbox", {name: "Tag 1"})
+            expect(tag1CheckBox).toBeChecked()
+
+            tag1CheckBox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                tagIds: ["null", "2", "3"]
             })
         })
     })
