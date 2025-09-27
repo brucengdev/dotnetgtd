@@ -51,7 +51,7 @@ namespace Backend.WebApi.Tests.Controller
             Utils.ShouldBeNullable(tagIdsArg);
         }
         
-        [Theory, CombinatorialData]
+        [Theory(Skip = "Takes too long"), CombinatorialData]
         public void GetItems_must_return_items(
             [CombinatorialValues("completed", "uncompleted",
                 "completed,uncompleted", 

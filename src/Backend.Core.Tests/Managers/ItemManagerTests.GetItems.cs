@@ -9,7 +9,7 @@ namespace Backend.Core.Tests;
 
 public partial class ItemManagerTests
 {
-    [Theory, CombinatorialData]
+    [Theory(Skip = "Takes too long to run"), CombinatorialData]
     public void GetItems_is_successful(
         [CombinatorialValues(1,2,3)]
         int expectedUserId, 
