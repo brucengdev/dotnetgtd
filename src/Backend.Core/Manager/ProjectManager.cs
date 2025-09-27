@@ -21,7 +21,11 @@ public class ProjectManager: IProjectManager
         return _projectRepo.CreateProject(project);
     }
 
-    public IEnumerable<Project> GetProjects(int userId)
+    public IEnumerable<Project> GetProjects(
+        int userId,
+        IEnumerable<bool>? completionStatuses,
+        IEnumerable<bool>? laterStatuses
+    )
     {
         return _projectRepo.GetProjects(userId);
     }

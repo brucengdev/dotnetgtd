@@ -31,7 +31,7 @@ public partial class ProjectManagerTests
         var sut = new ProjectManager(projectRepo, userRepo);
         
         //act
-        var projects = sut.GetProjects(123);
+        var projects = sut.GetProjects(123, null, null);
         
         //assert
         projects.ShouldBe(new List<Project>

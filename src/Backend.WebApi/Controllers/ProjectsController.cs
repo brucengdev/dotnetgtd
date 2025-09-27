@@ -30,7 +30,34 @@ namespace Backend.WebApi.Controllers
         public ActionResult GetProjects(string? complete, string? later)
         {
             var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
-            var projects = _projectManager.GetProjects(userId);
+            IEnumerable<bool>? completionStatuses;
+            if (complete == null)
+            {
+                completionStatuses = null;
+            }else
+            if (complete == "")
+            {
+                completionStatuses = [];
+            }
+            else
+            {
+                completionStatuses = complete.Split(",").Select(s => s == "completed");
+            }
+            
+            IEnumerable<bool>? laterStatuses;
+            if(later == null)
+            {
+                laterStatuses = null;
+            }else
+            if (later == "")
+            {
+                laterStatuses = [];
+            }
+            else
+            {
+                laterStatuses = later.Split(",").Select(s => s == "later");
+            }
+            var projects = _projectManager.GetProjects(userId, completionStatuses, laterStatuses);
             return Ok(projects);
         }
 
