@@ -6,6 +6,7 @@ public class Project
     public string Name { get; set; }
     public int UserId { get; set; }
     public bool Later { get; set; }
+    public bool Done { get; set; }
 
     public override bool Equals(object? obj)
     {
@@ -18,6 +19,7 @@ public class Project
         return Id == otherProject.Id
                && Name == otherProject.Name
                && UserId == otherProject.UserId
-               && Later == otherProject.Later;
+               && Later == otherProject.Later
+               && Done == otherProject.Done;
     }
 }
