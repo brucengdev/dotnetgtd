@@ -121,7 +121,14 @@ export function TaskFilters(props: TaskFiltersProps) {
             }
         />
 
-        <CheckBox label="All tags" checked={filter?.tagIds?.includes("nonnull") ?? false} />
+        <CheckBox label="All tags" 
+            checked={filter?.tagIds?.includes("nonnull") ?? false} 
+            onChange={newValue => {
+                if(newValue) {
+                    executeFilterChangeCallback(props, {...filter, tagIds: ["nonnull"]})
+                }  
+            }}
+        />
         {(tags || []).map(t => <CheckBox key={t.id} label={t.name} checked={true} />)}
 
         <CheckBox label="No tag" checked={true} />
