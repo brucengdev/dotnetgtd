@@ -4,6 +4,7 @@ import { Button } from "./controls/Button";
 import { IClient } from "./api/Client";
 import { ProjectList } from "./ProjectList";
 import { Project } from "./models/Project";
+import { ProjectFilters } from "./ProjectFilters";
 
 interface ProjectViewProps {
     client: IClient
@@ -17,6 +18,7 @@ export function ProjectView({ client }: ProjectViewProps) {
         .then(retrievedProjects => setProjects(retrievedProjects))
     }
     return <div data-testid="project-view">
+        <ProjectFilters />
         <ProjectList projects={projects || []} 
             onDelete={(projectId) => {
                 client.DeleteProject(projectId)
