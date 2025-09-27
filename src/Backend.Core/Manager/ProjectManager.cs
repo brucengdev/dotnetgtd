@@ -27,7 +27,7 @@ public class ProjectManager: IProjectManager
         IEnumerable<bool>? laterStatuses
     )
     {
-        return _projectRepo.GetProjects(userId);
+        return _projectRepo.GetProjects(userId, completionStatuses, laterStatuses);
     }
 
     public void DeleteProject(int projectId, int userId)
