@@ -126,7 +126,9 @@ export function TaskFilters(props: TaskFiltersProps) {
             onChange={newValue => {
                 if(newValue) {
                     executeFilterChangeCallback(props, {...filter, tagIds: ["nonnull"]})
-                }  
+                } else {
+                    executeFilterChangeCallback(props, {...filter, tagIds: []})
+                }
             }}
         />
         {(tags || []).map(t => <CheckBox key={t.id} label={t.name} checked={true} />)}

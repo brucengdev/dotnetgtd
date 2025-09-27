@@ -214,5 +214,19 @@ describe("TaskFilters views", () => {
                 tagIds: ["nonnull"]
             })
         })
+
+        it("all tags filter is unchecked", async() => {
+            await setupTest({ tagIds: ["nonnull"]})
+            
+            const allTagsCheckbox = screen.getByRole("checkbox", {name: "All tags"})
+            expect(allTagsCheckbox).toBeChecked()
+
+            allTagsCheckbox.click()
+            
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                tagIds: []
+            })
+        })
     })
 })
