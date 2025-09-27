@@ -15,17 +15,6 @@ public class GetItemsCase
     public int[]? TagIds;
     public bool TasksWithNoTags = true;
     public IEnumerable<string> ExpectedItemDescriptions;
-
-    public object[] ToObjectArray()
-    {
-        return
-        [
-            UserId, CompletionStatuses, LaterStatuses,
-            ProjectId, TasksWithNoProjects, 
-            TagIds, TasksWithNoTags,
-            ExpectedItemDescriptions
-        ];
-    }
 }
 
 class TestData
