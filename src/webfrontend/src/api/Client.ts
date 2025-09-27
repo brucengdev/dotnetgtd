@@ -1,7 +1,7 @@
 import { Item } from "../models/Item"
 import { Project } from "../models/Project"
 import { Tag } from "../models/Tag"
-import { Filter } from "../TaskFilters"
+import { TaskFilter } from "../TaskFilters"
 
 export interface IClient {
     Token: () => string | undefined
@@ -10,7 +10,7 @@ export interface IClient {
     LoginByToken: (token:string) => Promise<boolean>
     Logout: () => void
     AddItem: (item: Item) => Promise<boolean>
-    GetItems: (filter:Filter) => Promise<Item[]>
+    GetItems: (filter:TaskFilter) => Promise<Item[]>
     DeleteItem: (id: number) => Promise<boolean>
 
     AddProject: (item: Project) => Promise<boolean>
@@ -80,7 +80,7 @@ export class Client implements IClient {
         return result.ok
     }
 
-    public async GetItems(filter: Filter): Promise<Item[]> {
+    public async GetItems(filter: TaskFilter): Promise<Item[]> {
         const result = await fetch(`${url}/Items/GetItems?${new URLSearchParams({
             accessToken: this.token,
             complete: buildCompleteFilter(filter.completed, filter.uncompleted),
@@ -204,14 +204,14 @@ function buildLaterFilter(active: boolean | undefined, inactive: boolean | undef
     return "later"
 }
 
-function buildProjectIdFilter(filter: Filter): string {
+function buildProjectIdFilter(filter: TaskFilter): string {
     const { projectIds } = filter
     if(projectIds === undefined) { return "*" }
     return projectIds.join(",")
 }
 
 
-function buildTagIdsFilter(filter: Filter): string {
+function buildTagIdsFilter(filter: TaskFilter): string {
     const { tagIds } = filter
     if(tagIds === undefined) { return "*" }
     return tagIds.join(",")

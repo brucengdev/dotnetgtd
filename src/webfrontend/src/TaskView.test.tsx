@@ -5,7 +5,7 @@ import { TaskView } from "./TaskView";
 import { TestClient } from "./__test__/TestClient";
 import { sleep } from "./__test__/testutils";
 import userEvent from "@testing-library/user-event";
-import { Filter } from "./TaskFilters";
+import { TaskFilter } from "./TaskFilters";
 import cartesian from "fast-cartesian";
 
 describe("TaskView", () => {
@@ -140,8 +140,8 @@ describe("TaskView", () => {
             +`,inactive=${inactive},completed=${completed}`
             +`,uncompleted=${uncompleted}`, async () => {
             const client = new TestClient()
-            let passedInFilter: Filter | undefined = undefined
-            client.GetItems = async (filter:Filter) => {
+            let passedInFilter: TaskFilter | undefined = undefined
+            client.GetItems = async (filter:TaskFilter) => {
                 passedInFilter = filter
                 return []
             }
@@ -167,9 +167,9 @@ describe("TaskView", () => {
 
             await sleep(1)
 
-            const expectedFilter: Filter = {active, inactive, completed, uncompleted}
+            const expectedFilter: TaskFilter = {active, inactive, completed, uncompleted}
             Object.keys(expectedFilter).forEach(key => {
-                const k = key as keyof Filter
+                const k = key as keyof TaskFilter
                 if(expectedFilter[k] === undefined) {
                     delete expectedFilter[k]
                 }

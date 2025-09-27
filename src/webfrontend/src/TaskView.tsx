@@ -6,14 +6,14 @@ import ItemList from "./ItemList"
 import { Item } from "./models/Item"
 import { Project } from "./models/Project"
 import { Tag } from "./models/Tag"
-import { Filter, TaskFilters } from "./TaskFilters"
+import { TaskFilter, TaskFilters } from "./TaskFilters"
 
 export interface TaskViewProps {
   client: IClient,
-  filter?: Filter
+  filter?: TaskFilter
 }
 
-const defaultFilter: Filter = {
+const defaultFilter: TaskFilter = {
   active: true,
   uncompleted: true,
   projectIds: ["nonnull", "null"],
@@ -26,7 +26,7 @@ export function TaskView(props: TaskViewProps) {
     const [items, setItems] = useState(undefined as (Item[]|undefined))
     const [projects, setProjects] = useState<Project[] | undefined>(undefined)
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
-    const [filter, setFilter] = useState<Filter>(props.filter ?? defaultFilter)
+    const [filter, setFilter] = useState<TaskFilter>(props.filter ?? defaultFilter)
     if(items === undefined) {
         client.GetItems(filter)
             .then(items => setItems(items))

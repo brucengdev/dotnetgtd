@@ -2,7 +2,7 @@ import { IClient } from "../api/Client";
 import { Item } from "../models/Item";
 import { Project } from "../models/Project";
 import { Tag } from "../models/Tag";
-import { Filter } from "../TaskFilters";
+import { TaskFilter } from "../TaskFilters";
 import { isAnIntId } from "../utils";
 
 export const TEST_USER_NAME = "valid_user"
@@ -43,7 +43,7 @@ export class TestClient implements IClient {
         return true
     }
 
-    async GetItems(filter:Filter): Promise<Item[]> {
+    async GetItems(filter:TaskFilter): Promise<Item[]> {
         let filteredItems = this.Items
             .filter(i => {
                 return this.completionFilter(filter, i) 
@@ -57,7 +57,7 @@ export class TestClient implements IClient {
         })
         return [...filteredItems]
     }
-    projectFilter(filter: Filter, i: Item): unknown {
+    projectFilter(filter: TaskFilter, i: Item): unknown {
         if(filter.projectIds === undefined) {
             return true
         }
@@ -76,7 +76,7 @@ export class TestClient implements IClient {
         return false
     }
 
-    tagFilter(filter: Filter, i: Item): boolean {
+    tagFilter(filter: TaskFilter, i: Item): boolean {
         if(filter.tagIds === undefined) {
             return true
         }
@@ -92,7 +92,7 @@ export class TestClient implements IClient {
         return false
     }
 
-    private completionFilter(filter: Filter, i: Item): boolean {
+    private completionFilter(filter: TaskFilter, i: Item): boolean {
         if(filter.uncompleted && !i.done) {
             return true
         }
@@ -102,7 +102,7 @@ export class TestClient implements IClient {
         return false
     }
 
-    private activeFilter(filter: Filter, i: Item): boolean {
+    private activeFilter(filter: TaskFilter, i: Item): boolean {
         if(filter.active && !i.later) {
             return true
         }
