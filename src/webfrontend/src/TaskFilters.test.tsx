@@ -102,7 +102,7 @@ describe("TaskFilters views", () => {
             })
         })
 
-        it("all projects filter", async() => {
+        it("all projects filter is checked", async() => {
             await setupTest({ projectIds: ["1"]})
             const allProjectsCheckbox = screen.getByRole("checkbox", {name: "All projects"})
             expect(allProjectsCheckbox).not.toBeChecked()
@@ -113,7 +113,19 @@ describe("TaskFilters views", () => {
             })
         })
 
-        it("project 1 filter", async() => {
+        it("all projects filter is unchecked", async() => {
+            await setupTest({ projectIds: ["nonnull", "null"]})
+            const allProjectsCheckbox = screen.getByRole("checkbox", {name: "All projects"})
+            expect(allProjectsCheckbox).toBeChecked()
+
+            allProjectsCheckbox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                projectIds: ["null"]
+            })
+        })
+
+        it("project 1 is checked", async() => {
             await setupTest({ projectIds: [] })
             const project1CheckBox = screen.getByRole("checkbox", {name: "Project 1"})
             expect(project1CheckBox).not.toBeChecked()
@@ -124,7 +136,7 @@ describe("TaskFilters views", () => {
             })
         })
 
-        it("2 projects filters", async() => {
+        it("2 projects is checked", async() => {
             await setupTest({ projectIds: ["1"] })
             const project1CheckBox = screen.getByRole("checkbox", {name: "Project 1"})
             const project2CheckBox = screen.getByRole("checkbox", {name: "Project 2"})
@@ -139,21 +151,15 @@ describe("TaskFilters views", () => {
             })
         })
 
-        it("no project filter", async() => {
-            await setupTest({ projectIds: undefined })
-            const noProjectCheckBox = screen.getByRole("checkbox", {name: "No project"})
-            expect(noProjectCheckBox).not.toBeChecked()
-            noProjectCheckBox.click()
-            expect(fn).toHaveBeenCalled()
-            expect(changedFilters).toEqual({
-                projectIds: ["null"]
-            })
-        })
-
-        it("select all projects when all individual project filters are checked", async() => {
-            await setupTest({ projectIds: ["1","2"] })
+        it("last project is checked", async() => {
+            await setupTest({ projectIds: ["1", "2"] })
+            const project1CheckBox = screen.getByRole("checkbox", {name: "Project 1"})
+            const project2CheckBox = screen.getByRole("checkbox", {name: "Project 2"})
             const project3CheckBox = screen.getByRole("checkbox", {name: "Project 3"})
+            expect(project1CheckBox).toBeChecked()
+            expect(project2CheckBox).toBeChecked()
             expect(project3CheckBox).not.toBeChecked()
+
             project3CheckBox.click()
 
             expect(fn).toHaveBeenCalled()
@@ -162,12 +168,27 @@ describe("TaskFilters views", () => {
             })
         })
 
-        it("deselect all projects when all project filter is unchecked.", async() => {
-            await setupTest({ projectIds: ["nonnull"] })
-            const allProjectsCheckbox = screen.getByRole("checkbox", {name: "All projects"})
-            expect(allProjectsCheckbox).toBeChecked()
+        it("1 project is unchecked while another is checked", async() => {
+            await setupTest({ projectIds: ["1", "2"] })
+            const project1CheckBox = screen.getByRole("checkbox", {name: "Project 1"})
+            const project2CheckBox = screen.getByRole("checkbox", {name: "Project 2"})
+            expect(project1CheckBox).toBeChecked()
+            expect(project2CheckBox).toBeChecked()
 
-            allProjectsCheckbox.click()
+            project2CheckBox.click()
+
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                projectIds: ["1"]
+            })
+        })
+
+        it("last project is unchecked", async() => {
+            await setupTest({ projectIds: ["1"] })
+            const project1CheckBox = screen.getByRole("checkbox", {name: "Project 1"})
+            expect(project1CheckBox).toBeChecked()
+
+            project1CheckBox.click()
 
             expect(fn).toHaveBeenCalled()
             expect(changedFilters).toEqual({
@@ -175,7 +196,47 @@ describe("TaskFilters views", () => {
             })
         })
 
-        it("still select other filters when all project filter is unchecked. 1", async() => {
+        it("no project is checked", async() => {
+            await setupTest({ projectIds: ["nonnull"] })
+            const noProjectCheckBox = screen.getByRole("checkbox", {name: "No project"})
+            expect(noProjectCheckBox).not.toBeChecked()
+            noProjectCheckBox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                projectIds: ["nonnull", "null"]
+            })
+        })
+
+        it("all project filter is checked", async() => {
+            await setupTest({ projectIds: ["null", "1","2"] })
+            const project3CheckBox = screen.getByRole("checkbox", {name: "Project 3"})
+            expect(project3CheckBox).not.toBeChecked()
+            project3CheckBox.click()
+
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                projectIds: ["null", "nonnull"]
+            })
+        })
+
+        it("a project filter is unchecked when all project is checked", async() => {
+            await setupTest({ projectIds: ["null", "nonnull"] })
+            expect(screen.getByRole("checkbox", {name: "All projects"})).toBeChecked()
+            expect(screen.getByRole("checkbox", {name: "No project"})).toBeChecked()
+            expect(screen.getByRole("checkbox", {name: "Project 1"})).toBeChecked()
+            expect(screen.getByRole("checkbox", {name: "Project 2"})).toBeChecked()
+            const project3CheckBox = screen.getByRole("checkbox", {name: "Project 3"})
+            expect(project3CheckBox).toBeChecked()
+            project3CheckBox.click()
+
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                projectIds: ["null", "1", "2"]
+            })
+        })
+
+
+        it("All project filter is unchecked. 1", async() => {
             await setupTest({ projectIds: ["nonnull", "null"] })
             const allProjectsCheckbox = screen.getByRole("checkbox", {name: "All projects"})
             expect(allProjectsCheckbox).toBeChecked()
@@ -189,7 +250,7 @@ describe("TaskFilters views", () => {
             })
         })
 
-        it("still select other filters when all project filter is unchecked. 2", async() => {
+        it("All project filter is unchecked. 2", async() => {
             await setupTest({ projectIds: ["null", "nonnull", "1", "2"] })
             const allProjectsCheckbox = screen.getByRole("checkbox", {name: "All projects"})
             expect(allProjectsCheckbox).toBeChecked()

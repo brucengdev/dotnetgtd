@@ -65,6 +65,39 @@ describe("TaskView", () => {
         expect(items[0].querySelector('[data-testId="description"]')?.textContent).toBe("Task A")
     })
 
+    it("shows only tasks from at least a project", async () => {
+        const client = new TestClient()
+        client.Items = [
+            { id: 1, description: "Task A", projectId: undefined,   done: false, later: false },
+            { id: 2, description: "Task B", projectId: 1,           done: false, later: false },
+            { id: 3, description: "Task C", projectId: 2,           done: false, later: false }
+        ]
+        client.Projects = [
+            { id: 1, name: "Project 1", later: false },
+            { id: 2, name: "Project 2", later: false }
+        ]
+        render(<TaskView client={client} />)
+        await sleep(1)
+        const noProjectCheckbox = screen.getByRole("checkbox", { name: "No project"})
+        expect(noProjectCheckbox).toBeChecked()
+        const allProjectCheckbox = screen.getByRole("checkbox", { name: "All projects"})
+        expect(allProjectCheckbox).toBeChecked()
+
+        noProjectCheckbox.click()
+
+        await sleep(1)
+
+        expect(allProjectCheckbox).toBeChecked()
+        expect(screen.getByRole("checkbox", { name: "Project 1"})).toBeChecked()
+        expect(screen.getByRole("checkbox", { name: "Project 2"})).toBeChecked()
+        expect(noProjectCheckbox).not.toBeChecked()
+
+        const items = screen.queryAllByTestId("item")
+        expect(items.length).toBe(2)
+        expect(items[0].querySelector('[data-testId="description"]')?.textContent).toBe("Task B")
+        expect(items[1].querySelector('[data-testId="description"]')?.textContent).toBe("Task C")
+    })
+
     it("shows only tasks from selected project", async () => {
         const client = new TestClient()
         client.Items = [

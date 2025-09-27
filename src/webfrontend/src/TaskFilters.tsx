@@ -35,9 +35,9 @@ export function TaskFilters(props: TaskFiltersProps) {
     function buildProjectIdsFilter(projectId: number, projectSelected: boolean)
         : string[] | undefined {
         if(filter?.projectIds === undefined || filter?.projectIds?.includes("nonnull")) {
-            //all were selected, now one is being unselected
-            if(projectSelected === true) {
-                return [projectId.toString()]
+            if(projectSelected === false) {
+                return [...filter?.projectIds?? [], ...(projects?.map(p => p.id.toString()) ?? [])]
+                    .filter(pId => pId !== "nonnull" && pId !== projectId.toString())
             }
         }
         if(projectSelected) {
