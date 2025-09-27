@@ -33,36 +33,36 @@ describe("TaskView", () => {
         expect(items[2].querySelector('[data-testId="description"]')?.textContent).toBe("Task C")
     })
 
-    // it("shows only tasks not from any project", async () => {
+    // it("shows only tasks not having any tag", async () => {
     //     const client = new TestClient()
     //     client.Items = [
-    //         { id: 1, description: "Task A", projectId: undefined,   done: false, later: false },
-    //         { id: 2, description: "Task B", projectId: 1,           done: false, later: false },
-    //         { id: 3, description: "Task C", projectId: 2,           done: false, later: false }
+    //         { id: 1, description: "Task A", done: false, later: false, tagIds: [1,2] },
+    //         { id: 2, description: "Task B", done: false, later: false, tagIds: [2] },
+    //         { id: 3, description: "Task C", done: false, later: false, tagIds: [] }
     //     ]
-    //     client.Projects = [
-    //         { id: 1, name: "Project 1", later: false },
-    //         { id: 2, name: "Project 2", later: false }
+    //     client.Tags = [
+    //         { id: 1, name: "Tag 1" },
+    //         { id: 2, name: "Tag 2" }
     //     ]
     //     render(<TaskView client={client} />)
     //     await sleep(1)
-    //     const noProjectCheckbox = screen.getByRole("checkbox", { name: "No project"})
-    //     expect(noProjectCheckbox).toBeChecked()
-    //     const allProjectCheckbox = screen.getByRole("checkbox", { name: "All projects"})
-    //     expect(allProjectCheckbox).toBeChecked()
+    //     const noTagCheckbox = screen.getByRole("checkbox", { name: "No tag"})
+    //     expect(noTagCheckbox).toBeChecked()
+    //     const allTagsCheckbox = screen.getByRole("checkbox", { name: "All tags"})
+    //     expect(allTagsCheckbox).toBeChecked()
 
-    //     allProjectCheckbox.click()
+    //     allTagsCheckbox.click()
 
     //     await sleep(1)
 
-    //     expect(allProjectCheckbox).not.toBeChecked()
-    //     expect(screen.getByRole("checkbox", { name: "Project 1"})).not.toBeChecked()
-    //     expect(screen.getByRole("checkbox", { name: "Project 2"})).not.toBeChecked()
-    //     expect(noProjectCheckbox).toBeChecked()
+    //     expect(allTagsCheckbox).not.toBeChecked()
+    //     expect(screen.getByRole("checkbox", { name: "Tag 1"})).not.toBeChecked()
+    //     expect(screen.getByRole("checkbox", { name: "Tag 2"})).not.toBeChecked()
+    //     expect(noTagCheckbox).toBeChecked()
 
     //     const items = screen.queryAllByTestId("item")
     //     expect(items.length).toBe(1)
-    //     expect(items[0].querySelector('[data-testId="description"]')?.textContent).toBe("Task A")
+    //     expect(items[0].querySelector('[data-testId="description"]')?.textContent).toBe("Task C")
     // })
 
     // it("shows only tasks from selected project", async () => {

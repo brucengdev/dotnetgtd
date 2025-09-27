@@ -11,6 +11,7 @@ export interface Filter {
     active?: boolean
     inactive?: boolean
     projectIds?: string[]
+    tagIds?: string[]
 }
 
 interface TaskFiltersProps {
@@ -120,7 +121,7 @@ export function TaskFilters(props: TaskFiltersProps) {
             }
         />
 
-        <CheckBox label="All tags" checked={true} />
+        <CheckBox label="All tags" checked={filter?.tagIds?.includes("nonnull") ?? false} />
         {(tags || []).map(t => <CheckBox key={t.id} label={t.name} checked={true} />)}
 
         <CheckBox label="No tag" checked={true} />
