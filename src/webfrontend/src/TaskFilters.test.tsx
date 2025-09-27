@@ -216,7 +216,7 @@ describe("TaskFilters views", () => {
         })
 
         it("all tags filter is unchecked", async() => {
-            await setupTest({ tagIds: ["nonnull"]})
+            await setupTest({ tagIds: ["nonnull", "null"]})
             
             const allTagsCheckbox = screen.getByRole("checkbox", {name: "All tags"})
             expect(allTagsCheckbox).toBeChecked()
@@ -225,7 +225,7 @@ describe("TaskFilters views", () => {
             
             expect(fn).toHaveBeenCalled()
             expect(changedFilters).toEqual({
-                tagIds: []
+                tagIds: ["null"]
             })
         })
 

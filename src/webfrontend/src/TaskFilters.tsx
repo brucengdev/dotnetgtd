@@ -129,7 +129,7 @@ export function TaskFilters(props: TaskFiltersProps) {
                     newTagIds.push("nonnull")
                     newTagIds = newTagIds.filter(tId => !isAnIntId(tId))
                 } else {
-                    newTagIds = []
+                    newTagIds = newTagIds.filter(tId => tId !== "nonnull")
                 }
                 executeFilterChangeCallback(props, {...filter, tagIds: newTagIds})
             }}
