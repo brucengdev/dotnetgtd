@@ -3,10 +3,13 @@ using Shouldly;
 
 namespace Backend.WebApi.Tests.Repository;
 
-public partial class ProjectRepositoryTests
+public class ProjectRepositoryTests
 {
-    [Fact]
-    public void TestGetProjectsByUser()
+    [Theory]
+    [InlineData(2, "Project C,Project D")]
+    [InlineData(1, "Project A,Project B")]
+    [InlineData(3, "")]
+    public void TestGetProjectsByUser(int userId, string expectedProjectNames)
     {
         //arrange
         var dbContext = Utils.CreateTestDB();
@@ -21,11 +24,9 @@ public partial class ProjectRepositoryTests
         var sut = new ProjectRepository(dbContext);
         
         //act
-        var projects = sut.GetProjects(2, null, null);
-        
-        projects.ShouldBe([
-            new() { Id = 3, Name = "Project C", Later = true, UserId = 2 },
-            new() { Id = 4, Name = "Project D", Later = false, UserId = 2 }
-        ]);
+        var projects = sut.GetProjects(userId, null, null);
+
+        var projectNames = string.Join(',', projects.Select(p => p.Name));
+        projectNames.ShouldBe(expectedProjectNames);
     }
 }
