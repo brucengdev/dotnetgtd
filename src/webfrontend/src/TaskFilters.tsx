@@ -152,11 +152,15 @@ export function TaskFilters(props: TaskFiltersProps) {
                             newTagFilters = newTagFilters.filter(tId => !isAnIntId(tId))
                         }
                     } else {
-                        const otherTagIds = tags?.map(t => t.id.toString())
-                            .filter(tagId => tagId !== t.id.toString()) ?? []
-                        newTagFilters = newTagFilters
-                                        .filter(tId => tId !== "nonnull")
-                                        .concat(otherTagIds)
+                        if(newTagFilters.includes("nonnull")) {
+                            const otherTagIds = tags?.map(t => t.id.toString())
+                                .filter(tagId => tagId !== t.id.toString()) ?? []
+                            newTagFilters = newTagFilters
+                                            .filter(tId => tId !== "nonnull")
+                                            .concat(otherTagIds)
+                        } else {
+                            newTagFilters = newTagFilters.filter(tId => tId !== t.id.toString())
+                        }
                     }
                     executeFilterChangeCallback(props, {... filter, tagIds: newTagFilters })
                 }}
