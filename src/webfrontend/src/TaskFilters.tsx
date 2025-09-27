@@ -134,7 +134,20 @@ export function TaskFilters(props: TaskFiltersProps) {
                 executeFilterChangeCallback(props, {...filter, tagIds: newTagIds})
             }}
         />
-        {(tags || []).map(t => <CheckBox key={t.id} label={t.name} checked={true} />)}
+        {(tags || []).map(t => 
+            <CheckBox key={t.id} label={t.name} 
+                checked={filter?.tagIds?.includes(t.id.toString()) 
+                    || filter?.tagIds?.includes("nonnull")
+                    || false
+                }
+                onChange={newValue => {
+                    const newTagIds = [...(filter?.tagIds ?? [])]
+                    if(newValue) {
+                        newTagIds.push(t.id.toString())
+                    }
+                    executeFilterChangeCallback(props, {... filter, tagIds: newTagIds })
+                }}
+            />)}
 
         <CheckBox label="No tag" 
             checked={filter?.tagIds?.includes("null") ?? false} 
