@@ -35,7 +35,7 @@ public class ProjectRepositoryTests
     [InlineData("", "")]
     [InlineData("true", "Project B")]
     [InlineData("false", "Project A")]
-    public void TestGetProjectsByLaterStatus(string? laterFilter, string expectedProjectNames)
+    public void TestGetProjectsByLaterStatus(string? completionFilter, string expectedProjectNames)
     {
         //arrange
         var dbContext = Utils.CreateTestDB();
@@ -47,16 +47,48 @@ public class ProjectRepositoryTests
         dbContext.SaveChanges();
         var sut = new ProjectRepository(dbContext);
         IEnumerable<bool>? laterStatuses = null;
-        if (laterFilter == "")
+        if (completionFilter == "")
         {
             laterStatuses = [];
-        } else if (laterFilter != null)
+        } else if (completionFilter != null)
         {
-            laterStatuses = laterFilter.Split(',').Select(v => v == "true");
+            laterStatuses = completionFilter.Split(',').Select(v => v == "true");
         }
         
         //act
         var projects = sut.GetProjects(1, null, laterStatuses);
+
+        var projectNames = string.Join(',', projects.Select(p => p.Name));
+        projectNames.ShouldBe(expectedProjectNames);
+    }
+    
+    [Theory]
+    [InlineData(null, "Project A,Project B")]
+    [InlineData("", "")]
+    [InlineData("true", "Project B")]
+    [InlineData("false", "Project A")]
+    public void TestGetProjectsByCompletionStatus(string? completionFilter, string expectedProjectNames)
+    {
+        //arrange
+        var dbContext = Utils.CreateTestDB();
+        dbContext.Projects.AddRange(
+        [
+            new() { Id = 1, Name = "Project A", Later = true, Done = false, UserId = 1 },
+            new() { Id = 2, Name = "Project B", Later = true, Done = true, UserId = 1 }
+        ]);
+        dbContext.SaveChanges();
+        var sut = new ProjectRepository(dbContext);
+        IEnumerable<bool>? completionStatuses = null;
+        if (completionFilter == "")
+        {
+            completionStatuses = [];
+        } else if (completionFilter != null)
+        {
+            completionStatuses = completionFilter.Split(',').Select(v => v == "true");
+        }
+        
+        //act
+        var projects = sut.GetProjects(1, completionStatuses, null);
 
         var projectNames = string.Join(',', projects.Select(p => p.Name));
         projectNames.ShouldBe(expectedProjectNames);

@@ -26,6 +26,11 @@ public class ProjectRepository: IProjectRepository
         {
             results = results.Where(p => laterStatuses.Contains(p.Later));
         }
+        
+        if (completionStatuses != null)
+        {
+            results = results.Where(p => completionStatuses.Contains(p.Done));
+        }
 
         return results;
     }
