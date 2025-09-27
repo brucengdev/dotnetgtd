@@ -285,13 +285,26 @@ describe("TaskFilters views", () => {
         it("two tags are selected", async() => {
             await setupTest({ tagIds: ["1", "null"]})
             
-            const tag1CheckBox = screen.getByRole("checkbox", {name: "Tag 2"})
-            expect(tag1CheckBox).not.toBeChecked()
+            const tag2CheckBox = screen.getByRole("checkbox", {name: "Tag 2"})
+            expect(tag2CheckBox).not.toBeChecked()
 
-            tag1CheckBox.click()
+            tag2CheckBox.click()
             expect(fn).toHaveBeenCalled()
             expect(changedFilters).toEqual({
                 tagIds: ["1", "null", "2"]
+            })
+        })
+
+        it("last tag is selected so all tags are selected", async() => {
+            await setupTest({ tagIds: ["1", "2", "null"]})
+            
+            const tag3CheckBox = screen.getByRole("checkbox", {name: "Tag 3"})
+            expect(tag3CheckBox).not.toBeChecked()
+
+            tag3CheckBox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                tagIds: ["null", "nonnull"]
             })
         })
     })

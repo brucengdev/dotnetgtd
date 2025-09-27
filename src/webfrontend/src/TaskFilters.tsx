@@ -141,9 +141,16 @@ export function TaskFilters(props: TaskFiltersProps) {
                     || false
                 }
                 onChange={newValue => {
-                    const newTagIds = [...(filter?.tagIds ?? [])]
+                    let newTagIds = [...(filter?.tagIds ?? [])]
                     if(newValue) {
                         newTagIds.push(t.id.toString())
+
+                        const realTagIds = newTagIds.filter(tId => isAnIntId(tId))
+                        if(realTagIds.length === (tags?.length ?? 0)) {
+                            //all tags are selected
+                            newTagIds.push("nonnull")
+                            newTagIds = newTagIds.filter(tId => !isAnIntId(tId))
+                        }
                     }
                     executeFilterChangeCallback(props, {... filter, tagIds: newTagIds })
                 }}
