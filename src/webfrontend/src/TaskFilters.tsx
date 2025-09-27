@@ -139,9 +139,13 @@ export function TaskFilters(props: TaskFiltersProps) {
         <CheckBox label="No tag" 
             checked={filter?.tagIds?.includes("null") ?? false} 
             onChange={(newValue) => {
+                let newTagIds = [...(filter?.tagIds ?? [])]
                 if(newValue) {
-                    executeFilterChangeCallback(props, {... filter, tagIds: [...(filter?.tagIds ?? []),"null"] })
-                }  
+                    newTagIds.push("null")
+                } else {
+                    newTagIds = newTagIds.filter(tId => tId !== "null")
+                }
+                executeFilterChangeCallback(props, {... filter, tagIds: newTagIds })
             }}
         />
     </div>
