@@ -5,7 +5,7 @@ import { Tag } from "./models/Tag"
 import { CheckBox } from "./controls/CheckBox"
 import { isAnIntId } from "./utils"
 
-export interface Filter {
+export interface TaskFilter {
     completed?: boolean
     uncompleted?: boolean
     active?: boolean
@@ -16,8 +16,8 @@ export interface Filter {
 
 interface TaskFiltersProps {
     client: IClient
-    filter?: Filter
-    onFiltersChanged?: (filter: Filter) => void
+    filter?: TaskFilter
+    onFiltersChanged?: (filter: TaskFilter) => void
 }
 export function TaskFilters(props: TaskFiltersProps) {
     const { client, filter } = props
@@ -181,7 +181,7 @@ export function TaskFilters(props: TaskFiltersProps) {
     </div>
 }
 
-function executeFilterChangeCallback(props: TaskFiltersProps, newFilter: Filter) {
+function executeFilterChangeCallback(props: TaskFiltersProps, newFilter: TaskFilter) {
     if(props.onFiltersChanged) {
         props.onFiltersChanged(newFilter)
     }

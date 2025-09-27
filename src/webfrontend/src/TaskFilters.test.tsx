@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vitest } from "vitest";
-import { Filter, TaskFilters } from "./TaskFilters";
+import { TaskFilter, TaskFilters } from "./TaskFilters";
 import { TestClient } from "./__test__/TestClient";
 import '@testing-library/jest-dom'
 import { sleep } from "./__test__/testutils";
@@ -38,10 +38,10 @@ describe("TaskFilters views", () => {
 
 
     describe("execute callback when filters are changed", async () => {
-        let changedFilters: Filter
+        let changedFilters: TaskFilter
         const fn = vitest.fn((filter: any) => { changedFilters = filter })
             
-        async function setupTest(initialFilter: Filter = {}) {
+        async function setupTest(initialFilter: TaskFilter = {}) {
             const client = new TestClient();
             client.Projects = [
                 { id: 1, name: "Project 1", later: false },
