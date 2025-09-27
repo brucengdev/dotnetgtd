@@ -11,7 +11,8 @@ public interface IItemManager
         IEnumerable<bool> laterStatuses,
         IEnumerable<int>? projectId,
         bool tasksWithNoProject,
-        IEnumerable<int>? tagIds);
+        IEnumerable<int>? tagIds,
+        bool tasksWithNoTags);
 
     void DeleteItem(int itemId, int userId);
 }

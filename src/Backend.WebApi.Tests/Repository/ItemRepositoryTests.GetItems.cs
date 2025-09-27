@@ -5,7 +5,7 @@ using Shouldly;
 
 namespace Backend.WebApi.Tests.Repository;
 
-class GetItemsCase
+public class GetItemsCase
 {
     public int UserId;
     public IEnumerable<bool> CompletionStatuses;
@@ -13,16 +13,8 @@ class GetItemsCase
     public IEnumerable<int>? ProjectId;
     public bool TasksWithNoProjects = true;
     public int[]? TagIds;
+    public bool TasksWithNoTags = true;
     public IEnumerable<string> ExpectedItemDescriptions;
-
-    public object[] ToObjectArray()
-    {
-        return
-        [
-            UserId, CompletionStatuses, LaterStatuses,
-            ProjectId, TasksWithNoProjects, TagIds, ExpectedItemDescriptions
-        ];
-    }
 }
 
 class TestData
@@ -45,26 +37,20 @@ public partial class ItemRepositoryTests
         return dbContext;
     }
 
-    private void ExecuteGetItemTests(
-        GTDContext dbContext,
-        int userId, 
-        IEnumerable<bool> completionStatuses, 
-        IEnumerable<bool> laterStatuses,
-        IEnumerable<int>? projectIds, 
-        bool tasksWithNoProjects,
-        int[]? tagIds, 
-        IEnumerable<string> expectedItemDescriptions)
+    private void ExecuteGetItemTests(GTDContext dbContext, GetItemsCase testCase)
     {
         //arrange
         var sut = new ItemRepository(dbContext);
 
         //act
-        var items = sut.GetItems(userId, completionStatuses, 
-            laterStatuses, projectIds, tasksWithNoProjects, tagIds);
+        var items = sut.GetItems(testCase.UserId, 
+            testCase.CompletionStatuses, testCase.LaterStatuses, 
+            testCase.ProjectId, testCase.TasksWithNoProjects, 
+            testCase.TagIds, testCase.TasksWithNoTags);
 
         //assert
         items.Select(i => i.Description)
-            .ShouldBe(expectedItemDescriptions, 
+            .ShouldBe(testCase.ExpectedItemDescriptions, 
                 "Actual: " + string.Join(',', items.Select(i => i.Description).ToList()));
     }
 

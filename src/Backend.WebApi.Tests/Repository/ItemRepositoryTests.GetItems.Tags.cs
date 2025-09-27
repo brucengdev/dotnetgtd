@@ -7,10 +7,10 @@ public partial class ItemRepositoryTests
         return new()
         {
             Items = [
-                new() { Id = 1, Description = "Task A", UserId = 1 },
-                new() { Id = 2, Description = "Task B", UserId = 1 },
-                new() { Id = 3, Description = "Task C", UserId = 1 },
-                new() { Id = 4, Description = "Task D", UserId = 1 }
+                new() { Id = 1, Description = "Task with Tag AB", UserId = 1 },
+                new() { Id = 2, Description = "Task with no tag 1", UserId = 1 },
+                new() { Id = 3, Description = "Task with no tag 2", UserId = 1 },
+                new() { Id = 4, Description = "Task with Tag A", UserId = 1 }
             ],
             Tags = [
                 new() {Id = 1, UserId = 1, Name = "Tag A" },
@@ -30,47 +30,42 @@ public partial class ItemRepositoryTests
         {
             new()
             {
-                UserId = 1, TagIds = null,
-                ExpectedItemDescriptions = ["Task A", "Task B", "Task C", "Task D"]
+                UserId = 1, TagIds = null, TasksWithNoTags = true,
+                ExpectedItemDescriptions = ["Task with Tag AB", "Task with no tag 1", "Task with no tag 2", "Task with Tag A"]
             },
             new()
             {
-                UserId = 1, TagIds = [1],
-                ExpectedItemDescriptions = ["Task A", "Task D"]
+                UserId = 1, TagIds = [1], TasksWithNoTags = false,
+                ExpectedItemDescriptions = ["Task with Tag AB", "Task with Tag A"]
             },
             new()
             {
-                UserId = 1, TagIds = [2],
-                ExpectedItemDescriptions = ["Task A"]
+                UserId = 1, TagIds = [2], TasksWithNoTags = false,
+                ExpectedItemDescriptions = ["Task with Tag AB"]
             },
             new()
             {
-                UserId = 1, TagIds = [1, 2],
-                ExpectedItemDescriptions = ["Task A", "Task D"]
+                UserId = 1, TagIds = [1, 2], TasksWithNoTags = false,
+                ExpectedItemDescriptions = ["Task with Tag AB", "Task with Tag A"]
             },
             new()
             {
-                UserId = 1, TagIds = [],
-                ExpectedItemDescriptions = ["Task B", "Task C"]
-            }
-        }.Select(tc => tc.ToObjectArray());
+                UserId = 1, TagIds = [], TasksWithNoTags = true,
+                ExpectedItemDescriptions = ["Task with no tag 1", "Task with no tag 2"]
+            },
+            new()
+            {
+                UserId = 1, TagIds = [2], TasksWithNoTags = true,
+                ExpectedItemDescriptions = ["Task with Tag AB", "Task with no tag 1", "Task with no tag 2"]
+            },
+        }.Select(tc => new object[] { tc });
     }
 
     [Theory]
     [MemberData(nameof(TagFilterTests))]
-    public void GetItems_tag_filter_tests(
-        int userId,
-        IEnumerable<bool> completionStatuses,
-        IEnumerable<bool> laterStatuses,
-        IEnumerable<int>? projectIds,
-        bool tasksWithNoProjects,
-        int[]? tagIds,
-        IEnumerable<string> expectedItemDescriptions)
+    public void GetItems_tag_filter_tests(GetItemsCase testCase)
     {
         var dbContext = CreateTestDB(TagTestData());
-        ExecuteGetItemTests(dbContext, 
-            userId, completionStatuses, laterStatuses, 
-            projectIds, tasksWithNoProjects,
-            tagIds, expectedItemDescriptions);
+        ExecuteGetItemTests(dbContext, testCase);
     }
 }

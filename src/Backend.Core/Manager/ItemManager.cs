@@ -48,7 +48,8 @@ public class ItemManager: IItemManager
         IEnumerable<bool> laterStatuses,
         IEnumerable<int>? projectIds,
         bool tasksWithNoProject,
-        IEnumerable<int>? tagIds = null)
+        IEnumerable<int>? tagIds,
+        bool tasksWithNoTags)
     {
         var items = _itemRepo.GetItems(
             userId, 
@@ -56,7 +57,8 @@ public class ItemManager: IItemManager
             laterStatuses,
             projectIds,
             tasksWithNoProject,
-            tagIds);
+            tagIds,
+            tasksWithNoTags);
         return items.Select(i => ItemServiceModel.FromItem(i));
     }
 

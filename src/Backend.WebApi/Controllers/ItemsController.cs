@@ -82,6 +82,7 @@ namespace Backend.WebApi.Controllers
                 }
             }
 
+            var tasksWithNoTags = true;
             IEnumerable<int>? tagIdValues;
             if (tagIds == null || tagIds == "*")
             {
@@ -89,14 +90,24 @@ namespace Backend.WebApi.Controllers
             } else if (tagIds == "")
             {
                 tagIdValues = [];
+                tasksWithNoTags = false;
             }
             else
             {
-                tagIdValues = tagIds.Split(",").Select(t => Convert.ToInt32(t));
+                var tagFilters = tagIds.Split(",");
+                tagIdValues = tagFilters
+                    .Where(t => t != "null" && t != "nonnull")
+                    .Select(t => Convert.ToInt32(t));
+                if (tagFilters.Contains("nonnull"))
+                {
+                    tagIdValues = null;
+                }
+
+                tasksWithNoTags = tagFilters.Contains("null");
             }
 
             var items = _itemManager.GetItems(userId, completionStatuses, laterStatuses,
-                projectIds, tasksWithNoProject, tagIdValues);
+                projectIds, tasksWithNoProject, tagIdValues, tasksWithNoTags);
             return Ok(items);
         }
 
