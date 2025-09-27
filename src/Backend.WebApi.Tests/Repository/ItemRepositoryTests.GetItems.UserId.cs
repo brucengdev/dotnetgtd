@@ -46,6 +46,7 @@ public partial class ItemRepositoryTests
         IEnumerable<int>? projectIds,
         bool tasksWithNoProjects,
         int[]? tagIds,
+        bool tasksWithNoTag,
         IEnumerable<string> expectedItemDescriptions)
     {
         var dbContext = CreateTestDB(UserIdTestData());

@@ -13,6 +13,7 @@ class GetItemsCase
     public IEnumerable<int>? ProjectId;
     public bool TasksWithNoProjects = true;
     public int[]? TagIds;
+    public bool TasksWithNoTags = true;
     public IEnumerable<string> ExpectedItemDescriptions;
 
     public object[] ToObjectArray()
@@ -20,7 +21,9 @@ class GetItemsCase
         return
         [
             UserId, CompletionStatuses, LaterStatuses,
-            ProjectId, TasksWithNoProjects, TagIds, ExpectedItemDescriptions
+            ProjectId, TasksWithNoProjects, 
+            TagIds, TasksWithNoTags,
+            ExpectedItemDescriptions
         ];
     }
 }

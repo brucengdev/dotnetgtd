@@ -30,27 +30,27 @@ public partial class ItemRepositoryTests
         {
             new()
             {
-                UserId = 1, TagIds = null, TasksWithNoProjects = true,
+                UserId = 1, TagIds = null, TasksWithNoTags = true,
                 ExpectedItemDescriptions = ["Task with Tag AB", "Task with no tag 1", "Task with no tag 2", "Task with Tag B"]
             },
             new()
             {
-                UserId = 1, TagIds = [1], TasksWithNoProjects = true,
+                UserId = 1, TagIds = [1], TasksWithNoTags = true,
                 ExpectedItemDescriptions = ["Task with Tag AB", "Task with Tag B"]
             },
             new()
             {
-                UserId = 1, TagIds = [2], TasksWithNoProjects = true,
+                UserId = 1, TagIds = [2], TasksWithNoTags = true,
                 ExpectedItemDescriptions = ["Task with Tag AB"]
             },
             new()
             {
-                UserId = 1, TagIds = [1, 2], TasksWithNoProjects = true,
+                UserId = 1, TagIds = [1, 2], TasksWithNoTags = true,
                 ExpectedItemDescriptions = ["Task with Tag AB", "Task with Tag B"]
             },
             new()
             {
-                UserId = 1, TagIds = [], TasksWithNoProjects = true,
+                UserId = 1, TagIds = [], TasksWithNoTags = true,
                 ExpectedItemDescriptions = ["Task with no tag 1", "Task with no tag 2"]
             }
         }.Select(tc => tc.ToObjectArray());
@@ -65,6 +65,7 @@ public partial class ItemRepositoryTests
         IEnumerable<int>? projectIds,
         bool tasksWithNoProjects,
         int[]? tagIds,
+        bool tasksWithNoTag,
         IEnumerable<string> expectedItemDescriptions)
     {
         var dbContext = CreateTestDB(TagTestData());
