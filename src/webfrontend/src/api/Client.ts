@@ -85,7 +85,8 @@ export class Client implements IClient {
             accessToken: this.token,
             complete: buildCompleteFilter(filter.completed, filter.uncompleted),
             later: buildLaterFilter(filter.active, filter.inactive),
-            projectId: buildProjectIdFilter(filter)
+            projectId: buildProjectIdFilter(filter),
+            tagIds: buildTagIdsFilter(filter)
         }).toString()}`, {
             method: "GET"
         })
@@ -209,3 +210,9 @@ function buildProjectIdFilter(filter: Filter): string {
     return projectIds.join(",")
 }
 
+
+function buildTagIdsFilter(filter: Filter): string {
+    const { tagIds } = filter
+    if(tagIds === undefined) { return "*" }
+    return tagIds.join(",")
+}
