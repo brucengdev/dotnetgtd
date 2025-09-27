@@ -17,7 +17,7 @@ const defaultFilter: Filter = {
   active: true,
   uncompleted: true,
   projectIds: ["nonnull", "null"],
-  tagIds: ["nonnull"]
+  tagIds: ["nonnull", "null"]
 }
 
 export function TaskView(props: TaskViewProps) {
