@@ -120,10 +120,10 @@ export function TaskFilters(props: TaskFiltersProps) {
             }
         />
 
-        <CheckBox label="All tags" checked={false} />
-        {(tags || []).map(t => <CheckBox key={t.id} label={t.name} checked={false} />)}
+        <CheckBox label="All tags" checked={true} />
+        {(tags || []).map(t => <CheckBox key={t.id} label={t.name} checked={true} />)}
 
-        <CheckBox label="No tag" checked={false} />
+        <CheckBox label="No tag" checked={true} />
     </div>
 }
 
