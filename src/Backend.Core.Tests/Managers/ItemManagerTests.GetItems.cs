@@ -19,17 +19,26 @@ public partial class ItemManagerTests
     [InlineData(1, "true,false", null, null, true, null)]
     
     //laterFilter
-    [InlineData(1, null, "", null, true, null)]
-    [InlineData(1, null, "*", null, true, null)]
-    [InlineData(1, null, "true", null, true, null)]
-    [InlineData(1, null, "false", null, true, null)]
-    [InlineData(1, null, "true,false", null, true, null)]
+    [InlineData(2, null, null, null, true, null)]
+    [InlineData(2, null, "", null, true, null)]
+    [InlineData(2, null, "*", null, true, null)]
+    [InlineData(2, null, "true", null, true, null)]
+    [InlineData(2, null, "false", null, true, null)]
+    [InlineData(2, null, "true,false", null, true, null)]
     
     //project filter
-    [InlineData(1, null, null, "1", true, null)]
-    [InlineData(1, null, null, "1", false, null)]
-    [InlineData(1, null, null, "2,3", true, null)]
-    [InlineData(1, null, null, "*", true, null)]
+    [InlineData(3, null, null, null, true, null)]
+    [InlineData(3, null, null, "", true, null)]
+    [InlineData(3, null, null, "*", true, null)]
+    [InlineData(3, null, null, "1", true, null)]
+    [InlineData(3, null, null, "1", false, null)]
+    [InlineData(3, null, null, "2,3", true, null)]
+    
+    //tag filter
+    [InlineData(4, null, null, null, true, null)]
+    [InlineData(4, null, null, null, true, "")]
+    [InlineData(4, null, null, null, true, "*")]
+    [InlineData(4, null, null, null, true, "1,2,3")]
     public void GetItems_is_successful(
         int expectedUserId, 
         string? completionFilter,
