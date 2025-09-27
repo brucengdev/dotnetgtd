@@ -21,7 +21,13 @@ public class ProjectRepository: IProjectRepository
         IEnumerable<bool>? completionStatuses,
         IEnumerable<bool>? laterStatuses)
     {
-        return _dbContext.Projects.Where(p => p.UserId == userId);
+        var results = _dbContext.Projects.Where(p => p.UserId == userId);
+        if (laterStatuses != null)
+        {
+            results = results.Where(p => laterStatuses.Contains(p.Later));
+        }
+
+        return results;
     }
 
     public void DeleteProject(int projectId)
