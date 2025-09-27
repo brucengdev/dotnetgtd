@@ -56,14 +56,17 @@ public partial class ItemRepositoryTests
         IEnumerable<int>? projectIds, 
         bool tasksWithNoProjects,
         int[]? tagIds, 
+        bool tasksWithNoTag,
         IEnumerable<string> expectedItemDescriptions)
     {
         //arrange
         var sut = new ItemRepository(dbContext);
 
         //act
-        var items = sut.GetItems(userId, completionStatuses, 
-            laterStatuses, projectIds, tasksWithNoProjects, tagIds);
+        var items = sut.GetItems(userId, 
+            completionStatuses, laterStatuses, 
+            projectIds, tasksWithNoProjects, 
+            tagIds, tasksWithNoTag);
 
         //assert
         items.Select(i => i.Description)

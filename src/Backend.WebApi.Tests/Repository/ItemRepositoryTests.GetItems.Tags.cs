@@ -77,6 +77,7 @@ public partial class ItemRepositoryTests
         ExecuteGetItemTests(dbContext, 
             userId, completionStatuses, laterStatuses, 
             projectIds, tasksWithNoProjects,
-            tagIds, expectedItemDescriptions);
+            tagIds, tasksWithNoTag,
+            expectedItemDescriptions);
     }
 }

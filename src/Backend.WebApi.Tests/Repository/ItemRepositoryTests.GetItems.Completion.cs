@@ -61,6 +61,8 @@ public partial class ItemRepositoryTests
         var dbContext = CreateTestDB(CompletionTestData());
         ExecuteGetItemTests(dbContext, 
             userId, completionStatuses, laterStatuses, 
-            projectIds, tasksWithNoProjects, tagIds, expectedItemDescriptions);
+            projectIds, tasksWithNoProjects,
+            tagIds, tasksWithNoTag,
+            expectedItemDescriptions);
     }
 }
