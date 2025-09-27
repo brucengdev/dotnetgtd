@@ -27,7 +27,7 @@ namespace Backend.WebApi.Controllers
 
         [HttpGet("[action]")]
         [ServiceFilter<SecurityFilterAttribute>]
-        public ActionResult GetProjects()
+        public ActionResult GetProjects(string? complete, string? later)
         {
             var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
             var projects = _projectManager.GetProjects(userId);

@@ -26,6 +26,19 @@ namespace Backend.WebApi.Tests.Controller
         
             attributes = method?.GetCustomAttributes(typeof(ServiceFilterAttribute<SecurityFilterAttribute>), true);
             attributes.Length.ShouldBeGreaterThan(0, "Must require authorization");
+            
+            var args = method.GetParameters();
+            args.Length.ShouldBe(2);
+            
+            var completeArg = args[0];
+            completeArg.Name.ShouldBe("complete");
+            completeArg.ParameterType.ShouldBe(typeof(string));
+            Utils.ShouldBeNullable(completeArg);
+            
+            var laterArg = args[1];
+            laterArg.Name.ShouldBe("later");
+            laterArg.ParameterType.ShouldBe(typeof(string));
+            Utils.ShouldBeNullable(laterArg);
         }
 
         [Theory]
@@ -47,7 +60,7 @@ namespace Backend.WebApi.Tests.Controller
             sut.ControllerContext.HttpContext.Items["UserId"] = userId;
             
             //act
-            var response = sut.GetProjects();
+            var response = sut.GetProjects(null, null);
             
             //assert
             response.ShouldBeOfType<OkObjectResult>();
