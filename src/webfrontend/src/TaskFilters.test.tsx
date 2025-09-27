@@ -242,7 +242,7 @@ describe("TaskFilters views", () => {
             })
         })
 
-        it("no tag filter is unchecked", async() => {
+        it("no tag filter is unchecked 1", async() => {
             await setupTest({ tagIds: ["null", "1"]})
             
             const noTagCheckbox = screen.getByRole("checkbox", {name: "No tag"})
@@ -252,6 +252,19 @@ describe("TaskFilters views", () => {
             expect(fn).toHaveBeenCalled()
             expect(changedFilters).toEqual({
                 tagIds: ["1"]
+            })
+        })
+
+        it("no tag filter is unchecked 2", async() => {
+            await setupTest({ tagIds: ["null", "nonnull"]})
+            
+            const noTagCheckbox = screen.getByRole("checkbox", {name: "No tag"})
+            expect(noTagCheckbox).toBeChecked()
+
+            noTagCheckbox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                tagIds: ["nonnull"]
             })
         })
     })
