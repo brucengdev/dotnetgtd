@@ -51,6 +51,7 @@ describe("TaskFilters views", () => {
             client.Tags = [
                 { id: 1, name: "Tag 1" },
                 { id: 2, name: "Tag 2" },
+                { id: 3, name: "Tag 3" }
             ];
             render(<TaskFilters client={client} filter={initialFilter} onFiltersChanged={fn} />);
             await sleep(1);
@@ -278,6 +279,19 @@ describe("TaskFilters views", () => {
             expect(fn).toHaveBeenCalled()
             expect(changedFilters).toEqual({
                 tagIds: ["null", "1"]
+            })
+        })
+
+        it("two tags are selected", async() => {
+            await setupTest({ tagIds: ["1", "null"]})
+            
+            const tag1CheckBox = screen.getByRole("checkbox", {name: "Tag 2"})
+            expect(tag1CheckBox).not.toBeChecked()
+
+            tag1CheckBox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                tagIds: ["1", "null", "2"]
             })
         })
     })
