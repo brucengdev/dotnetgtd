@@ -58,26 +58,14 @@ public partial class ItemRepositoryTests
                 UserId = 1, TagIds = [2], TasksWithNoTags = true,
                 ExpectedItemDescriptions = ["Task with Tag AB", "Task with no tag 1", "Task with no tag 2"]
             },
-        }.Select(tc => tc.ToObjectArray());
+        }.Select(tc => new object[] { tc });
     }
 
     [Theory]
     [MemberData(nameof(TagFilterTests))]
-    public void GetItems_tag_filter_tests(
-        int userId,
-        IEnumerable<bool> completionStatuses,
-        IEnumerable<bool> laterStatuses,
-        IEnumerable<int>? projectIds,
-        bool tasksWithNoProjects,
-        int[]? tagIds,
-        bool tasksWithNoTag,
-        IEnumerable<string> expectedItemDescriptions)
+    public void GetItems_tag_filter_tests(GetItemsCase testCase)
     {
         var dbContext = CreateTestDB(TagTestData());
-        ExecuteGetItemTests(dbContext, 
-            userId, completionStatuses, laterStatuses, 
-            projectIds, tasksWithNoProjects,
-            tagIds, tasksWithNoTag,
-            expectedItemDescriptions);
+        ExecuteGetItemTests(dbContext, testCase);
     }
 }

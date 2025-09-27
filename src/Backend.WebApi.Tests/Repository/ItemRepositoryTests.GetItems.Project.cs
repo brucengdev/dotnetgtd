@@ -48,26 +48,14 @@ public partial class ItemRepositoryTests
                 UserId = 1, ProjectId = [1, 2], TasksWithNoProjects = false,
                 ExpectedItemDescriptions = ["Task A", "Task B"]
             }
-        }.Select(tc => tc.ToObjectArray());
+        }.Select(tc => new object[] { tc });
     }
 
     [Theory]
     [MemberData(nameof(ProjectFilterTests))]
-    public void GetItems_project_filter_tests(
-        int userId,
-        IEnumerable<bool> completionStatuses,
-        IEnumerable<bool> laterStatuses,
-        IEnumerable<int>? projectIds,
-        bool tasksWithNoProjects,
-        int[]? tagIds,
-        bool tasksWithNoTag,
-        IEnumerable<string> expectedItemDescriptions)
+    public void GetItems_project_filter_tests(GetItemsCase testCase)
     {
         var dbContext = CreateTestDB(ProjectTestData());
-        ExecuteGetItemTests(dbContext, 
-            userId, completionStatuses, laterStatuses, 
-            projectIds, tasksWithNoProjects, 
-            tagIds, tasksWithNoTag,
-            expectedItemDescriptions);
+        ExecuteGetItemTests(dbContext, testCase);
     }
 }

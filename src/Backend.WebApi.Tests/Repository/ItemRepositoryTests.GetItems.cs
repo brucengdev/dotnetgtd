@@ -5,7 +5,7 @@ using Shouldly;
 
 namespace Backend.WebApi.Tests.Repository;
 
-class GetItemsCase
+public class GetItemsCase
 {
     public int UserId;
     public IEnumerable<bool> CompletionStatuses;
@@ -48,29 +48,20 @@ public partial class ItemRepositoryTests
         return dbContext;
     }
 
-    private void ExecuteGetItemTests(
-        GTDContext dbContext,
-        int userId, 
-        IEnumerable<bool> completionStatuses, 
-        IEnumerable<bool> laterStatuses,
-        IEnumerable<int>? projectIds, 
-        bool tasksWithNoProjects,
-        int[]? tagIds, 
-        bool tasksWithNoTag,
-        IEnumerable<string> expectedItemDescriptions)
+    private void ExecuteGetItemTests(GTDContext dbContext, GetItemsCase testCase)
     {
         //arrange
         var sut = new ItemRepository(dbContext);
 
         //act
-        var items = sut.GetItems(userId, 
-            completionStatuses, laterStatuses, 
-            projectIds, tasksWithNoProjects, 
-            tagIds, tasksWithNoTag);
+        var items = sut.GetItems(testCase.UserId, 
+            testCase.CompletionStatuses, testCase.LaterStatuses, 
+            testCase.ProjectId, testCase.TasksWithNoProjects, 
+            testCase.TagIds, testCase.TasksWithNoTags);
 
         //assert
         items.Select(i => i.Description)
-            .ShouldBe(expectedItemDescriptions, 
+            .ShouldBe(testCase.ExpectedItemDescriptions, 
                 "Actual: " + string.Join(',', items.Select(i => i.Description).ToList()));
     }
 
