@@ -56,7 +56,7 @@ public class ItemRepository: IItemRepository
         {
             results = results.Where(i => 
                 i.ItemTagMappings.Where(m => tagIds.Contains(m.TagId)).Any()
-                || tasksWithNoTag
+                || (tasksWithNoTag && !i.ItemTagMappings.Any())
             );
         }
 
