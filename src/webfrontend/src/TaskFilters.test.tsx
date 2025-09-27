@@ -202,7 +202,7 @@ describe("TaskFilters views", () => {
             })
         })
 
-        it("all tags filter", async() => {
+        it("all tags filter is checked", async() => {
             await setupTest({ tagIds: ["1"]})
             
             const allTagsCheckbox = screen.getByRole("checkbox", {name: "All tags"})
