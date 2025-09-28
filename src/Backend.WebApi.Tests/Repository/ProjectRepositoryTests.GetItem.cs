@@ -27,11 +27,13 @@ public class ProjectRepositoryTests
     [InlineData(1, "", null, "")]
     [InlineData(1, "true", null, "Project B")]
     [InlineData(1, "false", null, "Project A")]
+    [InlineData(1, "true,false", null, "Project A,Project B")]
     
     [InlineData(1, null, null, "Project A,Project B")]
     [InlineData(1, null, "", "")]
     [InlineData(1, null, "true", "Project B")]
     [InlineData(1, null, "false", "Project A")]
+    [InlineData(1, null, "true,false", "Project A,Project B")]
     public void TestGetProjects(
         int userId,
         string? completionFilter, 
