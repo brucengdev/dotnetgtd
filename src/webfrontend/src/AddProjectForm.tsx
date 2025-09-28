@@ -14,6 +14,7 @@ export default function AddProjectForm(props: AddProjectFormProps) {
     const { onCancel, client, onCompleted } = props
     const [ name, setName ] = useState('')
     const [ later, setLater ] = useState(false)
+    const [ done, setDone ] = useState(false)
     return <div data-testid="add-project-form" className="mb-5">
         <h1 className="text-2xl">
             New project
@@ -33,13 +34,15 @@ export default function AddProjectForm(props: AddProjectFormProps) {
             />
         <CheckBox
             label="Done"
+            checked={done}
+            onChange={checked => setDone(checked)}
             />
         <div className="flex justify-end gap-2">
             <Button 
                 mode={ButtonMode.PRIMARY}
                 text="Create"
                 onClick={() => {
-                    client.AddProject({id: 0, name, later})
+                    client.AddProject({id: 0, name, later, done})
                     .then(() => {
                         if(onCompleted) {
                             onCompleted()
