@@ -13,7 +13,9 @@ public class TestProjectRepository: IProjectRepository
         return project.Id;
     }
 
-    public IEnumerable<Project> GetProjects(int userId)
+    public IEnumerable<Project> GetProjects(int userId, 
+        IEnumerable<bool>? completionStatuses,
+        IEnumerable<bool>? laterStatuses)
     {
         return Projects.Where(p => p.UserId == userId);
     }

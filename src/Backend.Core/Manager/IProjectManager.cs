@@ -7,8 +7,10 @@ public class ProjectNotFoundException: Exception { }
 public interface IProjectManager
 {
     int CreateProject(Project project);
-    
-    IEnumerable<Project> GetProjects(int userId);
+
+    IEnumerable<Project> GetProjects(int userId,
+        IEnumerable<bool>? completionStatuses,
+        IEnumerable<bool>? laterStatuses);
 
     void DeleteProject(int projectId, int userId);
 }

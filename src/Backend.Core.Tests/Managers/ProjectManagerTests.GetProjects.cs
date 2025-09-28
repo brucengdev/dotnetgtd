@@ -1,15 +1,24 @@
 ﻿using Backend.Core.Manager;
+using Backend.Core.Repository;
 using Backend.Core.Tests.Mocks;
 using Backend.Models;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using Shouldly;
 
 namespace Backend.Core.Tests;
 
 public partial class ProjectManagerTests
 {
-    [Fact]
-    public void GetProjects_must_be_successful()
+    [Theory, CombinatorialData]
+    public void GetProjects_must_be_successful(
+            [CombinatorialValues(2,3)]
+            int userId,
+            [CombinatorialValues(null, "", "true", "false", "true,false", "false,true")]
+            string? completionFilter,
+            [CombinatorialValues(null, "", "true", "false", "true,false", "false,true")]
+            string? laterFilter
+        )
     {
         //arrange
         var userRepo = new TestUserRepository();
@@ -19,19 +28,35 @@ public partial class ProjectManagerTests
             PasswordHash = AccountManagerTests.HashPassword("pass"),
             Username = "user1"
         });
-        var projectRepo = new TestProjectRepository();
-        projectRepo.Projects = new List<Project>
+        var projectRepo = new Mock<IProjectRepository>();
+        IEnumerable<bool>? completionStatuses = null;
+        if (completionFilter == "")
         {
-            new() { Id = 1, Name = "Project A", UserId = 123, Later = true },
-            new() { Id = 2, Name = "Project B", UserId = 456 },
-            new() { Id = 3, Name = "Project C", UserId = 123, Later = false },
-            new() { Id = 4, Name = "Project D", UserId = 111 },
-            new() { Id = 5, Name = "Project E", UserId = 23 }
-        };
-        var sut = new ProjectManager(projectRepo, userRepo);
+            completionStatuses = [];
+        }else if (completionFilter != null)
+        {
+            completionStatuses = completionFilter.Split(',').Select(v => v == "true");
+        }
+        
+        IEnumerable<bool>? laterStatuses = null;
+        if (laterFilter == "")
+        {
+            laterStatuses = [];
+        }else if (laterFilter != null)
+        {
+            laterStatuses = laterFilter.Split(',').Select(v => v == "true");
+        }
+        
+        projectRepo.Setup(pr => pr.GetProjects(userId, completionStatuses, laterStatuses))
+            .Returns(new List<Project>
+            {
+                new() { Id = 1, Name = "Project A", UserId = 123, Later = true },
+                new() { Id = 3, Name = "Project C", UserId = 123, Later = false }
+            });
+        var sut = new ProjectManager(projectRepo.Object, userRepo);
         
         //act
-        var projects = sut.GetProjects(123);
+        var projects = sut.GetProjects(userId, completionStatuses, laterStatuses);
         
         //assert
         projects.ShouldBe(new List<Project>

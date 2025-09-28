@@ -26,16 +26,71 @@ namespace Backend.WebApi.Tests.Controller
         
             attributes = method?.GetCustomAttributes(typeof(ServiceFilterAttribute<SecurityFilterAttribute>), true);
             attributes.Length.ShouldBeGreaterThan(0, "Must require authorization");
+            
+            var args = method.GetParameters();
+            args.Length.ShouldBe(2);
+            
+            var completeArg = args[0];
+            completeArg.Name.ShouldBe("complete");
+            completeArg.ParameterType.ShouldBe(typeof(string));
+            Utils.ShouldBeNullable(completeArg);
+            
+            var laterArg = args[1];
+            laterArg.Name.ShouldBe("later");
+            laterArg.ParameterType.ShouldBe(typeof(string));
+            Utils.ShouldBeNullable(laterArg);
         }
 
-        [Theory]
-        [InlineData(12)]
-        [InlineData(44)]
-        public void GetProjects_must_be_successful(int userId)
+        [Theory, CombinatorialData]
+        public void GetProjects_must_be_successful(
+            [CombinatorialValues(1,2)]
+            int userId,
+            [CombinatorialValues("completed", "uncompleted",
+                "completed,uncompleted", 
+                "uncompleted,completed", 
+                "", 
+                null)] 
+            string completionFilter, 
+            [CombinatorialValues("later", "now", 
+                "later,now", 
+                "now,later", 
+                "", null)] 
+            string? laterFilter
+            )
         {
             //arrange
             var manager = new Mock<IProjectManager>();
-            manager.Setup(pm => pm.GetProjects(userId))
+            
+            IEnumerable<bool>? completionStatuses;
+            if (completionFilter == null)
+            {
+                completionStatuses = null;
+            }else
+            if (completionFilter == "")
+            {
+                completionStatuses = [];
+            }
+            else
+            {
+                completionStatuses = completionFilter.Split(",").Select(s => s == "completed");
+            }
+            
+            IEnumerable<bool>? laterStatuses;
+            if (laterFilter == null)
+            {
+                laterStatuses = null;
+            }else
+            if (laterFilter == "")
+            {
+                laterStatuses = [];
+            }
+            else
+            {
+                laterStatuses = laterFilter.Split(",").Select(s => s == "later");
+            }
+            
+            
+            manager.Setup(pm => pm.GetProjects(userId, completionStatuses, laterStatuses))
                 .Returns(new List<Project>()
                 {
                     new() { Id = 1, Name = "Project A", UserId = userId, Later = false },
@@ -47,7 +102,7 @@ namespace Backend.WebApi.Tests.Controller
             sut.ControllerContext.HttpContext.Items["UserId"] = userId;
             
             //act
-            var response = sut.GetProjects();
+            var response = sut.GetProjects(completionFilter, laterFilter);
             
             //assert
             response.ShouldBeOfType<OkObjectResult>();
