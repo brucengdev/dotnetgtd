@@ -10,8 +10,8 @@ describe("AddItemForm", () => {
     it("has necessary ui components", async () => {
         const client = new TestClient()
         client.Projects = [
-            { id: 1, name: "Project 1", later: false }, 
-            { id: 2, name: "Project 2", later: false }
+            { id: 1, name: "Project 1", later: false, done: false }, 
+            { id: 2, name: "Project 2", later: false, done: false }
         ]
         client.Tags = [
             { id: 1, name: "Tag 1" }, 
@@ -68,8 +68,8 @@ describe("AddItemForm", () => {
     it("change project when another project is selected", async () => {
         const client = new TestClient()
         client.Projects = [
-            { id: 1, name: "Project 1", later: false}, 
-            { id: 2, name: "Project 2", later: false}
+            { id: 1, name: "Project 1", later: false, done: false}, 
+            { id: 2, name: "Project 2", later: false, done: false}
         ]
         render(<AddItemForm client={client} onCancel={() => {}}/>)
 
@@ -179,8 +179,8 @@ describe("AddItemForm", () => {
         it(testName, async () => {
             const client = new TestClient()
             client.Projects = [
-                { id: 1, name: "Project 1", later: false }, 
-                { id: 2, name: "Project 2", later: false }
+                { id: 1, name: "Project 1", later: false, done: false }, 
+                { id: 2, name: "Project 2", later: false, done: false }
             ]
             const onCompleted = vitest.fn()
             render(<AddItemForm onCancel={() => {}} client={client} onCompleted={onCompleted} />)
@@ -226,8 +226,8 @@ describe("AddItemForm", () => {
         it(testName, async () => {
             const client = new TestClient()
             client.Projects = [
-                { id: 1, name: "Project 1", later: false }, 
-                { id: 2, name: "Project 2", later: false }
+                { id: 1, name: "Project 1", later: false, done: false }, 
+                { id: 2, name: "Project 2", later: false, done: false }
             ]
             client.Tags = [
                 { id: 1, name: "Tag 1" },
