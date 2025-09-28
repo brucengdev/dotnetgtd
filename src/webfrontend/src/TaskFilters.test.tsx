@@ -9,8 +9,8 @@ describe("TaskFilters views", () => {
     it("shows tag and project filters", async () => {
         const client = new TestClient()
         client.Projects = [
-            { id: 1, name: "Project 1", later: false },
-            { id: 2, name: "Project 2", later: false }
+            { id: 1, name: "Project 1", later: false, done: false},
+            { id: 2, name: "Project 2", later: false, done: false }
         ]
         client.Tags = [
             { id: 1, name: "Tag 1" },
@@ -44,9 +44,9 @@ describe("TaskFilters views", () => {
         async function setupTest(initialFilter: TaskFilter = {}) {
             const client = new TestClient();
             client.Projects = [
-                { id: 1, name: "Project 1", later: false },
-                { id: 2, name: "Project 2", later: false },
-                { id: 3, name: "Project 3", later: false },
+                { id: 1, name: "Project 1", later: false, done: false},
+                { id: 2, name: "Project 2", later: false, done: false },
+                { id: 3, name: "Project 3", later: false, done: false },
             ];
             client.Tags = [
                 { id: 1, name: "Tag 1" },

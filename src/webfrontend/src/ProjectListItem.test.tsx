@@ -4,10 +4,17 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import '@testing-library/jest-dom'
 
 describe("ProjectListItem", () => {
-    [true, false]
-    .forEach(later => {
+    [
+        { later: false, done: false },
+        { later: false, done: true },
+        { later: true, done: false },
+        { later: true, done: true }
+    ]
+    .forEach(({ later, done }) => {
         it("shows project data and delete button", () => {
-            render(<ProjectListItem name="Test Project" later={later} />)
+            render(<ProjectListItem name="Test Project" 
+                later={later}
+                done={done} />)
 
             expect(screen.getByTestId("name")).toBeInTheDocument()
             expect(screen.getByTestId("name").textContent).toBe("Test Project")
@@ -17,12 +24,18 @@ describe("ProjectListItem", () => {
             } else {
                 expect(screen.getByTestId("later")).not.toBeChecked()
             }
+            expect(screen.getByTestId("done")).toBeInTheDocument()
+            if(done) {
+                expect(screen.getByTestId("done")).toBeChecked()
+            } else {
+                expect(screen.getByTestId("done")).not.toBeChecked()
+            }
             expect(screen.getByRole("button", { name: "Delete" })).toBeInTheDocument()
         })
     })
     
     it("shows confirms delete form when delete is clicked", () => {
-        render(<ProjectListItem name="Test Project" later={false} />)
+        render(<ProjectListItem name="Test Project" later={false} done={false} />)
 
         expect(screen.queryByTestId("confirmDeleteView")).not.toBeInTheDocument()
 
@@ -33,7 +46,7 @@ describe("ProjectListItem", () => {
     })
 
     it("hides confirm delete form when no is clicked", () => {
-        render(<ProjectListItem name="Test Project" later={false} />)
+        render(<ProjectListItem name="Test Project" later={false} done={false} />)
 
         fireEvent.click(screen.getByRole("button", { name: "Delete" }))
 
@@ -46,7 +59,7 @@ describe("ProjectListItem", () => {
     it("must calls onDelete when yes is clicked", () => {
         const onDelete = vitest.fn()
         render(<ProjectListItem name="Test Project" 
-            onDelete={onDelete} later={false} />)
+            onDelete={onDelete} later={false} done={false} />)
 
         fireEvent.click(screen.getByRole("button", { name: "Delete" }))
 

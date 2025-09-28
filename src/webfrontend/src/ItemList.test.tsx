@@ -23,7 +23,7 @@ describe("ItemList", () => {
             }
         ]
         const projects = [
-            { id: 2, name: "Project X", later: false }
+            { id: 2, name: "Project X", later: false, done: false }
         ]
         const tags = [
             { id: 1, name: "Tag 1" },

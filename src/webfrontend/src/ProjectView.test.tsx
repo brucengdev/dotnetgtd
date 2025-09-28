@@ -113,7 +113,7 @@ describe("ProjectView", () => {
         it("adds a new project when Create button is clicked", async () => {
             const client = new TestClient()
             client.Projects = [
-                {id: 1, name: "Project X", later: false }
+                {id: 1, name: "Project X", later: false, done: false }
             ]
             render(<ProjectView client={client} />)
 
@@ -150,9 +150,9 @@ describe("ProjectView", () => {
     it("deletes a project when delete is clicked and confirmed", async () => {
         const client = new TestClient()
         client.Projects = [
-            {id: 1, name: "Project X", later: false },
-            {id: 2, name: "Project Y", later: false },
-            {id: 3, name: "Project Z", later: false }
+            {id: 1, name: "Project X", later: false, done: false },
+            {id: 2, name: "Project Y", later: false, done: false },
+            {id: 3, name: "Project Z", later: false, done: false }
         ]
         render(<ProjectView client={client} />)
 

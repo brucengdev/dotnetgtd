@@ -7,9 +7,10 @@ interface ProjectListItemProps {
     name: string,
     onDelete?: () => void
     later: boolean
+    done: boolean
 }
 export function ProjectListItem(props: ProjectListItemProps) {
-    const { name, later, onDelete } = props
+    const { name, later, done, onDelete } = props
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
     return <div data-testid="project"  className="grid grid-cols-3 mb-1">
         <div data-testid="name">{name}</div>
@@ -17,6 +18,11 @@ export function ProjectListItem(props: ProjectListItemProps) {
             label="Later"
             dataTestId="later"
             checked={later}
+        />
+        <CheckBox
+            label="Done"
+            dataTestId="done"
+            checked={done}
         />
         {!showConfirmDelete 
             && <Button text="Delete" 

@@ -6,8 +6,8 @@ import { ProjectList } from "./ProjectList";
 describe("ProjectList", () => {
     it("shows the list of projects", () => {
         const projects = [
-            { id: 1, name: "Project A", later: true },
-            { id: 2, name: "Project B", later: false }
+            { id: 1, name: "Project A", later: true, done: false },
+            { id: 2, name: "Project B", later: false, done: false }
         ]
         render(<ProjectList projects={projects} />)
         
@@ -27,8 +27,8 @@ describe("ProjectList", () => {
 
     it("calls onDelete when a project is deleted", () => {
         const projects = [
-            { id: 1, name: "Project A", later: true },
-            { id: 2, name: "Project B", later: false }
+            { id: 1, name: "Project A", later: true, done: false },
+            { id: 2, name: "Project B", later: false, done: false }
         ]
         const onDelete = vitest.fn()
         render(<ProjectList projects={projects} onDelete={onDelete} />)

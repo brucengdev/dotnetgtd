@@ -12,6 +12,7 @@ describe("AddProjectForm", () => {
         expect(screen.getByRole("heading", {name: "New project"})).toBeInTheDocument()
         expect(screen.getByRole("textbox", {name: "Name"})).toBeInTheDocument()
         expect(screen.getByRole("checkbox", {name: "Later"})).toBeInTheDocument()
+        expect(screen.getByRole("checkbox", {name: "Done"})).toBeInTheDocument()
         expect(screen.getByRole("button", {name: "Create"})).toBeInTheDocument()
         expect(screen.getByRole("button", {name: "Cancel"})).toBeInTheDocument()
     })
@@ -25,18 +26,14 @@ describe("AddProjectForm", () => {
     })
 
     const testCases = [
-        {
-            name: "Project A",
-            later: true
-        },
-        {
-            name: "Project B",
-            later: false
-        }
+        { name: "Project A", later: false, done: false},
+        { name: "Project B", later: false, done: true},
+        { name: "Project C", later: true, done: false},
+        { name: "Project D", later: true, done: true},
     ]
     testCases.forEach(testCase => {
-        const { name, later } = testCase
-        it(`submits item to backend when clicking Create with name = ${name} and later = ${later}`, async () => {
+        const { name, later, done } = testCase
+        it(`submits item to backend when clicking Create with name = ${name}, later = ${later}, done=${done}`, async () => {
             const client = new TestClient()
             const onCompleted = vitest.fn()
             render(<AddProjectForm onCancel={() => {}} client={client} onCompleted={onCompleted} />)
@@ -53,12 +50,20 @@ describe("AddProjectForm", () => {
                 expect(screen.getByRole("checkbox", { name: "Later"})).not.toBeChecked()
             }
 
+            if(done) {
+                fireEvent.click(screen.getByRole("checkbox", { name: "Done"}))
+                expect(screen.getByRole("checkbox", { name: "Done"})).toBeChecked()
+            } else {
+                expect(screen.getByRole("checkbox", { name: "Done"})).not.toBeChecked()
+            }
+
             fireEvent.click(screen.getByRole("button", { name: "Create"}))
 
             expect(client.Projects).toContainEqual({
                 id: 0,
                 name,
-                later
+                later,
+                done
             })
 
             await sleep(10)
