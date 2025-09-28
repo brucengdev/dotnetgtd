@@ -14,8 +14,8 @@ describe("TaskView", () => {
             { id: 3, description: "Task C", projectId: 2, done: false, later: false }
         ]
         client.Projects = [
-            { id: 1, name: "Project 1", later: false },
-            { id: 2, name: "Project 2", later: false }
+            { id: 1, name: "Project 1", later: false, done: false },
+            { id: 2, name: "Project 2", later: false, done: false }
         ]
         render(<TaskView client={client} />)
 
@@ -41,8 +41,8 @@ describe("TaskView", () => {
             { id: 3, description: "Task C", projectId: 2,           done: false, later: false }
         ]
         client.Projects = [
-            { id: 1, name: "Project 1", later: false },
-            { id: 2, name: "Project 2", later: false }
+            { id: 1, name: "Project 1", later: false, done: false},
+            { id: 2, name: "Project 2", later: false, done: false }
         ]
         render(<TaskView client={client} />)
         await sleep(1)
@@ -73,8 +73,8 @@ describe("TaskView", () => {
             { id: 3, description: "Task C", projectId: 2,           done: false, later: false }
         ]
         client.Projects = [
-            { id: 1, name: "Project 1", later: false },
-            { id: 2, name: "Project 2", later: false }
+            { id: 1, name: "Project 1", later: false, done: false },
+            { id: 2, name: "Project 2", later: false, done: false }
         ]
         render(<TaskView client={client} />)
         await sleep(1)
@@ -106,8 +106,8 @@ describe("TaskView", () => {
             { id: 3, description: "Task C", projectId: 2,           done: false, later: false }
         ]
         client.Projects = [
-            { id: 1, name: "Project 1", later: false },
-            { id: 2, name: "Project 2", later: false }
+            { id: 1, name: "Project 1", later: false, done: false },
+            { id: 2, name: "Project 2", later: false, done: false }
         ]
         render(<TaskView client={client} />)
 
@@ -137,9 +137,9 @@ describe("TaskView", () => {
             { id: 3, description: "Task C", projectId: 2,           done: false, later: false }
         ]
         client.Projects = [
-            { id: 1, name: "Project 1", later: false },
-            { id: 2, name: "Project 2", later: false },
-            { id: 3, name: "Project 3", later: false }
+            { id: 1, name: "Project 1", later: false, done: false },
+            { id: 2, name: "Project 2", later: false, done: false },
+            { id: 3, name: "Project 3", later: false, done: false }
         ]
         render(<TaskView client={client} />)
 
