@@ -110,7 +110,7 @@ describe("ProjectView", () => {
     ]
     testCases.forEach(testCase => {
         const { newProjectName, later } = testCase
-        it("adds a new project when Create button is clicked", async () => {
+        it(`adds a new project when Create button is clicked when later=${later}`, async () => {
             const client = new TestClient()
             client.Projects = [
                 {id: 1, name: "Project X", later: false, done: false }
