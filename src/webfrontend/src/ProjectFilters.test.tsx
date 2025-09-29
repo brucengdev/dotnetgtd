@@ -39,4 +39,64 @@ describe("ProjectFilters", () => {
 
         expect(fn).toHaveBeenCalledWith({ active: false })
     })
+
+    it("inactive filter is checked", () => {
+        const fn = vitest.fn()
+        const filter = {}
+        render(<ProjectFilters filter={filter} onChange={fn} />)
+
+        screen.getByRole("checkbox", {name: "Inactive projects"}).click()
+
+        expect(fn).toHaveBeenCalledWith({ inactive: true })
+    })
+
+    it("inactive filter is unchecked", () => {
+        const fn = vitest.fn()
+        const filter = { inactive: true }
+        render(<ProjectFilters filter={filter} onChange={fn} />)
+
+        screen.getByRole("checkbox", {name: "Inactive projects"}).click()
+
+        expect(fn).toHaveBeenCalledWith({ inactive: false })
+    })
+
+    it("completed filter is checked", () => {
+        const fn = vitest.fn()
+        const filter = {}
+        render(<ProjectFilters filter={filter} onChange={fn} />)
+
+        screen.getByRole("checkbox", {name: "Completed projects"}).click()
+
+        expect(fn).toHaveBeenCalledWith({ completed: true })
+    })
+
+    it("completed filter is unchecked", () => {
+        const fn = vitest.fn()
+        const filter = { completed: true }
+        render(<ProjectFilters filter={filter} onChange={fn} />)
+
+        screen.getByRole("checkbox", {name: "Completed projects"}).click()
+
+        expect(fn).toHaveBeenCalledWith({ completed: false })
+    })
+
+    it("uncompleted filter is checked", () => {
+        const fn = vitest.fn()
+        const filter = {}
+        render(<ProjectFilters filter={filter} onChange={fn} />)
+
+        screen.getByRole("checkbox", {name: "Uncompleted projects"}).click()
+
+        expect(fn).toHaveBeenCalledWith({ uncompleted: true })
+    })
+
+    it("uncompleted filter is unchecked", () => {
+        const fn = vitest.fn()
+        const filter = { uncompleted: true }
+        render(<ProjectFilters filter={filter} onChange={fn} />)
+
+        screen.getByRole("checkbox", {name: "Uncompleted projects"}).click()
+
+        expect(fn).toHaveBeenCalledWith({ uncompleted: false })
+    })
 })
