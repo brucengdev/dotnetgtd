@@ -125,12 +125,15 @@ export class TestClient implements IClient {
     }
 
     async GetProjects(filter?: ProjectFilter): Promise<Project[]> {
-        return [...this.Projects.map(p => {
+        let result = [...this.Projects.map(p => {
             return {...p}
         })]
-        .filter(p => {
-            return filter?.active && !p.later
-        })
+        if(filter !== undefined) {
+            result = result.filter(p => {
+                return filter?.active && !p.later
+            })
+        }
+        return result
     }
     
     async DeleteProject(id: number) {
