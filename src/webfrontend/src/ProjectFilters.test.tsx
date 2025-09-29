@@ -10,14 +10,10 @@ describe("ProjectFilters", () => {
         expect(screen.getByTestId("project-filters")).toBeInTheDocument()
 
         expect(screen.getByRole("checkbox", {name: "Active projects"})).toBeInTheDocument()
-        expect(screen.getByRole("checkbox", {name: "Active projects"})).toBeChecked()
         expect(screen.getByRole("checkbox", {name: "Inactive projects"})).toBeInTheDocument()
-        expect(screen.getByRole("checkbox", {name: "Inactive projects"})).not.toBeChecked()
 
         expect(screen.getByRole("checkbox", {name: "Completed projects"})).toBeInTheDocument()
-        expect(screen.getByRole("checkbox", {name: "Completed projects"})).not.toBeChecked()
         expect(screen.getByRole("checkbox", {name: "Uncompleted projects"})).toBeInTheDocument()
-        expect(screen.getByRole("checkbox", {name: "Uncompleted projects"})).toBeChecked()
     })
 
     it("active filter is checked", () => {

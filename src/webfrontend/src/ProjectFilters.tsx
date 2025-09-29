@@ -12,25 +12,20 @@ interface ProjectFiltersProps {
     onChange?: (newFilter: ProjectFilter) => void
 }
 
-const defaultFilter: ProjectFilter = {
-    active: true,
-    uncompleted: true
-}
-
 export function ProjectFilters(props: ProjectFiltersProps) {
-    const filter = props.filter || defaultFilter
+    const filter = props.filter
     return <div data-testid="project-filters">
-            <CheckBox label="Active projects" checked={filter.active ?? false}
+            <CheckBox label="Active projects" checked={filter?.active ?? false}
                 onChange={checked => props.onChange?.({ ...filter, active: checked })}
              />
-            <CheckBox label="Inactive projects" checked={filter.inactive ?? false}
+            <CheckBox label="Inactive projects" checked={filter?.inactive ?? false}
                 onChange={checked => props.onChange?.({ ...filter, inactive: checked })}
              />
-            
-            <CheckBox label="Completed projects" checked={filter.completed ?? false}
+
+            <CheckBox label="Completed projects" checked={filter?.completed ?? false}
                 onChange={checked => props.onChange?.({ ...filter, completed: checked })}
              />
-            <CheckBox label="Uncompleted projects" checked={filter.uncompleted ?? false}
+            <CheckBox label="Uncompleted projects" checked={filter?.uncompleted ?? false}
                 onChange={checked => props.onChange?.({ ...filter, uncompleted: checked })}
              />
         </div>

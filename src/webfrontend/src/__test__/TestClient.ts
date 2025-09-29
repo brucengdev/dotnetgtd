@@ -2,6 +2,7 @@ import { IClient } from "../api/Client";
 import { Item } from "../models/Item";
 import { Project } from "../models/Project";
 import { Tag } from "../models/Tag";
+import { ProjectFilter } from "../ProjectFilters";
 import { TaskFilter } from "../TaskFilters";
 import { isAnIntId } from "../utils";
 
@@ -123,10 +124,13 @@ export class TestClient implements IClient {
         return true
     }
 
-    async GetProjects(): Promise<Project[]> {
+    async GetProjects(filter?: ProjectFilter): Promise<Project[]> {
         return [...this.Projects.map(p => {
             return {...p}
         })]
+        .filter(p => {
+            return filter?.active && !p.later
+        })
     }
     
     async DeleteProject(id: number) {
