@@ -7,6 +7,7 @@ export interface ProjectFilter {
 
 interface ProjectFiltersProps {
     filter?: ProjectFilter
+    onChange?: (newFilter: ProjectFilter) => void
 }
 
 const defaultFilter: ProjectFilter = {
@@ -17,7 +18,9 @@ const defaultFilter: ProjectFilter = {
 export function ProjectFilters(props: ProjectFiltersProps) {
     const filter = props.filter || defaultFilter
     return <div data-testid="project-filters">
-            <CheckBox label="Active projects" checked={filter.active ?? false} />
+            <CheckBox label="Active projects" checked={filter.active ?? false}
+                onChange={_ => props.onChange?.({ ...filter, active: true })}
+             />
             <CheckBox label="Inactive projects" checked={false} />
             
             <CheckBox label="Completed projects" checked={false} />
