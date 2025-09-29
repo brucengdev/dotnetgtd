@@ -19,7 +19,7 @@ export function ProjectFilters(props: ProjectFiltersProps) {
     const filter = props.filter || defaultFilter
     return <div data-testid="project-filters">
             <CheckBox label="Active projects" checked={filter.active ?? false}
-                onChange={_ => props.onChange?.({ ...filter, active: true })}
+                onChange={checked => props.onChange?.({ ...filter, active: checked })}
              />
             <CheckBox label="Inactive projects" checked={false} />
             

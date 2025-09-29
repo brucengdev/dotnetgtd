@@ -29,4 +29,14 @@ describe("ProjectFilters", () => {
 
         expect(fn).toHaveBeenCalledWith({ active: true })
     })
+
+    it("active filter is unchecked", () => {
+        const fn = vitest.fn()
+        const filter = { active: true }
+        render(<ProjectFilters filter={filter} onChange={fn} />)
+
+        screen.getByRole("checkbox", {name: "Active projects"}).click()
+
+        expect(fn).toHaveBeenCalledWith({ active: false })
+    })
 })
