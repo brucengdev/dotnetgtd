@@ -26,30 +26,30 @@ describe("ProjectView", () => {
         expect(items[0].querySelector('[data-testId="later"]')).not.toBeChecked()
     })
 
-    // it("get inactive projects", async () => {
-    //     const client = new TestClient()
-    //     client.Projects = [
-    //         { id: 1, name: "Project A", done: false, later: false },
-    //         { id: 2, name: "Project B", done: false, later: true }
-    //     ]
-    //     render(<ProjectView client={client} />)
+    it("get completed projects", async () => {
+        const client = new TestClient()
+        client.Projects = [
+            { id: 1, name: "Project A", done: false, later: false },
+            { id: 2, name: "Project B", done: true, later: false }
+        ]
+        render(<ProjectView client={client} />)
 
-    //     await sleep(1)
+        await sleep(1)
 
-    //     screen.getByRole("checkbox", { name: "Active projects"}).click()
-    //     screen.getByRole("checkbox", { name: "Inactive projects"}).click()
+        screen.getByRole("checkbox", { name: "Completed projects"}).click()
+        screen.getByRole("checkbox", { name: "Uncompleted projects"}).click()
 
-    //     await sleep(1)
+        await sleep(1)
 
-    //     expect(screen.getByRole("checkbox", { name: "Active projects"})).not.toBeChecked()
-    //     expect(screen.getByRole("checkbox", { name: "Inactive projects"})).toBeChecked()
+        expect(screen.getByRole("checkbox", { name: "Completed projects"})).toBeChecked()
+        expect(screen.getByRole("checkbox", { name: "Uncompleted projects"})).not.toBeChecked()
 
-    //     const items = screen.queryAllByTestId("project")
-    //     expect(items.length).toBe(1)
-    //     expect(items[0].querySelector('[data-testId="name"]')?.textContent).toBe("Project B")
-    //     expect(items[0].querySelector('[data-testId="done"]')).not.toBeChecked()
-    //     expect(items[0].querySelector('[data-testId="later"]')).toBeChecked()
-    // })
+        const items = screen.queryAllByTestId("project")
+        expect(items.length).toBe(1)
+        expect(items[0].querySelector('[data-testId="name"]')?.textContent).toBe("Project B")
+        expect(items[0].querySelector('[data-testId="done"]')).toBeChecked()
+        expect(items[0].querySelector('[data-testId="later"]')).not.toBeChecked()
+    })
 
     // it("get both active and inactive projects", async () => {
     //     const client = new TestClient()
