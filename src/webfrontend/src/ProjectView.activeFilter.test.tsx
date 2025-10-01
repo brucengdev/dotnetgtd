@@ -21,10 +21,9 @@ describe("TaskView", () => {
 
         const items = screen.queryAllByTestId("project")
         expect(items.length).toBe(1)
-        // expect(items[0].querySelector('[data-testId="description"]')?.textContent).toBe("Task A")
-        // expect(items[0].querySelector('[data-testId="project"]')?.textContent).toBe("")
-        // expect(items[0].querySelector('[data-testId="done"]')).not.toBeChecked()
-        // expect(items[0].querySelector('[data-testId="later"]')).not.toBeChecked()
+        expect(items[0].querySelector('[data-testId="name"]')?.textContent).toBe("Task A")
+        expect(items[0].querySelector('[data-testId="done"]')).not.toBeChecked()
+        expect(items[0].querySelector('[data-testId="later"]')).not.toBeChecked()
     })
 
     // it("get inactive tasks", async () => {
