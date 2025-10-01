@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vitest } from "vitest";
 import { ProjectFilters } from "./ProjectFilters";
 import '@testing-library/jest-dom'
 
 describe("ProjectFilters", () => {
-    it("has necessary ui components", () => {
+    it("has necessary ui components and use default filter", () => {
         render(<ProjectFilters />)
 
         expect(screen.getByTestId("project-filters")).toBeInTheDocument()
@@ -14,5 +14,85 @@ describe("ProjectFilters", () => {
 
         expect(screen.getByRole("checkbox", {name: "Completed projects"})).toBeInTheDocument()
         expect(screen.getByRole("checkbox", {name: "Uncompleted projects"})).toBeInTheDocument()
+    })
+
+    it("active filter is checked", () => {
+        const fn = vitest.fn()
+        const filter = {}
+        render(<ProjectFilters filter={filter} onChange={fn} />)
+
+        screen.getByRole("checkbox", {name: "Active projects"}).click()
+
+        expect(fn).toHaveBeenCalledWith({ active: true })
+    })
+
+    it("active filter is unchecked", () => {
+        const fn = vitest.fn()
+        const filter = { active: true }
+        render(<ProjectFilters filter={filter} onChange={fn} />)
+
+        screen.getByRole("checkbox", {name: "Active projects"}).click()
+
+        expect(fn).toHaveBeenCalledWith({ active: false })
+    })
+
+    it("inactive filter is checked", () => {
+        const fn = vitest.fn()
+        const filter = {}
+        render(<ProjectFilters filter={filter} onChange={fn} />)
+
+        screen.getByRole("checkbox", {name: "Inactive projects"}).click()
+
+        expect(fn).toHaveBeenCalledWith({ inactive: true })
+    })
+
+    it("inactive filter is unchecked", () => {
+        const fn = vitest.fn()
+        const filter = { inactive: true }
+        render(<ProjectFilters filter={filter} onChange={fn} />)
+
+        screen.getByRole("checkbox", {name: "Inactive projects"}).click()
+
+        expect(fn).toHaveBeenCalledWith({ inactive: false })
+    })
+
+    it("completed filter is checked", () => {
+        const fn = vitest.fn()
+        const filter = {}
+        render(<ProjectFilters filter={filter} onChange={fn} />)
+
+        screen.getByRole("checkbox", {name: "Completed projects"}).click()
+
+        expect(fn).toHaveBeenCalledWith({ completed: true })
+    })
+
+    it("completed filter is unchecked", () => {
+        const fn = vitest.fn()
+        const filter = { completed: true }
+        render(<ProjectFilters filter={filter} onChange={fn} />)
+
+        screen.getByRole("checkbox", {name: "Completed projects"}).click()
+
+        expect(fn).toHaveBeenCalledWith({ completed: false })
+    })
+
+    it("uncompleted filter is checked", () => {
+        const fn = vitest.fn()
+        const filter = {}
+        render(<ProjectFilters filter={filter} onChange={fn} />)
+
+        screen.getByRole("checkbox", {name: "Uncompleted projects"}).click()
+
+        expect(fn).toHaveBeenCalledWith({ uncompleted: true })
+    })
+
+    it("uncompleted filter is unchecked", () => {
+        const fn = vitest.fn()
+        const filter = { uncompleted: true }
+        render(<ProjectFilters filter={filter} onChange={fn} />)
+
+        screen.getByRole("checkbox", {name: "Uncompleted projects"}).click()
+
+        expect(fn).toHaveBeenCalledWith({ uncompleted: false })
     })
 })

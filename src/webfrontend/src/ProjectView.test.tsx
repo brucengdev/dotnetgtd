@@ -110,7 +110,7 @@ describe("ProjectView", () => {
     ]
     testCases.forEach(testCase => {
         const { newProjectName, later } = testCase
-        it("adds a new project when Create button is clicked", async () => {
+        it(`adds a new project when Create button is clicked when later=${later}`, async () => {
             const client = new TestClient()
             client.Projects = [
                 {id: 1, name: "Project X", later: false, done: false }
@@ -118,6 +118,10 @@ describe("ProjectView", () => {
             render(<ProjectView client={client} />)
 
             await sleep(1)
+
+            screen.getByRole("checkbox", { name: "Inactive projects" }).click()
+            await sleep(1)
+            expect(screen.getByRole("checkbox", { name: "Inactive projects" })).toBeChecked()
 
             let projects = screen.queryAllByTestId("project")
             expect(projects.length).toBe(1)

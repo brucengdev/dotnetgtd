@@ -1,11 +1,32 @@
 import { CheckBox } from "./controls/CheckBox";
 
-export function ProjectFilters() {
+export interface ProjectFilter {
+    active?: boolean
+    inactive?: boolean
+    uncompleted?: boolean
+    completed?: boolean
+}
+
+interface ProjectFiltersProps {
+    filter?: ProjectFilter
+    onChange?: (newFilter: ProjectFilter) => void
+}
+
+export function ProjectFilters(props: ProjectFiltersProps) {
+    const filter = props.filter
     return <div data-testid="project-filters">
-            <CheckBox label="Active projects" checked={false} />
-            <CheckBox label="Inactive projects" checked={false} />
-            
-            <CheckBox label="Completed projects" checked={false} />
-            <CheckBox label="Uncompleted projects" checked={false} />
+            <CheckBox label="Active projects" checked={filter?.active ?? false}
+                onChange={checked => props.onChange?.({ ...filter, active: checked })}
+             />
+            <CheckBox label="Inactive projects" checked={filter?.inactive ?? false}
+                onChange={checked => props.onChange?.({ ...filter, inactive: checked })}
+             />
+
+            <CheckBox label="Completed projects" checked={filter?.completed ?? false}
+                onChange={checked => props.onChange?.({ ...filter, completed: checked })}
+             />
+            <CheckBox label="Uncompleted projects" checked={filter?.uncompleted ?? false}
+                onChange={checked => props.onChange?.({ ...filter, uncompleted: checked })}
+             />
         </div>
 }

@@ -1,6 +1,7 @@
 import { Item } from "../models/Item"
 import { Project } from "../models/Project"
 import { Tag } from "../models/Tag"
+import { ProjectFilter } from "../ProjectFilters"
 import { TaskFilter } from "../TaskFilters"
 
 export interface IClient {
@@ -14,7 +15,7 @@ export interface IClient {
     DeleteItem: (id: number) => Promise<boolean>
 
     AddProject: (item: Project) => Promise<boolean>
-    GetProjects: () => Promise<Project[]>
+    GetProjects: (filter?: ProjectFilter) => Promise<Project[]>
     DeleteProject: (id: number) => Promise<boolean>
 
     AddTag: (item: Tag) => Promise<boolean>
