@@ -130,7 +130,8 @@ export class TestClient implements IClient {
         })]
         if(filter !== undefined) {
             result = result.filter(p => {
-                return filter?.active && !p.later
+                return filter?.active && !p.later ||
+                    filter?.inactive && p.later
             })
         }
         return result

@@ -119,6 +119,10 @@ describe("ProjectView", () => {
 
             await sleep(1)
 
+            screen.getByRole("checkbox", { name: "Inactive projects" }).click()
+            await sleep(1)
+            expect(screen.getByRole("checkbox", { name: "Inactive projects" })).toBeChecked()
+
             let projects = screen.queryAllByTestId("project")
             expect(projects.length).toBe(1)
             expect(projects[0].querySelector('[data-testid="name"]')?.textContent).toBe("Project X")
