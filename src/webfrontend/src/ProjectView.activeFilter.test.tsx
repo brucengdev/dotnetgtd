@@ -5,7 +5,7 @@ import { TestClient } from "./__test__/TestClient";
 import { sleep } from "./__test__/testutils";
 import { ProjectView } from "./ProjectView";
 
-describe("TaskView", () => {
+describe("ProjectView", () => {
     it("shows only active projects initially", async () => {
         const client = new TestClient()
         client.Projects = [
