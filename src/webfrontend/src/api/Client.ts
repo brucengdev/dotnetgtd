@@ -15,7 +15,7 @@ export interface IClient {
     DeleteItem: (id: number) => Promise<boolean>
 
     AddProject: (item: Project) => Promise<boolean>
-    GetProjects: (filter: ProjectFilter) => Promise<Project[]>
+    GetProjects: (filter?: ProjectFilter) => Promise<Project[]>
     DeleteProject: (id: number) => Promise<boolean>
 
     AddTag: (item: Tag) => Promise<boolean>
