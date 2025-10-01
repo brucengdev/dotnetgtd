@@ -79,24 +79,24 @@ describe("ProjectView", () => {
         expect(items[1].querySelector('[data-testId="later"]')).not.toBeChecked()
     })
 
-    // it("get no projects when both filters are inactive", async () => {
-    //     const client = new TestClient()
-    //     client.Projects = [
-    //         { id: 1, name: "Project A", done: false, later: false },
-    //         { id: 2, name: "Project B", done: false, later: true }
-    //     ]
-    //     render(<ProjectView client={client} />)
+    it("get no projects when both filters are unchecked", async () => {
+        const client = new TestClient()
+        client.Projects = [
+            { id: 1, name: "Project A", done: false, later: false },
+            { id: 2, name: "Project B", done: true, later: false }
+        ]
+        render(<ProjectView client={client} />)
 
-    //     await sleep(1)
+        await sleep(1)
 
-    //     screen.getByRole("checkbox", { name: "Active projects"}).click()
+        screen.getByRole("checkbox", { name: "Uncompleted projects"}).click()
 
-    //     await sleep(1)
+        await sleep(1)
 
-    //     expect(screen.getByRole("checkbox", { name: "Inactive projects"})).not.toBeChecked()
-    //     expect(screen.getByRole("checkbox", { name: "Active projects"})).not.toBeChecked()
+        expect(screen.getByRole("checkbox", { name: "Uncompleted projects"})).not.toBeChecked()
+        expect(screen.getByRole("checkbox", { name: "Completed projects"})).not.toBeChecked()
 
-    //     const items = screen.queryAllByTestId("project")
-    //     expect(items.length).toBe(0)
-    // })
+        const items = screen.queryAllByTestId("project")
+        expect(items.length).toBe(0)
+    })
 })
