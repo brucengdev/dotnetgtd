@@ -59,7 +59,7 @@ public class Item
         return new Item()
         {
             Description = newItemServiceModel.Description,
-            Id = 0,
+            Id = newItemServiceModel.Id,
             UserId = newItemServiceModel.UserId,
             ProjectId = newItemServiceModel.ProjectId,
             Done = newItemServiceModel.Done,

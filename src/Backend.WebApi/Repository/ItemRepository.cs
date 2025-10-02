@@ -18,6 +18,10 @@ public class ItemRepository: IItemRepository
         return item.Id;
     }
 
+    public void UpdateItem(Item item)
+    {
+    }
+
     public IEnumerable<Item> GetItems(int userId,
         IEnumerable<bool>? completionStatuses = null,
         IEnumerable<bool>? laterStatuses = null,

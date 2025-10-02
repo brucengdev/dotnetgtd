@@ -45,6 +45,22 @@ public class ItemManager: IItemManager
 
     public void UpdateItem(ItemServiceModel newItemServiceModel, int userId)
     {
+        var user = _userRepo.GetUser(userId);
+        if (user == null)
+        {
+            throw new UserNotFoundException();
+        }
+        var item = Item.FromServiceModel(newItemServiceModel);
+        _itemRepo.UpdateItem(item);
+        
+        foreach (var tagId in (newItemServiceModel.TagIds ?? []))
+        {
+            _itemTagMappingRepo.CreateMapping(new()
+            {
+                ItemId = item.Id,
+                TagId = tagId
+            });
+        }
     }
 
     public IEnumerable<ItemServiceModel> GetItems(int userId,
