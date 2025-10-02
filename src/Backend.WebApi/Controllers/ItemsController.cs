@@ -28,7 +28,14 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult UpdateItem(ItemServiceModel itemService)
         {
-            _itemManager.UpdateItem(itemService, this.CurrentUserId());
+            try
+            {
+                _itemManager.UpdateItem(itemService, this.CurrentUserId());
+            }
+            catch (ItemNotFoundException)
+            {
+                return NotFound();
+            }
             return Ok();
         }
         
