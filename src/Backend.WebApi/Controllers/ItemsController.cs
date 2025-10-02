@@ -25,6 +25,13 @@ namespace Backend.WebApi.Controllers
             return Ok(itemId);
         }
         
+        [HttpPut("[action]")]
+        [ServiceFilter<SecurityFilterAttribute>]
+        public ActionResult UpdateItem(ItemServiceModel itemService)
+        {
+            return Ok();
+        }
+        
         [HttpGet("[action]")]
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult GetItems(string? complete, string? later, string? projectId, string? tagIds = null)
