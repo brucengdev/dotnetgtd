@@ -56,6 +56,10 @@ public class ItemManager: IItemManager
         }
 
         var existingItem = _itemRepo.GetItem(newItemServiceModel.Id);
+        if (existingItem == null)
+        {
+            throw new ItemNotFoundException();
+        }
         if (existingItem.UserId != userId)
         {
             throw new UnauthorizedAccessException("User does not own this item");

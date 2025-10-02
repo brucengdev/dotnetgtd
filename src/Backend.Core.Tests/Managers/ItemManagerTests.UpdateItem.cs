@@ -205,4 +205,31 @@ public partial class ItemManagerTests
         exception.Message.ShouldBe("UserId field must be the same as current logged in user's");
         Data.Items.Count.ShouldBe(2);
     }
+    
+    [Fact]
+    public void Updating_item_must_throw_notfound_if_item_does_not_exist()
+    {
+        //arrange
+        var itemRepo = new TestItemRepository(Data);
+        var userRepo = new TestUserRepository();
+        userRepo.AddUser(new()
+        {
+            Id = 123,
+            Username = "testuser"
+        });
+        var itemTagMappingRepo = new TestItemTagMappingRepo(Data);
+        var sut = new ItemManager(itemRepo, userRepo, itemTagMappingRepo);
+        var input = new ItemServiceModel()
+        {
+            Id = 15,
+            Description = "New Task",
+            UserId = 123
+        };
+        var currentUserId = 123;
+
+        //act and assert
+        Assert.Throws<ItemNotFoundException>(
+            () => sut.UpdateItem(input, currentUserId));
+        Data.Items.Count.ShouldBe(0);
+    }
 }
