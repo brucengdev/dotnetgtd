@@ -59,11 +59,21 @@ public class Item
         return new Item()
         {
             Description = newItemServiceModel.Description,
-            Id = 0,
+            Id = newItemServiceModel.Id,
             UserId = newItemServiceModel.UserId,
             ProjectId = newItemServiceModel.ProjectId,
             Done = newItemServiceModel.Done,
             Later = newItemServiceModel.Later
         };
+    }
+
+    public void MakeSame(Item item)
+    {
+        Id = item.Id;
+        Description = item.Description;
+        UserId = item.UserId;
+        ProjectId = item.ProjectId;
+        Done = item.Done;
+        Later = item.Later;
     }
 }

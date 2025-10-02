@@ -18,6 +18,16 @@ public class ItemRepository: IItemRepository
         return item.Id;
     }
 
+    public void UpdateItem(Item item)
+    {
+        var existing = _dbContext.Items.FirstOrDefault(i => i.Id == item.Id);
+        if (existing != null)
+        {
+            existing.MakeSame(item);
+            _dbContext.SaveChanges();
+        }
+    }
+
     public IEnumerable<Item> GetItems(int userId,
         IEnumerable<bool>? completionStatuses = null,
         IEnumerable<bool>? laterStatuses = null,

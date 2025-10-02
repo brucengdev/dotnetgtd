@@ -1,6 +1,7 @@
 ﻿using Backend.Core.Manager;
 using Backend.Models;
 using Backend.WebApi.ActionFilters;
+using Backend.WebApi.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.WebApi.Controllers
@@ -19,8 +20,7 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult CreateTag(Tag tag)
         {
-            var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
-            tag.UserId = userId;
+            tag.UserId = this.CurrentUserId();
             var TagId = _tagManager.CreateTag(tag);
             return Ok(TagId);
         }
@@ -29,8 +29,7 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult GetTags()
         {
-            var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
-            var Tags = _tagManager.GetTags(userId);
+            var Tags = _tagManager.GetTags(this.CurrentUserId());
             return Ok(Tags);
         }
 
@@ -38,10 +37,9 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult DeleteTag([FromQuery] int id)
         {
-            var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
             try
             {
-                _tagManager.DeleteTag(id, userId);
+                _tagManager.DeleteTag(id, this.CurrentUserId());
             }
             catch (TagNotFoundException _)
             {

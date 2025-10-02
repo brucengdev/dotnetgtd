@@ -17,6 +17,15 @@ public class TestItemRepository: IItemRepository
         return item.Id;
     }
 
+    public void UpdateItem(Item item)
+    {
+        var itemIndex = _data.Items.FindIndex(i => i.Id == item.Id);
+        if (itemIndex != -1)
+        {
+            _data.Items[itemIndex] = item;
+        }
+    }
+
     public IEnumerable<Item> GetItems(int userId,
         IEnumerable<bool> completionStatuses,
         IEnumerable<bool> laterStatuses,

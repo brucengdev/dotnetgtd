@@ -43,6 +43,40 @@ public class ItemManager: IItemManager
         return itemId;
     }
 
+    public void UpdateItem(ItemServiceModel newItemServiceModel, int userId)
+    {
+        if (newItemServiceModel.UserId != userId)
+        {
+            throw new ArgumentException("UserId field must be the same as current logged in user's");
+        }
+        var user = _userRepo.GetUser(userId);
+        if (user == null)
+        {
+            throw new UserNotFoundException();
+        }
+
+        var existingItem = _itemRepo.GetItem(newItemServiceModel.Id);
+        if (existingItem == null)
+        {
+            throw new ItemNotFoundException();
+        }
+        if (existingItem.UserId != userId)
+        {
+            throw new UnauthorizedAccessException("User does not own this item");
+        }
+        var item = Item.FromServiceModel(newItemServiceModel);
+        _itemRepo.UpdateItem(item);
+        
+        foreach (var tagId in (newItemServiceModel.TagIds ?? []))
+        {
+            _itemTagMappingRepo.CreateMapping(new()
+            {
+                ItemId = item.Id,
+                TagId = tagId
+            });
+        }
+    }
+
     public IEnumerable<ItemServiceModel> GetItems(int userId,
         IEnumerable<bool> completionStatuses,
         IEnumerable<bool> laterStatuses,

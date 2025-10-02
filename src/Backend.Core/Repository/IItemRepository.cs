@@ -5,6 +5,7 @@ namespace Backend.Core.Repository;
 public interface IItemRepository
 {
     int CreateItem(Item item);
+    void UpdateItem(Item item);
     IEnumerable<Item> GetItems(int userId, 
         IEnumerable<bool>? completionStatuses = null,
         IEnumerable<bool>? laterStatuses = null,
