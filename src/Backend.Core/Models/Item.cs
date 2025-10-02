@@ -66,4 +66,14 @@ public class Item
             Later = newItemServiceModel.Later
         };
     }
+
+    public void MakeSame(Item item)
+    {
+        Id = item.Id;
+        Description = item.Description;
+        UserId = item.UserId;
+        ProjectId = item.ProjectId;
+        Done = item.Done;
+        Later = item.Later;
+    }
 }
