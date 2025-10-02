@@ -43,6 +43,10 @@ public class ItemManager: IItemManager
         return itemId;
     }
 
+    public void UpdateItem(ItemServiceModel newItemServiceModel, int userId)
+    {
+    }
+
     public IEnumerable<ItemServiceModel> GetItems(int userId,
         IEnumerable<bool> completionStatuses,
         IEnumerable<bool> laterStatuses,

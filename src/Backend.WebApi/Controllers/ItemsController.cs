@@ -29,6 +29,7 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult UpdateItem(ItemServiceModel itemService)
         {
+            _itemManager.UpdateItem(itemService, 123);
             return Ok();
         }
         
