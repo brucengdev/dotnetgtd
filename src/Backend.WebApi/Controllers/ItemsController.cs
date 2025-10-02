@@ -1,8 +1,8 @@
-﻿using System.Collections.Concurrent;
-using Backend.Core.Manager;
+﻿using Backend.Core.Manager;
 using Backend.Models;
 using Backend.WebApi.ActionFilters;
 using Microsoft.AspNetCore.Mvc;
+using Backend.WebApi.Extensions;
 
 namespace Backend.WebApi.Controllers
 {
@@ -20,8 +20,7 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult CreateItem(ItemServiceModel itemService)
         {
-            var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
-            var itemId = _itemManager.CreateItem(itemService, userId);
+            var itemId = _itemManager.CreateItem(itemService, this.CurrentUserId());
             return Ok(itemId);
         }
         
@@ -29,8 +28,7 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult UpdateItem(ItemServiceModel itemService)
         {
-            var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
-            _itemManager.UpdateItem(itemService, userId);
+            _itemManager.UpdateItem(itemService, this.CurrentUserId());
             return Ok();
         }
         
@@ -38,7 +36,6 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult GetItems(string? complete, string? later, string? projectId, string? tagIds = null)
         {
-            var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
             IEnumerable<bool> completionStatuses;
             if (complete == null || complete == "*")
             {
@@ -115,7 +112,7 @@ namespace Backend.WebApi.Controllers
                 tasksWithNoTags = tagFilters.Contains("null");
             }
 
-            var items = _itemManager.GetItems(userId, completionStatuses, laterStatuses,
+            var items = _itemManager.GetItems(this.CurrentUserId(), completionStatuses, laterStatuses,
                 projectIds, tasksWithNoProject, tagIdValues, tasksWithNoTags);
             return Ok(items);
         }
@@ -124,10 +121,9 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult DeleteItem([FromQuery] int id)
         {
-            var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
             try
             {
-                _itemManager.DeleteItem(id, userId);
+                _itemManager.DeleteItem(id, this.CurrentUserId());
             }
             catch (UnauthorizedAccessException _)
             {
