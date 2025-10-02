@@ -28,15 +28,17 @@ namespace Backend.WebApi.Tests.Controller
             attributes.Length.ShouldBeGreaterThan(0, "Must require authorization");
         }
         
-        [Fact]
-        public void Item_must_be_updated()
+        [Theory]
+        [InlineData(1)]
+        [InlineData(22)]
+        public void Item_must_be_updated(int userId)
         {
             //arrange
             var itemManager = new Mock<IItemManager>();
             var sut = new ItemsController(itemManager.Object);
             sut.ControllerContext = new ControllerContext();
             sut.ControllerContext.HttpContext = new DefaultHttpContext();
-            sut.HttpContext.Items["UserId"] = 123;
+            sut.HttpContext.Items["UserId"] = userId;
         
             //act
             var item = new ItemServiceModel
@@ -46,12 +48,13 @@ namespace Backend.WebApi.Tests.Controller
                 ProjectId = 1,
                 TagIds = new List<int>{1, 2},
                 Done = false,
-                Later = false
+                Later = false,
+                UserId = userId
             };
             var response = sut.UpdateItem(item);
         
             //assert
-            itemManager.Verify(im => im.UpdateItem(item, 123), Times.Once);
+            itemManager.Verify(im => im.UpdateItem(item, userId), Times.Once);
             itemManager.VerifyNoOtherCalls();
             
             response.ShouldBeOfType<OkResult>();

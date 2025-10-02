@@ -29,7 +29,8 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult UpdateItem(ItemServiceModel itemService)
         {
-            _itemManager.UpdateItem(itemService, 123);
+            var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
+            _itemManager.UpdateItem(itemService, userId);
             return Ok();
         }
         
