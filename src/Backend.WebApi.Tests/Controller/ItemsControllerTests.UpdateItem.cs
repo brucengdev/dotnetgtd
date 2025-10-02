@@ -95,5 +95,39 @@ namespace Backend.WebApi.Tests.Controller
             var result = response as NotFoundResult;
             result?.StatusCode.ShouldBe((int)HttpStatusCode.NotFound);
         }
+        
+        [Fact]
+        public void Must_return_Unauthorized_if_item_does_not_belong_to_user()
+        {
+            //arrange
+            var itemManager = new Mock<IItemManager>();
+            itemManager.Setup(im => im.UpdateItem(It.IsAny<ItemServiceModel>(), It.IsAny<int>()))
+                .Throws(new UnauthorizedAccessException());
+            var sut = new ItemsController(itemManager.Object);
+            sut.ControllerContext = new ControllerContext();
+            sut.ControllerContext.HttpContext = new DefaultHttpContext();
+            sut.HttpContext.Items["UserId"] = 123;
+        
+            //act
+            var item = new ItemServiceModel
+            {
+                Id = 2,
+                Description = "Foo",
+                ProjectId = 1,
+                TagIds = new List<int>{1, 2},
+                Done = false,
+                Later = false,
+                UserId = 123
+            };
+            var response = sut.UpdateItem(item);
+        
+            //assert
+            itemManager.Verify(im => im.UpdateItem(item, 123), Times.Once);
+            itemManager.VerifyNoOtherCalls();
+            
+            response.ShouldBeOfType<UnauthorizedResult>();
+            var result = response as UnauthorizedResult;
+            result?.StatusCode.ShouldBe((int)HttpStatusCode.Unauthorized);
+        }
     }
 }
