@@ -1,5 +1,6 @@
 using Backend.Core.Manager;
 using Backend.WebApi.ActionFilters;
+using Backend.WebApi.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.WebApi.Controllers;
@@ -39,8 +40,7 @@ public class AccountController: ControllerBase
         [FromForm] string username, 
         [FromForm] string password)
     {
-        var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
-        if (userId != 1)
+        if (this.CurrentUserId() != 1)
         {
             return Unauthorized();
         }

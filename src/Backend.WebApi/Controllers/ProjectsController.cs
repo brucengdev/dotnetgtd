@@ -1,6 +1,7 @@
 ﻿using Backend.Core.Manager;
 using Backend.Models;
 using Backend.WebApi.ActionFilters;
+using Backend.WebApi.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backend.WebApi.Controllers
@@ -19,8 +20,7 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult CreateProject(Project project)
         {
-            var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
-            project.UserId = userId;
+            project.UserId = this.CurrentUserId();
             var projectId = _projectManager.CreateProject(project);
             return Ok(projectId);
         }
@@ -29,7 +29,6 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult GetProjects(string? complete, string? later)
         {
-            var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
             IEnumerable<bool>? completionStatuses;
             if (complete == null)
             {
@@ -57,7 +56,8 @@ namespace Backend.WebApi.Controllers
             {
                 laterStatuses = later.Split(",").Select(s => s == "later");
             }
-            var projects = _projectManager.GetProjects(userId, completionStatuses, laterStatuses);
+            var projects = _projectManager.GetProjects(this.CurrentUserId(), 
+                completionStatuses, laterStatuses);
             return Ok(projects);
         }
 
@@ -65,10 +65,9 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult DeleteProject([FromQuery] int id)
         {
-            var userId = Convert.ToInt32(HttpContext.Items["UserId"]);
             try
             {
-                _projectManager.DeleteProject(id, userId);
+                _projectManager.DeleteProject(id, this.CurrentUserId());
             }
             catch (ProjectNotFoundException _)
             {
