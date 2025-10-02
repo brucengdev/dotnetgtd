@@ -50,6 +50,12 @@ public class ItemManager: IItemManager
         {
             throw new UserNotFoundException();
         }
+
+        var existingItem = _itemRepo.GetItem(newItemServiceModel.Id);
+        if (existingItem.UserId != userId)
+        {
+            throw new UnauthorizedAccessException("User does not own this item");
+        }
         var item = Item.FromServiceModel(newItemServiceModel);
         _itemRepo.UpdateItem(item);
         
