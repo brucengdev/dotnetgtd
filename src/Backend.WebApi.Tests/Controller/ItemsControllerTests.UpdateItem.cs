@@ -97,7 +97,7 @@ namespace Backend.WebApi.Tests.Controller
         }
         
         [Fact]
-        public void Must_return_Unauthorized_if_item_does_not_belong_to_user()
+        public void Must_return_Unauthorized_if_user_is_not_allowed_to_edit_item()
         {
             //arrange
             var itemManager = new Mock<IItemManager>();
