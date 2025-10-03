@@ -17,4 +17,21 @@ describe("ItemView update form", () => {
 
         expect(input).toHaveValue("Task A")
     })
+
+    it("changes back to text view after losing focus", () => {
+        render(<ItemView description="Task A" 
+            projectName="ProjectX" tagNames={["tag1", "tag2"]}
+            done={false} later={false} />)
+
+        const descriptionView = screen.getByTestId("description")
+        fireEvent.click(descriptionView)
+
+        const input = screen.getByRole("textbox", { name: "Description" })
+        
+        //simulate clicking outside
+        fireEvent.blur(input)
+
+        expect(screen.queryByRole("textbox", { name: "Description" })).not.toBeInTheDocument()
+        expect(screen.getByTestId("description")).toBeInTheDocument()
+    })
 })
