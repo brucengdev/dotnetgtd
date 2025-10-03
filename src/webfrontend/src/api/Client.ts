@@ -120,9 +120,11 @@ export class Client implements IClient {
         return result.ok
     }
 
-    public async GetProjects(): Promise<Project[]> {
+    public async GetProjects(filter?: ProjectFilter): Promise<Project[]> {
         const result = await fetch(`${url}/Projects/GetProjects?${new URLSearchParams({
             accessToken: this.token,
+            complete: buildCompleteFilter(filter?.completed, filter?.uncompleted),
+            later: buildLaterFilter(filter?.active, filter?.inactive)
         }).toString()}`, {
             method: "GET"
         })
