@@ -12,7 +12,7 @@ describe("ItemView update form", () => {
         const descriptionView = screen.getByTestId("description")
         fireEvent.click(descriptionView)
 
-        const input = screen.getByRole("textbox", { name: "Description" })
+        const input = screen.getByTestId("edit-description")
         expect(input).toBeInTheDocument()
 
         expect(input).toHaveValue("Task A")
@@ -26,12 +26,12 @@ describe("ItemView update form", () => {
         const descriptionView = screen.getByTestId("description")
         fireEvent.click(descriptionView)
 
-        const input = screen.getByRole("textbox", { name: "Description" })
+         const input = screen.getByTestId("edit-description")
         
         //simulate clicking outside
         fireEvent.blur(input)
 
-        expect(screen.queryByRole("textbox", { name: "Description" })).not.toBeInTheDocument()
+        expect(screen.queryByTestId("edit-description")).not.toBeInTheDocument()
         expect(screen.getByTestId("description")).toBeInTheDocument()
     })
 })
