@@ -9,8 +9,8 @@ describe("ItemView update form", () => {
             projectName="ProjectX" tagNames={["tag1", "tag2"]}
             done={false} later={false} />)
 
-        const descriptionView = screen.getByTestId("description")
-        fireEvent.click(descriptionView)
+        const itemView = screen.getByTestId("item")
+        itemView.click()
 
         const input = screen.getByTestId("edit-description")
         expect(input).toBeInTheDocument()
