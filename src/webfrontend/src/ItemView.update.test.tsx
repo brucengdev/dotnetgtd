@@ -4,7 +4,7 @@ import { screen, render, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom'
 
 describe("ItemView update form", () => {
-    it("changes to textbox to edit description when clicked on", () => {
+    it("changes to edit mode when clicked on", () => {
         render(<ItemView description="Task A" 
             projectName="ProjectX" tagNames={["tag1", "tag2"]}
             done={false} later={false} />)
@@ -18,7 +18,7 @@ describe("ItemView update form", () => {
         expect(input).toHaveValue("Task A")
     })
 
-    it("changes back to text view after losing focus", () => {
+    it("changes back to view mode after losing focus", () => {
         render(<ItemView description="Task A" 
             projectName="ProjectX" tagNames={["tag1", "tag2"]}
             done={false} later={false} />)
@@ -26,10 +26,8 @@ describe("ItemView update form", () => {
         const descriptionView = screen.getByTestId("description")
         fireEvent.click(descriptionView)
 
-         const input = screen.getByTestId("edit-description")
-        
-        //simulate clicking outside
-        fireEvent.blur(input)
+        const itemView = screen.getByTestId("item")
+        itemView.blur()//simulate clicking outside
 
         expect(screen.queryByTestId("edit-description")).not.toBeInTheDocument()
         expect(screen.getByTestId("description")).toBeInTheDocument()
