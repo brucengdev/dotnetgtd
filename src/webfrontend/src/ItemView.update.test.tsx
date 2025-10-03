@@ -24,7 +24,7 @@ describe("ItemView update form", () => {
         expect(input).toHaveValue("Task A")
     })
 
-    it("changes back to view mode after losing focus", () => {
+    it("changes back to view mode after losing focus", async () => {
         render(<ItemView description="Task A" 
             projectName="ProjectX" tagNames={["tag1", "tag2"]}
             done={false} later={false} />)
@@ -32,8 +32,12 @@ describe("ItemView update form", () => {
         const descriptionView = screen.getByTestId("description")
         fireEvent.click(descriptionView)
 
+        await sleep(1)
+
         const itemView = screen.getByTestId("item")
         itemView.blur()//simulate clicking outside
+
+        await sleep(1)
 
         expect(screen.queryByTestId("edit-description")).not.toBeInTheDocument()
         expect(screen.getByTestId("description")).toBeInTheDocument()

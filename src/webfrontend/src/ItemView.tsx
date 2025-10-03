@@ -15,7 +15,13 @@ export default function ItemView(props: ItemViewProps) {
     const { description, onDelete, done, later } = props
     const [ showConfirmDelete, setShowConfirmDelete ] = useState(false)
     const [ isEditing, setIsEditing ] = useState(false)
-    return <div data-testId="item" onClick={() => setIsEditing(true)}>
+    return <div data-testId="item" 
+                onClick={() => setIsEditing(true)}
+                onBlur={() => {
+                    console.log("item is blurred")
+                    setIsEditing(false)
+                }}
+                >
         <div  className="grid grid-cols-6 mb-1">
             {isEditing
                 ?<input type="text" data-testId="edit-description" value={description} />
