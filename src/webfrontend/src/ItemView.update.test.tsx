@@ -14,5 +14,7 @@ describe("ItemView update form", () => {
 
         const input = screen.getByRole("textbox", { name: "Description" })
         expect(input).toBeInTheDocument()
+
+        expect(input).toHaveValue("Task A")
     })
 })
