@@ -40,6 +40,7 @@ export default function ItemView(props: ItemViewProps) {
                 checked={later}
                 dataTestId="later"
             />
+            <Button text="Edit" />
             {showConfirmDelete
                 ? <></>
                 : <Button text="Delete" className="justify-self-end" 

@@ -90,6 +90,8 @@ describe("ItemView", () => {
                 expect(laterView).not.toBeChecked()
             }
 
+            expect(screen.queryByRole("button", { name: "Edit" })).toBeInTheDocument()
+
             const deleteButton = screen.getByRole("button", { name: "Delete" })
             expect(deleteButton).toBeInTheDocument()
 
