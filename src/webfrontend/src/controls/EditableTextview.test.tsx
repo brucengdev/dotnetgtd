@@ -30,4 +30,19 @@ describe("EditableTextView", () => {
         expect(screen.queryByTestId("editViewTestId")).not.toBeInTheDocument()
         expect(screen.getByTestId("textViewTestId")).toBeInTheDocument()
     })
+
+    it("execute callback if text is changed and accept is clicked", () => {
+        render(<EditableTextView text="Task A" 
+            textViewTestId="textViewTestId" editViewTestId="editViewTestId" />)
+
+        const textView = screen.getByTestId("textViewTestId")
+        fireEvent.click(textView)
+
+        fireEvent.change(screen.getByTestId("editViewTestId"), { target: { value: "Task A Updated" } })
+
+        expect(screen.getByTestId("editViewTestId")).toHaveValue("Task A Updated")
+
+        fireEvent.click(screen.getByRole("button", { name: "✓"}))
+
+    })
 })
