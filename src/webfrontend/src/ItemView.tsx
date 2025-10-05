@@ -2,6 +2,7 @@ import { useState } from "react"
 import { ConfirmDeleteView } from "./ConfirmDeleteView"
 import { Button, ButtonMode } from "./controls/Button"
 import { CheckBox } from "./controls/CheckBox"
+import { EditableTextView } from "./controls/EditableTextView"
 
 interface ItemViewProps {
     description: string
@@ -14,17 +15,9 @@ interface ItemViewProps {
 export default function ItemView(props: ItemViewProps) {
     const { description, onDelete, done, later } = props
     const [ showConfirmDelete, setShowConfirmDelete ] = useState(false)
-    const [ isEditing, setIsEditing ] = useState(false)
     return <div data-testId="item">
         <div  className="grid grid-cols-6 mb-1">
-            {
-                isEditing
-                ?<>
-                    <input type="text" data-testId="edit-description" value={description} />
-                    <Button text="✓" onClick={() => setIsEditing(false)}/>
-                </>
-                :<div data-testId="description" onClick={() => setIsEditing(true)}>{description}</div>
-            }
+            <EditableTextView text={description} textViewTestId="description" editViewTestId="edit-description" />
             <div data-testId="project">{props.projectName??""}</div>
             <div data-testId="tags">{props.tagNames?.join(",") ?? ""}</div>
             <CheckBox
