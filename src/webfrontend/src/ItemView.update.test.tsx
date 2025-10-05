@@ -1,36 +1,30 @@
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vitest } from "vitest"
 import ItemView from "./ItemView"
 import { screen, render, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom'
 
 describe("ItemView update form", () => {
-    it("changes to textbox to edit description when clicked on", () => {
+    it("Executes callback when description is changed", () => {
+        const fn = vitest.fn()
         render(<ItemView description="Task A" 
             projectName="ProjectX" tagNames={["tag1", "tag2"]}
-            done={false} later={false} />)
+            done={false} later={false} 
+            onChange={fn}
+        />)
 
         const descriptionView = screen.getByTestId("description")
         fireEvent.click(descriptionView)
 
-        const input = screen.getByTestId("edit-description")
-        expect(input).toBeInTheDocument()
-        expect(screen.getByRole("button", { name: "✓"})).toBeInTheDocument()
-        expect(screen.queryByTestId("description")).not.toBeInTheDocument()
-
-        expect(input).toHaveValue("Task A")
-    })
-
-    it("changes description back to text view after clicking accept", () => {
-        render(<ItemView description="Task A" 
-            projectName="ProjectX" tagNames={["tag1", "tag2"]}
-            done={false} later={false} />)
-
-        const descriptionView = screen.getByTestId("description")
-        fireEvent.click(descriptionView)
-
+        fireEvent.change(screen.getByTestId("edit-description"), { target: { value: "Task A Updated" } })
         fireEvent.click(screen.getByRole("button", { name: "✓"}))
 
-        expect(screen.queryByTestId("edit-description")).not.toBeInTheDocument()
-        expect(screen.getByTestId("description")).toBeInTheDocument()
+        expect(fn).toHaveBeenCalledWith({
+            description: "Task A Updated",
+            done: false,
+            id: 0,
+            later: false,
+            projectId: undefined,
+            tagIds: undefined
+        })
     })
 })
