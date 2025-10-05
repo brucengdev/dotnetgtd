@@ -14,6 +14,7 @@ describe("ItemView update form", () => {
 
         const input = screen.getByTestId("edit-description")
         expect(input).toBeInTheDocument()
+        expect(screen.queryByTestId("description")).not.toBeInTheDocument()
 
         expect(input).toHaveValue("Task A")
     })

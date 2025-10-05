@@ -14,10 +14,14 @@ interface ItemViewProps {
 export default function ItemView(props: ItemViewProps) {
     const { description, onDelete, done, later } = props
     const [ showConfirmDelete, setShowConfirmDelete ] = useState(false)
+    const [ isEditing, setIsEditing ] = useState(false)
     return <div data-testId="item">
         <div  className="grid grid-cols-6 mb-1">
-            <div data-testId="description">{description}</div>
-            <input type="text" data-testId="edit-description" value={description} />
+            {
+                isEditing
+                ?<input type="text" data-testId="edit-description" value={description} />
+                :<div data-testId="description">{description}</div>
+            }
             <div data-testId="project">{props.projectName??""}</div>
             <div data-testId="tags">{props.tagNames?.join(",") ?? ""}</div>
             <CheckBox
