@@ -19,8 +19,11 @@ export default function ItemView(props: ItemViewProps) {
         <div  className="grid grid-cols-6 mb-1">
             {
                 isEditing
-                ?<input type="text" data-testId="edit-description" value={description} />
-                :<div data-testId="description">{description}</div>
+                ?<>
+                    <input type="text" data-testId="edit-description" value={description} />
+                    <Button text="✓" onClick={() => setIsEditing(false)}/>
+                </>
+                :<div data-testId="description" onClick={() => setIsEditing(true)}>{description}</div>
             }
             <div data-testId="project">{props.projectName??""}</div>
             <div data-testId="tags">{props.tagNames?.join(",") ?? ""}</div>
