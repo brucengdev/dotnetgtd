@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vitest } from "vitest"
 import { screen, render, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom'
 import { EditableTextView } from "./EditableTextView";
@@ -32,8 +32,11 @@ describe("EditableTextView", () => {
     })
 
     it("execute callback if text is changed and accept is clicked", () => {
+        const fn = vitest.fn()
         render(<EditableTextView text="Task A" 
-            textViewTestId="textViewTestId" editViewTestId="editViewTestId" />)
+            textViewTestId="textViewTestId" editViewTestId="editViewTestId"
+            onChange={fn}
+        />)
 
         const textView = screen.getByTestId("textViewTestId")
         fireEvent.click(textView)
@@ -43,6 +46,6 @@ describe("EditableTextView", () => {
         expect(screen.getByTestId("editViewTestId")).toHaveValue("Task A Updated")
 
         fireEvent.click(screen.getByRole("button", { name: "✓"}))
-
+        expect(fn).toHaveBeenCalledWith("Task A Updated")
     })
 })
