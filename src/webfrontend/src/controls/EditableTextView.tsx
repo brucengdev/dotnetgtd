@@ -18,7 +18,7 @@ export function EditableTextView(props: EditableTextViewProps) {
                     value={editTextValue} 
                     onChange={e => setEditTextValue(e.target.value)}/>
                 <Button text="✓" onClick={() => {
-                    if(onChange) {
+                    if(onChange && editTextValue !== text) {
                         onChange(editTextValue)
                     }
                     setIsEditing(false)

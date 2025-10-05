@@ -31,6 +31,22 @@ describe("EditableTextView", () => {
         expect(screen.getByTestId("textViewTestId")).toBeInTheDocument()
     })
 
+    it("does not execute callback if text is unchanged and accept is clicked", () => {
+        const fn = vitest.fn()
+        render(<EditableTextView text="Task A" 
+            textViewTestId="textViewTestId" editViewTestId="editViewTestId"
+            onChange={fn}
+        />)
+
+        const textView = screen.getByTestId("textViewTestId")
+        fireEvent.click(textView)
+
+        expect(screen.getByTestId("editViewTestId")).toHaveValue("Task A")
+
+        fireEvent.click(screen.getByRole("button", { name: "✓"}))
+        expect(fn).not.toHaveBeenCalled()
+    })
+
     it("execute callback if text is changed and accept is clicked", () => {
         const fn = vitest.fn()
         render(<EditableTextView text="Task A" 
