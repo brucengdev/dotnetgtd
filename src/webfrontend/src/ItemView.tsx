@@ -13,6 +13,7 @@ interface ItemViewProps {
     tagNames?: string[]
     done: boolean
     later: boolean
+    item: Item
 }
 export default function ItemView(props: ItemViewProps) {
     const { description, onChange, onDelete, done, later } = props

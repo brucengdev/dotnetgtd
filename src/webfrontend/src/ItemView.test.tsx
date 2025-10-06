@@ -7,60 +7,78 @@ describe("ItemView", () => {
     [
         { 
             testCaseName: "renders view correctly with project name = Project A",
-            description: "Task description",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: false,
+                later: false
+            },
             projectName: "Project A",
             expectedDisplayedProjectName: "Project A",
             tagNames: [],
-            expectedDisplayedTags: "",
-            done: false,
-            later: false
+            expectedDisplayedTags: ""
         },
         { 
             testCaseName: "renders view correctly with undefined project name",
-            description: "Task description",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: false,
+                later: true
+            },
             projectName: undefined,
             expectedDisplayedProjectName: "",
             tagNames: [],
             expectedDisplayedTags: "",
-            done: false,
-            later: true
         },
         { 
             testCaseName: "renders view correctly with empty project name",
-            description: "Task description",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: true,
+                later: false
+            },
             projectName: "",
             expectedDisplayedProjectName: "",
             tagNames: [],
             expectedDisplayedTags: "",
-            done: true,
-            later: false
         },
         { 
             testCaseName: "renders view correctly with 1 tag",
-            description: "Task description",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: true,
+                later: true
+            },
             projectName: "Project A",
             expectedDisplayedProjectName: "Project A",
             tagNames: ["tag1"],
             expectedDisplayedTags: "tag1",
-            done: true,
-            later: true
         },
         { 
             testCaseName: "renders view correctly with multiple tags",
-            description: "Task description",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: false,
+                later: false
+            },
             projectName: "Project A",
             expectedDisplayedProjectName: "Project A",
             tagNames: ["tag1", "tag2"],
             expectedDisplayedTags: "tag1,tag2",
-            done: false,
-            later: false
         }
     ].forEach(testCase => {
-        const {testCaseName, description, 
+        const {testCaseName, item, 
             projectName, expectedDisplayedProjectName,
-            tagNames, expectedDisplayedTags, done, later} = testCase
+            tagNames, expectedDisplayedTags} = testCase
         it(testCaseName, () => {
-            render(<ItemView description={description} 
+            const { description, done, later } = item
+            render(<ItemView 
+                item={item}
+                description={description} 
                 projectName={projectName} tagNames={tagNames} 
                 done={done} later={later} />)
 
