@@ -16,7 +16,7 @@ interface ItemViewProps {
     tags: Tag[]
 }
 export default function ItemView(props: ItemViewProps) {
-    const { item, onChange, onDelete } = props
+    const { item, onChange, onDelete, projects } = props
     const { description, done, later } = item
     const [ showConfirmDelete, setShowConfirmDelete ] = useState(false)
     const projectName = props.projects.find(p => p.id === item.projectId)?.name
@@ -36,8 +36,9 @@ export default function ItemView(props: ItemViewProps) {
                 value={projectName}
                 textViewDataTestId="project"
                 selectDataTestId="edit-project"
-                options={[]}
-                selectedValue=""
+                options={projects.map(p => ({ value: p.id.toString(), text: p.name }))}
+                selectedValue={item.projectId?.toString() ?? ""}
+                onChange={newProjectId => onChange?.({...item, projectId: newProjectId ? parseInt(newProjectId) : undefined})}
             />
             <div data-testId="tags">{tagNames.join(",") ?? ""}</div>
             <CheckBox

@@ -4,6 +4,7 @@ import { screen, render, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom'
 import { Project } from "./models/Project";
 import { Tag } from "./models/Tag";
+import { sleep } from "./__test__/testutils";
 
 const testProjects: Project[] = [
     { id: 1, name: "ProjectX", done: false, later: false },
@@ -107,6 +108,37 @@ describe("ItemView update form", () => {
                 tagIds: [1, 2],
                 projectId: 1
             })
+        })
+    })
+
+    it(`Executes callback when project is changed`, async () => {
+        const fn = vitest.fn()
+        render(<ItemView
+            item={{
+                id: 1,
+                description:"Task A" ,
+                done:false,
+                later:false,
+                projectId: 1,
+                tagIds: [1,2]
+            }}
+            projects={testProjects}
+            tags={testTags}
+            onChange={fn}
+        />)
+
+        screen.getByTestId("project").click()
+        await sleep(1)
+        
+        fireEvent.change(screen.getByTestId("edit-project"), { target: { value: "2" } })
+
+        expect(fn).toHaveBeenCalledWith({
+            id: 1,
+            description: "Task A",
+            done: false,
+            later: false,
+            tagIds: [1, 2],
+            projectId: 2
         })
     })
 })
