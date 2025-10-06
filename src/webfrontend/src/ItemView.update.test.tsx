@@ -10,9 +10,11 @@ describe("ItemView update form", () => {
             item={{
                 id: 1,
                 description:"Task A" ,
-                done:false,later:false 
+                done:false,later:false,
+                projectId: 1
             }}
-            projectName="ProjectX" tagNames={["tag1", "tag2"]}
+            projects={[{ id: 1, name: "ProjectX", done: false, later: false }]}
+            tagNames={["tag1", "tag2"]}
             onChange={fn}
         />)
 

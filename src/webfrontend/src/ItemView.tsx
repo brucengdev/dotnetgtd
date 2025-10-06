@@ -7,7 +7,6 @@ import { Item } from "./models/Item"
 import { Project } from "./models/Project"
 
 interface ItemViewProps {
-    projectName?: string
     onChange?: (item: Item) => void
     onDelete?: () => void
     tagNames?: string[]
@@ -18,6 +17,7 @@ export default function ItemView(props: ItemViewProps) {
     const { item, onChange, onDelete } = props
     const { description, done, later } = item
     const [ showConfirmDelete, setShowConfirmDelete ] = useState(false)
+    const projectName = props.projects.find(p => p.id === item.projectId)?.name
     return <div data-testId="item">
         <div  className="grid grid-cols-6 mb-1">
             <EditableTextView 
@@ -31,7 +31,7 @@ export default function ItemView(props: ItemViewProps) {
                     id: 0
                 }) } 
             />
-            <div data-testId="project">{props.projectName??""}</div>
+            <div data-testId="project">{projectName??""}</div>
             <div data-testId="tags">{props.tagNames?.join(",") ?? ""}</div>
             <CheckBox
                 label="Done"

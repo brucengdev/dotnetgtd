@@ -3,6 +3,12 @@ import ItemView from "./ItemView"
 import { screen, render, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom'
 import { Project } from "./models/Project";
+import { Item } from "./models/Item";
+
+const testProjects: Project[] = [
+                { id: 1, name: "Project A", done: false, later: false },
+                { id: 2, name: "Project B", done: false, later: false }
+            ];
 
 describe("ItemView", () => {
     [
@@ -12,9 +18,9 @@ describe("ItemView", () => {
                 id: 1,
                 description: "Task description",
                 done: false,
-                later: false
-            },
-            projectName: "Project A",
+                later: false,
+                projectId: 1
+            } as Item,
             expectedDisplayedProjectName: "Project A",
             tagNames: [],
             expectedDisplayedTags: ""
@@ -26,7 +32,7 @@ describe("ItemView", () => {
                 description: "Task description",
                 done: false,
                 later: true
-            },
+            } as Item,
             projectName: undefined,
             expectedDisplayedProjectName: "",
             tagNames: [],
@@ -39,7 +45,7 @@ describe("ItemView", () => {
                 description: "Task description",
                 done: true,
                 later: false
-            },
+            } as Item,
             projectName: "",
             expectedDisplayedProjectName: "",
             tagNames: [],
@@ -51,8 +57,9 @@ describe("ItemView", () => {
                 id: 1,
                 description: "Task description",
                 done: true,
-                later: true
-            },
+                later: true,
+                projectId: 1
+            } as Item,
             projectName: "Project A",
             expectedDisplayedProjectName: "Project A",
             tagNames: ["tag1"],
@@ -64,27 +71,25 @@ describe("ItemView", () => {
                 id: 1,
                 description: "Task description",
                 done: false,
-                later: false
-            },
-            projectName: "Project A",
+                later: false,
+                projectId: 1
+            } as Item,
             expectedDisplayedProjectName: "Project A",
             tagNames: ["tag1", "tag2"],
             expectedDisplayedTags: "tag1,tag2",
         }
     ].forEach(testCase => {
-        const {testCaseName, item, 
-            projectName, expectedDisplayedProjectName,
-            tagNames, expectedDisplayedTags} = testCase
+        const {
+            testCaseName, item, 
+            expectedDisplayedProjectName,
+            tagNames, expectedDisplayedTags
+        } = testCase
         it(testCaseName, () => {
             const { description, done, later } = item
-            const projects: Project[] = [
-                { id: 1, name: "Project A", done: false, later: false },
-                { id: 2, name: "Project B", done: false, later: false }
-            ]
             render(<ItemView 
                     item={item}
-                    projects={projects}
-                    projectName={projectName} tagNames={tagNames} 
+                    projects={testProjects}
+                    tagNames={tagNames} 
                 />)
 
             const descriptionView = screen.getByTestId("description")
@@ -129,6 +134,7 @@ describe("ItemView", () => {
                     done:false,
                     later:false
                 }}
+                projects={testProjects}
                 />)
 
         const deleteButton = screen.getByRole("button", { name: "Delete" })
@@ -144,7 +150,7 @@ describe("ItemView", () => {
             description:"Test Description",
             done: false,
             later: false
-        }} />)
+        }} projects={testProjects} />)
 
         const deleteButton = screen.getByRole("button", { name: "Delete" })
         fireEvent.click(deleteButton)
@@ -163,6 +169,7 @@ describe("ItemView", () => {
                 done: false,
                 later: false
             }}
+            projects={testProjects}
             onDelete={onDelete} />)
 
         const deleteButton = screen.getByRole("button", { name: "Delete" })
