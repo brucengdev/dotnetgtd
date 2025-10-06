@@ -5,7 +5,7 @@ import { TextBox } from "./controls/TextBox";
 import { Project } from "./models/Project";
 import { Tag } from "./models/Tag";
 import { CheckBox } from "./controls/CheckBox";
-import { Select } from "./controls/Select";
+import { LabeledSelect } from "./controls/Select";
 import { MultiSelect } from "./controls/MultiSelect";
 
 interface AddItemFormProps {
@@ -44,7 +44,7 @@ export function AddItemForm(props: AddItemFormProps) {
             className="mb-1"
             onChange={e => setDescription(e.target.value)}
         />
-        <Select
+        <LabeledSelect
             label="Project"
             onChange={value => setProjectId(Number(value))} 
             options={

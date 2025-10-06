@@ -9,7 +9,7 @@ interface SelectProps {
     options: Option[]
     selectedValue: string
 }
-export function Select(props: SelectProps) {
+export function LabeledSelect(props: SelectProps) {
     const { label, onChange, options, selectedValue } = props
     return <label>
         {label}
