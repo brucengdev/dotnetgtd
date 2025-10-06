@@ -28,11 +28,7 @@ export default function ItemView(props: ItemViewProps) {
                 text={description} 
                 textViewTestId="description" editViewTestId="edit-description"
                 onChange={newDescription => onChange?.({ 
-                    description: newDescription,
-                    projectId: undefined,
-                    tagIds: undefined,
-                    done, later,
-                    id: 0
+                    ...item, description: newDescription
                 }) } 
             />
             <div data-testId="project">{projectName??""}</div>

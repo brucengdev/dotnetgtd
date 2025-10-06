@@ -29,12 +29,12 @@ describe("ItemView update form", () => {
         fireEvent.click(screen.getByRole("button", { name: "✓"}))
 
         expect(fn).toHaveBeenCalledWith({
+            id: 1,
             description: "Task A Updated",
             done: false,
-            id: 0,
             later: false,
-            projectId: undefined,
-            tagIds: undefined
+            tagIds: [1, 2],
+            projectId: 1
         })
     })
 })
