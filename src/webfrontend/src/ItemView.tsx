@@ -5,19 +5,23 @@ import { CheckBox } from "./controls/CheckBox"
 import { EditableTextView } from "./controls/EditableTextView"
 import { Item } from "./models/Item"
 import { Project } from "./models/Project"
+import { Tag } from "./models/Tag"
 
 interface ItemViewProps {
     onChange?: (item: Item) => void
     onDelete?: () => void
-    tagNames?: string[]
     item: Item
     projects: Project[]
+    tags: Tag[]
 }
 export default function ItemView(props: ItemViewProps) {
     const { item, onChange, onDelete } = props
     const { description, done, later } = item
     const [ showConfirmDelete, setShowConfirmDelete ] = useState(false)
     const projectName = props.projects.find(p => p.id === item.projectId)?.name
+    const tagNames = (props.tags??[])
+                    .filter(t => item.tagIds?.includes(t.id))
+                    .map(t => t.name)
     return <div data-testId="item">
         <div  className="grid grid-cols-6 mb-1">
             <EditableTextView 
@@ -32,7 +36,7 @@ export default function ItemView(props: ItemViewProps) {
                 }) } 
             />
             <div data-testId="project">{projectName??""}</div>
-            <div data-testId="tags">{props.tagNames?.join(",") ?? ""}</div>
+            <div data-testId="tags">{tagNames.join(",") ?? ""}</div>
             <CheckBox
                 label="Done"
                 checked={done}

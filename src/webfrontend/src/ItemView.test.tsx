@@ -4,11 +4,17 @@ import { screen, render, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom'
 import { Project } from "./models/Project";
 import { Item } from "./models/Item";
+import { Tag } from "./models/Tag";
 
 const testProjects: Project[] = [
-                { id: 1, name: "Project A", done: false, later: false },
-                { id: 2, name: "Project B", done: false, later: false }
-            ];
+    { id: 1, name: "Project A", done: false, later: false },
+    { id: 2, name: "Project B", done: false, later: false }
+];
+
+const testTags: Tag[] = [
+    { id: 1, name: "tag1" },
+    { id: 2, name: "tag2" }
+]
 
 describe("ItemView", () => {
     [
@@ -19,10 +25,9 @@ describe("ItemView", () => {
                 description: "Task description",
                 done: false,
                 later: false,
-                projectId: 1
+                projectId: 1,
             } as Item,
             expectedDisplayedProjectName: "Project A",
-            tagNames: [],
             expectedDisplayedTags: ""
         },
         { 
@@ -35,7 +40,6 @@ describe("ItemView", () => {
             } as Item,
             projectName: undefined,
             expectedDisplayedProjectName: "",
-            tagNames: [],
             expectedDisplayedTags: "",
         },
         { 
@@ -48,7 +52,6 @@ describe("ItemView", () => {
             } as Item,
             projectName: "",
             expectedDisplayedProjectName: "",
-            tagNames: [],
             expectedDisplayedTags: "",
         },
         { 
@@ -58,11 +61,11 @@ describe("ItemView", () => {
                 description: "Task description",
                 done: true,
                 later: true,
-                projectId: 1
+                projectId: 1,
+                tagIds: [1]
             } as Item,
             projectName: "Project A",
             expectedDisplayedProjectName: "Project A",
-            tagNames: ["tag1"],
             expectedDisplayedTags: "tag1",
         },
         { 
@@ -72,24 +75,24 @@ describe("ItemView", () => {
                 description: "Task description",
                 done: false,
                 later: false,
-                projectId: 1
+                projectId: 1,
+                tagIds: [1,2]
             } as Item,
             expectedDisplayedProjectName: "Project A",
-            tagNames: ["tag1", "tag2"],
             expectedDisplayedTags: "tag1,tag2",
         }
     ].forEach(testCase => {
         const {
             testCaseName, item, 
             expectedDisplayedProjectName,
-            tagNames, expectedDisplayedTags
+            expectedDisplayedTags
         } = testCase
         it(testCaseName, () => {
             const { description, done, later } = item
             render(<ItemView 
                     item={item}
                     projects={testProjects}
-                    tagNames={tagNames} 
+                    tags={testTags}
                 />)
 
             const descriptionView = screen.getByTestId("description")
@@ -135,6 +138,7 @@ describe("ItemView", () => {
                     later:false
                 }}
                 projects={testProjects}
+                tags={testTags}
                 />)
 
         const deleteButton = screen.getByRole("button", { name: "Delete" })
@@ -146,11 +150,14 @@ describe("ItemView", () => {
 
     it("hides delete confirm view when no is clicked", () => {
         render(<ItemView item={{
-            id: 1,
-            description:"Test Description",
-            done: false,
-            later: false
-        }} projects={testProjects} />)
+                    id: 1,
+                    description:"Test Description",
+                    done: false,
+                    later: false
+                }} 
+                projects={testProjects} 
+                tags={testTags} />
+        )
 
         const deleteButton = screen.getByRole("button", { name: "Delete" })
         fireEvent.click(deleteButton)
@@ -170,6 +177,7 @@ describe("ItemView", () => {
                 later: false
             }}
             projects={testProjects}
+            tags={testTags}
             onDelete={onDelete} />)
 
         const deleteButton = screen.getByRole("button", { name: "Delete" })
