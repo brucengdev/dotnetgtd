@@ -4,6 +4,7 @@ import { screen, render, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom'
 import { Project } from "./models/Project";
 import { Tag } from "./models/Tag";
+import { sleep } from "./__test__/testutils";
 
 const testProjects: Project[] = [
     { id: 1, name: "ProjectX", done: false, later: false },
@@ -110,7 +111,26 @@ describe("ItemView update form", () => {
         })
     })
 
-    it(`Shows project dropdown list when project is clicked`, () => {
+    it(`Does not show project dropdown list initially`, () => {
+        const fn = vitest.fn()
+        render(<ItemView
+            item={{
+                id: 1,
+                description:"Task A" ,
+                done:false,
+                later: false,
+                projectId: 1,
+                tagIds: [1,2]
+            }}
+            projects={testProjects}
+            tags={testTags}
+            onChange={fn}
+        />)
+
+        expect(screen.queryByTestId("edit-project")).not.toBeInTheDocument()
+    })
+
+    it(`Shows project dropdown list when project is clicked`, async () => {
         const fn = vitest.fn()
         render(<ItemView
             item={{
@@ -127,6 +147,7 @@ describe("ItemView update form", () => {
         />)
 
         screen.getByTestId("project").click()
+        await sleep(1)
 
         expect(screen.getByTestId("edit-project")).toBeInTheDocument()
     })

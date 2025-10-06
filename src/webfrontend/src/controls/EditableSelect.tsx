@@ -1,3 +1,4 @@
+import { useState } from "react"
 
 interface EditableSelectProps {
     value?: string
@@ -7,8 +8,13 @@ interface EditableSelectProps {
 
 export function EditableSelect(props: EditableSelectProps) {
     const { value, displayViewDataTestId, editViewDataTestId } = props
+    const [isEditing, setIsEditing] = useState(false)
     return <>
-        <div data-testId={displayViewDataTestId}>{value??""}</div>
-        <select data-testId={editViewDataTestId}></select>
+        {isEditing
+            ?<select data-testId={editViewDataTestId}></select>
+            :<div data-testId={displayViewDataTestId} 
+                onClick={() => setIsEditing(true)}>
+                {value??""}
+            </div>}
     </>
 }
