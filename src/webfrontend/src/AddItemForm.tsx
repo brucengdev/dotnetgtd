@@ -5,7 +5,7 @@ import { TextBox } from "./controls/TextBox";
 import { Project } from "./models/Project";
 import { Tag } from "./models/Tag";
 import { CheckBox } from "./controls/CheckBox";
-import { LabeledSelect } from "./controls/Select";
+import { LabeledSelect } from "./controls/LabeledSelect";
 import { MultiSelect } from "./controls/MultiSelect";
 
 interface AddItemFormProps {
