@@ -38,19 +38,6 @@ describe("ItemView", () => {
                 done: false,
                 later: true
             } as Item,
-            projectName: undefined,
-            expectedDisplayedProjectName: "",
-            expectedDisplayedTags: "",
-        },
-        { 
-            testCaseName: "renders view correctly with empty project name",
-            item: {
-                id: 1,
-                description: "Task description",
-                done: true,
-                later: false
-            } as Item,
-            projectName: "",
             expectedDisplayedProjectName: "",
             expectedDisplayedTags: "",
         },
@@ -64,7 +51,6 @@ describe("ItemView", () => {
                 projectId: 1,
                 tagIds: [1]
             } as Item,
-            projectName: "Project A",
             expectedDisplayedProjectName: "Project A",
             expectedDisplayedTags: "tag1",
         },
