@@ -48,59 +48,65 @@ describe("ItemView update form", () => {
         })
     })
 
-    it("Executes callback when done is changed", () => {
-        const fn = vitest.fn()
-        render(<ItemView
-            item={{
+    const doneValues = [true, false]
+    doneValues.forEach(done => {
+        it(`Executes callback when done is changed to ${done}`, () => {
+            const fn = vitest.fn()
+            render(<ItemView
+                item={{
+                    id: 1,
+                    description:"Task A" ,
+                    done:!done,
+                    later:false,
+                    projectId: 1,
+                    tagIds: [1,2]
+                }}
+                projects={testProjects}
+                tags={testTags}
+                onChange={fn}
+            />)
+
+            screen.getByRole("checkbox", { name: "Done" }).click()
+
+            expect(fn).toHaveBeenCalledWith({
                 id: 1,
-                description:"Task A" ,
-                done:false,
-                later:false,
-                projectId: 1,
-                tagIds: [1,2]
-            }}
-            projects={testProjects}
-            tags={testTags}
-            onChange={fn}
-        />)
-
-        screen.getByRole("checkbox", { name: "Done" }).click()
-
-        expect(fn).toHaveBeenCalledWith({
-            id: 1,
-            description: "Task A",
-            done: true,
-            later: false,
-            tagIds: [1, 2],
-            projectId: 1
+                description: "Task A",
+                done: done,
+                later: false,
+                tagIds: [1, 2],
+                projectId: 1
+            })
         })
     })
 
-    it("Executes callback when later is changed", () => {
-        const fn = vitest.fn()
-        render(<ItemView
-            item={{
+    const laterValues = [true, false]
+    laterValues.forEach(later => {
+        it(`Executes callback when later is changed to ${later}`, () => {
+            const fn = vitest.fn()
+            render(<ItemView
+                item={{
+                    id: 1,
+                    description:"Task A" ,
+                    done:false,
+                    later: !later,
+                    projectId: 1,
+                    tagIds: [1,2]
+                }}
+                projects={testProjects}
+                tags={testTags}
+                onChange={fn}
+            />)
+
+            screen.getByRole("checkbox", { name: "Later" }).click()
+
+            expect(fn).toHaveBeenCalledWith({
                 id: 1,
-                description:"Task A" ,
-                done:false,
-                later:false,
-                projectId: 1,
-                tagIds: [1,2]
-            }}
-            projects={testProjects}
-            tags={testTags}
-            onChange={fn}
-        />)
-
-        screen.getByRole("checkbox", { name: "Later" }).click()
-
-        expect(fn).toHaveBeenCalledWith({
-            id: 1,
-            description: "Task A",
-            done: false,
-            later: true,
-            tagIds: [1, 2],
-            projectId: 1
+                description: "Task A",
+                done: false,
+                later: later,
+                tagIds: [1, 2],
+                projectId: 1
+            })
         })
     })
 })
