@@ -6,7 +6,6 @@ import { EditableTextView } from "./controls/EditableTextView"
 import { Item } from "./models/Item"
 import { Project } from "./models/Project"
 import { Tag } from "./models/Tag"
-import { Select } from "./controls/Select"
 import { EditableSelect } from "./controls/EditableSelect"
 
 interface ItemViewProps {
