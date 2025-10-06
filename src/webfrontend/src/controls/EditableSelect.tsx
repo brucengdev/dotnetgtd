@@ -1,8 +1,8 @@
 
 interface EditableSelectProps {
     value?: string
-    displayViewDataTestId: string
-    editViewDataTestId: string
+    displayViewDataTestId?: string
+    editViewDataTestId?: string
 }
 
 export function EditableSelect(props: EditableSelectProps) {
