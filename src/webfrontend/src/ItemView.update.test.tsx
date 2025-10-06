@@ -2,6 +2,18 @@ import { describe, expect, it, vitest } from "vitest"
 import ItemView from "./ItemView"
 import { screen, render, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom'
+import { Project } from "./models/Project";
+import { Tag } from "./models/Tag";
+
+const testProjects: Project[] = [
+    { id: 1, name: "ProjectX", done: false, later: false },
+    { id: 2, name: "ProjectY", done: false, later: false }
+]
+
+const testTags: Tag[] = [
+    { id: 1, name: "tag1" },
+    { id: 2, name: "tag2" }
+]
 
 describe("ItemView update form", () => {
     it("Executes callback when description is changed", () => {
@@ -10,15 +22,13 @@ describe("ItemView update form", () => {
             item={{
                 id: 1,
                 description:"Task A" ,
-                done:false,later:false,
+                done:false,
+                later:false,
                 projectId: 1,
                 tagIds: [1,2]
             }}
-            projects={[{ id: 1, name: "ProjectX", done: false, later: false }]}
-            tags={[
-                { id: 1, name: "tag1" },
-                { id: 2, name: "tag2" }
-            ]}
+            projects={testProjects}
+            tags={testTags}
             onChange={fn}
         />)
 
