@@ -8,7 +8,8 @@ import { sleep } from "./__test__/testutils";
 
 const testProjects: Project[] = [
     { id: 1, name: "ProjectX", done: false, later: false },
-    { id: 2, name: "ProjectY", done: false, later: false }
+    { id: 2, name: "ProjectY", done: false, later: false },
+    { id: 3, name: "ProjectZ", done: false, later: false }
 ]
 
 const testTags: Tag[] = [
@@ -111,34 +112,37 @@ describe("ItemView update form", () => {
         })
     })
 
-    it(`Executes callback when project is changed`, async () => {
-        const fn = vitest.fn()
-        render(<ItemView
-            item={{
+    const projectValues =[undefined, 1, 2, 3]
+    projectValues.forEach(projectId => {
+        it(`Executes callback when project is changed to ${projectId}`, async () => {
+            const fn = vitest.fn()
+            render(<ItemView
+                item={{
+                    id: 1,
+                    description:"Task A" ,
+                    done:false,
+                    later:false,
+                    projectId: 1,
+                    tagIds: [1,2]
+                }}
+                projects={testProjects}
+                tags={testTags}
+                onChange={fn}
+            />)
+
+            screen.getByTestId("project").click()
+            await sleep(1)
+            
+            fireEvent.change(screen.getByTestId("edit-project"), { target: { value: projectId?.toString()?? "" } })
+
+            expect(fn).toHaveBeenCalledWith({
                 id: 1,
-                description:"Task A" ,
-                done:false,
-                later:false,
-                projectId: 1,
-                tagIds: [1,2]
-            }}
-            projects={testProjects}
-            tags={testTags}
-            onChange={fn}
-        />)
-
-        screen.getByTestId("project").click()
-        await sleep(1)
-        
-        fireEvent.change(screen.getByTestId("edit-project"), { target: { value: "2" } })
-
-        expect(fn).toHaveBeenCalledWith({
-            id: 1,
-            description: "Task A",
-            done: false,
-            later: false,
-            tagIds: [1, 2],
-            projectId: 2
+                description: "Task A",
+                done: false,
+                later: false,
+                tagIds: [1, 2],
+                projectId
+            })
         })
     })
 })

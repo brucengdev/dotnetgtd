@@ -36,7 +36,11 @@ export default function ItemView(props: ItemViewProps) {
                 value={projectName}
                 textViewDataTestId="project"
                 selectDataTestId="edit-project"
-                options={projects.map(p => ({ value: p.id.toString(), text: p.name }))}
+                options={
+                    [{ value: "", text: "No project" }] .concat(
+                        projects.map(p => ({ value: p.id.toString(), text: p.name }))
+                    )
+                }
                 selectedValue={item.projectId?.toString() ?? ""}
                 onChange={newProjectId => onChange?.({...item, projectId: newProjectId ? parseInt(newProjectId) : undefined})}
             />
