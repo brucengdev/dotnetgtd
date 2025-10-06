@@ -6,10 +6,10 @@ export interface SelectProps {
     onChange?: (value: string) => void
     options: Option[]
     selectedValue: string
-    dataTestId?: string
+    selectDataTestId?: string
 }
 export function Select(props: SelectProps) {
-    const { onChange, options, selectedValue, dataTestId } = props
+    const { onChange, options, selectedValue, selectDataTestId: dataTestId } = props
     return <select 
         data-testId={dataTestId}
         onChange={(e) => {

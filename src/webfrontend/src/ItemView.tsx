@@ -34,8 +34,8 @@ export default function ItemView(props: ItemViewProps) {
             />
             <EditableSelect
                 value={projectName}
-                displayViewDataTestId="project"
-                editViewDataTestId="edit-project"
+                textViewDataTestId="project"
+                selectDataTestId="edit-project"
                 options={[]}
                 selectedValue=""
             />

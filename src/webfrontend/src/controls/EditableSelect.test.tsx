@@ -7,8 +7,8 @@ import { sleep } from "../__test__/testutils";
 describe("EditableSelect", () => {
     it(`Show display view initially`, () => {
         render(<EditableSelect 
-            displayViewDataTestId="displayField" 
-            editViewDataTestId="editField" 
+            textViewDataTestId="displayField" 
+            selectDataTestId="editField" 
             options={[
                 { value: "1", text: "Option 1" },
                 { value: "2", text: "Option 2" },
@@ -23,8 +23,8 @@ describe("EditableSelect", () => {
 
     it(`Shows edit view when display view is clicked`, async () => {
         render(<EditableSelect 
-            displayViewDataTestId="displayField" 
-            editViewDataTestId="editField" 
+            textViewDataTestId="displayField" 
+            selectDataTestId="editField" 
             options={[
                 { value: "1", text: "Option 1" },
                 { value: "2", text: "Option 2" },
@@ -43,8 +43,8 @@ describe("EditableSelect", () => {
     it("Executes callback when value is changed", async () => {
         var fn = vitest.fn()
         render(<EditableSelect 
-            displayViewDataTestId="displayField" 
-            editViewDataTestId="editField" 
+            textViewDataTestId="displayField" 
+            selectDataTestId="editField" 
             onChange={fn} 
             options={[
                 { value: "1", text: "Option 1" },
