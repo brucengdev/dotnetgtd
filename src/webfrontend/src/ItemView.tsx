@@ -36,6 +36,8 @@ export default function ItemView(props: ItemViewProps) {
                 value={projectName}
                 displayViewDataTestId="project"
                 editViewDataTestId="edit-project"
+                options={[]}
+                selectedValue=""
             />
             <div data-testId="tags">{tagNames.join(",") ?? ""}</div>
             <CheckBox

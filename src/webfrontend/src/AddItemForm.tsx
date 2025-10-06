@@ -5,8 +5,8 @@ import { TextBox } from "./controls/TextBox";
 import { Project } from "./models/Project";
 import { Tag } from "./models/Tag";
 import { CheckBox } from "./controls/CheckBox";
-import { LabeledSelect } from "./controls/LabeledSelect";
 import { MultiSelect } from "./controls/MultiSelect";
+import { Select } from "./controls/Select";
 
 interface AddItemFormProps {
     onCancel: () => any
@@ -44,20 +44,22 @@ export function AddItemForm(props: AddItemFormProps) {
             className="mb-1"
             onChange={e => setDescription(e.target.value)}
         />
-        <LabeledSelect
-            label="Project"
-            onChange={value => setProjectId(Number(value))} 
-            options={
-                [{ text: "[No project]", value: "0"}]
-                .concat(
-                (projects|| []).map(p => {
-                return {
-                    value: p.id.toString(),
-                    text: p.name
-                }
-            }))}
-            selectedValue={projectId.toString()}
-        />
+        <label>
+            Project
+            <Select
+                onChange={value => setProjectId(Number(value))} 
+                options={
+                    [{ text: "[No project]", value: "0"}]
+                    .concat(
+                    (projects|| []).map(p => {
+                    return {
+                        value: p.id.toString(),
+                        text: p.name
+                    }
+                }))}
+                selectedValue={projectId.toString()}
+            />
+        </label>
         <MultiSelect
             label="Tags"
             onChange={values => setSelectedTagIds(values.map(v => Number(v)))}
