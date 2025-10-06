@@ -2,6 +2,7 @@ import { describe, expect, it, vitest } from "vitest"
 import ItemView from "./ItemView"
 import { screen, render, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom'
+import { Project } from "./models/Project";
 
 describe("ItemView", () => {
     [
@@ -76,8 +77,13 @@ describe("ItemView", () => {
             tagNames, expectedDisplayedTags} = testCase
         it(testCaseName, () => {
             const { description, done, later } = item
+            const projects: Project[] = [
+                { id: 1, name: "Project A", done: false, later: false },
+                { id: 2, name: "Project B", done: false, later: false }
+            ]
             render(<ItemView 
                     item={item}
+                    projects={projects}
                     projectName={projectName} tagNames={tagNames} 
                 />)
 

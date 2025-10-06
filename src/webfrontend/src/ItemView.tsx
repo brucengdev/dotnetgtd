@@ -4,6 +4,7 @@ import { Button, ButtonMode } from "./controls/Button"
 import { CheckBox } from "./controls/CheckBox"
 import { EditableTextView } from "./controls/EditableTextView"
 import { Item } from "./models/Item"
+import { Project } from "./models/Project"
 
 interface ItemViewProps {
     projectName?: string
@@ -11,6 +12,7 @@ interface ItemViewProps {
     onDelete?: () => void
     tagNames?: string[]
     item: Item
+    projects: Project[]
 }
 export default function ItemView(props: ItemViewProps) {
     const { item, onChange, onDelete } = props
