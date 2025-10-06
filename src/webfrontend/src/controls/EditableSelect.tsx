@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { Select } from "./Select"
 
 interface EditableSelectProps {
     value?: string
@@ -11,7 +12,7 @@ export function EditableSelect(props: EditableSelectProps) {
     const [isEditing, setIsEditing] = useState(false)
     return <>
         {isEditing
-            ?<select data-testId={editViewDataTestId}></select>
+            ? <Select dataTestId={editViewDataTestId} options={[]} selectedValue="" />
             :<div data-testId={displayViewDataTestId} 
                 onClick={() => setIsEditing(true)}>
                 {value??""}
