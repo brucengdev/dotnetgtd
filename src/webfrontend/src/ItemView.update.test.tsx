@@ -109,4 +109,25 @@ describe("ItemView update form", () => {
             })
         })
     })
+
+    it(`Shows project dropdown list when project is clicked`, () => {
+        const fn = vitest.fn()
+        render(<ItemView
+            item={{
+                id: 1,
+                description:"Task A" ,
+                done:false,
+                later: false,
+                projectId: 1,
+                tagIds: [1,2]
+            }}
+            projects={testProjects}
+            tags={testTags}
+            onChange={fn}
+        />)
+
+        screen.getByTestId("project").click()
+
+        expect(screen.getByTestId("edit-project")).toBeInTheDocument()
+    })
 })

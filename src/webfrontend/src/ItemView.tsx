@@ -6,6 +6,8 @@ import { EditableTextView } from "./controls/EditableTextView"
 import { Item } from "./models/Item"
 import { Project } from "./models/Project"
 import { Tag } from "./models/Tag"
+import { Select } from "./controls/Select"
+import { EditableSelect } from "./controls/EditableSelect"
 
 interface ItemViewProps {
     onChange?: (item: Item) => void
@@ -31,7 +33,11 @@ export default function ItemView(props: ItemViewProps) {
                     ...item, description: newDescription
                 }) } 
             />
-            <div data-testId="project">{projectName??""}</div>
+            <EditableSelect
+                value={projectName}
+                displayViewDataTestId="project"
+                editViewDataTestId="edit-project"
+            />
             <div data-testId="tags">{tagNames.join(",") ?? ""}</div>
             <CheckBox
                 label="Done"
