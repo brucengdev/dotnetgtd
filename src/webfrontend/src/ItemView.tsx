@@ -43,6 +43,7 @@ export default function ItemView(props: ItemViewProps) {
                 label="Later"
                 checked={later}
                 dataTestId="later"
+                onChange={checked => onChange?.({...item, later: checked})}
             />
             {showConfirmDelete
                 ? <></>

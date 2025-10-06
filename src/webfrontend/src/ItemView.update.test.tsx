@@ -75,4 +75,32 @@ describe("ItemView update form", () => {
             projectId: 1
         })
     })
+
+    it("Executes callback when later is changed", () => {
+        const fn = vitest.fn()
+        render(<ItemView
+            item={{
+                id: 1,
+                description:"Task A" ,
+                done:false,
+                later:false,
+                projectId: 1,
+                tagIds: [1,2]
+            }}
+            projects={testProjects}
+            tags={testTags}
+            onChange={fn}
+        />)
+
+        screen.getByRole("checkbox", { name: "Later" }).click()
+
+        expect(fn).toHaveBeenCalledWith({
+            id: 1,
+            description: "Task A",
+            done: false,
+            later: true,
+            tagIds: [1, 2],
+            projectId: 1
+        })
+    })
 })
