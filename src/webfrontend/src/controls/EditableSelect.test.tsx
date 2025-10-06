@@ -14,7 +14,7 @@ describe("EditableSelect", () => {
         expect(screen.queryByTestId("editField")).not.toBeInTheDocument()
     })
 
-    it(`Shows project dropdown list when project is clicked`, async () => {
+    it(`Shows edit view when display view is clicked`, async () => {
         render(<EditableSelect 
             displayViewDataTestId="displayField" 
             editViewDataTestId="editField" />)
