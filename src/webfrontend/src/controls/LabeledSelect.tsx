@@ -1,25 +1,12 @@
+import { Select, SelectProps } from "./Select"
 
-interface Option {
-    value: string
-    text: string
-}
-interface SelectProps {
+interface LabeledSelectProps extends SelectProps {
     label: string
-    onChange?: (value: string) => void
-    options: Option[]
-    selectedValue: string
 }
-export function LabeledSelect(props: SelectProps) {
+export function LabeledSelect(props: LabeledSelectProps) {
     const { label, onChange, options, selectedValue } = props
     return <label>
         {label}
-        <select onChange={(e) => {
-            if(onChange) {
-                onChange(e.target.value)
-            }
-        }}>
-            {options?.map(o => <option value={o.value} 
-                    selected={o.value === selectedValue}>{o.text}</option>)}
-        </select>
+        <Select onChange={onChange} options={options} selectedValue={selectedValue} />
     </label>
 }
