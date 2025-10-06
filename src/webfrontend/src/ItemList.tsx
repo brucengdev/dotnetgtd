@@ -23,11 +23,9 @@ export default function ItemList(props: ItemListProps) {
                     const itemTags = (item.tagIds ?? []).map(id => tags?.find(t => t.id === id)).filter(t => t !== undefined) as Tag[]
                     const tagNames = itemTags.map(t => t.name)
                     return <ItemView 
-                        description={item.description} 
+                        item={item}
                         projectName={projectName}
                         tagNames={tagNames}
-                        done={item.done}
-                        later={item.later}
                         onDelete={() => {
                                 if(onDelete) { onDelete(item) }
                             }

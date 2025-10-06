@@ -6,17 +6,15 @@ import { EditableTextView } from "./controls/EditableTextView"
 import { Item } from "./models/Item"
 
 interface ItemViewProps {
-    description: string
     projectName?: string
     onChange?: (item: Item) => void
     onDelete?: () => void
     tagNames?: string[]
-    done: boolean
-    later: boolean
     item: Item
 }
 export default function ItemView(props: ItemViewProps) {
-    const { description, onChange, onDelete, done, later } = props
+    const { item, onChange, onDelete } = props
+    const { description, done, later } = item
     const [ showConfirmDelete, setShowConfirmDelete ] = useState(false)
     return <div data-testId="item">
         <div  className="grid grid-cols-6 mb-1">

@@ -77,10 +77,9 @@ describe("ItemView", () => {
         it(testCaseName, () => {
             const { description, done, later } = item
             render(<ItemView 
-                item={item}
-                description={description} 
-                projectName={projectName} tagNames={tagNames} 
-                done={done} later={later} />)
+                    item={item}
+                    projectName={projectName} tagNames={tagNames} 
+                />)
 
             const descriptionView = screen.getByTestId("description")
             expect(descriptionView).toBeInTheDocument()
@@ -117,8 +116,14 @@ describe("ItemView", () => {
     })
 
     it("shows delete confirm view when delete is clicked", () => {
-        render(<ItemView description="Test Description" 
-                done={false} later={false} />)
+        render(<ItemView 
+                item={{
+                    id: 1,
+                    description:"Test Description",
+                    done:false,
+                    later:false
+                }}
+                />)
 
         const deleteButton = screen.getByRole("button", { name: "Delete" })
         fireEvent.click(deleteButton)
@@ -128,8 +133,12 @@ describe("ItemView", () => {
     })
 
     it("hides delete confirm view when no is clicked", () => {
-        render(<ItemView description="Test Description"
-                done={false} later={false} />)
+        render(<ItemView item={{
+            id: 1,
+            description:"Test Description",
+            done: false,
+            later: false
+        }} />)
 
         const deleteButton = screen.getByRole("button", { name: "Delete" })
         fireEvent.click(deleteButton)
@@ -141,8 +150,14 @@ describe("ItemView", () => {
 
     it("executes onDelete when yes is clicked", () => {
         const onDelete = vitest.fn()
-        render(<ItemView description="Test Description" 
-                onDelete={onDelete} done={false} later={false} />)
+        render(<ItemView 
+            item={{
+                id: 1,
+                description:"Test Description",
+                done: false,
+                later: false
+            }}
+            onDelete={onDelete} />)
 
         const deleteButton = screen.getByRole("button", { name: "Delete" })
         fireEvent.click(deleteButton)

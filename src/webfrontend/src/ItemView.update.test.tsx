@@ -6,9 +6,13 @@ import '@testing-library/jest-dom'
 describe("ItemView update form", () => {
     it("Executes callback when description is changed", () => {
         const fn = vitest.fn()
-        render(<ItemView description="Task A" 
+        render(<ItemView
+            item={{
+                id: 1,
+                description:"Task A" ,
+                done:false,later:false 
+            }}
             projectName="ProjectX" tagNames={["tag1", "tag2"]}
-            done={false} later={false} 
             onChange={fn}
         />)
 
