@@ -38,5 +38,13 @@ describe("EditableMultiSelect", () => {
 
         expect(screen.getByTestId("editField")).toBeInTheDocument()
         expect(screen.queryByTestId("displayField")).not.toBeInTheDocument()
+
+        expect(screen.getByTestId("editField").children.length).toBe(3)
+        expect(screen.getByTestId("editField").children[0].textContent).toBe("Option 1")
+        expect(screen.getByTestId("editField").children[0]).toHaveAttribute("value", "1")
+        expect(screen.getByTestId("editField").children[1].textContent).toBe("Option 2")
+        expect(screen.getByTestId("editField").children[1]).toHaveAttribute("value", "2")
+        expect(screen.getByTestId("editField").children[2].textContent).toBe("Option 3")
+        expect(screen.getByTestId("editField").children[2]).toHaveAttribute("value", "3")
     })
 })
