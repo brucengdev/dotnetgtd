@@ -7,19 +7,23 @@ export interface MultiSelectProps {
     onChange?: (values: string[]) => void
     options: Option[]
     selectedValues: string[]
+    selectDataTestId?: string
 }
 export function MultiSelect(props: MultiSelectProps) {
-    const { onChange, options, selectedValues } = props
-    return <select multiple onChange={e => {
-        if(onChange) {
-            onChange(getSelectedValues(e))
-        }
-    }}>
-        {options.map(t => <option 
-            value={t.value} 
-            selected={selectedValues.includes(t.value)}
-        >{t.text}</option>)}
-    </select>
+    const { onChange, options, selectedValues, selectDataTestId } = props
+    return <select 
+                data-testId={selectDataTestId}
+                multiple
+                onChange={e => {
+                    if(onChange) {
+                        onChange(getSelectedValues(e))
+                    }
+            }}>
+                {options.map(t => <option 
+                    value={t.value} 
+                    selected={selectedValues.includes(t.value)}
+                >{t.text}</option>)}
+            </select>
 }
 
 function getSelectedValues(e: React.ChangeEvent<HTMLSelectElement>) {
