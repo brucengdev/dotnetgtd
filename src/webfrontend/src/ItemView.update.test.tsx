@@ -139,6 +139,30 @@ describe("ItemView update form", () => {
         expect(screen.getByTestId("edit-project").children[3].textContent).toBe("ProjectZ")
     })
 
+    const selectedProjectTestCases = [undefined, 1, 2, 3]
+    selectedProjectTestCases.forEach(projectId => {
+        it(`Selects correct project in dropdown list`, async () => {
+            const fn = vitest.fn()
+            render(<ItemView
+                item={{
+                    id: 1,
+                    description:"Task A" ,
+                    done:false,
+                    later:false,
+                    projectId,
+                    tagIds: [1,2]
+                }}
+                projects={testProjects}
+                tags={testTags}
+                onChange={fn}
+            />)
+
+            screen.getByTestId("project").click()
+            await sleep(1)
+            expect(screen.getByTestId("edit-project")).toHaveValue(projectId?.toString() ?? "")
+        })
+    })
+
     const projectValues =[undefined, 1, 2, 3]
     projectValues.forEach(projectId => {
         it(`Executes callback when project is changed to ${projectId}`, async () => {
