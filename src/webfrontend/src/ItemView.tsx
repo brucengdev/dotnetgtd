@@ -7,6 +7,7 @@ import { Item } from "./models/Item"
 import { Project } from "./models/Project"
 import { Tag } from "./models/Tag"
 import { EditableSelect } from "./controls/EditableSelect"
+import { EditableMultiSelect } from "./controls/EditableMultiSelect"
 
 interface ItemViewProps {
     onChange?: (item: Item) => void
@@ -44,7 +45,7 @@ export default function ItemView(props: ItemViewProps) {
                 selectedValue={item.projectId?.toString() ?? ""}
                 onChange={newProjectId => onChange?.({...item, projectId: newProjectId ? parseInt(newProjectId) : undefined})}
             />
-            <div data-testId="tags">{tagNames.join(",") ?? ""}</div>
+            <EditableMultiSelect selectedValues={tagNames} textViewDataTestId="tags" options={[]} />
             <CheckBox
                 label="Done"
                 checked={done}

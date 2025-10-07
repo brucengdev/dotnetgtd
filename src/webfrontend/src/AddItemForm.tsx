@@ -60,16 +60,18 @@ export function AddItemForm(props: AddItemFormProps) {
                 selectedValue={projectId.toString()}
             />
         </label>
-        <MultiSelect
-            label="Tags"
-            onChange={values => setSelectedTagIds(values.map(v => Number(v)))}
-            selectedValues={selectedTagIds.map(id => id.toString())}
-            options={
-                (tags || []).map(t => {
-                    return { value: t.id.toString(), text: t.name }
-                })
-            }
-        />
+        <label>
+            Tags
+            <MultiSelect
+                onChange={values => setSelectedTagIds(values.map(v => Number(v)))}
+                selectedValues={selectedTagIds.map(id => id.toString())}
+                options={
+                    (tags || []).map(t => {
+                        return { value: t.id.toString(), text: t.name }
+                    })
+                }
+            />
+        </label>
         <CheckBox
             label="Done"
             checked={done}

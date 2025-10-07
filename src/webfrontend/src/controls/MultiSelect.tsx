@@ -3,27 +3,23 @@ interface Option {
     value: string
     text: string
 }
-interface MultiSelectProps {
-    label: string
+export interface MultiSelectProps {
     onChange?: (values: string[]) => void
     options: Option[]
     selectedValues: string[]
 }
 export function MultiSelect(props: MultiSelectProps) {
-    const { label, onChange, options, selectedValues } = props
-    return <label>
-        {label}
-        <select multiple onChange={e => {
-            if(onChange) {
-                onChange(getSelectedValues(e))
-            }
-        }}>
-            {options.map(t => <option 
-                value={t.value} 
-                selected={selectedValues.includes(t.value)}
-            >{t.text}</option>)}
-        </select>
-    </label>
+    const { onChange, options, selectedValues } = props
+    return <select multiple onChange={e => {
+        if(onChange) {
+            onChange(getSelectedValues(e))
+        }
+    }}>
+        {options.map(t => <option 
+            value={t.value} 
+            selected={selectedValues.includes(t.value)}
+        >{t.text}</option>)}
+    </select>
 }
 
 function getSelectedValues(e: React.ChangeEvent<HTMLSelectElement>) {
