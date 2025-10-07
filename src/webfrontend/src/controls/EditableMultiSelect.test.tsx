@@ -47,4 +47,29 @@ describe("EditableMultiSelect", () => {
         expect(screen.getByTestId("editField").children[2].textContent).toBe("Option 3")
         expect(screen.getByTestId("editField").children[2]).toHaveAttribute("value", "3")
     })
+
+    const selectedValueSets = [[""], ["1"], ["","2"], ["1","2","3"]]
+    selectedValueSets.forEach(selectedValues => {
+        it(`shows edit view when display view is clicked and ${selectedValues.join(",")} are selected`, async () => {
+            render(<EditableMultiSelect 
+                textViewDataTestId="displayField" 
+                selectDataTestId="editField" 
+                options={[
+                    { value: "", text: "No options" },
+                    { value: "1", text: "Option 1" },
+                    { value: "2", text: "Option 2" },
+                    { value: "3", text: "Option 3" }
+                ]}
+                selectedValues={selectedValues}
+            />)
+
+            screen.getByTestId("displayField").click()
+            await sleep(1)
+
+            expect((screen.getByRole("option", { name: "No options"}) as HTMLOptionElement).selected).toBe(selectedValues.includes(""))
+            expect((screen.getByRole("option", { name: "Option 1"}) as HTMLOptionElement).selected).toBe(selectedValues.includes("1"))
+            expect((screen.getByRole("option", { name: "Option 2"}) as HTMLOptionElement).selected).toBe(selectedValues.includes("2"))
+            expect((screen.getByRole("option", { name: "Option 3"}) as HTMLOptionElement).selected).toBe(selectedValues.includes("3"))
+        })
+    })
 })
