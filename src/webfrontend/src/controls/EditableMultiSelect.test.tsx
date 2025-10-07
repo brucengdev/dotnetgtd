@@ -1,8 +1,9 @@
-import { describe, expect, it } from "vitest"
-import { screen, render } from "@testing-library/react";
+import { describe, expect, it, vitest } from "vitest"
+import { screen, render, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom'
 import { EditableMultiSelect } from "./EditableMultiSelect";
 import { sleep } from "../__test__/testutils";
+import userEvent from "@testing-library/user-event";
 
 describe("EditableMultiSelect", () => {
     it(`shows display view initially`, () => {
@@ -78,25 +79,30 @@ describe("EditableMultiSelect", () => {
 
     selectedValueSets.forEach(selectedValues => {
         it(`execute callbacks when display view is clicked and ${selectedValues.join(",")} are selected and accept is clicked`, async () => {
-            // render(<EditableMultiSelect 
-            //     textViewDataTestId="displayField" 
-            //     selectDataTestId="editField" 
-            //     options={[
-            //         { value: "", text: "No options" },
-            //         { value: "1", text: "Option 1" },
-            //         { value: "2", text: "Option 2" },
-            //         { value: "3", text: "Option 3" }
-            //     ]}
-            //     selectedValues={selectedValues}
-            // />)
+            render(<EditableMultiSelect 
+                textViewDataTestId="displayField" 
+                selectDataTestId="editField" 
+                options={[
+                    { value: "", text: "No options" },
+                    { value: "1", text: "Option 1" },
+                    { value: "2", text: "Option 2" },
+                    { value: "3", text: "Option 3" }
+                ]}
+                selectedValues={[]}
+            />)
 
-            // screen.getByTestId("displayField").click()
-            // await sleep(1)
+            screen.getByTestId("displayField").click()
+            await sleep(1)
+            
+            userEvent.selectOptions(screen.getByTestId("editField"), selectedValues)
+            await sleep(10)
+            
+            fireEvent.click(screen.getByRole("button", { name: "✓" }))
 
-            // expect((screen.getByRole("option", { name: "No options"}) as HTMLOptionElement).selected).toBe(selectedValues.includes(""))
-            // expect((screen.getByRole("option", { name: "Option 1"}) as HTMLOptionElement).selected).toBe(selectedValues.includes("1"))
-            // expect((screen.getByRole("option", { name: "Option 2"}) as HTMLOptionElement).selected).toBe(selectedValues.includes("2"))
-            // expect((screen.getByRole("option", { name: "Option 3"}) as HTMLOptionElement).selected).toBe(selectedValues.includes("3"))
+            expect((screen.getByRole("option", { name: "No options"}) as HTMLOptionElement).selected).toBe(selectedValues.includes(""))
+            expect((screen.getByRole("option", { name: "Option 1"}) as HTMLOptionElement).selected).toBe(selectedValues.includes("1"))
+            expect((screen.getByRole("option", { name: "Option 2"}) as HTMLOptionElement).selected).toBe(selectedValues.includes("2"))
+            expect((screen.getByRole("option", { name: "Option 3"}) as HTMLOptionElement).selected).toBe(selectedValues.includes("3"))
         })
     })
 })
