@@ -112,6 +112,33 @@ describe("ItemView update form", () => {
         })
     })
 
+    it(`Shows list of projects when clicked on`, async () => {
+        const fn = vitest.fn()
+        render(<ItemView
+            item={{
+                id: 1,
+                description:"Task A" ,
+                done:false,
+                later:false,
+                projectId: 1,
+                tagIds: [1,2]
+            }}
+            projects={testProjects}
+            tags={testTags}
+            onChange={fn}
+        />)
+
+        screen.getByTestId("project").click()
+        await sleep(1)
+        
+        expect(screen.getByTestId("edit-project")).toBeInTheDocument()
+        expect(screen.getByTestId("edit-project").children.length).toBe(4)
+        expect(screen.getByTestId("edit-project").children[0].textContent).toBe("No project")
+        expect(screen.getByTestId("edit-project").children[1].textContent).toBe("ProjectX")
+        expect(screen.getByTestId("edit-project").children[2].textContent).toBe("ProjectY")
+        expect(screen.getByTestId("edit-project").children[3].textContent).toBe("ProjectZ")
+    })
+
     const projectValues =[undefined, 1, 2, 3]
     projectValues.forEach(projectId => {
         it(`Executes callback when project is changed to ${projectId}`, async () => {
@@ -132,7 +159,7 @@ describe("ItemView update form", () => {
 
             screen.getByTestId("project").click()
             await sleep(1)
-            
+
             fireEvent.change(screen.getByTestId("edit-project"), { target: { value: projectId?.toString()?? "" } })
 
             expect(fn).toHaveBeenCalledWith({
