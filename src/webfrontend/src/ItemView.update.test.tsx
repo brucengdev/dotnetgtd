@@ -196,4 +196,26 @@ describe("ItemView update form", () => {
             })
         })
     })
+
+    it(`Shows list of tags when clicked on`, async () => {
+        const fn = vitest.fn()
+        render(<ItemView
+            item={{
+                id: 1,
+                description:"Task A" ,
+                done:false,
+                later:false,
+                projectId: 1,
+                tagIds: [1,2]
+            }}
+            projects={testProjects}
+            tags={testTags}
+            onChange={fn}
+        />)
+
+        screen.getByTestId("tags").click()
+        await sleep(1)
+
+        expect(screen.getByTestId("edit-tags")).toBeInTheDocument()
+    })
 })
