@@ -217,5 +217,9 @@ describe("ItemView update form", () => {
         await sleep(1)
 
         expect(screen.getByTestId("edit-tags")).toBeInTheDocument()
+        expect(screen.getByTestId("edit-tags").children.length).toBe(3)
+        expect(screen.getByRole("option", { name: "No tags" })).toBeInTheDocument()
+        expect(screen.getByRole("option", { name: "tag1" })).toBeInTheDocument()
+        expect(screen.getByRole("option", { name: "tag2" })).toBeInTheDocument()
     })
 })
