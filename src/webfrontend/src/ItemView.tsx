@@ -49,11 +49,11 @@ export default function ItemView(props: ItemViewProps) {
                 selectedValues={tagNames}
                 textViewDataTestId="tags"
                 selectDataTestId="edit-tags"
-                options={[
-                    { value: "", text: "No tags"}
-                ].concat(
-                    props.tags.map(t => ({ value: t.id.toString(), text: t.name }))
-                )} />
+                options={props.tags.map(t => ({ value: t.id.toString(), text: t.name }))}
+                onChange={newTagIds => onChange?.({
+                    ...item, tagIds: newTagIds.map(parseInt)
+                })}    
+            />
             <CheckBox
                 label="Done"
                 checked={done}

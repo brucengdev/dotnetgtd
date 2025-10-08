@@ -5,6 +5,7 @@ import '@testing-library/jest-dom'
 import { Project } from "./models/Project";
 import { Tag } from "./models/Tag";
 import { sleep } from "./__test__/testutils";
+import userEvent from "@testing-library/user-event";
 
 const testProjects: Project[] = [
     { id: 1, name: "ProjectX", done: false, later: false },
@@ -217,9 +218,50 @@ describe("ItemView update form", () => {
         await sleep(1)
 
         expect(screen.getByTestId("edit-tags")).toBeInTheDocument()
-        expect(screen.getByTestId("edit-tags").children.length).toBe(3)
-        expect(screen.getByRole("option", { name: "No tags" })).toBeInTheDocument()
+        expect(screen.getByTestId("edit-tags").children.length).toBe(2)
         expect(screen.getByRole("option", { name: "tag1" })).toBeInTheDocument()
         expect(screen.getByRole("option", { name: "tag2" })).toBeInTheDocument()
+    })
+
+    const tagSelectionCases = [
+        undefined,
+        [],
+        ["1"],
+        ["1", "2"],
+        ["2"]
+    ]
+    tagSelectionCases.forEach(selectedTagsValue => {
+        it(`executes callback after tags are changed to ${selectedTagsValue?.join(',')??"[]"}`, async () => {
+            const fn = vitest.fn()
+            render(<ItemView
+                item={{
+                    id: 1,
+                    description:"Task A" ,
+                    done:false,
+                    later:false,
+                    projectId: 1
+                }}
+                projects={testProjects}
+                tags={testTags}
+                onChange={fn}
+            />)
+
+            screen.getByTestId("tags").click()
+            await sleep(1)
+
+            userEvent.selectOptions(screen.getByTestId("edit-tags"), selectedTagsValue??[])
+            await sleep(1)
+            fireEvent.click(screen.getByRole("button", { name: "✓" }))
+            await sleep(1)
+
+            expect(fn).toHaveBeenCalledWith({
+                id: 1,
+                description:"Task A" ,
+                done:false,
+                later:false,
+                projectId: 1,
+                tagIds: selectedTagsValue?.map(parseInt)?? undefined
+            })
+        })
     })
 })
