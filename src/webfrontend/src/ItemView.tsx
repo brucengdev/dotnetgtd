@@ -45,7 +45,11 @@ export default function ItemView(props: ItemViewProps) {
                 selectedValue={item.projectId?.toString() ?? ""}
                 onChange={newProjectId => onChange?.({...item, projectId: newProjectId ? parseInt(newProjectId) : undefined})}
             />
-            <EditableMultiSelect selectedValues={tagNames} textViewDataTestId="tags" options={[]} />
+            <EditableMultiSelect 
+                selectedValues={tagNames}
+                textViewDataTestId="tags"
+                selectDataTestId="edit-tags"
+                options={[]} />
             <CheckBox
                 label="Done"
                 checked={done}
