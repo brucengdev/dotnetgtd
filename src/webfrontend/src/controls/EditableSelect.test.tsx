@@ -66,7 +66,10 @@ describe("EditableSelect", () => {
         await sleep(1)
 
         fireEvent.change(screen.getByTestId("editField"), { target: { value: 2 } })
+        await sleep(1)
 
         expect(fn).toHaveBeenCalledWith("2")
+        expect(screen.queryByTestId("editField")).not.toBeInTheDocument()
+        expect(screen.getByTestId("displayField")).toBeInTheDocument()
     })
 })

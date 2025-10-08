@@ -14,10 +14,17 @@ export function EditableSelect(props: EditableSelectProps) {
             ? <Select selectDataTestId={selectDataTestId} 
                     options={options} 
                     selectedValue={selectedValue} 
-                    onChange={onChange} />
+                    onChange={newValue => {
+                        setIsEditing(false)
+                        if(onChange) {
+                            onChange(newValue)
+                        }
+                    }}
+                />
             :<div data-testId={displayViewDataTestId} 
                 onClick={() => setIsEditing(true)}>
                 {value??""}
-            </div>}
+            </div>
+        }
     </>
 }
