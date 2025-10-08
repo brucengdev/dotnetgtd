@@ -7,7 +7,8 @@ interface EditableMultiSelectProps extends MultiSelectProps {
 }
 
 export function EditableMultiSelect(props: EditableMultiSelectProps) {
-    const { selectedValues, textViewDataTestId, options, selectDataTestId } = props
+    const { selectedValues, textViewDataTestId, 
+        options, selectDataTestId, onChange } = props
     const [ isEditing, setIsEditing ] = useState(false)
     const [ editFieldSelectedValues, setEditFieldSelectedValues ] = useState(selectedValues)
     return isEditing
@@ -18,7 +19,11 @@ export function EditableMultiSelect(props: EditableMultiSelectProps) {
                     selectDataTestId={selectDataTestId} 
                     onChange={newValues =>  setEditFieldSelectedValues(newValues)}
                     />
-                <Button text="✓" />
+                <Button text="✓" onClick={() => {
+                    if(onChange) {
+                        onChange(editFieldSelectedValues)
+                    }
+                }} />
             </>
             :<div data-testId={textViewDataTestId} 
                 onClick={() => setIsEditing(true)} >
