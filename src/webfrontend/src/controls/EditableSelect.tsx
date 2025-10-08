@@ -11,7 +11,10 @@ export function EditableSelect(props: EditableSelectProps) {
     const [isEditing, setIsEditing] = useState(false)
     return <>
         {isEditing
-            ? <Select selectDataTestId={selectDataTestId} options={options} selectedValue={selectedValue} onChange={onChange} />
+            ? <Select selectDataTestId={selectDataTestId} 
+                    options={options} 
+                    selectedValue={selectedValue} 
+                    onChange={onChange} />
             :<div data-testId={displayViewDataTestId} 
                 onClick={() => setIsEditing(true)}>
                 {value??""}
