@@ -252,13 +252,13 @@ describe("ItemView update form", () => {
             />)
 
             screen.getByTestId("tags").click()
-            await sleep(1)
+            await sleep(10)
 
             const newTagSelection = newTags?.map(t => t.toString())??[]
             userEvent.selectOptions(screen.getByTestId("edit-tags"), newTagSelection)
-            await sleep(1)
+            await sleep(10)
             fireEvent.click(screen.getByRole("button", { name: "✓" }))
-            await sleep(1)
+            await sleep(10)
 
             expect(fn).toHaveBeenCalledWith({
                 id: 1,

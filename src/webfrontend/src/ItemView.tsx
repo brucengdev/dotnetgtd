@@ -47,9 +47,12 @@ export default function ItemView(props: ItemViewProps) {
                 textViewDataTestId="tags"
                 selectDataTestId="edit-tags"
                 options={props.tags.map(t => ({ value: t.id.toString(), text: t.name }))}
-                onChange={newTagIds => onChange?.({
-                    ...item, tagIds: newTagIds.map(parseInt)
-                })}
+                onChange={newValues => {
+                    const newTagIds = newValues?.map(v => parseInt(v)) ?? []
+                    return onChange?.({...item, 
+                        tagIds: newTagIds
+                    })
+                }}
             />
             <CheckBox
                 label="Done"
