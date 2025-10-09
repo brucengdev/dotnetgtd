@@ -11,6 +11,9 @@ export function EditableMultiSelect(props: EditableMultiSelectProps) {
         options, selectDataTestId, onChange } = props
     const [ isEditing, setIsEditing ] = useState(false)
     const [ editFieldSelectedValues, setEditFieldSelectedValues ] = useState(selectedValues)
+    const displayValue = selectedValues?.map(v => {
+        return options.find(o => o.value === v)?.text ?? v
+    }).join(',') ?? ""
     return isEditing
             ?<>
                 <MultiSelect 
@@ -27,6 +30,6 @@ export function EditableMultiSelect(props: EditableMultiSelectProps) {
             </>
             :<div data-testId={textViewDataTestId} 
                 onClick={() => setIsEditing(true)} >
-                {selectedValues.join(",") ?? ""}
+                {displayValue}
             </div>
 }

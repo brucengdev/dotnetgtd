@@ -224,14 +224,18 @@ describe("ItemView update form", () => {
     })
 
     const tagSelectionCases = [
-        undefined,
-        [],
-        ["1"],
-        ["1", "2"],
-        ["2"]
+        { currentTags: undefined, newTags:undefined },
+        { currentTags: undefined, newTags: [] },
+        { currentTags: [2], newTags: [1] },
+        { currentTags: [1], newTags: [1, 2] },
+        { currentTags: [1], newTags: [2] }
     ]
-    tagSelectionCases.forEach(selectedTagsValue => {
-        it(`executes callback after tags are changed to ${selectedTagsValue?.join(',')??"[]"}`, async () => {
+    tagSelectionCases.forEach(({ currentTags, newTags}) => {
+        const newTagsDes = newTags?.map(t => {
+            if(t === undefined) { return "undefined" }
+            return t
+        }).join(',') ?? "undefined"
+        it(`executes callback after tags are changed to [${newTagsDes}]`, async () => {
             const fn = vitest.fn()
             render(<ItemView
                 item={{
@@ -239,7 +243,8 @@ describe("ItemView update form", () => {
                     description:"Task A" ,
                     done:false,
                     later:false,
-                    projectId: 1
+                    projectId: 1,
+                    tagIds: currentTags
                 }}
                 projects={testProjects}
                 tags={testTags}
@@ -249,7 +254,8 @@ describe("ItemView update form", () => {
             screen.getByTestId("tags").click()
             await sleep(1)
 
-            userEvent.selectOptions(screen.getByTestId("edit-tags"), selectedTagsValue??[])
+            const newTagSelection = newTags?.map(t => t.toString())??[]
+            userEvent.selectOptions(screen.getByTestId("edit-tags"), newTagSelection)
             await sleep(1)
             fireEvent.click(screen.getByRole("button", { name: "✓" }))
             await sleep(1)
@@ -260,7 +266,7 @@ describe("ItemView update form", () => {
                 done:false,
                 later:false,
                 projectId: 1,
-                tagIds: selectedTagsValue?.map(parseInt)?? undefined
+                tagIds: newTags || []
             })
         })
     })

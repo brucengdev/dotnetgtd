@@ -21,9 +21,6 @@ export default function ItemView(props: ItemViewProps) {
     const { description, done, later } = item
     const [ showConfirmDelete, setShowConfirmDelete ] = useState(false)
     const projectName = props.projects.find(p => p.id === item.projectId)?.name
-    const tagNames = (props.tags??[])
-                    .filter(t => item.tagIds?.includes(t.id))
-                    .map(t => t.name)
     return <div data-testId="item">
         <div  className="grid grid-cols-6 mb-1">
             <EditableTextView 
@@ -46,13 +43,13 @@ export default function ItemView(props: ItemViewProps) {
                 onChange={newProjectId => onChange?.({...item, projectId: newProjectId ? parseInt(newProjectId) : undefined})}
             />
             <EditableMultiSelect 
-                selectedValues={tagNames}
+                selectedValues={item.tagIds?.map(t => t.toString()) ?? []}
                 textViewDataTestId="tags"
                 selectDataTestId="edit-tags"
                 options={props.tags.map(t => ({ value: t.id.toString(), text: t.name }))}
                 onChange={newTagIds => onChange?.({
                     ...item, tagIds: newTagIds.map(parseInt)
-                })}    
+                })}
             />
             <CheckBox
                 label="Done"
