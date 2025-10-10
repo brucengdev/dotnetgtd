@@ -255,6 +255,7 @@ describe("ItemView update form", () => {
             screen.getByTestId("tags").click()
             await sleep(10)
 
+            userEvent.deselectOptions(screen.getByTestId("edit-tags"), currentTags?.map(t => t?.toString()??"") ?? [])
             userEvent.selectOptions(screen.getByTestId("edit-tags"), newSelection)
             await sleep(10)
 
