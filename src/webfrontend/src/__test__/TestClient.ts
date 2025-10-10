@@ -44,6 +44,12 @@ export class TestClient implements IClient {
         return true
     }
 
+    async UpdateItem(item: Item): Promise<boolean> {
+        this.Items.splice(this.Items.findIndex(i => i.id === item.id), 1)
+        this.Items.push(item)
+        return true
+    }
+
     async GetItems(filter:TaskFilter): Promise<Item[]> {
         let filteredItems = this.Items
             .filter(i => {

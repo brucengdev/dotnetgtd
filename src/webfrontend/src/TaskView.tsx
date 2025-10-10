@@ -56,6 +56,12 @@ export function TaskView(props: TaskViewProps) {
                     setItems(undefined) //to reload
                 })
         }}
+        onUpdate={(item: Item) => {
+            client.UpdateItem(item)
+                .then(() => {
+                    setItems(undefined) //to reload
+                })
+        }}
       />
       {showNewTaskForm
         ? <AddItemForm client={client} 
