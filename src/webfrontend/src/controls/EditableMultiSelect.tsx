@@ -20,8 +20,10 @@ export function EditableMultiSelect(props: EditableMultiSelectProps) {
                     options={options} 
                     selectedValues={editFieldSelectedValues} 
                     selectDataTestId={selectDataTestId} 
-                    onChange={newValues =>  setEditFieldSelectedValues(newValues)}
-                    />
+                    onChange={newValues =>  {
+                        setEditFieldSelectedValues(newValues)}
+                    }
+                />
                 <Button text="✓" onClick={() => {
                     if(onChange) {
                         onChange(editFieldSelectedValues)

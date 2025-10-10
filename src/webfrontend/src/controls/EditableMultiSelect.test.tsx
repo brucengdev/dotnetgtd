@@ -77,7 +77,12 @@ describe("EditableMultiSelect", () => {
         })
     })
 
-    const callbackTestCases = [[""], ["1"], ["","2"], ["1","2","3"]]
+    const callbackTestCases = [
+        [""], 
+        ["1"], 
+        ["","2"], 
+        ["1","2","3"]
+    ]
     callbackTestCases.forEach(selectedValues => {
         it(`execute callbacks when display view is clicked and ${selectedValues.join(",")} are selected and accept is clicked`, async () => {
             const fn = vitest.fn()
@@ -98,7 +103,7 @@ describe("EditableMultiSelect", () => {
             await sleep(1)
             
             userEvent.selectOptions(screen.getByTestId("editField"), selectedValues)
-            await sleep(10)
+            await sleep(1000)
 
             const option1 = screen.getByRole("option", { name: "No options"}) as HTMLOptionElement
             const option2 = screen.getByRole("option", { name: "Option 1"}) as HTMLOptionElement
