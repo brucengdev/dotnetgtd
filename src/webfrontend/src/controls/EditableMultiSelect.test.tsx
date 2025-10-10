@@ -77,7 +77,8 @@ describe("EditableMultiSelect", () => {
         })
     })
 
-    selectedValueSets.forEach(selectedValues => {
+    const callbackTestCases = [[""], ["1"], ["","2"], ["1","2","3"]]
+    callbackTestCases.forEach(selectedValues => {
         it(`execute callbacks when display view is clicked and ${selectedValues.join(",")} are selected and accept is clicked`, async () => {
             const fn = vitest.fn()
             render(<EditableMultiSelect 
