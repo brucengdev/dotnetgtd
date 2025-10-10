@@ -98,13 +98,20 @@ describe("EditableMultiSelect", () => {
             
             userEvent.selectOptions(screen.getByTestId("editField"), selectedValues)
             await sleep(10)
-            
+
+            const option1 = screen.getByRole("option", { name: "No options"}) as HTMLOptionElement
+            const option2 = screen.getByRole("option", { name: "Option 1"}) as HTMLOptionElement
+            const option3 = screen.getByRole("option", { name: "Option 2"}) as HTMLOptionElement
+            const option4 = screen.getByRole("option", { name: "Option 3"}) as HTMLOptionElement
+            expect(option1.selected).toBe(selectedValues.includes(""))
+            expect(option2.selected).toBe(selectedValues.includes("1"))
+            expect(option3.selected).toBe(selectedValues.includes("2"))
+            expect(option4.selected).toBe(selectedValues.includes("3"))
+
             fireEvent.click(screen.getByRole("button", { name: "✓" }))
 
-            expect((screen.getByRole("option", { name: "No options"}) as HTMLOptionElement).selected).toBe(selectedValues.includes(""))
-            expect((screen.getByRole("option", { name: "Option 1"}) as HTMLOptionElement).selected).toBe(selectedValues.includes("1"))
-            expect((screen.getByRole("option", { name: "Option 2"}) as HTMLOptionElement).selected).toBe(selectedValues.includes("2"))
-            expect((screen.getByRole("option", { name: "Option 3"}) as HTMLOptionElement).selected).toBe(selectedValues.includes("3"))
+            await sleep(1)
+
             
             expect(fn).toHaveBeenCalledWith(selectedValues)
         })
