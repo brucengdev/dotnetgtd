@@ -101,4 +101,34 @@ describe("ItemList", () => {
         expect(selectedItem).toEqual({ id: 2, description: "Task B", 
             projectId: 1, done: false, later: false })
     })
+
+    it("executes onUpdate when an item is updated by user", async () => {
+        const items = [
+            { id: 1, description: "Task A", projectId: 1, 
+                done: false, later: false },
+            { id: 2, description: "Task B", projectId: 1, 
+                done: false, later: false },
+            { id: 3, description: "Task C", projectId: 1, 
+                done: false, later: false }
+        ]
+        const fn = vitest.fn()
+        render(<ItemList items={items} onUpdate={fn} />)
+        await sleep(1)
+
+        const descriptions = screen.getAllByTestId("description")
+        fireEvent.click(descriptions[1])
+        await sleep(1)
+
+        fireEvent.change(screen.getByTestId("edit-description"), { target: { value: "Task B Updated" } })
+        await sleep(1)
+        fireEvent.click(screen.getByRole("button", { name: "✓" }))
+        await sleep(1)
+
+        expect(fn).toHaveBeenCalledWith({ 
+            id: 2, description: "Task B Updated", 
+            projectId: 1, 
+            done: false,
+            later: false
+        })
+    })
 })

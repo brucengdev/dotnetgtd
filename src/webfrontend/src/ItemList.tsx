@@ -7,11 +7,12 @@ interface ItemListProps {
     items?: Item[],
     projects?: Project[],
     onDelete?: (_: Item) => void,
+    onUpdate?: (_: Item) => void,
     tags?: Tag[]
 }
 
 export default function ItemList(props: ItemListProps) {
-    const { items, onDelete, tags } = props
+    const { items, onDelete, onUpdate, tags } = props
     const numberOfItems = items?.length ?? 0
     return <div data-testId="item-list">
         {numberOfItems === 0
@@ -27,7 +28,10 @@ export default function ItemList(props: ItemListProps) {
                                 if(onDelete) { onDelete(item) }
                             }
                         }
-                        />
+                        onChange={(updatedItem) => {
+                            if(onUpdate) { onUpdate(updatedItem) }
+                        }}
+                    />
                 })
             }
         </div>
