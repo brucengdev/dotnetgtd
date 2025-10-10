@@ -226,6 +226,7 @@ describe("ItemView update form", () => {
     const tagSelectionCases = [
         { currentTags: undefined, newTags:undefined },
         { currentTags: undefined, newTags: [] },
+        { currentTags: undefined, newTags: [1] },
         { currentTags: [2], newTags: [1] },
         { currentTags: [1], newTags: [1, 2] },
         { currentTags: [1], newTags: [2] }
@@ -257,6 +258,12 @@ describe("ItemView update form", () => {
             const newTagSelection = newTags?.map(t => t.toString())??[]
             userEvent.selectOptions(screen.getByTestId("edit-tags"), newTagSelection)
             await sleep(10)
+
+            const tag1Option = screen.getByTestId("edit-tags").children[0] as HTMLOptionElement
+            const tag2Option = screen.getByTestId("edit-tags").children[1] as HTMLOptionElement
+            expect(tag1Option.selected).toBe(newTags?.includes(1)??false)
+            expect(tag2Option.selected).toBe(newTags?.includes(2)??false)
+            
             fireEvent.click(screen.getByRole("button", { name: "✓" }))
             await sleep(10)
 
