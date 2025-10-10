@@ -177,4 +177,34 @@ describe("TaskView", () => {
             expect(passedInFilter).toStrictEqual(expectedFilter)
         })
     })
+
+    it("refreshes the item list after an item is updated", async () => {
+        const client = new TestClient()
+        client.Items = [
+            { id: 1, description: "Task A", projectId: 0, done: false, later: false },
+            { id: 2, description: "Task B", projectId: 1, done: false, later: false }
+        ]
+        client.Projects = [
+            { id: 1, name: "Project X", later: false, done: false }
+        ]
+        client.Tags = [
+            { id: 1, name: "Tag 1" },
+            { id: 2, name: "Tag 2" }
+        ]
+        render(<TaskView client={client} />)
+
+        await sleep(1)
+
+        const items = screen.queryAllByTestId("description")
+        
+        fireEvent.click(items[1])
+        await sleep(1)
+
+        fireEvent.change(screen.getByTestId("edit-description"), { target: { value: "Task B Updated"}})
+        fireEvent.click(screen.getByRole("button", { name: "✓"}))
+        await sleep(1)
+
+        const updatedItems = screen.queryAllByTestId("description")
+        expect(updatedItems[1].textContent).toBe("Task B Updated")
+    })
 })

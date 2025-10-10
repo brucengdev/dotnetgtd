@@ -13,6 +13,7 @@ export interface IClient {
     AddItem: (item: Item) => Promise<boolean>
     GetItems: (filter:TaskFilter) => Promise<Item[]>
     DeleteItem: (id: number) => Promise<boolean>
+    UpdateItem: (item: Item) => Promise<boolean>
 
     AddProject: (item: Project) => Promise<boolean>
     GetProjects: (filter?: ProjectFilter) => Promise<Project[]>
@@ -73,6 +74,19 @@ export class Client implements IClient {
             accessToken: this.token
         }).toString()}`, {
             method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(item)
+        })
+        return result.ok
+    }
+
+    public async UpdateItem(item: Item): Promise<boolean> {
+        const result = await fetch(`${url}/Items/UpdateItem?${new URLSearchParams({
+            accessToken: this.token
+        }).toString()}`, {
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },

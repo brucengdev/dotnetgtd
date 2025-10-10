@@ -5,8 +5,8 @@ import { TextBox } from "./controls/TextBox";
 import { Project } from "./models/Project";
 import { Tag } from "./models/Tag";
 import { CheckBox } from "./controls/CheckBox";
-import { Select } from "./controls/Select";
 import { MultiSelect } from "./controls/MultiSelect";
+import { Select } from "./controls/Select";
 
 interface AddItemFormProps {
     onCancel: () => any
@@ -44,30 +44,34 @@ export function AddItemForm(props: AddItemFormProps) {
             className="mb-1"
             onChange={e => setDescription(e.target.value)}
         />
-        <Select
-            label="Project"
-            onChange={value => setProjectId(Number(value))} 
-            options={
-                [{ text: "[No project]", value: "0"}]
-                .concat(
-                (projects|| []).map(p => {
-                return {
-                    value: p.id.toString(),
-                    text: p.name
+        <label>
+            Project
+            <Select
+                onChange={value => setProjectId(Number(value))} 
+                options={
+                    [{ text: "[No project]", value: "0"}]
+                    .concat(
+                    (projects|| []).map(p => {
+                    return {
+                        value: p.id.toString(),
+                        text: p.name
+                    }
+                }))}
+                selectedValue={projectId.toString()}
+            />
+        </label>
+        <label>
+            Tags
+            <MultiSelect
+                onChange={values => setSelectedTagIds(values.map(v => Number(v)))}
+                selectedValues={selectedTagIds.map(id => id.toString())}
+                options={
+                    (tags || []).map(t => {
+                        return { value: t.id.toString(), text: t.name }
+                    })
                 }
-            }))}
-            selectedValue={projectId.toString()}
-        />
-        <MultiSelect
-            label="Tags"
-            onChange={values => setSelectedTagIds(values.map(v => Number(v)))}
-            selectedValues={selectedTagIds.map(id => id.toString())}
-            options={
-                (tags || []).map(t => {
-                    return { value: t.id.toString(), text: t.name }
-                })
-            }
-        />
+            />
+        </label>
         <CheckBox
             label="Done"
             checked={done}

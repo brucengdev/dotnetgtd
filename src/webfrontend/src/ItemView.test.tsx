@@ -2,67 +2,84 @@ import { describe, expect, it, vitest } from "vitest"
 import ItemView from "./ItemView"
 import { screen, render, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom'
+import { Project } from "./models/Project";
+import { Item } from "./models/Item";
+import { Tag } from "./models/Tag";
+
+const testProjects: Project[] = [
+    { id: 1, name: "Project A", done: false, later: false },
+    { id: 2, name: "Project B", done: false, later: false }
+];
+
+const testTags: Tag[] = [
+    { id: 1, name: "tag1" },
+    { id: 2, name: "tag2" }
+]
 
 describe("ItemView", () => {
     [
         { 
             testCaseName: "renders view correctly with project name = Project A",
-            description: "Task description",
-            projectName: "Project A",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: false,
+                later: false,
+                projectId: 1,
+            } as Item,
             expectedDisplayedProjectName: "Project A",
-            tagNames: [],
-            expectedDisplayedTags: "",
-            done: false,
-            later: false
+            expectedDisplayedTags: ""
         },
         { 
             testCaseName: "renders view correctly with undefined project name",
-            description: "Task description",
-            projectName: undefined,
+            item: {
+                id: 1,
+                description: "Task description",
+                done: false,
+                later: true
+            } as Item,
             expectedDisplayedProjectName: "",
-            tagNames: [],
             expectedDisplayedTags: "",
-            done: false,
-            later: true
-        },
-        { 
-            testCaseName: "renders view correctly with empty project name",
-            description: "Task description",
-            projectName: "",
-            expectedDisplayedProjectName: "",
-            tagNames: [],
-            expectedDisplayedTags: "",
-            done: true,
-            later: false
         },
         { 
             testCaseName: "renders view correctly with 1 tag",
-            description: "Task description",
-            projectName: "Project A",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: true,
+                later: true,
+                projectId: 1,
+                tagIds: [1]
+            } as Item,
             expectedDisplayedProjectName: "Project A",
-            tagNames: ["tag1"],
             expectedDisplayedTags: "tag1",
-            done: true,
-            later: true
         },
         { 
             testCaseName: "renders view correctly with multiple tags",
-            description: "Task description",
-            projectName: "Project A",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: false,
+                later: false,
+                projectId: 1,
+                tagIds: [1,2]
+            } as Item,
             expectedDisplayedProjectName: "Project A",
-            tagNames: ["tag1", "tag2"],
             expectedDisplayedTags: "tag1,tag2",
-            done: false,
-            later: false
         }
     ].forEach(testCase => {
-        const {testCaseName, description, 
-            projectName, expectedDisplayedProjectName,
-            tagNames, expectedDisplayedTags, done, later} = testCase
+        const {
+            testCaseName, item, 
+            expectedDisplayedProjectName,
+            expectedDisplayedTags
+        } = testCase
         it(testCaseName, () => {
-            render(<ItemView description={description} 
-                projectName={projectName} tagNames={tagNames} 
-                done={done} later={later} />)
+            const { description, done, later } = item
+            render(<ItemView 
+                    item={item}
+                    projects={testProjects}
+                    tags={testTags}
+                />)
 
             const descriptionView = screen.getByTestId("description")
             expect(descriptionView).toBeInTheDocument()
@@ -99,8 +116,16 @@ describe("ItemView", () => {
     })
 
     it("shows delete confirm view when delete is clicked", () => {
-        render(<ItemView description="Test Description" 
-                done={false} later={false} />)
+        render(<ItemView 
+                item={{
+                    id: 1,
+                    description:"Test Description",
+                    done:false,
+                    later:false
+                }}
+                projects={testProjects}
+                tags={testTags}
+                />)
 
         const deleteButton = screen.getByRole("button", { name: "Delete" })
         fireEvent.click(deleteButton)
@@ -110,8 +135,15 @@ describe("ItemView", () => {
     })
 
     it("hides delete confirm view when no is clicked", () => {
-        render(<ItemView description="Test Description"
-                done={false} later={false} />)
+        render(<ItemView item={{
+                    id: 1,
+                    description:"Test Description",
+                    done: false,
+                    later: false
+                }} 
+                projects={testProjects} 
+                tags={testTags} />
+        )
 
         const deleteButton = screen.getByRole("button", { name: "Delete" })
         fireEvent.click(deleteButton)
@@ -123,8 +155,16 @@ describe("ItemView", () => {
 
     it("executes onDelete when yes is clicked", () => {
         const onDelete = vitest.fn()
-        render(<ItemView description="Test Description" 
-                onDelete={onDelete} done={false} later={false} />)
+        render(<ItemView 
+            item={{
+                id: 1,
+                description:"Test Description",
+                done: false,
+                later: false
+            }}
+            projects={testProjects}
+            tags={testTags}
+            onDelete={onDelete} />)
 
         const deleteButton = screen.getByRole("button", { name: "Delete" })
         fireEvent.click(deleteButton)

@@ -7,11 +7,12 @@ interface ItemListProps {
     items?: Item[],
     projects?: Project[],
     onDelete?: (_: Item) => void,
+    onUpdate?: (_: Item) => void,
     tags?: Tag[]
 }
 
 export default function ItemList(props: ItemListProps) {
-    const { items, onDelete, tags } = props
+    const { items, onDelete, onUpdate, tags } = props
     const numberOfItems = items?.length ?? 0
     return <div data-testId="item-list">
         {numberOfItems === 0
@@ -19,20 +20,18 @@ export default function ItemList(props: ItemListProps) {
         :<div>
             {
                 items?.map(item => {
-                    const projectName = props.projects?.find(p => Number(p.id) == Number(item.projectId))?.name
-                    const itemTags = (item.tagIds ?? []).map(id => tags?.find(t => t.id === id)).filter(t => t !== undefined) as Tag[]
-                    const tagNames = itemTags.map(t => t.name)
                     return <ItemView 
-                        description={item.description} 
-                        projectName={projectName}
-                        tagNames={tagNames}
-                        done={item.done}
-                        later={item.later}
+                        item={item}
+                        projects={props.projects ?? []}
+                        tags={tags ?? []}
                         onDelete={() => {
                                 if(onDelete) { onDelete(item) }
                             }
                         }
-                        />
+                        onChange={(updatedItem) => {
+                            if(onUpdate) { onUpdate(updatedItem) }
+                        }}
+                    />
                 })
             }
         </div>

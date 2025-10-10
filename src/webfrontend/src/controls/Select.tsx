@@ -1,19 +1,18 @@
-
 interface Option {
     value: string
     text: string
 }
-interface SelectProps {
-    label: string
+export interface SelectProps {
     onChange?: (value: string) => void
     options: Option[]
     selectedValue: string
+    selectDataTestId?: string
 }
 export function Select(props: SelectProps) {
-    const { label, onChange, options, selectedValue } = props
-    return <label>
-        {label}
-        <select onChange={(e) => {
+    const { onChange, options, selectedValue, selectDataTestId: dataTestId } = props
+    return <select 
+        data-testId={dataTestId}
+        onChange={(e) => {
             if(onChange) {
                 onChange(e.target.value)
             }
@@ -21,5 +20,4 @@ export function Select(props: SelectProps) {
             {options?.map(o => <option value={o.value} 
                     selected={o.value === selectedValue}>{o.text}</option>)}
         </select>
-    </label>
 }
