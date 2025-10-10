@@ -224,14 +224,14 @@ describe("ItemView update form", () => {
     })
 
     const tagSelectionCases = [
-        { currentTags: undefined, newTags:undefined },
-        { currentTags: undefined, newTags: [] },
-        { currentTags: undefined, newTags: [1] },
-        { currentTags: [2], newTags: [1] },
-        { currentTags: [1], newTags: [1, 2] },
-        { currentTags: [1], newTags: [2] }
+        { currentTags: undefined, newSelection: [], newTags:undefined },
+        { currentTags: undefined, newSelection: [], newTags: [] },
+        { currentTags: undefined, newSelection: ["1"], newTags: [1] },
+        { currentTags: [2], newSelection: ["1"], newTags: [1] },
+        { currentTags: [1], newSelection: ["1", "2"], newTags: [1, 2] },
+        { currentTags: [1], newSelection: ["2"], newTags: [2] }
     ]
-    tagSelectionCases.forEach(({ currentTags, newTags}) => {
+    tagSelectionCases.forEach(({ currentTags, newSelection, newTags}) => {
         const newTagsDes = newTags?.map(t => {
             if(t === undefined) { return "undefined" }
             return t
@@ -255,8 +255,7 @@ describe("ItemView update form", () => {
             screen.getByTestId("tags").click()
             await sleep(10)
 
-            const newTagSelection = newTags?.map(t => t.toString())??[]
-            userEvent.selectOptions(screen.getByTestId("edit-tags"), newTagSelection)
+            userEvent.selectOptions(screen.getByTestId("edit-tags"), newSelection)
             await sleep(10)
 
             const tag1Option = screen.getByTestId("edit-tags").children[0] as HTMLOptionElement
