@@ -44,7 +44,7 @@ public class ProjectManager: IProjectManager
         _projectRepo.DeleteProject(projectId);
     }
 
-    public void UpdateProject(Project project, int userId)
+    public void UpdateProject(Project project)
     {
         
     }

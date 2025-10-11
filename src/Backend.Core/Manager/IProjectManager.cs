@@ -8,7 +8,7 @@ public interface IProjectManager
 {
     int CreateProject(Project project);
 
-    void UpdateProject(Project project, int userId);
+    void UpdateProject(Project project);
 
     IEnumerable<Project> GetProjects(int userId,
         IEnumerable<bool>? completionStatuses,

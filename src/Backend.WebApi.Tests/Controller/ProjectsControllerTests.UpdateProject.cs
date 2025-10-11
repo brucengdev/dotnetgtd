@@ -53,7 +53,7 @@ namespace Backend.WebApi.Tests.Controller
             
             //assert
             result.ShouldBeOfType<OkResult>();
-            projectManager.Verify(pm => pm.UpdateProject(project, userId), Times.Exactly(1));
+            projectManager.Verify(pm => pm.UpdateProject(project), Times.Exactly(1));
             projectManager.VerifyNoOtherCalls();
         }
     }

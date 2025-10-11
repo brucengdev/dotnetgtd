@@ -85,7 +85,7 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult UpdateProject(Project project)
         {
-            _projectManager.UpdateProject(project, this.CurrentUserId());
+            _projectManager.UpdateProject(project);
             return Ok();
         }
     }
