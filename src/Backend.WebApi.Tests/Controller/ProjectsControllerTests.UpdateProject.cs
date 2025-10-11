@@ -53,7 +53,38 @@ namespace Backend.WebApi.Tests.Controller
             
             //assert
             result.ShouldBeOfType<OkResult>();
-            projectManager.Verify(pm => pm.UpdateProject(project), Times.Exactly(1));
+            projectManager.Verify(pm => pm.UpdateProject(project, userId), Times.Exactly(1));
+            projectManager.VerifyNoOtherCalls();
+        }
+        
+        [Theory]
+        [InlineData(12)]
+        [InlineData(25)]
+        public void UpdateProject_must_return_unauthorized_if_user_does_not_own_project(int userId)
+        {
+            //arrange
+            var projectManager = new Mock<IProjectManager>();
+            var project = new Project()
+            {
+                Id = 1,
+                Done = false,
+                Later = false,
+                Name = "Updated project",
+                UserId = 12
+            };
+            projectManager.Setup(pm => pm.UpdateProject(project, userId))
+                .Throws(new UnauthorizedAccessException());
+            var sut = new ProjectsController(projectManager.Object);
+            sut.ControllerContext = new ControllerContext();
+            sut.ControllerContext.HttpContext = new DefaultHttpContext();
+            sut.ControllerContext.HttpContext.Items["UserId"] = userId.ToString();
+            
+            //act
+            var result = sut.UpdateProject(project);
+            
+            //assert
+            result.ShouldBeOfType<UnauthorizedResult>();
+            projectManager.Verify(pm => pm.UpdateProject(project, userId), Times.Exactly(1));
             projectManager.VerifyNoOtherCalls();
         }
     }
