@@ -28,12 +28,17 @@ namespace Backend.WebApi.Tests.Controller
             attributes.Length.ShouldBeGreaterThan(0, "Must require authorization");
         }
 
-        [Fact]
-        public void UpdateProject_must_be_successful()
+        [Theory]
+        [InlineData(12)]
+        [InlineData(25)]
+        public void UpdateProject_must_be_successful(int userId)
         {
             //arrange
             var projectManager = new Mock<IProjectManager>();
             var sut = new ProjectsController(projectManager.Object);
+            sut.ControllerContext = new ControllerContext();
+            sut.ControllerContext.HttpContext = new DefaultHttpContext();
+            sut.ControllerContext.HttpContext.Items["UserId"] = userId.ToString();
             
             //act
             var project = new Project()
@@ -42,13 +47,13 @@ namespace Backend.WebApi.Tests.Controller
                 Done = false,
                 Later = false,
                 Name = "Updated project",
-                UserId = 1
+                UserId = userId
             };
             var result = sut.UpdateProject(project);
             
             //assert
             result.ShouldBeOfType<OkResult>();
-            projectManager.Verify(pm => pm.UpdateProject(project, 12), Times.Exactly(1));
+            projectManager.Verify(pm => pm.UpdateProject(project, userId), Times.Exactly(1));
             projectManager.VerifyNoOtherCalls();
         }
     }
