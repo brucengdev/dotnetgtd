@@ -93,6 +93,10 @@ namespace Backend.WebApi.Controllers
             {
                 return Unauthorized();
             }
+            catch (ProjectNotFoundException)
+            {
+                return NotFound();
+            }
 
             return Ok();
         }
