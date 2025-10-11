@@ -36,17 +36,20 @@ namespace Backend.WebApi.Tests.Controller
             var sut = new ProjectsController(projectManager.Object);
             
             //act
-            var result = sut.UpdateProject(new Project()
+            var project = new Project()
             {
                 Id = 1,
                 Done = false,
                 Later = false,
                 Name = "Updated project",
                 UserId = 1
-            });
+            };
+            var result = sut.UpdateProject(project);
             
             //assert
             result.ShouldBeOfType<OkResult>();
+            projectManager.Verify(pm => pm.UpdateProject(project, 12), Times.Exactly(1));
+            projectManager.VerifyNoOtherCalls();
         }
     }
 }
