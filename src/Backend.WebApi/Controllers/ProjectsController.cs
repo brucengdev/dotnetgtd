@@ -83,7 +83,7 @@ namespace Backend.WebApi.Controllers
 
         [HttpPut("[action]")]
         [ServiceFilter<SecurityFilterAttribute>]
-        public ActionResult UpdateProject()
+        public ActionResult UpdateProject(Project project)
         {
             return Ok();
         }
