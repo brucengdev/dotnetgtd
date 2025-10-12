@@ -17,6 +17,16 @@ public class ProjectRepository: IProjectRepository
         return project.Id;
     }
 
+    public void UpdateProject(Project project)
+    {
+        var existing = _dbContext.Projects.FirstOrDefault(p => p.Id == project.Id);
+        if (existing != null)
+        {
+            existing.MakeSame(project);
+            _dbContext.SaveChanges();
+        }
+    }
+
     public IEnumerable<Project> GetProjects(int userId, 
         IEnumerable<bool>? completionStatuses,
         IEnumerable<bool>? laterStatuses)

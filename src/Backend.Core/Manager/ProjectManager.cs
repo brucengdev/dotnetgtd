@@ -43,4 +43,25 @@ public class ProjectManager: IProjectManager
         }
         _projectRepo.DeleteProject(projectId);
     }
+
+    public void UpdateProject(Project project, int userId)
+    {
+        var user = _userRepo.GetUser(userId);
+        if (user == null)
+        {
+            throw new UserNotFoundException();
+        }
+        
+        var existingProject = _projectRepo.GetProjectById(project.Id);
+        if (existingProject == null)
+        {
+            throw new ProjectNotFoundException();
+        }
+
+        if (existingProject.UserId != userId)
+        {
+            throw new UnauthorizedAccessException("User does not own this project");
+        }
+        _projectRepo.UpdateProject(project);
+    }
 }

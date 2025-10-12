@@ -80,5 +80,29 @@ namespace Backend.WebApi.Controllers
 
             return Ok();
         }
+
+        [HttpPut("[action]")]
+        [ServiceFilter<SecurityFilterAttribute>]
+        public ActionResult UpdateProject(Project project)
+        {
+            try
+            {
+                _projectManager.UpdateProject(project, this.CurrentUserId());
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized();
+            }
+            catch (ProjectNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (UserNotFoundException)
+            {
+                return BadRequest();
+            }
+
+            return Ok();
+        }
     }
 }
