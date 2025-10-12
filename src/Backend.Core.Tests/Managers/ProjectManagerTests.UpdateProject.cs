@@ -58,17 +58,61 @@ public partial class ProjectManagerTests
         //arrange
         var userRepo = new TestUserRepository();
         var projectRepo = new TestProjectRepository();
+        projectRepo.Projects.Add(new()
+        {
+            Id = 2,
+            Name = "Project X",
+            UserId = 123
+        });
         var sut = new ProjectManager(projectRepo, userRepo);
         
         //act and assert
         Assert.Throws<UserNotFoundException>(() => sut.UpdateProject(new Project
         {
-            Name = "Project Name",
-            Id = 0,
+            Id = 2,
+            Name = "Updated project",
             UserId = 123
         }, 234));
         
         //assert
-        projectRepo.Projects.Count.ShouldBe(0);
+        projectRepo.Projects.Count.ShouldBe(1);
+    }
+    
+    [Fact]
+    public void Update_project_must_throw_unauthorized_if_user_does_not_own_project()
+    {
+        //arrange
+        var userRepo = new TestUserRepository();
+        userRepo.AddUser(new()
+        {
+            Id = 234,
+            Username = "user1",
+            PasswordHash = AccountManagerTests.HashPassword("pass")
+        });
+        var projectRepo = new TestProjectRepository();
+        projectRepo.Projects.Add(new()
+        {
+            Id = 2,
+            Name = "Project X",
+            UserId = 123
+        });
+        var sut = new ProjectManager(projectRepo, userRepo);
+        
+        //act and assert
+        Assert.Throws<UnauthorizedAccessException>(() => sut.UpdateProject(new Project
+        {
+            Name = "Project Name",
+            Id = 2,
+            UserId = 234
+        }, 234));
+        
+        //assert
+        projectRepo.Projects.Count.ShouldBe(1);
+        projectRepo.Projects[0].ShouldBe(new()
+        {
+            Id = 2,
+            Name = "Project X",
+            UserId = 123
+        });
     } 
 }

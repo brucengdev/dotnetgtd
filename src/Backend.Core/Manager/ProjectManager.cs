@@ -51,6 +51,13 @@ public class ProjectManager: IProjectManager
         {
             throw new UserNotFoundException();
         }
+        
+        var existingProject = _projectRepo.GetProjectById(project.Id);
+
+        if (existingProject.UserId != userId)
+        {
+            throw new UnauthorizedAccessException("User does not own this project");
+        }
         _projectRepo.UpdateProject(project);
     }
 }
