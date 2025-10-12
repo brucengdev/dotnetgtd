@@ -4,7 +4,7 @@ using Shouldly;
 
 namespace Backend.WebApi.Tests.Repository;
 
-public class ProjectRepositoryTests
+public partial class ProjectRepositoryTests
 {
     private static void CreateTestData(GTDContext dbContext)
     {

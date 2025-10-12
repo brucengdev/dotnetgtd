@@ -22,4 +22,13 @@ public class Project
                && Later == otherProject.Later
                && Done == otherProject.Done;
     }
+
+    public void MakeSame(Project project)
+    {
+        Id = project.Id;
+        Name = project.Name;
+        UserId = project.UserId;
+        Later = project.Later;
+        Done = project.Done;
+    }
 }
