@@ -22,10 +22,8 @@ export function ProjectListItem(props: ProjectListItemProps) {
             onChange={newName => {
                 if(onChange) {
                     onChange({
-                        id: 0,
-                        name: newName,
-                        later,
-                        done,
+                        ...project,
+                        name: newName
                     })
                 }
             }}

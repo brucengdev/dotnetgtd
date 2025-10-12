@@ -8,7 +8,7 @@ describe("ProjectListItem", () => {
     it("executes callback to update project after name is changed", async () => {
         const fn = vitest.fn()
         render(<ProjectListItem 
-            project={{ id: 0, name: "Test Project", later: false, done: false }}
+            project={{ id: 1, name: "Test Project", later: false, done: false }}
             onChange={fn}
         />)
 
@@ -24,7 +24,7 @@ describe("ProjectListItem", () => {
         fireEvent.click(screen.getByRole("button", { name: "✓" }))
 
         expect(fn).toHaveBeenCalledWith({
-            id: 0,
+            id: 1,
             name: "Updated Project",
             done: false,
             later: false
