@@ -19,6 +19,9 @@ public class TagRepository: ITagRepository
     
     public void UpdateTag(Tag tag)
     {
+        var existingTag = _dbContext.Tags.Find(tag.Id);
+        existingTag.MakeSame(tag);
+        _dbContext.SaveChanges();
     }
 
     public IEnumerable<Tag> GetTags(int userId)
