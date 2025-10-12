@@ -35,7 +35,11 @@ export function ProjectView({ client }: ProjectViewProps) {
                 client.DeleteProject(projectId)
                     .then(() => setProjects(undefined))//to reload project list
             }}
-            />
+            onChange={(project) => {
+                client.UpdateProject(project)
+                    .then(() => setProjects(undefined)) //to reload project list
+            }}
+        />
         {showNewProjectForm
             ?<AddProjectForm client={client} 
                     onCancel={() => setShowNewProjectForm(false)} 

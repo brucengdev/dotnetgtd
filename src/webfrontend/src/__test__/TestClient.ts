@@ -130,6 +130,13 @@ export class TestClient implements IClient {
         return true
     }
 
+    async UpdateProject(project: Project): Promise<boolean> {
+        this.Projects.splice(this.Projects.findIndex(p => p.id === project.id), 1)
+        this.Projects.push(project)
+        this.Projects.sort((a, b) => a.id - b.id)
+        return true
+    }
+
     async GetProjects(filter?: ProjectFilter): Promise<Project[]> {
         let result = [...this.Projects.map(p => {
             return {...p}

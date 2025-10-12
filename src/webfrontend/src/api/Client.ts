@@ -16,6 +16,7 @@ export interface IClient {
     UpdateItem: (item: Item) => Promise<boolean>
 
     AddProject: (item: Project) => Promise<boolean>
+    UpdateProject: (project: Project) => Promise<boolean>
     GetProjects: (filter?: ProjectFilter) => Promise<Project[]>
     DeleteProject: (id: number) => Promise<boolean>
 
@@ -126,6 +127,19 @@ export class Client implements IClient {
             accessToken: this.token
         }).toString()}`, {
             method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(project)
+        })
+        return result.ok
+    }
+
+    public async UpdateProject(project: Project): Promise<boolean> {
+        const result = await fetch(`${url}/Projects/UpdateProject?${new URLSearchParams({
+            accessToken: this.token
+        }).toString()}`, {
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },

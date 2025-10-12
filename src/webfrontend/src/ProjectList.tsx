@@ -4,22 +4,25 @@ import { ProjectListItem } from "./ProjectListItem"
 interface ProjectListProps {
     projects: Project[]
     onDelete?: (projectId: number) => void
+    onChange?: (project: Project) => void
 }
 
 export function ProjectList(props: ProjectListProps) {
-    const { projects, onDelete } = props
+    const { projects, onDelete, onChange } = props
     return <div data-testid="project-list">
         {projects?.map(p => 
             <ProjectListItem key={p.id} 
-                name={p.name} 
-                later={p.later}
-                done={p.done}
+                project={p}
                 onDelete={() => {
                     if(onDelete) {
                         onDelete(p.id)
                     }
-                }
-            }
+                }}
+                onChange={project => {
+                    if(onChange) {
+                        onChange(project)
+                    }
+                }}
              /> )}
     </div>
 }

@@ -2,27 +2,57 @@ import { useState } from "react"
 import { ConfirmDeleteView } from "./ConfirmDeleteView"
 import { Button } from "./controls/Button"
 import { CheckBox } from "./controls/CheckBox"
+import { EditableTextView } from "./controls/EditableTextView"
+import { Project } from "./models/Project"
 
 interface ProjectListItemProps {
-    name: string,
+    project: Project,
     onDelete?: () => void
-    later: boolean
-    done: boolean
+    onChange?: (project: Project) => void
 }
 export function ProjectListItem(props: ProjectListItemProps) {
-    const { name, later, done, onDelete } = props
+    const { onDelete, onChange, project } = props
+    const { name, later, done } = project
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
     return <div data-testid="project"  className="grid grid-cols-4 mb-1">
-        <div data-testid="name">{name}</div>
+        <EditableTextView 
+            text={name} 
+            editViewTestId="edit-name"
+            textViewTestId="name" 
+            onChange={newName => {
+                if(onChange) {
+                    onChange({
+                        ...project,
+                        name: newName
+                    })
+                }
+            }}
+        />
         <CheckBox
             label="Later"
             dataTestId="later"
             checked={later}
+            onChange={newValue => {
+                if(onChange) {
+                    onChange({
+                        ...project,
+                        later: newValue
+                    })
+                }
+            }}
         />
         <CheckBox
             label="Done"
             dataTestId="done"
             checked={done}
+            onChange={newValue => {
+                if(onChange) {
+                    onChange({
+                        ...project,
+                        done: newValue
+                    })
+                }
+            }}
         />
         {!showConfirmDelete 
             && <Button text="Delete" 

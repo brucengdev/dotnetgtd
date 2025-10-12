@@ -12,9 +12,14 @@ describe("ProjectListItem", () => {
     ]
     .forEach(({ later, done }) => {
         it("shows project data and delete button", () => {
-            render(<ProjectListItem name="Test Project" 
-                later={later}
-                done={done} />)
+            render(<ProjectListItem 
+                project={{
+                    id: 1,
+                    name: "Test Project",
+                    later,
+                    done
+                }}
+                />)
 
             expect(screen.getByTestId("name")).toBeInTheDocument()
             expect(screen.getByTestId("name").textContent).toBe("Test Project")
@@ -35,7 +40,7 @@ describe("ProjectListItem", () => {
     })
     
     it("shows confirms delete form when delete is clicked", () => {
-        render(<ProjectListItem name="Test Project" later={false} done={false} />)
+        render(<ProjectListItem project={{ id: 1, name:"Test Project", later:false, done:false}} />)
 
         expect(screen.queryByTestId("confirmDeleteView")).not.toBeInTheDocument()
 
@@ -46,7 +51,7 @@ describe("ProjectListItem", () => {
     })
 
     it("hides confirm delete form when no is clicked", () => {
-        render(<ProjectListItem name="Test Project" later={false} done={false} />)
+        render(<ProjectListItem project={{ id: 1, name:"Test Project", later:false, done:false}} />)
 
         fireEvent.click(screen.getByRole("button", { name: "Delete" }))
 
@@ -58,8 +63,8 @@ describe("ProjectListItem", () => {
 
     it("must calls onDelete when yes is clicked", () => {
         const onDelete = vitest.fn()
-        render(<ProjectListItem name="Test Project" 
-            onDelete={onDelete} later={false} done={false} />)
+        render(<ProjectListItem project={{ id: 1, name:"Test Project", later:false, done:false}} 
+            onDelete={onDelete} />)
 
         fireEvent.click(screen.getByRole("button", { name: "Delete" }))
 
