@@ -2,6 +2,7 @@ import { describe, expect, it, vitest } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import '@testing-library/jest-dom'
 import { ProjectList } from "./ProjectList";
+import { sleep } from "./__test__/testutils";
 
 describe("ProjectList", () => {
     it("shows the list of projects", () => {
@@ -39,5 +40,28 @@ describe("ProjectList", () => {
         
         fireEvent.click(screen.getByRole("button", {name: "Yes"}))
         expect(onDelete).toHaveBeenCalledWith(2)
+    })
+
+    it("calls onChange when a project is changed", async () => {
+        const projects = [
+            { id: 1, name: "Project A", later: true, done: false },
+            { id: 2, name: "Project B", later: false, done: false }
+        ]
+        const onChange = vitest.fn()
+        render(<ProjectList projects={projects} onChange={onChange} />)
+
+        const projectItems = screen.getAllByTestId("name")
+        projectItems[1].click() //click project B's name to edit
+        await sleep(1)
+
+        fireEvent.change(screen.getByTestId("edit-name"), { target: { value: "Project B Updated" } })
+        fireEvent.click(screen.getByRole("button", { name: "✓" }))
+        
+        expect(onChange).toHaveBeenCalledWith({ 
+            id: 2,
+            name: "Project B Updated", 
+            later: false,
+            done: false 
+        })
     })
 });
