@@ -41,7 +41,7 @@ public class TagManager: ITagManager
 
         if (tag.UserId != userId)
         {
-            throw new UnauthorizedAccessException("Must not change tag owner");
+            throw new ArgumentException("UserId must match current user's");
         }
         
         _tagRepo.UpdateTag(tag);

@@ -144,7 +144,7 @@ public partial class TagManagerTests
     } 
     
     [Fact]
-    public void Update_tag_must_throw_unauthorized_exception_if_user_tries_to_change_tag_owner()
+    public void Update_tag_must_throw_argument_exception_if_user_tries_to_change_tag_owner()
     {
         //arrange
         var userRepo = new TestUserRepository();
@@ -164,7 +164,7 @@ public partial class TagManagerTests
         var sut = new TagManager(tagRepo, userRepo);
         
         //act and assert
-        Assert.Throws<UnauthorizedAccessException>(() => sut.UpdateTag(new Tag
+        Assert.Throws<ArgumentException>(() => sut.UpdateTag(new Tag
         {
             Id = 1,
             Name = "Tag Name Updated",
