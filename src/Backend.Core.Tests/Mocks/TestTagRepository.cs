@@ -13,6 +13,12 @@ public class TestTagRepository: ITagRepository
         return tag.Id;
     }
 
+    public void UpdateTag(Tag tag)
+    {
+        Tags.RemoveAt(Tags.FindIndex(t => t.Id == tag.Id));
+        Tags.Add(tag);
+    }
+
     public IEnumerable<Tag> GetTags(int userId)
     {
         return Tags.Where(p => p.UserId == userId);

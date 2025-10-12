@@ -23,7 +23,7 @@ public class TagManager: ITagManager
 
     public void UpdateTag(Tag tag, int userId)
     {
-        
+        _tagRepo.UpdateTag(tag);
     }
 
     public IEnumerable<Tag> GetTags(int userId)

@@ -16,6 +16,10 @@ public class TagRepository: ITagRepository
         _dbContext.SaveChanges();
         return tag.Id;
     }
+    
+    public void UpdateTag(Tag tag)
+    {
+    }
 
     public IEnumerable<Tag> GetTags(int userId)
     {
