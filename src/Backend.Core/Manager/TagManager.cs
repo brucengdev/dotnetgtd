@@ -23,6 +23,10 @@ public class TagManager: ITagManager
 
     public void UpdateTag(Tag tag, int userId)
     {
+        if (!_userRepo.UserExists(userId))
+        {
+            throw new UserNotFoundException();
+        }
         _tagRepo.UpdateTag(tag);
     }
 
