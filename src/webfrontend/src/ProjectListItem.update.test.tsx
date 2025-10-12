@@ -56,4 +56,24 @@ describe("ProjectListItem", () => {
             })
         })
     })
+
+    const updateDoneCases = [true, false]
+    updateDoneCases.forEach(done => {
+        it(`executes callback to update project after done is changed to ${done}`, async () => {
+            const fn = vitest.fn()
+            render(<ProjectListItem 
+                project={{ id: 1, name: "Test Project", later: false, done: !done }}
+                onChange={fn} />)
+
+            const laterCheckbox = screen.getByTestId("done")
+            laterCheckbox.click()
+
+            expect(fn).toHaveBeenCalledWith({
+                id: 1,
+                name: "Test Project",
+                later: false,
+                done
+            })
+        })
+    })
 })

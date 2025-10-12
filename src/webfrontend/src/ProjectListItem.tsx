@@ -45,6 +45,14 @@ export function ProjectListItem(props: ProjectListItemProps) {
             label="Done"
             dataTestId="done"
             checked={done}
+            onChange={newValue => {
+                if(onChange) {
+                    onChange({
+                        ...project,
+                        done: newValue
+                    })
+                }
+            }}
         />
         {!showConfirmDelete 
             && <Button text="Delete" 
