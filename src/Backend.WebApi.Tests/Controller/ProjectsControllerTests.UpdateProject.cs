@@ -116,5 +116,34 @@ namespace Backend.WebApi.Tests.Controller
             projectManager.Verify(pm => pm.UpdateProject(project, 12), Times.Exactly(1));
             projectManager.VerifyNoOtherCalls();
         }
+        
+        [Fact]
+        public void UpdateProject_must_return_400_if_user_is_not_found()
+        {
+            //arrange
+            var projectManager = new Mock<IProjectManager>();
+            var project = new Project()
+            {
+                Id = 1,
+                Done = false,
+                Later = false,
+                Name = "Updated project",
+                UserId = 12
+            };
+            projectManager.Setup(pm => pm.UpdateProject(project, 12))
+                .Throws(new UserNotFoundException());
+            var sut = new ProjectsController(projectManager.Object);
+            sut.ControllerContext = new ControllerContext();
+            sut.ControllerContext.HttpContext = new DefaultHttpContext();
+            sut.ControllerContext.HttpContext.Items["UserId"] = 12;
+            
+            //act
+            var result = sut.UpdateProject(project);
+            
+            //assert
+            result.ShouldBeOfType<BadRequestResult>();
+            projectManager.Verify(pm => pm.UpdateProject(project, 12), Times.Exactly(1));
+            projectManager.VerifyNoOtherCalls();
+        }
     }
 }

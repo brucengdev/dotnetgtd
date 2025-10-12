@@ -97,6 +97,10 @@ namespace Backend.WebApi.Controllers
             {
                 return NotFound();
             }
+            catch (UserNotFoundException)
+            {
+                return BadRequest();
+            }
 
             return Ok();
         }
