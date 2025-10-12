@@ -176,4 +176,33 @@ describe("ProjectView", () => {
         expect(projects[0].querySelector('[data-testid="name"]')?.textContent).toBe("Project X")
         expect(projects[1].querySelector('[data-testid="name"]')?.textContent).toBe("Project Z")
     })
+
+    it("updates a project when a project is changed", async () => {
+        const client = new TestClient()
+        client.Projects = [
+            {id: 1, name: "Project X", later: false, done: false },
+            {id: 2, name: "Project Y", later: false, done: false },
+            {id: 3, name: "Project Z", later: false, done: false }
+        ]
+        render(<ProjectView client={client} />)
+
+        await sleep(1)
+
+        const projectNames = screen.getAllByTestId("name")
+        projectNames[1].click()
+        await sleep(1)
+
+        fireEvent.change(screen.getByTestId("edit-name"), { target: { value: "Project Y Updated" } })
+        await sleep(1)
+        fireEvent.click(screen.getByRole("button", { name: "✓" }))
+
+        await sleep(1)
+
+        const projects = screen.getAllByTestId("project")
+        expect(projects.length).toBe(3)
+
+        expect(projects[0].querySelector('[data-testid="name"]')?.textContent).toBe("Project X")
+        expect(projects[1].querySelector('[data-testid="name"]')?.textContent).toBe("Project Y Updated")
+        expect(projects[2].querySelector('[data-testid="name"]')?.textContent).toBe("Project Z")
+    })
 })
