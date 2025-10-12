@@ -133,12 +133,6 @@ public partial class ItemManagerTests
         var itemRepo = new TestItemRepository(Data);
         Data.Items.Add(new Item
         {
-            Id = 1,
-            Description = "Task 1",
-            UserId = 123
-        });
-        Data.Items.Add(new Item
-        {
             Id = 2,
             Description = "Task 2",
             UserId = 234
@@ -163,7 +157,7 @@ public partial class ItemManagerTests
         var exception = Assert.Throws<UnauthorizedAccessException>(
             () => sut.UpdateItem(input, currentUserId));
         exception.Message.ShouldBe("User does not own this item");
-        Data.Items.Count.ShouldBe(2);
+        Data.Items.Count.ShouldBe(1);
     }
     
     [Fact]
