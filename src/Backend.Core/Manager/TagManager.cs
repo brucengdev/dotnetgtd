@@ -38,6 +38,11 @@ public class TagManager: ITagManager
         {
             throw new UnauthorizedAccessException();
         }
+
+        if (tag.UserId != userId)
+        {
+            throw new UnauthorizedAccessException("Must not change tag owner");
+        }
         
         _tagRepo.UpdateTag(tag);
     }
