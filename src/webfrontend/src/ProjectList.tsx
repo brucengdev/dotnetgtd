@@ -11,9 +11,7 @@ export function ProjectList(props: ProjectListProps) {
     return <div data-testid="project-list">
         {projects?.map(p => 
             <ProjectListItem key={p.id} 
-                name={p.name} 
-                later={p.later}
-                done={p.done}
+                project={p}
                 onDelete={() => {
                     if(onDelete) {
                         onDelete(p.id)

@@ -7,7 +7,10 @@ import { sleep } from "./__test__/testutils";
 describe("ProjectListItem", () => {
     it("executes callback to update project after name is changed", async () => {
         const fn = vitest.fn()
-        render(<ProjectListItem name="Test Project" later={false} done={false} onChange={fn} />)
+        render(<ProjectListItem 
+            project={{ id: 0, name: "Test Project", later: false, done: false }}
+            onChange={fn}
+        />)
 
         screen.getByTestId("name").click()
         await sleep(1)

@@ -6,14 +6,13 @@ import { EditableTextView } from "./controls/EditableTextView"
 import { Project } from "./models/Project"
 
 interface ProjectListItemProps {
-    name: string,
+    project: Project,
     onDelete?: () => void
-    later: boolean
-    done: boolean
     onChange?: (project: Project) => void
 }
 export function ProjectListItem(props: ProjectListItemProps) {
-    const { name, later, done, onDelete, onChange } = props
+    const { onDelete, onChange, project } = props
+    const { name, later, done } = project
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
     return <div data-testid="project"  className="grid grid-cols-4 mb-1">
         <EditableTextView 
