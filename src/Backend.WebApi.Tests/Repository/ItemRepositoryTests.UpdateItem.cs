@@ -1,6 +1,5 @@
 ﻿using Backend.Models;
 using Backend.WebApi.Repository;
-using Microsoft.EntityFrameworkCore;
 using Shouldly;
 
 namespace Backend.WebApi.Tests.Repository;

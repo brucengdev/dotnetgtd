@@ -7,6 +7,8 @@ public class TagNotFoundException: Exception { }
 public interface ITagManager
 {
     int CreateTag(Tag tag);
+
+    void UpdateTag(Tag tag, int userId);
     
     IEnumerable<Tag> GetTags(int userId);
 

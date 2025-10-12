@@ -24,6 +24,29 @@ namespace Backend.WebApi.Controllers
             var TagId = _tagManager.CreateTag(tag);
             return Ok(TagId);
         }
+        
+        [HttpPut("[action]")]
+        [ServiceFilter<SecurityFilterAttribute>]
+        public ActionResult UpdateTag(Tag tag)
+        {
+            try
+            {
+                _tagManager.UpdateTag(tag, this.CurrentUserId());
+            }
+            catch (UserNotFoundException)
+            {
+                return BadRequest();
+            }
+            catch (TagNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized("User does not own this tag");
+            }
+            return Ok();
+        }
 
         [HttpGet("[action]")]
         [ServiceFilter<SecurityFilterAttribute>]

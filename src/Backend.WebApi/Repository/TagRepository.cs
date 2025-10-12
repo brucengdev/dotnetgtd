@@ -16,6 +16,13 @@ public class TagRepository: ITagRepository
         _dbContext.SaveChanges();
         return tag.Id;
     }
+    
+    public void UpdateTag(Tag tag)
+    {
+        var existingTag = _dbContext.Tags.Find(tag.Id);
+        existingTag.MakeSame(tag);
+        _dbContext.SaveChanges();
+    }
 
     public IEnumerable<Tag> GetTags(int userId)
     {
@@ -35,5 +42,10 @@ public class TagRepository: ITagRepository
     public Tag GetTagById(int tagId)
     {
         return _dbContext.Tags.Find(tagId);
+    }
+
+    public bool TagExists(int tagId)
+    {
+        return _dbContext.Tags.Any(t => t.Id == tagId);
     }
 }

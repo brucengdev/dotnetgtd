@@ -21,6 +21,32 @@ public class TagManager: ITagManager
         return _tagRepo.CreateTag(tag);
     }
 
+    public void UpdateTag(Tag tag, int userId)
+    {
+        if (!_userRepo.UserExists(userId))
+        {
+            throw new UserNotFoundException();
+        }
+
+        var existingTag = _tagRepo.GetTagById(tag.Id);
+        if (existingTag == null)
+        {
+            throw new TagNotFoundException();
+        }
+
+        if (existingTag.UserId != userId)
+        {
+            throw new UnauthorizedAccessException();
+        }
+
+        if (tag.UserId != userId)
+        {
+            throw new ArgumentException("UserId must match current user's");
+        }
+        
+        _tagRepo.UpdateTag(tag);
+    }
+
     public IEnumerable<Tag> GetTags(int userId)
     {
         return _tagRepo.GetTags(userId);

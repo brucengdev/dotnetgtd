@@ -20,4 +20,12 @@ public class Tag
                 && Name == otherTag.Name
                 && UserId == otherTag.UserId;
     }
+
+    public void MakeSame(Tag other)
+    {
+        Id = other.Id;
+        Name = other.Name;
+        UserId = other.UserId;
+        User = other.User;
+    }
 }

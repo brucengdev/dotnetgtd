@@ -25,4 +25,9 @@ public class TestUserRepository: IUserRepository
 
     public bool UserExists(string username)
         => _users.ContainsKey(username);
+
+    public bool UserExists(int userId)
+    {
+        return _users.Values.Any(u => u.Id == userId);
+    }
 }

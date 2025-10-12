@@ -62,6 +62,11 @@ public class ProjectManager: IProjectManager
         {
             throw new UnauthorizedAccessException("User does not own this project");
         }
+
+        if (project.UserId != userId)
+        {
+            throw new ArgumentException("UserId field must match current user's");
+        }
         _projectRepo.UpdateProject(project);
     }
 }
