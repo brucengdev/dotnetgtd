@@ -24,6 +24,13 @@ namespace Backend.WebApi.Controllers
             var TagId = _tagManager.CreateTag(tag);
             return Ok(TagId);
         }
+        
+        [HttpPut("[action]")]
+        [ServiceFilter<SecurityFilterAttribute>]
+        public ActionResult UpdateTag(Tag tag)
+        {
+            return Ok();
+        }
 
         [HttpGet("[action]")]
         [ServiceFilter<SecurityFilterAttribute>]
