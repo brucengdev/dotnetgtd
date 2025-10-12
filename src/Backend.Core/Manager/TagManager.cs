@@ -28,10 +28,17 @@ public class TagManager: ITagManager
             throw new UserNotFoundException();
         }
 
-        if (!_tagRepo.TagExists(tag.Id))
+        var existingTag = _tagRepo.GetTagById(tag.Id);
+        if (existingTag == null)
         {
             throw new TagNotFoundException();
         }
+
+        if (existingTag.UserId != userId)
+        {
+            throw new UnauthorizedAccessException();
+        }
+        
         _tagRepo.UpdateTag(tag);
     }
 

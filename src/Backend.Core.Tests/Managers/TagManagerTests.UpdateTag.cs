@@ -104,4 +104,42 @@ public partial class TagManagerTests
         //assert
         tagRepo.Tags.Count.ShouldBe(0);
     } 
+    
+    [Fact]
+    public void Update_tag_must_throw_unauthorized_exception_if_user_does_not_own_the_tag()
+    {
+        //arrange
+        var userRepo = new TestUserRepository();
+        userRepo.AddUser(new User
+        {
+            Id = 123,
+            Username = "user1",
+            PasswordHash = AccountManagerTests.HashPassword("pass")
+        });
+        var tagRepo = new TestTagRepository();
+        tagRepo.Tags.Add(new()
+        {
+            Id = 1,
+            Name = "Tag Name",
+            UserId = 22
+        });
+        var sut = new TagManager(tagRepo, userRepo);
+        
+        //act and assert
+        Assert.Throws<UnauthorizedAccessException>(() => sut.UpdateTag(new Tag
+        {
+            Id = 1,
+            Name = "Tag Name Updated",
+            UserId = 123
+        }, 123));
+        
+        //assert
+        tagRepo.Tags.Count.ShouldBe(1);
+        tagRepo.Tags.First().ShouldBe(new()
+        {
+            Id = 1,
+            Name = "Tag Name",
+            UserId = 22
+        });
+    } 
 }
