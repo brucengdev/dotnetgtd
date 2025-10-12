@@ -37,6 +37,10 @@ namespace Backend.WebApi.Controllers
             {
                 return BadRequest();
             }
+            catch (TagNotFoundException)
+            {
+                return NotFound();
+            }
             return Ok();
         }
 
