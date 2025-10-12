@@ -53,7 +53,7 @@ public partial class ProjectManagerTests
     } 
     
     [Fact]
-    public void Update_project_must_return_user_not_found_error_with_invalid_user()
+    public void Update_project_must_throw_user_not_found_error_with_invalid_user()
     {
         //arrange
         var userRepo = new TestUserRepository();
@@ -114,5 +114,31 @@ public partial class ProjectManagerTests
             Name = "Project X",
             UserId = 123
         });
-    } 
+    }
+
+    [Fact]
+    public void UpdateProject_must_throw_not_found_exception_if_project_is_not_found()
+    {
+        //arrange
+        var userRepo = new TestUserRepository();
+        userRepo.AddUser(new()
+        {
+            Id = 234,
+            Username = "user1",
+            PasswordHash = AccountManagerTests.HashPassword("pass")
+        });
+        var projectRepo = new TestProjectRepository();
+        var sut = new ProjectManager(projectRepo, userRepo);
+        
+        //act and assert
+        Assert.Throws<ProjectNotFoundException>(() => sut.UpdateProject(new Project
+        {
+            Name = "Project Name",
+            Id = 2,
+            UserId = 234
+        }, 234));
+        
+        //assert
+        projectRepo.Projects.Count.ShouldBe(0);
+    }
 }

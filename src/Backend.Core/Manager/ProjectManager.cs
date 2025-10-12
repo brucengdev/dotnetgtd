@@ -53,6 +53,10 @@ public class ProjectManager: IProjectManager
         }
         
         var existingProject = _projectRepo.GetProjectById(project.Id);
+        if (existingProject == null)
+        {
+            throw new ProjectNotFoundException();
+        }
 
         if (existingProject.UserId != userId)
         {
