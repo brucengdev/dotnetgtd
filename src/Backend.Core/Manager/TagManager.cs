@@ -21,6 +21,11 @@ public class TagManager: ITagManager
         return _tagRepo.CreateTag(tag);
     }
 
+    public void UpdateTag(Tag tag, int userId)
+    {
+        
+    }
+
     public IEnumerable<Tag> GetTags(int userId)
     {
         return _tagRepo.GetTags(userId);

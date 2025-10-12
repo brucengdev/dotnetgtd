@@ -27,5 +27,33 @@ namespace Backend.WebApi.Tests.Controller
             attributes = method?.GetCustomAttributes(typeof(ServiceFilterAttribute<SecurityFilterAttribute>), true);
             attributes.Length.ShouldBeGreaterThan(0, "Must require authorization");
         }
+
+        [Theory]
+        [InlineData(1)]
+        [InlineData(2)]
+        [InlineData(3)]
+        public void UpdateTag_must_be_successful(int userId)
+        {
+            //arrange
+            var tagManager = new Mock<ITagManager>();
+            var sut = new TagsController(tagManager.Object);
+            sut.ControllerContext = new();
+            sut.ControllerContext.HttpContext = new DefaultHttpContext();
+            sut.ControllerContext.HttpContext.Items["UserId"] = userId;
+            
+            //act
+            var inputTag = new Tag()
+            {
+                Id = 1,
+                Name = "tag a updated",
+                UserId = userId
+            };
+            var result = sut.UpdateTag(inputTag);
+            
+            //assert
+            tagManager.Verify(tm => tm.UpdateTag(inputTag, userId), Times.Exactly(1));
+            tagManager.VerifyNoOtherCalls();
+            result.ShouldBeOfType<OkResult>();
+        }
     }
 }

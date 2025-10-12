@@ -29,6 +29,7 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult UpdateTag(Tag tag)
         {
+            _tagManager.UpdateTag(tag, this.CurrentUserId());
             return Ok();
         }
 
