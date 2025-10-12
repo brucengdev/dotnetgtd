@@ -111,5 +111,34 @@ namespace Backend.WebApi.Tests.Controller
             tagManager.VerifyNoOtherCalls();
             result.ShouldBeOfType<NotFoundResult>();
         }
+        
+        [Fact]
+        public void UpdateTag_must_return_401_if_user_does_not_own_the_tag()
+        {
+            //arrange
+            int userId = 23;
+            var inputTag = new Tag()
+            {
+                Id = 1,
+                Name = "tag a updated",
+                UserId = userId
+            };
+            var tagManager = new Mock<ITagManager>();
+            tagManager.Setup(tm => tm.UpdateTag(inputTag, userId))
+                .Throws(new UnauthorizedAccessException());
+            var sut = new TagsController(tagManager.Object);
+            sut.ControllerContext = new();
+            sut.ControllerContext.HttpContext = new DefaultHttpContext();
+            sut.ControllerContext.HttpContext.Items["UserId"] = userId;
+            
+            //act
+            var result = sut.UpdateTag(inputTag);
+            
+            //assert
+            tagManager.Verify(tm => tm.UpdateTag(inputTag, userId), Times.Exactly(1));
+            tagManager.VerifyNoOtherCalls();
+            result.ShouldBeOfType<UnauthorizedObjectResult>();
+            (result as UnauthorizedObjectResult).Value.ShouldBe("User does not own this tag");
+        }
     }
 }

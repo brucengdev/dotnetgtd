@@ -41,6 +41,10 @@ namespace Backend.WebApi.Controllers
             {
                 return NotFound();
             }
+            catch (UnauthorizedAccessException)
+            {
+                return Unauthorized("User does not own this tag");
+            }
             return Ok();
         }
 
