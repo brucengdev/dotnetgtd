@@ -2,6 +2,7 @@ import { useState } from "react"
 import { ConfirmDeleteView } from "./ConfirmDeleteView"
 import { Button } from "./controls/Button"
 import { CheckBox } from "./controls/CheckBox"
+import { EditableTextView } from "./controls/EditableTextView"
 
 interface ProjectListItemProps {
     name: string,
@@ -13,7 +14,7 @@ export function ProjectListItem(props: ProjectListItemProps) {
     const { name, later, done, onDelete } = props
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
     return <div data-testid="project"  className="grid grid-cols-4 mb-1">
-        <div data-testid="name">{name}</div>
+        <EditableTextView text={name} editViewTestId="edit-name" textViewTestId="name" />
         <CheckBox
             label="Later"
             dataTestId="later"
