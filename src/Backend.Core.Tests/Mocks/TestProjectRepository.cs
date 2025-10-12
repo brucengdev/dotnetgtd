@@ -13,6 +13,12 @@ public class TestProjectRepository: IProjectRepository
         return project.Id;
     }
 
+    public void UpdateProject(Project project)
+    {
+        var projectIndex = Projects.FindIndex(p => p.Id == project.Id);
+        Projects[projectIndex] = project;
+    }
+
     public IEnumerable<Project> GetProjects(int userId, 
         IEnumerable<bool>? completionStatuses,
         IEnumerable<bool>? laterStatuses)

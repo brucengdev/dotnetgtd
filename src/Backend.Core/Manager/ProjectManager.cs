@@ -46,6 +46,11 @@ public class ProjectManager: IProjectManager
 
     public void UpdateProject(Project project, int userId)
     {
-        
+        var user = _userRepo.GetUser(userId);
+        if (user == null)
+        {
+            throw new UserNotFoundException();
+        }
+        _projectRepo.UpdateProject(project);
     }
 }
