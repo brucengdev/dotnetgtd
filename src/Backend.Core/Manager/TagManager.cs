@@ -27,6 +27,11 @@ public class TagManager: ITagManager
         {
             throw new UserNotFoundException();
         }
+
+        if (!_tagRepo.TagExists(tag.Id))
+        {
+            throw new TagNotFoundException();
+        }
         _tagRepo.UpdateTag(tag);
     }
 

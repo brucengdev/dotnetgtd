@@ -40,4 +40,9 @@ public class TagRepository: ITagRepository
     {
         return _dbContext.Tags.Find(tagId);
     }
+
+    public bool TagExists(int tagId)
+    {
+        return _dbContext.Tags.Any(t => t.Id == tagId);
+    }
 }

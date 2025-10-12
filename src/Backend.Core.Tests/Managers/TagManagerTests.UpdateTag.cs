@@ -78,4 +78,30 @@ public partial class TagManagerTests
             UserId = 123
         });
     } 
+    
+    [Fact]
+    public void Update_tag_must_throw_tag_not_found_exception_if_tag_does_not_exist()
+    {
+        //arrange
+        var userRepo = new TestUserRepository();
+        userRepo.AddUser(new User
+        {
+            Id = 123,
+            Username = "user1",
+            PasswordHash = AccountManagerTests.HashPassword("pass")
+        });
+        var tagRepo = new TestTagRepository();
+        var sut = new TagManager(tagRepo, userRepo);
+        
+        //act and assert
+        Assert.Throws<TagNotFoundException>(() => sut.UpdateTag(new Tag
+        {
+            Id = 1,
+            Name = "Tag Name Updated",
+            UserId = 123
+        }, 123));
+        
+        //assert
+        tagRepo.Tags.Count.ShouldBe(0);
+    } 
 }

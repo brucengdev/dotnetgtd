@@ -12,4 +12,6 @@ public interface ITagRepository
     void DeleteTag(int tagId);
 
     Tag GetTagById(int tagId);
+
+    bool TagExists(int tagId);
 }

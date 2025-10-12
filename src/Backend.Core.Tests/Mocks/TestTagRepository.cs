@@ -33,4 +33,9 @@ public class TestTagRepository: ITagRepository
     {
         return Tags.Find(p => p.Id == tagId);
     }
+
+    public bool TagExists(int tagId)
+    {
+        return Tags.Exists(t => t.Id == tagId);
+    }
 }
