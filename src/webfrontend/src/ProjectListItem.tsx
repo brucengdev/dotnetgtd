@@ -32,6 +32,14 @@ export function ProjectListItem(props: ProjectListItemProps) {
             label="Later"
             dataTestId="later"
             checked={later}
+            onChange={newValue => {
+                if(onChange) {
+                    onChange({
+                        ...project,
+                        later: newValue
+                    })
+                }
+            }}
         />
         <CheckBox
             label="Done"
