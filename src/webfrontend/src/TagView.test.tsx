@@ -100,7 +100,7 @@ describe("TagView", () => {
     it("adds a new Tag when Create button is clicked", async () => {
         const client = new TestClient()
         client.Tags = [
-            {id: 1, name: "Tag X" }
+            {id: 1, name: "Tag X", userId: 1 }
         ]
         render(<TagView client={client} />)
 
@@ -128,9 +128,9 @@ describe("TagView", () => {
     it("deletes a Tag when delete is clicked and confirmed", async () => {
         const client = new TestClient()
         client.Tags = [
-            {id: 1, name: "Tag X" },
-            {id: 2, name: "Tag Y" },
-            {id: 3, name: "Tag Z" }
+            {id: 1, name: "Tag X", userId: 1 },
+            {id: 2, name: "Tag Y", userId: 2 },
+            {id: 3, name: "Tag Z", userId: 2 }
         ]
         render(<TagView client={client} />)
 
@@ -154,9 +154,9 @@ describe("TagView", () => {
     it("updates a Tag when the tag is changed", async () => {
         const client = new TestClient()
         client.Tags = [
-            {id: 1, name: "Tag X" },
-            {id: 2, name: "Tag Y" },
-            {id: 3, name: "Tag Z" }
+            {id: 1, name: "Tag X", userId: 1 },
+            {id: 2, name: "Tag Y", userId: 1 },
+            {id: 3, name: "Tag Z", userId: 2 }
         ]
         render(<TagView client={client} />)
         

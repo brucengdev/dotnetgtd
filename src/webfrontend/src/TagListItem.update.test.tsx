@@ -7,7 +7,7 @@ import { sleep } from "./__test__/testutils";
 describe("TagListItem", () => {
     it("executes callback when changing name", async () => {
         const onChange = vitest.fn()
-        render(<TagListItem tag={{id: 1, name: "Test Tag" }} 
+        render(<TagListItem tag={{id: 1, name: "Test Tag", userId: 1 }} 
             onChange={onChange} />)
 
         screen.getByTestId("name").click()
@@ -19,6 +19,7 @@ describe("TagListItem", () => {
         expect(screen.getByTestId("edit-name")).toHaveValue("Updated Tag")
         fireEvent.click(screen.getByRole("button", { name: "✓"}))
 
-        expect(onChange).toHaveBeenCalledWith({id: 1, name: "Updated Tag" })
+        expect(onChange)
+            .toHaveBeenCalledWith({id: 1, name: "Updated Tag", userId: 1 })
     })
 });

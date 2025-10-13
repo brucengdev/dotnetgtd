@@ -6,8 +6,8 @@ import { TagList } from "./TagList";
 describe("TagList", () => {
     it("shows the list of tags", () => {
         const tags = [
-            { id: 1, name: "Tag A" },
-            { id: 2, name: "Tag B" }
+            { id: 1, name: "Tag A", userId: 1 },
+            { id: 2, name: "Tag B", userId: 2 }
         ]
         render(<TagList tags={tags} />)
         
@@ -25,8 +25,8 @@ describe("TagList", () => {
 
     it("calls onDelete when a tag is deleted", () => {
         const tags = [
-            { id: 1, name: "Tag A" },
-            { id: 2, name: "Tag B" }
+            { id: 1, name: "Tag A", userId: 1 },
+            { id: 2, name: "Tag B", userId: 1 }
         ]
         const onDelete = vitest.fn()
         render(<TagList tags={tags} onDelete={onDelete} />)
@@ -41,8 +41,8 @@ describe("TagList", () => {
 
     it("calls onChange when a tag is changed", () => {
         const tags = [
-            { id: 1, name: "Tag A" },
-            { id: 2, name: "Tag B" }
+            { id: 1, name: "Tag A", userId: 1 },
+            { id: 2, name: "Tag B", userId: 2 }
         ]
         const onChange = vitest.fn()
         render(<TagList tags={tags} onChange={onChange} />)
@@ -55,6 +55,7 @@ describe("TagList", () => {
 
         expect(screen.getByTestId("edit-name")).toHaveValue("Tag B Updated")
         fireEvent.click(screen.getByRole("button", { name: "✓"}))
-        expect(onChange).toHaveBeenCalledWith({id: 2, name: "Tag B Updated" })
+        expect(onChange)
+            .toHaveBeenCalledWith({id: 2, name: "Tag B Updated", userId: 2})
     })
 });

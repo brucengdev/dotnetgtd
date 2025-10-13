@@ -11,7 +11,7 @@ export function TagList(props: TagListProps) {
     const { tags, onDelete, onChange } = props
     return <div data-testid="tag-list">
         {tags?.map(t => 
-            <TagListItem key={t.id} tag={{id: t.id, name: t.name}}
+            <TagListItem key={t.id} tag={t}
                 onDelete={() => {
                     if(onDelete) {
                         onDelete(t.id)
