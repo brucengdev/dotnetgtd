@@ -150,4 +150,30 @@ describe("TagView", () => {
         expect(Tags[0].querySelector('[data-testid="name"]')?.textContent).toBe("Tag X")
         expect(Tags[1].querySelector('[data-testid="name"]')?.textContent).toBe("Tag Z")
     })
+
+    it("updates a Tag when the tag is changed", async () => {
+        const client = new TestClient()
+        client.Tags = [
+            {id: 1, name: "Tag X" },
+            {id: 2, name: "Tag Y" },
+            {id: 3, name: "Tag Z" }
+        ]
+        render(<TagView client={client} />)
+        
+        await sleep(1)
+
+        const tagNames = screen.getAllByTestId("name")
+        fireEvent.click(tagNames[1])
+        
+        fireEvent.change(screen.getByTestId("edit-name"),
+            { target: { value: "Tag Y Updated" } })
+        expect(screen.getByTestId("edit-name")).toHaveValue("Tag Y Updated")
+        
+        fireEvent.click(screen.getByRole("button", { name: "✓"}))
+        await sleep(1)
+
+        expect(screen.getAllByTestId("tag").length).toBe(3)
+        expect(screen.getAllByTestId("name")[1].textContent)
+            .toBe("Tag Y Updated")
+    })
 })

@@ -5,7 +5,7 @@ import '@testing-library/jest-dom'
 
 describe("TagListItem", () => {
     it("shows the name and delete button", () => {
-        render(<TagListItem name="Test Tag" />)
+        render(<TagListItem tag={{id: 1, name: "Test Tag" }} />)
 
         expect(screen.getByTestId("name")).toBeInTheDocument()
         expect(screen.getByTestId("name").textContent).toBe("Test Tag")
@@ -13,7 +13,7 @@ describe("TagListItem", () => {
     })
     
     it("shows confirms delete form when delete is clicked", () => {
-        render(<TagListItem name="Test Tag" />)
+        render(<TagListItem tag={{id: 1, name: "Test Tag" }} />)
 
         expect(screen.queryByTestId("confirmDeleteView")).not.toBeInTheDocument()
 
@@ -24,7 +24,7 @@ describe("TagListItem", () => {
     })
 
     it("hides confirm delete form when no is clicked", () => {
-        render(<TagListItem name="Test Tag" />)
+        render(<TagListItem tag={{id: 1, name: "Test Tag" }} />)
 
         fireEvent.click(screen.getByRole("button", { name: "Delete" }))
 
@@ -36,7 +36,7 @@ describe("TagListItem", () => {
 
     it("must calls onDelete when yes is clicked", () => {
         const onDelete = vitest.fn()
-        render(<TagListItem name="Test Tag" onDelete={onDelete} />)
+        render(<TagListItem tag={{id: 1, name: "Test Tag" }} onDelete={onDelete} />)
 
         fireEvent.click(screen.getByRole("button", { name: "Delete" }))
 

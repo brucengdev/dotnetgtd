@@ -21,6 +21,7 @@ export interface IClient {
     DeleteProject: (id: number) => Promise<boolean>
 
     AddTag: (item: Tag) => Promise<boolean>
+    UpdateTag: (tag: Tag) => Promise<boolean>
     GetTags: () => Promise<Tag[]>
     DeleteTag: (id: number) => Promise<boolean>
 }
@@ -177,6 +178,19 @@ export class Client implements IClient {
             accessToken: this.token
         }).toString()}`, {
             method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(tag)
+        })
+        return result.ok
+    }
+
+    public async UpdateTag(tag: Tag): Promise<boolean> {
+        const result = await fetch(`${url}/Tags/UpdateTag?${new URLSearchParams({
+            accessToken: this.token
+        }).toString()}`, {
+            method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
