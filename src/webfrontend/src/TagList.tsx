@@ -4,6 +4,7 @@ import { TagListItem } from "./TagListItem"
 interface TagListProps {
     tags: Tag[]
     onDelete?: (tagId: number) => void
+    onChange?: (tag: Tag) => void
 }
 
 export function TagList(props: TagListProps) {

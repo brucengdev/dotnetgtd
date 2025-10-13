@@ -38,4 +38,14 @@ describe("TagList", () => {
         fireEvent.click(screen.getByRole("button", {name: "Yes"}))
         expect(onDelete).toHaveBeenCalledWith(2)
     })
+
+    it("calls onChange when a tag is changed", async () => {
+        const tags = [
+            { id: 1, name: "Tag A" },
+            { id: 2, name: "Tag B" }
+        ]
+        const onChange = vitest.fn()
+        render(<TagList tags={tags} onChange={onChange} />)
+
+    })
 });
