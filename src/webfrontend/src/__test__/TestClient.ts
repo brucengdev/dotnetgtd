@@ -164,6 +164,13 @@ export class TestClient implements IClient {
         return true
     }
 
+    async UpdateTag(tag: Tag): Promise<boolean> {
+        this.Tags.splice(this.Tags.findIndex(t => t.id === tag.id), 1)
+        this.Tags.push(tag)
+        this.Tags.sort((a, b) => a.id - b.id)
+        return true
+    }
+
     async GetTags(): Promise<Tag[]> {
         return [...this.Tags.map(p => {
             return {...p}
