@@ -19,7 +19,6 @@ describe("TagListItem", () => {
         expect(screen.getByTestId("edit-name")).toHaveValue("Updated Tag")
         fireEvent.click(screen.getByRole("button", { name: "✓"}))
 
-        
-
+        expect(onChange).toHaveBeenCalledWith({id: 1, name: "Updated Tag" })
     })
 });

@@ -10,12 +10,19 @@ interface TagListItemProps {
     onChange?: (tag: Tag) => void
 }
 export function TagListItem(props: TagListItemProps) {
-    const { tag, onDelete } = props
+    const { tag, onDelete, onChange } = props
     const { name } = tag
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
     return <div data-testid="tag"  className="grid grid-cols-2 mb-1">
         <EditableTextView text={name} 
-            textViewTestId="name" editViewTestId="edit-name" />
+            textViewTestId="name" 
+            editViewTestId="edit-name" 
+            onChange={(newName) => {
+                if(onChange) {
+                    onChange({...tag, name: newName})
+                }
+            }}
+        />
         {!showConfirmDelete 
             && <Button text="Delete" 
                 onClick={() => setShowConfirmDelete(true)} /> }
