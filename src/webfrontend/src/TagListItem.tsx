@@ -1,13 +1,15 @@
 import { useState } from "react"
 import { ConfirmDeleteView } from "./ConfirmDeleteView"
 import { Button } from "./controls/Button"
+import { Tag } from "./models/Tag"
 
 interface TagListItemProps {
-    name: string,
+    tag: Tag,
     onDelete?: () => void
 }
 export function TagListItem(props: TagListItemProps) {
-    const { name, onDelete } = props
+    const { tag, onDelete } = props
+    const { name } = tag
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
     return <div data-testid="tag"  className="grid grid-cols-2 mb-1">
         <div data-testid="name">{name}</div>

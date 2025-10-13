@@ -9,11 +9,11 @@ interface TagListProps {
 export function TagList(props: TagListProps) {
     const { tags, onDelete } = props
     return <div data-testid="tag-list">
-        {tags?.map(p => 
-            <TagListItem key={p.id} name={p.name}
+        {tags?.map(t => 
+            <TagListItem key={t.id} tag={{id: t.id, name: t.name}}
                 onDelete={() => {
                     if(onDelete) {
-                        onDelete(p.id)
+                        onDelete(t.id)
                     }
                 }
             }
