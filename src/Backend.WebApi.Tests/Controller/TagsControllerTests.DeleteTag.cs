@@ -36,21 +36,21 @@ namespace Backend.WebApi.Tests.Controller
         [Theory]
         [InlineData(12, 22)]
         [InlineData(45, 23)]
-        public void DeleteTag_must_be_successful(int TagId, int userId)
+        public void DeleteTag_must_be_successful(int tagId, int userId)
         {
             //arrange
-            var TagManager = new Mock<ITagManager>();
-            var sut = new TagsController(TagManager.Object);
+            var tagManager = new Mock<ITagManager>();
+            var sut = new TagsController(tagManager.Object);
             sut.ControllerContext = new ControllerContext();
             sut.ControllerContext.HttpContext = new DefaultHttpContext();
             sut.ControllerContext.HttpContext.Items["UserId"] = userId;
 
             //act
-            var response = sut.DeleteTag(TagId);
+            var response = sut.DeleteTag(tagId);
             
             //assert
-            TagManager.Verify(pm => pm.DeleteTag(TagId, userId), Times.Once);
-            TagManager.VerifyNoOtherCalls();
+            tagManager.Verify(pm => pm.DeleteTag(tagId, userId), Times.Once);
+            tagManager.VerifyNoOtherCalls();
             response.ShouldBeOfType<OkResult>();
         }
         
@@ -58,10 +58,10 @@ namespace Backend.WebApi.Tests.Controller
         public void DeleteTag_must_return_404_if_Tag_not_found()
         {
             //arrange
-            var TagManager = new Mock<ITagManager>();
-            TagManager.Setup(pm => pm.DeleteTag(123, 23))
+            var tagManager = new Mock<ITagManager>();
+            tagManager.Setup(pm => pm.DeleteTag(123, 23))
                 .Throws<TagNotFoundException>();
-            var sut = new TagsController(TagManager.Object);
+            var sut = new TagsController(tagManager.Object);
             sut.ControllerContext = new ControllerContext();
             sut.ControllerContext.HttpContext = new DefaultHttpContext();
             sut.ControllerContext.HttpContext.Items["UserId"] = 23;
@@ -77,10 +77,10 @@ namespace Backend.WebApi.Tests.Controller
         public void DeleteTag_must_return_unauthorized_if_user_not_authorized()
         {
             //arrange
-            var TagManager = new Mock<ITagManager>();
-            TagManager.Setup(pm => pm.DeleteTag(123, 23))
+            var tagManager = new Mock<ITagManager>();
+            tagManager.Setup(pm => pm.DeleteTag(123, 23))
                 .Throws<UnauthorizedAccessException>();
-            var sut = new TagsController(TagManager.Object);
+            var sut = new TagsController(tagManager.Object);
             sut.ControllerContext = new ControllerContext();
             sut.ControllerContext.HttpContext = new DefaultHttpContext();
             sut.ControllerContext.HttpContext.Items["UserId"] = 23;
