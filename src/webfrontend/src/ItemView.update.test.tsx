@@ -14,8 +14,8 @@ const testProjects: Project[] = [
 ]
 
 const testTags: Tag[] = [
-    { id: 1, name: "tag1" },
-    { id: 2, name: "tag2" }
+    { id: 1, name: "tag1", userId: 1 },
+    { id: 2, name: "tag2", userId: 1 }
 ]
 
 describe("ItemView update form", () => {

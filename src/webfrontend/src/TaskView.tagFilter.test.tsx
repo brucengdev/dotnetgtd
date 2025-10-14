@@ -14,8 +14,8 @@ describe("TaskView", () => {
             { id: 3, description: "Task C", done: false, later: false, tagIds: [] }
         ]
         client.Tags = [
-            { id: 1, name: "Tag 1" },
-            { id: 2, name: "Tag 2" }
+            { id: 1, name: "Tag 1", userId: 1},
+            { id: 2, name: "Tag 2", userId: 1}
         ]
         render(<TaskView client={client} />)
 
@@ -41,8 +41,8 @@ describe("TaskView", () => {
             { id: 3, description: "Task C", done: false, later: false, tagIds: [] }
         ]
         client.Tags = [
-            { id: 1, name: "Tag 1" },
-            { id: 2, name: "Tag 2" }
+            { id: 1, name: "Tag 1", userId: 1 },
+            { id: 2, name: "Tag 2", userId: 1 }
         ]
         render(<TaskView client={client} />)
 
@@ -75,8 +75,8 @@ describe("TaskView", () => {
             { id: 3, description: "Task C", done: false, later: false, tagIds: [] }
         ]
         client.Tags = [
-            { id: 1, name: "Tag 1" },
-            { id: 2, name: "Tag 2" }
+            { id: 1, name: "Tag 1", userId: 1 },
+            { id: 2, name: "Tag 2", userId: 1 }
         ]
         render(<TaskView client={client} />)
         await sleep(1)
@@ -107,8 +107,8 @@ describe("TaskView", () => {
             { id: 3, description: "Task C", done: false, later: false, tagIds: [] }
         ]
         client.Tags = [
-            { id: 1, name: "Tag 1" },
-            { id: 2, name: "Tag 2" }
+            { id: 1, name: "Tag 1", userId: 1 },
+            { id: 2, name: "Tag 2", userId: 1 }
         ]
         render(<TaskView client={client} />)
 
@@ -139,8 +139,8 @@ describe("TaskView", () => {
             { id: 3, description: "Task C", done: false, later: false, tagIds: [] }
         ]
         client.Tags = [
-            { id: 1, name: "Tag 1" },
-            { id: 2, name: "Tag 2" }
+            { id: 1, name: "Tag 1", userId: 1 },
+            { id: 2, name: "Tag 2", userId: 1 }
         ]
         render(<TaskView client={client} />)
 
@@ -170,9 +170,9 @@ describe("TaskView", () => {
             { id: 3, description: "Task C", done: false, later: false, tagIds: [] }
         ]
         client.Tags = [
-            { id: 1, name: "Tag 1" },
-            { id: 2, name: "Tag 2" },
-            { id: 3, name: "Tag 3" }
+            { id: 1, name: "Tag 1", userId: 1 },
+            { id: 2, name: "Tag 2", userId: 1 },
+            { id: 3, name: "Tag 3", userId: 1 }
         ]
         render(<TaskView client={client} />)
 

@@ -13,8 +13,8 @@ describe("TaskFilters views", () => {
             { id: 2, name: "Project 2", later: false, done: false }
         ]
         client.Tags = [
-            { id: 1, name: "Tag 1" },
-            { id: 2, name: "Tag 2" }
+            { id: 1, name: "Tag 1", userId: 1 },
+            { id: 2, name: "Tag 2", userId: 1 }
         ]
         render(<TaskFilters client={client} />)
         await sleep(1)
@@ -49,9 +49,9 @@ describe("TaskFilters views", () => {
                 { id: 3, name: "Project 3", later: false, done: false },
             ];
             client.Tags = [
-                { id: 1, name: "Tag 1" },
-                { id: 2, name: "Tag 2" },
-                { id: 3, name: "Tag 3" }
+                { id: 1, name: "Tag 1", userId: 1 },
+                { id: 2, name: "Tag 2", userId: 1 },
+                { id: 3, name: "Tag 3", userId: 1 }
             ];
             render(<TaskFilters client={client} filter={initialFilter} onFiltersChanged={fn} />);
             await sleep(1);

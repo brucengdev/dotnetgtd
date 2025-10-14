@@ -69,8 +69,8 @@ describe("TaskView", () => {
             { id: 1, name: "Project X", later: false, done: false }
         ]
         client.Tags = [
-            { id: 1, name: "Tag 1" },
-            { id: 2, name: "Tag 2" }
+            { id: 1, name: "Tag 1", userId: 1 },
+            { id: 2, name: "Tag 2", userId: 1 }
         ]
         render(<TaskView client={client} />)
 
@@ -188,8 +188,8 @@ describe("TaskView", () => {
             { id: 1, name: "Project X", later: false, done: false }
         ]
         client.Tags = [
-            { id: 1, name: "Tag 1" },
-            { id: 2, name: "Tag 2" }
+            { id: 1, name: "Tag 1", userId: 1 },
+            { id: 2, name: "Tag 2", userId: 1 }
         ]
         render(<TaskView client={client} />)
 
