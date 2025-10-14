@@ -28,7 +28,7 @@ namespace Backend.WebApi.Controllers
         
         [HttpPut("[action]")]
         [ServiceFilter<SecurityFilterAttribute>]
-        public ActionResult UpdateTag(Tag tag)
+        public ActionResult UpdateTag(TagServiceModel tag)
         {
             try
             {

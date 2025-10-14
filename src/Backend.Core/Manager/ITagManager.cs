@@ -8,7 +8,7 @@ public interface ITagManager
 {
     int CreateTag(Tag tag);
 
-    void UpdateTag(Tag tag, int userId);
+    void UpdateTag(TagServiceModel tag, int userId);
     
     IEnumerable<Tag> GetTags(int userId);
 

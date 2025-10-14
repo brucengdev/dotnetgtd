@@ -21,8 +21,10 @@ public class TagManager: ITagManager
         return _tagRepo.CreateTag(tag);
     }
 
-    public void UpdateTag(Tag tag, int userId)
+    public void UpdateTag(TagServiceModel inputTag, int userId)
     {
+        var tag = Tag.FromServiceModel(inputTag);
+        tag.UserId = userId;
         if (!_userRepo.UserExists(userId))
         {
             throw new UserNotFoundException();
@@ -39,11 +41,6 @@ public class TagManager: ITagManager
             throw new UnauthorizedAccessException();
         }
 
-        if (tag.UserId != userId)
-        {
-            throw new ArgumentException("UserId must match current user's");
-        }
-        
         _tagRepo.UpdateTag(tag);
     }
 

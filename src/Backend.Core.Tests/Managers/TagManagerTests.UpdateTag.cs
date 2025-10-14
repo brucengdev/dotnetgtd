@@ -28,11 +28,10 @@ public partial class TagManagerTests
         var sut = new TagManager(tagRepo, userRepo);
         
         //act
-        sut.UpdateTag(new Tag
+        sut.UpdateTag(new TagServiceModel()
         {
             Id = 1,
-            Name = "Tag Name Updated",
-            UserId = 123
+            Name = "Tag Name Updated"
         }, 123);
         
         //assert
@@ -61,11 +60,9 @@ public partial class TagManagerTests
         var sut = new TagManager(tagRepo, userRepo);
         
         //act and assert
-        Assert.Throws<UserNotFoundException>(() => sut.UpdateTag(new Tag
-        {
+        Assert.Throws<UserNotFoundException>(() => sut.UpdateTag(new TagServiceModel() {
             Id = 1,
-            Name = "Tag Name Updated",
-            UserId = 123
+            Name = "Tag Name Updated"
         }, 123));
         
         //assert
@@ -94,11 +91,10 @@ public partial class TagManagerTests
         var sut = new TagManager(tagRepo, userRepo);
         
         //act and assert
-        Assert.Throws<TagNotFoundException>(() => sut.UpdateTag(new Tag
+        Assert.Throws<TagNotFoundException>(() => sut.UpdateTag(new TagServiceModel()
         {
             Id = 1,
-            Name = "Tag Name Updated",
-            UserId = 123
+            Name = "Tag Name Updated"
         }, 123));
         
         //assert
@@ -126,11 +122,10 @@ public partial class TagManagerTests
         var sut = new TagManager(tagRepo, userRepo);
         
         //act and assert
-        Assert.Throws<UnauthorizedAccessException>(() => sut.UpdateTag(new Tag
+        Assert.Throws<UnauthorizedAccessException>(() => sut.UpdateTag(new TagServiceModel()
         {
             Id = 1,
-            Name = "Tag Name Updated",
-            UserId = 123
+            Name = "Tag Name Updated"
         }, 123));
         
         //assert
@@ -140,44 +135,6 @@ public partial class TagManagerTests
             Id = 1,
             Name = "Tag Name",
             UserId = 22
-        });
-    } 
-    
-    [Fact]
-    public void Update_tag_must_throw_argument_exception_if_user_tries_to_change_tag_owner()
-    {
-        //arrange
-        var userRepo = new TestUserRepository();
-        userRepo.AddUser(new User
-        {
-            Id = 123,
-            Username = "user1",
-            PasswordHash = AccountManagerTests.HashPassword("pass")
-        });
-        var tagRepo = new TestTagRepository();
-        tagRepo.Tags.Add(new()
-        {
-            Id = 1,
-            Name = "Tag Name",
-            UserId = 123
-        });
-        var sut = new TagManager(tagRepo, userRepo);
-        
-        //act and assert
-        Assert.Throws<ArgumentException>(() => sut.UpdateTag(new Tag
-        {
-            Id = 1,
-            Name = "Tag Name Updated",
-            UserId = 22
-        }, 123));
-        
-        //assert
-        tagRepo.Tags.Count.ShouldBe(1);
-        tagRepo.Tags.First().ShouldBe(new()
-        {
-            Id = 1,
-            Name = "Tag Name",
-            UserId = 123
         });
     } 
 }

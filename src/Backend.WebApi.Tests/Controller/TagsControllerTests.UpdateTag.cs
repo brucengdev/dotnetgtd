@@ -42,11 +42,10 @@ namespace Backend.WebApi.Tests.Controller
             sut.ControllerContext.HttpContext.Items["UserId"] = userId;
             
             //act
-            var inputTag = new Tag()
+            var inputTag = new TagServiceModel()
             {
                 Id = 1,
-                Name = "tag a updated",
-                UserId = userId
+                Name = "tag a updated"
             };
             var result = sut.UpdateTag(inputTag);
             
@@ -61,11 +60,10 @@ namespace Backend.WebApi.Tests.Controller
         {
             //arrange
             int userId = 23;
-            var inputTag = new Tag()
+            var inputTag = new TagServiceModel()
             {
                 Id = 1,
-                Name = "tag a updated",
-                UserId = userId
+                Name = "tag a updated"
             };
             var tagManager = new Mock<ITagManager>();
             tagManager.Setup(tm => tm.UpdateTag(inputTag, userId))
@@ -89,11 +87,10 @@ namespace Backend.WebApi.Tests.Controller
         {
             //arrange
             int userId = 23;
-            var inputTag = new Tag()
+            var inputTag = new TagServiceModel()
             {
                 Id = 1,
-                Name = "tag a updated",
-                UserId = userId
+                Name = "tag a updated"
             };
             var tagManager = new Mock<ITagManager>();
             tagManager.Setup(tm => tm.UpdateTag(inputTag, userId))
@@ -117,11 +114,10 @@ namespace Backend.WebApi.Tests.Controller
         {
             //arrange
             int userId = 23;
-            var inputTag = new Tag()
+            var inputTag = new TagServiceModel()
             {
                 Id = 1,
-                Name = "tag a updated",
-                UserId = userId
+                Name = "tag a updated"
             };
             var tagManager = new Mock<ITagManager>();
             tagManager.Setup(tm => tm.UpdateTag(inputTag, userId))

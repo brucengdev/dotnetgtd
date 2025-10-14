@@ -12,6 +12,7 @@ public class Tag
     {
         return new()
         {
+            Id = inputTag.Id,
             Name = inputTag.Name
         };
     }
