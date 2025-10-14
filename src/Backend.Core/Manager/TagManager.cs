@@ -12,12 +12,14 @@ public class TagManager: ITagManager
         _tagRepo = tagRepo;
         _userRepo = userRepo;
     }
-    public int CreateTag(Tag tag)
+    public int CreateTag(TagServiceModel inputTag, int userId)
     {
-        if (_userRepo.GetUser(tag.UserId) == null)
+        if (_userRepo.GetUser(userId) == null)
         {
             throw new UserNotFoundException();
         }
+        var tag = Tag.FromServiceModel(inputTag);
+        tag.UserId = userId;
         return _tagRepo.CreateTag(tag);
     }
 

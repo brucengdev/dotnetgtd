@@ -6,7 +6,7 @@ public class TagNotFoundException: Exception { }
 
 public interface ITagManager
 {
-    int CreateTag(Tag tag);
+    int CreateTag(TagServiceModel tag, int userId);
 
     void UpdateTag(TagServiceModel tag, int userId);
     
