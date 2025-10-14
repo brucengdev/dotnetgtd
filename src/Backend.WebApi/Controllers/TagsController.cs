@@ -18,8 +18,9 @@ namespace Backend.WebApi.Controllers
 
         [HttpPost("[action]")]
         [ServiceFilter<SecurityFilterAttribute>]
-        public ActionResult CreateTag(Tag tag)
+        public ActionResult CreateTag(TagServiceModel inputTag)
         {
+            var tag = Tag.FromServiceModel(inputTag);
             tag.UserId = this.CurrentUserId();
             var TagId = _tagManager.CreateTag(tag);
             return Ok(TagId);

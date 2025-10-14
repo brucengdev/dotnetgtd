@@ -43,7 +43,7 @@ namespace Backend.WebApi.Tests.Controller
             sut.HttpContext.Items["UserId"] = userId;
         
             //act
-            var Tag = new Tag
+            var Tag = new TagServiceModel
             {
                 Name = "Foo"
             };

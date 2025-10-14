@@ -8,6 +8,14 @@ public class Tag
     
     public User? User { get; set; }
 
+    public static Tag FromServiceModel(TagServiceModel inputTag)
+    {
+        return new()
+        {
+            Name = inputTag.Name
+        };
+    }
+
     public override bool Equals(object? obj)
     {
         if (obj is not Tag)
