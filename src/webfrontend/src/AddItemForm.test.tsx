@@ -14,8 +14,8 @@ describe("AddItemForm", () => {
             { id: 2, name: "Project 2", later: false, done: false }
         ]
         client.Tags = [
-            { id: 1, name: "Tag 1" }, 
-            { id: 2, name: "Tag 2" }
+            { id: 1, name: "Tag 1", userId: 1 }, 
+            { id: 2, name: "Tag 2", userId: 1 }
         ]
         render(<AddItemForm client={client} onCancel={() => {}}/>)
 
@@ -230,8 +230,8 @@ describe("AddItemForm", () => {
                 { id: 2, name: "Project 2", later: false, done: false }
             ]
             client.Tags = [
-                { id: 1, name: "Tag 1" },
-                { id: 2, name: "Tag 2" }
+                { id: 1, name: "Tag 1", userId: 1 },
+                { id: 2, name: "Tag 2", userId: 1 }
             ]
             const onCompleted = vitest.fn()
             render(<AddItemForm onCancel={() => {}} client={client} onCompleted={onCompleted} />)

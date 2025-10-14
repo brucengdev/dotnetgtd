@@ -26,9 +26,9 @@ describe("ItemList", () => {
             { id: 2, name: "Project X", later: false, done: false }
         ]
         const tags = [
-            { id: 1, name: "Tag 1" },
-            { id: 2, name: "Tag 2" },
-            { id: 3, name: "Tag 3" }
+            { id: 1, name: "Tag 1", userId: 1 },
+            { id: 2, name: "Tag 2", userId: 1 },
+            { id: 3, name: "Tag 3", userId: 1 }
         ]
         render(<ItemList items={items} projects={projects} tags={tags} />)
 
