@@ -10,7 +10,7 @@ public interface ITagManager
 
     void UpdateTag(TagServiceModel tag, int userId);
     
-    IEnumerable<Tag> GetTags(int userId);
+    IEnumerable<TagServiceModel> GetTags(int userId);
 
     void DeleteTag(int tagId, int userId);
 }

@@ -46,9 +46,10 @@ public class TagManager: ITagManager
         _tagRepo.UpdateTag(tag);
     }
 
-    public IEnumerable<Tag> GetTags(int userId)
+    public IEnumerable<TagServiceModel> GetTags(int userId)
     {
-        return _tagRepo.GetTags(userId);
+        return _tagRepo.GetTags(userId)
+            .Select(t => TagServiceModel.FromTag(t));
     }
 
     public void DeleteTag(int tagId, int userId)

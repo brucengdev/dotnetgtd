@@ -51,8 +51,8 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult GetTags()
         {
-            var Tags = _tagManager.GetTags(this.CurrentUserId());
-            return Ok(Tags);
+            var tags = _tagManager.GetTags(this.CurrentUserId());
+            return Ok(tags);
         }
 
         [HttpDelete("[action]")]

@@ -33,10 +33,10 @@ public partial class TagManagerTests
         var tags = sut.GetTags(123);
         
         //assert
-        tags.ShouldBe(new List<Tag>
+        tags.ShouldBe(new List<TagServiceModel>
         {
-            new() { Id = 1, Name = "Tag A", UserId = 123 },
-            new() { Id = 3, Name = "Tag C", UserId = 123 }
+            new() { Id = 1, Name = "Tag A" },
+            new() { Id = 3, Name = "Tag C" }
         });
     } 
 }
