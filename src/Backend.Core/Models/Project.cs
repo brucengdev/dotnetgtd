@@ -32,4 +32,9 @@ public class Project
         Later = project.Later;
         Done = project.Done;
     }
+
+    public static Project FromServiceModel(ProjectServiceModel other)
+    {
+        return new Project();
+    }
 }

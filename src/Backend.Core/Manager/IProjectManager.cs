@@ -6,7 +6,7 @@ public class ProjectNotFoundException: Exception { }
 
 public interface IProjectManager
 {
-    int CreateProject(Project project);
+    int CreateProject(ProjectServiceModel project, int userId);
 
     void UpdateProject(Project project, int userId);
 

@@ -18,10 +18,9 @@ namespace Backend.WebApi.Controllers
 
         [HttpPost("[action]")]
         [ServiceFilter<SecurityFilterAttribute>]
-        public ActionResult CreateProject(Project project)
+        public ActionResult CreateProject(ProjectServiceModel project)
         {
-            project.UserId = this.CurrentUserId();
-            var projectId = _projectManager.CreateProject(project);
+            var projectId = _projectManager.CreateProject(project, this.CurrentUserId());
             return Ok(projectId);
         }
 

@@ -24,13 +24,12 @@ public partial class ProjectManagerTests
         var sut = new ProjectManager(projectRepo, userRepo);
         
         //act
-        var projectId = sut.CreateProject(new Project
+        var projectId = sut.CreateProject(new ProjectServiceModel()
         {
             Name = projectName,
             Id = 0,
-            UserId = 123,
             Later = later
-        });
+        }, 123);
         
         //assert
         projectRepo.Projects.Count.ShouldBe(1);
@@ -53,12 +52,11 @@ public partial class ProjectManagerTests
         var sut = new ProjectManager(projectRepo, userRepo);
         
         //act and assert
-        Assert.Throws<UserNotFoundException>(() => sut.CreateProject(new Project
+        Assert.Throws<UserNotFoundException>(() => sut.CreateProject(new ProjectServiceModel()
         {
             Name = "Project Name",
-            Id = 0,
-            UserId = 123
-        }));
+            Id = 0
+        }, 123));
         
         //assert
         projectRepo.Projects.Count.ShouldBe(0);
