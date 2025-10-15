@@ -35,6 +35,5 @@ public class Tag
         Id = other.Id;
         Name = other.Name;
         UserId = other.UserId;
-        User = other.User;
     }
 }
