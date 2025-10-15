@@ -18,16 +18,15 @@ namespace Backend.WebApi.Controllers
 
         [HttpPost("[action]")]
         [ServiceFilter<SecurityFilterAttribute>]
-        public ActionResult CreateTag(Tag tag)
+        public ActionResult CreateTag(TagServiceModel inputTag)
         {
-            tag.UserId = this.CurrentUserId();
-            var TagId = _tagManager.CreateTag(tag);
-            return Ok(TagId);
+            var tagId = _tagManager.CreateTag(inputTag, this.CurrentUserId());
+            return Ok(tagId);
         }
         
         [HttpPut("[action]")]
         [ServiceFilter<SecurityFilterAttribute>]
-        public ActionResult UpdateTag(Tag tag)
+        public ActionResult UpdateTag(TagServiceModel tag)
         {
             try
             {
@@ -52,8 +51,8 @@ namespace Backend.WebApi.Controllers
         [ServiceFilter<SecurityFilterAttribute>]
         public ActionResult GetTags()
         {
-            var Tags = _tagManager.GetTags(this.CurrentUserId());
-            return Ok(Tags);
+            var tags = _tagManager.GetTags(this.CurrentUserId());
+            return Ok(tags);
         }
 
         [HttpDelete("[action]")]

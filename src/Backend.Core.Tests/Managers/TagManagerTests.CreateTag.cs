@@ -22,12 +22,11 @@ public partial class TagManagerTests
         var sut = new TagManager(tagRepo, userRepo);
         
         //act
-        var tagId = sut.CreateTag(new Tag
+        var tagId = sut.CreateTag(new TagServiceModel()
         {
             Name = "Tag Name",
-            Id = 0,
-            UserId = 123
-        });
+            Id = 0
+        }, 123);
         
         //assert
         tagRepo.Tags.Count.ShouldBe(1);
@@ -49,12 +48,11 @@ public partial class TagManagerTests
         var sut = new TagManager(tagRepo, userRepo);
         
         //act and assert
-        Assert.Throws<UserNotFoundException>(() => sut.CreateTag(new Tag
+        Assert.Throws<UserNotFoundException>(() => sut.CreateTag(new TagServiceModel()
         {
             Name = "Tag Name",
-            Id = 0,
-            UserId = 123
-        }));
+            Id = 0
+        }, 123));
         
         //assert
         tagRepo.Tags.Count.ShouldBe(0);

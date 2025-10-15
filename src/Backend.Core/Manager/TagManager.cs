@@ -12,17 +12,21 @@ public class TagManager: ITagManager
         _tagRepo = tagRepo;
         _userRepo = userRepo;
     }
-    public int CreateTag(Tag tag)
+    public int CreateTag(TagServiceModel inputTag, int userId)
     {
-        if (_userRepo.GetUser(tag.UserId) == null)
+        if (_userRepo.GetUser(userId) == null)
         {
             throw new UserNotFoundException();
         }
+        var tag = Tag.FromServiceModel(inputTag);
+        tag.UserId = userId;
         return _tagRepo.CreateTag(tag);
     }
 
-    public void UpdateTag(Tag tag, int userId)
+    public void UpdateTag(TagServiceModel inputTag, int userId)
     {
+        var tag = Tag.FromServiceModel(inputTag);
+        tag.UserId = userId;
         if (!_userRepo.UserExists(userId))
         {
             throw new UserNotFoundException();
@@ -39,17 +43,13 @@ public class TagManager: ITagManager
             throw new UnauthorizedAccessException();
         }
 
-        if (tag.UserId != userId)
-        {
-            throw new ArgumentException("UserId must match current user's");
-        }
-        
         _tagRepo.UpdateTag(tag);
     }
 
-    public IEnumerable<Tag> GetTags(int userId)
+    public IEnumerable<TagServiceModel> GetTags(int userId)
     {
-        return _tagRepo.GetTags(userId);
+        return _tagRepo.GetTags(userId)
+            .Select(t => TagServiceModel.FromTag(t));
     }
 
     public void DeleteTag(int tagId, int userId)

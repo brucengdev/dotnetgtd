@@ -36,10 +36,10 @@ namespace Backend.WebApi.Tests.Controller
             //arrange
             var manager = new Mock<ITagManager>();
             manager.Setup(pm => pm.GetTags(userId))
-                .Returns(new List<Tag>()
+                .Returns(new List<TagServiceModel>()
                 {
-                    new() { Id = 1, Name = "Tag A", UserId = userId },
-                    new() { Id = 2, Name = "Tag B", UserId = userId }
+                    new() { Id = 1, Name = "Tag A" },
+                    new() { Id = 2, Name = "Tag B" }
                 });
             var sut = new TagsController(manager.Object);
             sut.ControllerContext = new ControllerContext();
@@ -55,12 +55,13 @@ namespace Backend.WebApi.Tests.Controller
             okObjectResult.ShouldNotBeNull();
             okObjectResult?.StatusCode.ShouldBe((int)HttpStatusCode.OK);
             okObjectResult?.Value.ShouldNotBeNull();
-            okObjectResult?.Value?.GetType().IsAssignableTo(typeof(IEnumerable<Tag>)).ShouldBeTrue();
+            okObjectResult?.Value?.GetType()
+                .IsAssignableTo(typeof(IEnumerable<TagServiceModel>)).ShouldBeTrue();
             
-            okObjectResult?.Value.ShouldBe(new List<Tag>()
+            okObjectResult?.Value.ShouldBe(new List<TagServiceModel>()
             {
-                new() { Id = 1, Name = "Tag A", UserId = userId },
-                new() { Id = 2, Name = "Tag B", UserId = userId }
+                new() { Id = 1, Name = "Tag A" },
+                new() { Id = 2, Name = "Tag B" }
             });
         }
     }

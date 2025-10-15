@@ -8,6 +8,15 @@ public class Tag
     
     public User? User { get; set; }
 
+    public static Tag FromServiceModel(TagServiceModel inputTag)
+    {
+        return new()
+        {
+            Id = inputTag.Id,
+            Name = inputTag.Name
+        };
+    }
+
     public override bool Equals(object? obj)
     {
         if (obj is not Tag)
@@ -26,6 +35,5 @@ public class Tag
         Id = other.Id;
         Name = other.Name;
         UserId = other.UserId;
-        User = other.User;
     }
 }

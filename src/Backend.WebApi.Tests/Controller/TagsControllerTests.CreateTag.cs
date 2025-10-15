@@ -35,7 +35,11 @@ namespace Backend.WebApi.Tests.Controller
         {
             //arrange
             var TagManager = new Mock<ITagManager>();
-            TagManager.Setup(im => im.CreateTag(It.IsAny<Tag>()))
+            var inputTag = new TagServiceModel
+            {
+                Name = "Foo"
+            };
+            TagManager.Setup(im => im.CreateTag(inputTag, userId))
                 .Returns(expectedTagId);
             var sut = new TagsController(TagManager.Object);
             sut.ControllerContext = new ControllerContext();
@@ -43,20 +47,15 @@ namespace Backend.WebApi.Tests.Controller
             sut.HttpContext.Items["UserId"] = userId;
         
             //act
-            var Tag = new Tag
-            {
-                Name = "Foo"
-            };
-            var response = sut.CreateTag(Tag);
+            var response = sut.CreateTag(inputTag);
         
             //assert
-            var verifyTag = (Tag p) =>
+            var verifyTag = (TagServiceModel p) =>
             {
                 p.Name.ShouldBe("Foo");
-                p.UserId.ShouldBe(userId);
                 return true;
             };
-            TagManager.Verify(im => im.CreateTag(It.Is<Tag>(p => verifyTag(p))), Times.Once);
+            TagManager.Verify(im => im.CreateTag(inputTag, userId), Times.Once);
             TagManager.VerifyNoOtherCalls();
             
             response.ShouldBeOfType<OkObjectResult>();
