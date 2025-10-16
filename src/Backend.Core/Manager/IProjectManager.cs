@@ -10,7 +10,7 @@ public interface IProjectManager
 
     void UpdateProject(ProjectServiceModel projectServiceModel, int userId);
 
-    IEnumerable<Project> GetProjects(int userId,
+    IEnumerable<ProjectServiceModel> GetProjects(int userId,
         IEnumerable<bool>? completionStatuses,
         IEnumerable<bool>? laterStatuses);
 

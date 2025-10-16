@@ -24,13 +24,14 @@ public class ProjectManager: IProjectManager
         return _projectRepo.CreateProject(project);
     }
 
-    public IEnumerable<Project> GetProjects(
+    public IEnumerable<ProjectServiceModel> GetProjects(
         int userId,
         IEnumerable<bool>? completionStatuses,
         IEnumerable<bool>? laterStatuses
     )
     {
-        return _projectRepo.GetProjects(userId, completionStatuses, laterStatuses);
+        return _projectRepo.GetProjects(userId, completionStatuses, laterStatuses)
+            .Select(p => ProjectServiceModel.FromProject(p));
     }
 
     public void DeleteProject(int projectId, int userId)
