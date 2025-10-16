@@ -91,10 +91,10 @@ namespace Backend.WebApi.Tests.Controller
             
             
             manager.Setup(pm => pm.GetProjects(userId, completionStatuses, laterStatuses))
-                .Returns(new List<Project>()
+                .Returns(new List<ProjectServiceModel>()
                 {
-                    new() { Id = 1, Name = "Project A", UserId = userId, Later = false },
-                    new() { Id = 2, Name = "Project B", UserId = userId, Later = true }
+                    new() { Id = 1, Name = "Project A", Later = false },
+                    new() { Id = 2, Name = "Project B", Later = true }
                 });
             var sut = new ProjectsController(manager.Object);
             sut.ControllerContext = new ControllerContext();
@@ -110,12 +110,14 @@ namespace Backend.WebApi.Tests.Controller
             okObjectResult.ShouldNotBeNull();
             okObjectResult?.StatusCode.ShouldBe((int)HttpStatusCode.OK);
             okObjectResult?.Value.ShouldNotBeNull();
-            okObjectResult?.Value?.GetType().IsAssignableTo(typeof(IEnumerable<Project>)).ShouldBeTrue();
+            okObjectResult?.Value?.GetType()
+                .IsAssignableTo(typeof(IEnumerable<ProjectServiceModel>))
+                .ShouldBeTrue();
             
-            okObjectResult?.Value.ShouldBe(new List<Project>()
+            okObjectResult?.Value.ShouldBe(new List<ProjectServiceModel>()
             {
-                new() { Id = 1, Name = "Project A", UserId = userId, Later = false, },
-                new() { Id = 2, Name = "Project B", UserId = userId, Later = true }
+                new() { Id = 1, Name = "Project A", Later = false, },
+                new() { Id = 2, Name = "Project B", Later = true }
             });
         }
     }

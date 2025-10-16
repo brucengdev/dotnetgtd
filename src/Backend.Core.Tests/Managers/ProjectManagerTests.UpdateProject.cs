@@ -32,11 +32,10 @@ public partial class ProjectManagerTests
         var sut = new ProjectManager(projectRepo, userRepo);
         
         //act
-        sut.UpdateProject(new Project
+        sut.UpdateProject(new ProjectServiceModel()
         {
             Name = projectName,
             Id = 2,
-            UserId = 123,
             Later = later
         }, 123);
         
@@ -67,11 +66,10 @@ public partial class ProjectManagerTests
         var sut = new ProjectManager(projectRepo, userRepo);
         
         //act and assert
-        Assert.Throws<UserNotFoundException>(() => sut.UpdateProject(new Project
+        Assert.Throws<UserNotFoundException>(() => sut.UpdateProject(new()
         {
             Id = 2,
-            Name = "Updated project",
-            UserId = 123
+            Name = "Updated project"
         }, 234));
         
         //assert
@@ -99,11 +97,10 @@ public partial class ProjectManagerTests
         var sut = new ProjectManager(projectRepo, userRepo);
         
         //act and assert
-        Assert.Throws<UnauthorizedAccessException>(() => sut.UpdateProject(new Project
+        Assert.Throws<UnauthorizedAccessException>(() => sut.UpdateProject(new()
         {
             Name = "Project Name",
-            Id = 2,
-            UserId = 234
+            Id = 2
         }, 234));
         
         //assert
@@ -113,44 +110,6 @@ public partial class ProjectManagerTests
             Id = 2,
             Name = "Project X",
             UserId = 123
-        });
-    }
-    
-    [Fact]
-    public void Update_project_must_throw_argument_exception_if_userId_does_not_match()
-    {
-        //arrange
-        var userRepo = new TestUserRepository();
-        userRepo.AddUser(new()
-        {
-            Id = 234,
-            Username = "user1",
-            PasswordHash = AccountManagerTests.HashPassword("pass")
-        });
-        var projectRepo = new TestProjectRepository();
-        projectRepo.Projects.Add(new()
-        {
-            Id = 2,
-            Name = "Project X",
-            UserId = 234
-        });
-        var sut = new ProjectManager(projectRepo, userRepo);
-        
-        //act and assert
-        Assert.Throws<ArgumentException>(() => sut.UpdateProject(new Project
-        {
-            Name = "Project Name",
-            Id = 2,
-            UserId = 222
-        }, 234));
-        
-        //assert
-        projectRepo.Projects.Count.ShouldBe(1);
-        projectRepo.Projects[0].ShouldBe(new()
-        {
-            Id = 2,
-            Name = "Project X",
-            UserId = 234
         });
     }
 
@@ -169,11 +128,10 @@ public partial class ProjectManagerTests
         var sut = new ProjectManager(projectRepo, userRepo);
         
         //act and assert
-        Assert.Throws<ProjectNotFoundException>(() => sut.UpdateProject(new Project
+        Assert.Throws<ProjectNotFoundException>(() => sut.UpdateProject(new()
         {
             Name = "Project Name",
-            Id = 2,
-            UserId = 234
+            Id = 2
         }, 234));
         
         //assert

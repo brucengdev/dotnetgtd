@@ -59,10 +59,10 @@ public partial class ProjectManagerTests
         var projects = sut.GetProjects(userId, completionStatuses, laterStatuses);
         
         //assert
-        projects.ShouldBe(new List<Project>
+        projects.ShouldBe(new List<ProjectServiceModel>
         {
-            new() { Id = 1, Name = "Project A", UserId = 123, Later = true },
-            new() { Id = 3, Name = "Project C", UserId = 123, Later = false }
+            new() { Id = 1, Name = "Project A", Later = true },
+            new() { Id = 3, Name = "Project C", Later = false }
         });
     } 
 }

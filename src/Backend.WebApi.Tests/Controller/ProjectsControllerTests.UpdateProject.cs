@@ -41,13 +41,12 @@ namespace Backend.WebApi.Tests.Controller
             sut.ControllerContext.HttpContext.Items["UserId"] = userId.ToString();
             
             //act
-            var project = new Project()
+            var project = new ProjectServiceModel()
             {
                 Id = 1,
                 Done = false,
                 Later = false,
-                Name = "Updated project",
-                UserId = userId
+                Name = "Updated project"
             };
             var result = sut.UpdateProject(project);
             
@@ -64,13 +63,12 @@ namespace Backend.WebApi.Tests.Controller
         {
             //arrange
             var projectManager = new Mock<IProjectManager>();
-            var project = new Project()
+            var project = new ProjectServiceModel()
             {
                 Id = 1,
                 Done = false,
                 Later = false,
-                Name = "Updated project",
-                UserId = 12
+                Name = "Updated project"
             };
             projectManager.Setup(pm => pm.UpdateProject(project, userId))
                 .Throws(new UnauthorizedAccessException());
@@ -93,13 +91,12 @@ namespace Backend.WebApi.Tests.Controller
         {
             //arrange
             var projectManager = new Mock<IProjectManager>();
-            var project = new Project()
+            var project = new ProjectServiceModel()
             {
                 Id = 1,
                 Done = false,
                 Later = false,
-                Name = "Updated project",
-                UserId = 12
+                Name = "Updated project"
             };
             projectManager.Setup(pm => pm.UpdateProject(project, 12))
                 .Throws(new ProjectNotFoundException());
@@ -122,13 +119,12 @@ namespace Backend.WebApi.Tests.Controller
         {
             //arrange
             var projectManager = new Mock<IProjectManager>();
-            var project = new Project()
+            var project = new ProjectServiceModel()
             {
                 Id = 1,
                 Done = false,
                 Later = false,
-                Name = "Updated project",
-                UserId = 12
+                Name = "Updated project"
             };
             projectManager.Setup(pm => pm.UpdateProject(project, 12))
                 .Throws(new UserNotFoundException());

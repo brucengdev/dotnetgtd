@@ -32,6 +32,11 @@ namespace Backend.Models
                     .WithOne(e => e.Tag)
                     .OnDelete(DeleteBehavior.NoAction);
             });
+
+            modelBuilder.Entity<Project>(e =>
+            {
+                e.HasOne(e => e.User);
+            });
         }
     }
 }

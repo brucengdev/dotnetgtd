@@ -12,22 +12,26 @@ public class ProjectManager: IProjectManager
         _projectRepo = projectRepo;
         _userRepo = userRepo;
     }
-    public int CreateProject(Project project)
+    public int CreateProject(ProjectServiceModel projectServiceModel, int userId)
     {
-        if (_userRepo.GetUser(project.UserId) == null)
+        if (!_userRepo.UserExists(userId))
         {
             throw new UserNotFoundException();
         }
+
+        var project = Project.FromServiceModel(projectServiceModel);
+        project.UserId = userId;
         return _projectRepo.CreateProject(project);
     }
 
-    public IEnumerable<Project> GetProjects(
+    public IEnumerable<ProjectServiceModel> GetProjects(
         int userId,
         IEnumerable<bool>? completionStatuses,
         IEnumerable<bool>? laterStatuses
     )
     {
-        return _projectRepo.GetProjects(userId, completionStatuses, laterStatuses);
+        return _projectRepo.GetProjects(userId, completionStatuses, laterStatuses)
+            .Select(p => ProjectServiceModel.FromProject(p));
     }
 
     public void DeleteProject(int projectId, int userId)
@@ -44,7 +48,7 @@ public class ProjectManager: IProjectManager
         _projectRepo.DeleteProject(projectId);
     }
 
-    public void UpdateProject(Project project, int userId)
+    public void UpdateProject(ProjectServiceModel projectServiceModel, int userId)
     {
         var user = _userRepo.GetUser(userId);
         if (user == null)
@@ -52,7 +56,7 @@ public class ProjectManager: IProjectManager
             throw new UserNotFoundException();
         }
         
-        var existingProject = _projectRepo.GetProjectById(project.Id);
+        var existingProject = _projectRepo.GetProjectById(projectServiceModel.Id);
         if (existingProject == null)
         {
             throw new ProjectNotFoundException();
@@ -63,10 +67,8 @@ public class ProjectManager: IProjectManager
             throw new UnauthorizedAccessException("User does not own this project");
         }
 
-        if (project.UserId != userId)
-        {
-            throw new ArgumentException("UserId field must match current user's");
-        }
+        var project = Project.FromServiceModel(projectServiceModel);
+        project.UserId = userId;
         _projectRepo.UpdateProject(project);
     }
 }

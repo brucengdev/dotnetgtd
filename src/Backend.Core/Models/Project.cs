@@ -5,6 +5,7 @@ public class Project
     public int Id { get; set; }
     public string Name { get; set; }
     public int UserId { get; set; }
+    public User User { get; set; }
     public bool Later { get; set; }
     public bool Done { get; set; }
 
@@ -30,5 +31,16 @@ public class Project
         UserId = project.UserId;
         Later = project.Later;
         Done = project.Done;
+    }
+
+    public static Project FromServiceModel(ProjectServiceModel other)
+    {
+        return new()
+        {
+            Id = other.Id,
+            Name = other.Name,
+            Done = other.Done,
+            Later = other.Later
+        };
     }
 }

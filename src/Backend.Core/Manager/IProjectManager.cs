@@ -6,11 +6,11 @@ public class ProjectNotFoundException: Exception { }
 
 public interface IProjectManager
 {
-    int CreateProject(Project project);
+    int CreateProject(ProjectServiceModel project, int userId);
 
-    void UpdateProject(Project project, int userId);
+    void UpdateProject(ProjectServiceModel projectServiceModel, int userId);
 
-    IEnumerable<Project> GetProjects(int userId,
+    IEnumerable<ProjectServiceModel> GetProjects(int userId,
         IEnumerable<bool>? completionStatuses,
         IEnumerable<bool>? laterStatuses);
 
