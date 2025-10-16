@@ -173,7 +173,6 @@ public partial class ItemManagerTests
             {
                 Id = 1,
                 Description = "Task A",
-                UserId = expectedUserId,
                 TagIds = [1],
                 Done = true,
                 ProjectId = 1,

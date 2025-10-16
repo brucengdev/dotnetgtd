@@ -60,7 +60,6 @@ public class Item
         {
             Description = newItemServiceModel.Description,
             Id = newItemServiceModel.Id,
-            UserId = newItemServiceModel.UserId,
             ProjectId = newItemServiceModel.ProjectId,
             Done = newItemServiceModel.Done,
             Later = newItemServiceModel.Later

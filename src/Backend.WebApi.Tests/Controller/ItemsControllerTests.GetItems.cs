@@ -179,12 +179,12 @@ namespace Backend.WebApi.Tests.Controller
                 {
                     new () 
                     {
-                        Id=1, Description = "Task A", UserId = 123, ProjectId = 1, 
+                        Id=1, Description = "Task A", ProjectId = 1, 
                         Done = true, Later = false 
                     },
                     new ()
                     {
-                        Id=2, Description = "Task B", UserId = 123, ProjectId = 2,
+                        Id=2, Description = "Task B", ProjectId = 2,
                         Done = false, Later = true 
                     }
                 });
@@ -210,12 +210,12 @@ namespace Backend.WebApi.Tests.Controller
             {
                 new ()
                 {
-                    Id=1, Description = "Task A", UserId = 123, ProjectId = 1,
+                    Id=1, Description = "Task A", ProjectId = 1,
                     Done = true, Later = false
                 },
                 new ()
                 {
-                    Id=2, Description = "Task B", UserId = 123, ProjectId = 2,
+                    Id=2, Description = "Task B", ProjectId = 2,
                     Done = false, Later = true
                 }
             });

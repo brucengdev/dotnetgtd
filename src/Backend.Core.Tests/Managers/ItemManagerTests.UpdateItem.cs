@@ -55,8 +55,7 @@ public partial class ItemManagerTests
             ProjectId = 2,
             TagIds = [1, 2],
             Done = done,
-            Later = later,
-            UserId = 123
+            Later = later
         };
 
         //act
@@ -116,8 +115,7 @@ public partial class ItemManagerTests
         var input = new ItemServiceModel()
         {
             Id = 1,
-            Description = "New Task",
-            UserId = 123
+            Description = "New Task"
         };
         var currentUserId = 123;
 
@@ -148,8 +146,7 @@ public partial class ItemManagerTests
         var input = new ItemServiceModel()
         {
             Id = 2,
-            Description = "New Task",
-            UserId = 123
+            Description = "New Task"
         };
         var currentUserId = 123;
 
@@ -158,46 +155,6 @@ public partial class ItemManagerTests
             () => sut.UpdateItem(input, currentUserId));
         exception.Message.ShouldBe("User does not own this item");
         Data.Items.Count.ShouldBe(1);
-    }
-    
-    [Fact]
-    public void Updating_item_must_throw_argumentexception_if_user_does_not_match_current_user_id()
-    {
-        //arrange
-        var itemRepo = new TestItemRepository(Data);
-        Data.Items.Add(new Item
-        {
-            Id = 1,
-            Description = "Task 1",
-            UserId = 123
-        });
-        Data.Items.Add(new Item
-        {
-            Id = 2,
-            Description = "Task 2",
-            UserId = 234
-        });
-        var userRepo = new TestUserRepository();
-        userRepo.AddUser(new()
-        {
-            Id = 123,
-            Username = "testuser"
-        });
-        var itemTagMappingRepo = new TestItemTagMappingRepo(Data);
-        var sut = new ItemManager(itemRepo, userRepo, itemTagMappingRepo);
-        var input = new ItemServiceModel()
-        {
-            Id = 1,
-            Description = "New Task",
-            UserId = 234
-        };
-        var currentUserId = 123;
-
-        //act and assert
-        var exception = Assert.Throws<ArgumentException>(
-            () => sut.UpdateItem(input, currentUserId));
-        exception.Message.ShouldBe("UserId field must be the same as current logged in user's");
-        Data.Items.Count.ShouldBe(2);
     }
     
     [Fact]
@@ -216,8 +173,7 @@ public partial class ItemManagerTests
         var input = new ItemServiceModel()
         {
             Id = 15,
-            Description = "New Task",
-            UserId = 123
+            Description = "New Task"
         };
         var currentUserId = 123;
 

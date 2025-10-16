@@ -48,8 +48,7 @@ namespace Backend.WebApi.Tests.Controller
                 ProjectId = 1,
                 TagIds = new List<int>{1, 2},
                 Done = false,
-                Later = false,
-                UserId = userId
+                Later = false
             };
             var response = sut.UpdateItem(item);
         
@@ -82,8 +81,7 @@ namespace Backend.WebApi.Tests.Controller
                 ProjectId = 1,
                 TagIds = new List<int>{1, 2},
                 Done = false,
-                Later = false,
-                UserId = 123
+                Later = false
             };
             var response = sut.UpdateItem(item);
         
@@ -116,8 +114,7 @@ namespace Backend.WebApi.Tests.Controller
                 ProjectId = 1,
                 TagIds = new List<int>{1, 2},
                 Done = false,
-                Later = false,
-                UserId = 123
+                Later = false
             };
             var response = sut.UpdateItem(item);
         
