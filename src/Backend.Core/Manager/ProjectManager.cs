@@ -14,6 +14,10 @@ public class ProjectManager: IProjectManager
     }
     public int CreateProject(ProjectServiceModel project, int userId)
     {
+        if (!_userRepo.UserExists(userId))
+        {
+            throw new UserNotFoundException();
+        }
         return _projectRepo.CreateProject(Project.FromServiceModel(project));
     }
 
