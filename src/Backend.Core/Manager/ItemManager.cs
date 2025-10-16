@@ -63,6 +63,9 @@ public class ItemManager: IItemManager
         item.UserId = userId;
         _itemRepo.UpdateItem(item);
         
+        //delete existing tag mappings
+        _itemTagMappingRepo.DeleteByItemId(item.Id);
+        
         foreach (var tagId in (newItemServiceModel.TagIds ?? []))
         {
             _itemTagMappingRepo.CreateMapping(new()
