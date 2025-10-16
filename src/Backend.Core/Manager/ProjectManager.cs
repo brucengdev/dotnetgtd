@@ -47,7 +47,7 @@ public class ProjectManager: IProjectManager
         _projectRepo.DeleteProject(projectId);
     }
 
-    public void UpdateProject(ProjectServiceModel project, int userId)
+    public void UpdateProject(ProjectServiceModel projectServiceModel, int userId)
     {
         var user = _userRepo.GetUser(userId);
         if (user == null)
@@ -55,7 +55,7 @@ public class ProjectManager: IProjectManager
             throw new UserNotFoundException();
         }
         
-        var existingProject = _projectRepo.GetProjectById(project.Id);
+        var existingProject = _projectRepo.GetProjectById(projectServiceModel.Id);
         if (existingProject == null)
         {
             throw new ProjectNotFoundException();
@@ -65,6 +65,9 @@ public class ProjectManager: IProjectManager
         {
             throw new UnauthorizedAccessException("User does not own this project");
         }
-        _projectRepo.UpdateProject(Project.FromServiceModel(project));
+
+        var project = Project.FromServiceModel(projectServiceModel);
+        project.UserId = userId;
+        _projectRepo.UpdateProject(project);
     }
 }
