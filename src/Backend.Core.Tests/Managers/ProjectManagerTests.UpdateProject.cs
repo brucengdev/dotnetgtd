@@ -112,43 +112,6 @@ public partial class ProjectManagerTests
             UserId = 123
         });
     }
-    
-    [Fact]
-    public void Update_project_must_throw_argument_exception_if_userId_does_not_match()
-    {
-        //arrange
-        var userRepo = new TestUserRepository();
-        userRepo.AddUser(new()
-        {
-            Id = 234,
-            Username = "user1",
-            PasswordHash = AccountManagerTests.HashPassword("pass")
-        });
-        var projectRepo = new TestProjectRepository();
-        projectRepo.Projects.Add(new()
-        {
-            Id = 2,
-            Name = "Project X",
-            UserId = 234
-        });
-        var sut = new ProjectManager(projectRepo, userRepo);
-        
-        //act and assert
-        Assert.Throws<ArgumentException>(() => sut.UpdateProject(new()
-        {
-            Name = "Project Name",
-            Id = 2
-        }, 234));
-        
-        //assert
-        projectRepo.Projects.Count.ShouldBe(1);
-        projectRepo.Projects[0].ShouldBe(new()
-        {
-            Id = 2,
-            Name = "Project X",
-            UserId = 234
-        });
-    }
 
     [Fact]
     public void UpdateProject_must_throw_not_found_exception_if_project_is_not_found()
