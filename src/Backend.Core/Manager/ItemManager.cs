@@ -26,9 +26,8 @@ public class ItemManager: IItemManager
             throw new UserNotFoundException();
         }
 
-        newItemServiceModel.UserId = userId;
-
         var item = Item.FromServiceModel(newItemServiceModel);
+        item.UserId = userId;
         int itemId = _itemRepo.CreateItem(item);
 
         foreach (var tagId in (newItemServiceModel.TagIds ?? []))
@@ -45,10 +44,6 @@ public class ItemManager: IItemManager
 
     public void UpdateItem(ItemServiceModel newItemServiceModel, int userId)
     {
-        if (newItemServiceModel.UserId != userId)
-        {
-            throw new ArgumentException("UserId field must be the same as current logged in user's");
-        }
         var user = _userRepo.GetUser(userId);
         if (user == null)
         {
@@ -65,6 +60,7 @@ public class ItemManager: IItemManager
             throw new UnauthorizedAccessException("User does not own this item");
         }
         var item = Item.FromServiceModel(newItemServiceModel);
+        item.UserId = userId;
         _itemRepo.UpdateItem(item);
         
         foreach (var tagId in (newItemServiceModel.TagIds ?? []))

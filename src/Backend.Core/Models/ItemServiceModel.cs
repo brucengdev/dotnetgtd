@@ -7,8 +7,6 @@ public class ItemServiceModel
     public int? ProjectId { get; set; }
     public IEnumerable<int>? TagIds { get; set; }
     
-    public int UserId { get; set; }
-    
     public bool Done { get; set; }
     public bool Later { get; set; }
 
@@ -19,7 +17,6 @@ public class ItemServiceModel
             Id = item.Id,
             Description = item.Description,
             ProjectId = item.ProjectId,
-            UserId = item.UserId,
             TagIds = item.ItemTagMappings?.Select(i => i.TagId) ??  Enumerable.Empty<int>(),
             Done = item.Done,
             Later = item.Later
@@ -39,7 +36,6 @@ public class ItemServiceModel
         return Id == other.Id
                && Description == other.Description
                && ProjectId == other.ProjectId
-               && UserId == other.UserId
                && sameTagIds
                && Done == other.Done
                && Later == other.Later;
