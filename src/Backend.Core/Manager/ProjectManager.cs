@@ -12,13 +12,16 @@ public class ProjectManager: IProjectManager
         _projectRepo = projectRepo;
         _userRepo = userRepo;
     }
-    public int CreateProject(ProjectServiceModel project, int userId)
+    public int CreateProject(ProjectServiceModel projectServiceModel, int userId)
     {
         if (!_userRepo.UserExists(userId))
         {
             throw new UserNotFoundException();
         }
-        return _projectRepo.CreateProject(Project.FromServiceModel(project));
+
+        var project = Project.FromServiceModel(projectServiceModel);
+        project.UserId = userId;
+        return _projectRepo.CreateProject(project);
     }
 
     public IEnumerable<Project> GetProjects(

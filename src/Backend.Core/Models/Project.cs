@@ -35,6 +35,12 @@ public class Project
 
     public static Project FromServiceModel(ProjectServiceModel other)
     {
-        return new Project();
+        return new()
+        {
+            Id = other.Id,
+            Name = other.Name,
+            Done = other.Done,
+            Later = other.Later
+        };
     }
 }
