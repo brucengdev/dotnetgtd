@@ -12,7 +12,7 @@ public partial class ItemManagerTests
     [InlineData("task b", false, true)]
     [InlineData("task c", true, false)]
     [InlineData("task d", true, true)]
-    public void Updating_item_is_successful(string desc, bool done, bool later)
+    public void UpdatingItem_must_add_new_tag_mappings_and_remove_old_mappings(string desc, bool done, bool later)
     {
         //arrange
         var itemRepo = new TestItemRepository(Data);
@@ -33,6 +33,15 @@ public partial class ItemManagerTests
                 ProjectId = 1
             }
         };
+        Data.ItemTagMappings =
+        [
+            new()
+            {
+                Id = 1,
+                ItemId = 1,
+                TagId = 3
+            }
+        ];
         var userRepo = new TestUserRepository();
         userRepo.AddUser(new()
         {
@@ -45,6 +54,7 @@ public partial class ItemManagerTests
         {
             new() { Id = 1, UserId = 123, Name = "Tag1" },
             new() { Id = 2, UserId = 123, Name = "Tag2" },
+            new() { Id = 3, UserId = 123, Name = "Tag3" },
         };
         var itemTagMappingRepo = new TestItemTagMappingRepo(Data);
         var sut = new ItemManager(itemRepo, userRepo, itemTagMappingRepo);
