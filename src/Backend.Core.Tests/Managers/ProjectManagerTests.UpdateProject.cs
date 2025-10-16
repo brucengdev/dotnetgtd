@@ -32,11 +32,10 @@ public partial class ProjectManagerTests
         var sut = new ProjectManager(projectRepo, userRepo);
         
         //act
-        sut.UpdateProject(new Project
+        sut.UpdateProject(new ProjectServiceModel()
         {
             Name = projectName,
             Id = 2,
-            UserId = 123,
             Later = later
         }, 123);
         
@@ -67,11 +66,10 @@ public partial class ProjectManagerTests
         var sut = new ProjectManager(projectRepo, userRepo);
         
         //act and assert
-        Assert.Throws<UserNotFoundException>(() => sut.UpdateProject(new Project
+        Assert.Throws<UserNotFoundException>(() => sut.UpdateProject(new()
         {
             Id = 2,
-            Name = "Updated project",
-            UserId = 123
+            Name = "Updated project"
         }, 234));
         
         //assert
@@ -99,11 +97,10 @@ public partial class ProjectManagerTests
         var sut = new ProjectManager(projectRepo, userRepo);
         
         //act and assert
-        Assert.Throws<UnauthorizedAccessException>(() => sut.UpdateProject(new Project
+        Assert.Throws<UnauthorizedAccessException>(() => sut.UpdateProject(new()
         {
             Name = "Project Name",
-            Id = 2,
-            UserId = 234
+            Id = 2
         }, 234));
         
         //assert
@@ -137,11 +134,10 @@ public partial class ProjectManagerTests
         var sut = new ProjectManager(projectRepo, userRepo);
         
         //act and assert
-        Assert.Throws<ArgumentException>(() => sut.UpdateProject(new Project
+        Assert.Throws<ArgumentException>(() => sut.UpdateProject(new()
         {
             Name = "Project Name",
-            Id = 2,
-            UserId = 222
+            Id = 2
         }, 234));
         
         //assert
@@ -169,11 +165,10 @@ public partial class ProjectManagerTests
         var sut = new ProjectManager(projectRepo, userRepo);
         
         //act and assert
-        Assert.Throws<ProjectNotFoundException>(() => sut.UpdateProject(new Project
+        Assert.Throws<ProjectNotFoundException>(() => sut.UpdateProject(new()
         {
             Name = "Project Name",
-            Id = 2,
-            UserId = 234
+            Id = 2
         }, 234));
         
         //assert

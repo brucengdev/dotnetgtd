@@ -47,7 +47,7 @@ public class ProjectManager: IProjectManager
         _projectRepo.DeleteProject(projectId);
     }
 
-    public void UpdateProject(Project project, int userId)
+    public void UpdateProject(ProjectServiceModel project, int userId)
     {
         var user = _userRepo.GetUser(userId);
         if (user == null)
@@ -65,11 +65,6 @@ public class ProjectManager: IProjectManager
         {
             throw new UnauthorizedAccessException("User does not own this project");
         }
-
-        if (project.UserId != userId)
-        {
-            throw new ArgumentException("UserId field must match current user's");
-        }
-        _projectRepo.UpdateProject(project);
+        _projectRepo.UpdateProject(Project.FromServiceModel(project));
     }
 }
