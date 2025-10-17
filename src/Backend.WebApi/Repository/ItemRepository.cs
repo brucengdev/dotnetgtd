@@ -75,6 +75,11 @@ public class ItemRepository: IItemRepository
             results = results.Where(i => !i.ItemTagMappings.Any());
         }
 
+        if (tagIds == null && !tasksWithNoTag)
+        {
+            results = results.Where(i => i.ItemTagMappings.Any());
+        }
+
         return results;
     }
 

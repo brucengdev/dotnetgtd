@@ -35,6 +35,11 @@ public partial class ItemRepositoryTests
             },
             new()
             {
+                UserId = 1, TagIds = null, TasksWithNoTags = false,
+                ExpectedItemDescriptions = ["Task with Tag AB", "Task with Tag A"]
+            },
+            new()
+            {
                 UserId = 1, TagIds = [1], TasksWithNoTags = false,
                 ExpectedItemDescriptions = ["Task with Tag AB", "Task with Tag A"]
             },
