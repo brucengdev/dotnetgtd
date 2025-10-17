@@ -29,7 +29,7 @@ namespace Backend.WebApi.Controllers
         public ActionResult GetProjects(string? complete, string? later)
         {
             IEnumerable<bool>? completionStatuses;
-            if (complete == null)
+            if (complete == null || complete == "*")
             {
                 completionStatuses = null;
             }else
@@ -43,7 +43,7 @@ namespace Backend.WebApi.Controllers
             }
             
             IEnumerable<bool>? laterStatuses;
-            if(later == null)
+            if(later == null || later == "*")
             {
                 laterStatuses = null;
             }else
