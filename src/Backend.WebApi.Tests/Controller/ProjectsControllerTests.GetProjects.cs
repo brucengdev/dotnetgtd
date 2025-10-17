@@ -47,13 +47,15 @@ namespace Backend.WebApi.Tests.Controller
             int userId,
             [CombinatorialValues("completed", "uncompleted",
                 "completed,uncompleted", 
-                "uncompleted,completed", 
+                "uncompleted,completed",
+                "*",
                 "", 
                 null)] 
             string completionFilter, 
             [CombinatorialValues("later", "now", 
                 "later,now", 
-                "now,later", 
+                "now,later",
+                "*",
                 "", null)] 
             string? laterFilter
             )
@@ -62,7 +64,7 @@ namespace Backend.WebApi.Tests.Controller
             var manager = new Mock<IProjectManager>();
             
             IEnumerable<bool>? completionStatuses;
-            if (completionFilter == null)
+            if (completionFilter == null || completionFilter == "*")
             {
                 completionStatuses = null;
             }else
@@ -76,7 +78,7 @@ namespace Backend.WebApi.Tests.Controller
             }
             
             IEnumerable<bool>? laterStatuses;
-            if (laterFilter == null)
+            if (laterFilter == null || laterFilter == "*")
             {
                 laterStatuses = null;
             }else
