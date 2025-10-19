@@ -53,21 +53,21 @@ public partial class ItemRepositoryTests
                     "Completed task with completed project"
                 ]
             },
-            // new()
-            // {
-            //     UserId = 1, CompletionStatuses = [],
-            //     ExpectedItemDescriptions = []
-            // },
-            // new()
-            // {
-            //     UserId = 1, CompletionStatuses = null,
-            //     ExpectedItemDescriptions = [
-            //         "Uncompleted task with uncompleted project",
-            //         "Completed task with uncompleted project", 
-            //         "Uncompleted task with completed project",
-            //         "Completed task with completed project"
-            //     ]
-            // }
+            new()
+            {
+                UserId = 1, CompletionStatuses = [],
+                ExpectedItemDescriptions = []
+            },
+            new()
+            {
+                UserId = 1, CompletionStatuses = null,
+                ExpectedItemDescriptions = [
+                    "Uncompleted task with uncompleted project",
+                    "Completed task with uncompleted project", 
+                    "Uncompleted task with completed project",
+                    "Completed task with completed project"
+                ]
+            }
         }.Select(tc => new object[] { tc });
     }
 
