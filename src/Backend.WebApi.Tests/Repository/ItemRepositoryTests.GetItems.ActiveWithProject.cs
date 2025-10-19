@@ -43,16 +43,16 @@ public partial class ItemRepositoryTests
                     "Active task with active project"
                 ]
             },
-            // new()
-            // {
-            //     UserId = 1, LaterStatuses = [true, false],
-            //     ExpectedItemDescriptions = [
-            //         "Inactive task with inactive project",
-            //         "Active task with inactive project", 
-            //         "Inactive task with active project",
-            //         "Active task with active project"
-            //     ]
-            // },
+            new()
+            {
+                UserId = 1, LaterStatuses = [true, false],
+                ExpectedItemDescriptions = [
+                    "Inactive task with inactive project",
+                    "Active task with inactive project", 
+                    "Inactive task with active project",
+                    "Active task with active project"
+                ]
+            },
             new()
             {
                 UserId = 1, LaterStatuses = [],
