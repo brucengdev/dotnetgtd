@@ -61,7 +61,14 @@ public class ItemRepository: IItemRepository
 
         if (laterStatuses != null)
         {
-            results = results.Where(i => laterStatuses.Contains(i.Later));
+            var hasActive = laterStatuses.Contains(false);
+            var hasInactive = laterStatuses.Contains(true);
+            results = results.Where(i => 
+                (hasActive && i.Later == false && i.ProjectId != null && i.Project.Later == false) 
+                || (hasInactive && i.Later && i.ProjectId != null && i.Project.Later)
+                || (hasInactive && i.Later == false && i.ProjectId != null && i.Project.Later )
+                || (hasInactive && i.Later == true && i.ProjectId != null && i.Project.Later == false )
+            );
         }
 
         if (projectIds == null)

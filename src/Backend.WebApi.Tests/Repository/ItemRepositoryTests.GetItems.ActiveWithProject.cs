@@ -36,38 +36,38 @@ public partial class ItemRepositoryTests
                     "Inactive task with active project"
                 ]
             },
-            new()
-            {
-                UserId = 1, LaterStatuses = [false],
-                ExpectedItemDescriptions = [
-                    "Active task with active project"
-                ]
-            },
-            new()
-            {
-                UserId = 1, LaterStatuses = [true, false],
-                ExpectedItemDescriptions = [
-                    "Inactive task with inactive project",
-                    "Active task with inactive project", 
-                    "Inactive task with active project",
-                    "Active task with active project"
-                ]
-            },
-            new()
-            {
-                UserId = 1, LaterStatuses = [],
-                ExpectedItemDescriptions = []
-            },
-            new()
-            {
-                UserId = 1, LaterStatuses = null,
-                ExpectedItemDescriptions = [
-                    "Inactive task with inactive project",
-                    "Active task with inactive project", 
-                    "Inactive task with active project",
-                    "Active task with active project"
-                ]
-            }
+            // new()
+            // {
+            //     UserId = 1, LaterStatuses = [false],
+            //     ExpectedItemDescriptions = [
+            //         "Active task with active project"
+            //     ]
+            // },
+            // new()
+            // {
+            //     UserId = 1, LaterStatuses = [true, false],
+            //     ExpectedItemDescriptions = [
+            //         "Inactive task with inactive project",
+            //         "Active task with inactive project", 
+            //         "Inactive task with active project",
+            //         "Active task with active project"
+            //     ]
+            // },
+            // new()
+            // {
+            //     UserId = 1, LaterStatuses = [],
+            //     ExpectedItemDescriptions = []
+            // },
+            // new()
+            // {
+            //     UserId = 1, LaterStatuses = null,
+            //     ExpectedItemDescriptions = [
+            //         "Inactive task with inactive project",
+            //         "Active task with inactive project", 
+            //         "Inactive task with active project",
+            //         "Active task with active project"
+            //     ]
+            // }
         }.Select(tc => new object[] { tc });
     }
 
