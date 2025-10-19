@@ -39,10 +39,20 @@ public class ItemRepository: IItemRepository
         //eagerly load the item tag mappings
         var results =  _dbContext.Items
             .Include(i => i.ItemTagMappings)
+            .Include(i => i.Project)
             .Where(i => i.UserId == userId);
         if (completionStatuses != null)
         {
-            results = results.Where(i => completionStatuses.Contains(i.Done));
+            var hasDone = completionStatuses.Contains(true);
+            var hasNotDone = completionStatuses.Contains(false);
+            results = results.Where(i
+                => (hasDone && i.Done)
+                   || (hasNotDone && i.Done == false
+                        && i.ProjectId == null)
+                   || (hasNotDone && i.Done == false 
+                                  && i.ProjectId != null
+                                  && i.Project.Done == false)
+            );
         }
 
         if (laterStatuses != null)

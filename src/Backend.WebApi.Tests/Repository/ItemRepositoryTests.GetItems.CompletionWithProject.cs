@@ -35,13 +35,13 @@ public partial class ItemRepositoryTests
                     "Completed task with completed project"
                 ]
             },
-            // new()
-            // {
-            //     UserId = 1, CompletionStatuses = [false],
-            //     ExpectedItemDescriptions = [
-            //         "Uncompleted task with uncompleted project",
-            //     ]
-            // },
+            new()
+            {
+                UserId = 1, CompletionStatuses = [false],
+                ExpectedItemDescriptions = [
+                    "Uncompleted task with uncompleted project"
+                ]
+            },
             // new()
             // {
             //     UserId = 1, CompletionStatuses = [true, false],
