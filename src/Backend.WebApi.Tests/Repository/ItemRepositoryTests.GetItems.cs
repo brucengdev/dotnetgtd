@@ -21,6 +21,7 @@ class TestData
 {
     public List<Item> Items = [];
     public List<Tag> Tags = [];
+    public List<Project> Projects = [];
     public List<ItemTagMapping> ItemTagMappings = [];
 }
 
@@ -30,8 +31,9 @@ public partial class ItemRepositoryTests
     private static GTDContext CreateTestDB(TestData testData)
     {
         var dbContext = Utils.CreateTestDB();
-        testData.Items.ForEach(item => dbContext.Items.Add(item));
+        testData.Projects.ForEach(project => dbContext.Projects.Add(project));
         testData.Tags.ForEach(tag => dbContext.Tags.Add(tag));
+        testData.Items.ForEach(item => dbContext.Items.Add(item));
         testData.ItemTagMappings.ForEach(mapping =>  dbContext.ItemTagMappings.Add(mapping));
         dbContext.SaveChanges();
         return dbContext;

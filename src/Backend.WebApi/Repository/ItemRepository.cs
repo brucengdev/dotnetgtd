@@ -39,15 +39,38 @@ public class ItemRepository: IItemRepository
         //eagerly load the item tag mappings
         var results =  _dbContext.Items
             .Include(i => i.ItemTagMappings)
+            .Include(i => i.Project)
             .Where(i => i.UserId == userId);
         if (completionStatuses != null)
         {
-            results = results.Where(i => completionStatuses.Contains(i.Done));
+            var hasDone = completionStatuses.Contains(true);
+            var hasNotDone = completionStatuses.Contains(false);
+            results = results.Where(i
+                => (hasDone && i.Done)
+                   || (hasNotDone && i.Done == false
+                        && i.ProjectId == null)
+                   || (hasNotDone && i.Done == false 
+                                  && i.ProjectId != null
+                                  && i.Project.Done == false)
+                   || (hasDone && i.Done == false
+                                && i.ProjectId != null
+                                && i.Project.Done == true
+                       )          
+            );
         }
 
         if (laterStatuses != null)
         {
-            results = results.Where(i => laterStatuses.Contains(i.Later));
+            var hasActive = laterStatuses.Contains(false);
+            var hasInactive = laterStatuses.Contains(true);
+            results = results.Where(i => 
+                (hasActive && i.Later == false && i.ProjectId == null)
+                || (hasInactive && i.Later && i.ProjectId == null)
+                || (hasActive && i.Later == false && i.ProjectId != null && i.Project.Later == false) 
+                || (hasInactive && i.Later && i.ProjectId != null && i.Project.Later)
+                || (hasInactive && i.Later == false && i.ProjectId != null && i.Project.Later )
+                || (hasInactive && i.Later == true && i.ProjectId != null && i.Project.Later == false )
+            );
         }
 
         if (projectIds == null)
