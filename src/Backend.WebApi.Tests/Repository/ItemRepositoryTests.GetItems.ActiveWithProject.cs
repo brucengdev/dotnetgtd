@@ -53,11 +53,11 @@ public partial class ItemRepositoryTests
             //         "Active task with active project"
             //     ]
             // },
-            // new()
-            // {
-            //     UserId = 1, LaterStatuses = [],
-            //     ExpectedItemDescriptions = []
-            // },
+            new()
+            {
+                UserId = 1, LaterStatuses = [],
+                ExpectedItemDescriptions = []
+            },
             // new()
             // {
             //     UserId = 1, LaterStatuses = null,
