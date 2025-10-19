@@ -21,6 +21,7 @@ class TestData
 {
     public List<Item> Items = [];
     public List<Tag> Tags = [];
+    public List<Project> Projects = [];
     public List<ItemTagMapping> ItemTagMappings = [];
 }
 
