@@ -32,6 +32,7 @@ public partial class ItemRepositoryTests
                 UserId = 1, CompletionStatuses = [true],
                 ExpectedItemDescriptions = [
                     "Completed task with uncompleted project",
+                    "Uncompleted task with completed project",
                     "Completed task with completed project"
                 ]
             },
@@ -42,16 +43,16 @@ public partial class ItemRepositoryTests
                     "Uncompleted task with uncompleted project"
                 ]
             },
-            // new()
-            // {
-            //     UserId = 1, CompletionStatuses = [true, false],
-            //     ExpectedItemDescriptions = [
-            //         "Uncompleted task with uncompleted project",
-            //         "Completed task with uncompleted project", 
-            //         "Uncompleted task with completed project",
-            //         "Completed task with completed project"
-            //     ]
-            // },
+            new()
+            {
+                UserId = 1, CompletionStatuses = [true, false],
+                ExpectedItemDescriptions = [
+                    "Uncompleted task with uncompleted project",
+                    "Completed task with uncompleted project", 
+                    "Uncompleted task with completed project",
+                    "Completed task with completed project"
+                ]
+            },
             // new()
             // {
             //     UserId = 1, CompletionStatuses = [],

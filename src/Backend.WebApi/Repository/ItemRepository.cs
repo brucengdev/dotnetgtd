@@ -52,6 +52,10 @@ public class ItemRepository: IItemRepository
                    || (hasNotDone && i.Done == false 
                                   && i.ProjectId != null
                                   && i.Project.Done == false)
+                   || (hasDone && i.Done == false
+                                && i.ProjectId != null
+                                && i.Project.Done == true
+                       )          
             );
         }
 
