@@ -44,7 +44,7 @@ export function AddItemForm(props: AddItemFormProps) {
             className="mb-1"
             onChange={e => setDescription(e.target.value)}
         />
-        <label>
+        <label className="block m-2">
             Project
             <Select
                 onChange={value => setProjectId(Number(value))} 
@@ -60,7 +60,7 @@ export function AddItemForm(props: AddItemFormProps) {
                 selectedValue={projectId.toString()}
             />
         </label>
-        <label>
+        <label className="block m-2">
             Tags
             <MultiSelect
                 onChange={values => setSelectedTagIds(values.map(v => Number(v)))}

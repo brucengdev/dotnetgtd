@@ -19,16 +19,16 @@ enum View {
 export function MainView({onLogout, client} : MainViewProps) {
     var [currentView, setCurrentView] = useState(View.TASKS)
     return <div data-testid="main-view">
-      <Button text="Tasks" className="mr-1" onClick={() => setCurrentView(View.TASKS)} />
-      <Button text="Projects" className="mr-1" onClick={() => setCurrentView(View.PROJECTS)} />
-      <Button text="Tags" onClick={() => setCurrentView(View.TAGS)} />
-      {renderView(currentView, client)}
       <Button 
-        className="block"
+        className="block mb-4"
         text="Log out"
         mode={ButtonMode.DANGER}
         onClick={() => onLogout()}
         />
+      <Button text="Tasks" className="mr-1" onClick={() => setCurrentView(View.TASKS)} />
+      <Button text="Projects" className="mr-1" onClick={() => setCurrentView(View.PROJECTS)} />
+      <Button text="Tags" onClick={() => setCurrentView(View.TAGS)} />
+      {renderView(currentView, client)}
     </div>;
 }
 
