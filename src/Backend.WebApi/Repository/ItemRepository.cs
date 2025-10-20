@@ -39,7 +39,6 @@ public class ItemRepository: IItemRepository
         //eagerly load the item tag mappings
         var results =  _dbContext.Items
             .Include(i => i.ItemTagMappings)
-            .Include(i => i.Project)
             .Where(i => i.UserId == userId);
         if (completionStatuses != null)
         {
