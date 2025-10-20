@@ -23,31 +23,33 @@ export function ProjectView({ client }: ProjectViewProps) {
         client.GetProjects(filter)
         .then(retrievedProjects => setProjects(retrievedProjects))
     }
-    return <div data-testid="project-view">
+    return <div data-testid="project-view" className="grid grid-cols-3">
         <ProjectFilters filter={filter} 
             onChange={newFilter => {
                 setFilter(newFilter)
                 setProjects(undefined) //to reload
             }}
          />
-        <ProjectList projects={projects || []} 
-            onDelete={(projectId) => {
-                client.DeleteProject(projectId)
-                    .then(() => setProjects(undefined))//to reload project list
-            }}
-            onChange={(project) => {
-                client.UpdateProject(project)
-                    .then(() => setProjects(undefined)) //to reload project list
-            }}
-        />
-        {showNewProjectForm
-            ?<AddProjectForm client={client} 
-                    onCancel={() => setShowNewProjectForm(false)} 
-                    onCompleted={() => {
-                        setShowNewProjectForm(false)
-                        setProjects(undefined) //set to undefined so projects are reloaded
-                    }} />
-            :<Button text="Add" onClick={() => setShowNewProjectForm(true)}/>
-        }
+        <div className="col-span-2">
+            <ProjectList projects={projects || []} 
+                onDelete={(projectId) => {
+                    client.DeleteProject(projectId)
+                        .then(() => setProjects(undefined))//to reload project list
+                }}
+                onChange={(project) => {
+                    client.UpdateProject(project)
+                        .then(() => setProjects(undefined)) //to reload project list
+                }}
+            />
+            {showNewProjectForm
+                ?<AddProjectForm client={client} 
+                        onCancel={() => setShowNewProjectForm(false)} 
+                        onCompleted={() => {
+                            setShowNewProjectForm(false)
+                            setProjects(undefined) //set to undefined so projects are reloaded
+                        }} />
+                :<Button text="Add" onClick={() => setShowNewProjectForm(true)}/>
+            }
+        </div>
     </div>
 }
