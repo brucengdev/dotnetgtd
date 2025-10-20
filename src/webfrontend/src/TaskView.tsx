@@ -39,39 +39,39 @@ export function TaskView(props: TaskViewProps) {
       client.GetTags()
           .then(tags => setTags(tags))
     }
-    return <div data-testid="task-view" className="row-auto">
+    return <div data-testid="task-view" 
+        className="grid grid-cols-3">
       <TaskFilters client={client} filter={filter}
         onFiltersChanged={filter => {
           setFilter(filter)
           setItems(undefined) //to reload
         }}
       />
-      <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-2xl font-semibold text-gray-900">GTD</h2>
-      </div>
-      <ItemList items={items} projects={projects} tags={tags}
-        onDelete={(item: Item) => {
-            client.DeleteItem(item.id)
-                .then(() => {
-                    setItems(undefined) //to reload
-                })
-        }}
-        onUpdate={(item: Item) => {
-            client.UpdateItem(item)
-                .then(() => {
-                    setItems(undefined) //to reload
-                })
-        }}
-      />
-      {showNewTaskForm
-        ? <AddItemForm client={client} 
-            onCancel={() => setShowNewTaskForm(false)} 
-            onCompleted={() => {
-                setShowNewTaskForm(false)
-                setItems(undefined) //to reload
+      <div className="col-span-2">
+        <ItemList items={items} projects={projects} tags={tags}
+          onDelete={(item: Item) => {
+              client.DeleteItem(item.id)
+                  .then(() => {
+                      setItems(undefined) //to reload
+                  })
+          }}
+          onUpdate={(item: Item) => {
+              client.UpdateItem(item)
+                  .then(() => {
+                      setItems(undefined) //to reload
+                  })
+          }}
+        />
+        {showNewTaskForm
+          ? <AddItemForm client={client} 
+              onCancel={() => setShowNewTaskForm(false)} 
+              onCompleted={() => {
+                  setShowNewTaskForm(false)
+                  setItems(undefined) //to reload
+                }
               }
-            }
-            />
-        : <Button text="Add" className="mb-5 block" onClick={() => setShowNewTaskForm(true)} />}
+              />
+          : <Button text="Add" className="mb-5 block" onClick={() => setShowNewTaskForm(true)} />}
+      </div>
     </div>
 }
