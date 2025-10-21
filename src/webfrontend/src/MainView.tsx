@@ -25,11 +25,18 @@ export function MainView({onLogout, client} : MainViewProps) {
         mode={ButtonMode.DANGER}
         onClick={() => onLogout()}
         />
-      <Button text="Tasks" className="mr-1" onClick={() => setCurrentView(View.TASKS)} />
-      <Button text="Projects" className="mr-1" onClick={() => setCurrentView(View.PROJECTS)} />
-      <Button text="Tags" onClick={() => setCurrentView(View.TAGS)} />
+      <Button text="Tasks" mode={buttonMode(View.TASKS, currentView)}
+        className="mr-1" onClick={() => setCurrentView(View.TASKS)} />
+      <Button text="Projects" mode={buttonMode(View.PROJECTS, currentView)}
+        className="mr-1" onClick={() => setCurrentView(View.PROJECTS)} />
+      <Button text="Tags" mode={buttonMode(View.TAGS, currentView)}
+        onClick={() => setCurrentView(View.TAGS)} />
       {renderView(currentView, client)}
     </div>;
+}
+
+function buttonMode(view: View, currentView: View) {
+  return view === currentView ? ButtonMode.PRIMARY: ButtonMode.SECONDARY;
 }
 
 function renderView(view: View, client: IClient) {

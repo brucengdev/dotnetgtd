@@ -7,10 +7,17 @@ import { MainView } from "./MainView";
 describe("MainView", () => {
     it("shows buttons to switch between views", () => {
         render(<MainView client={new TestClient()} onLogout={() => { }} />)
-        
-        expect(screen.getByRole("button", { name: "Tasks"})).toBeInTheDocument()
-        expect(screen.getByRole("button", { name: "Projects"})).toBeInTheDocument()
-        expect(screen.getByRole("button", { name: "Tags"})).toBeInTheDocument()
+
+        const tasksButton = screen.getByRole("button", { name: "Tasks" })
+        const projectsButton = screen.getByRole("button", { name: "Projects" })
+        const tagsButton = screen.getByRole("button", { name: "Tags" })
+
+        expect(tasksButton).toBeInTheDocument()
+        expect(tasksButton).toHaveClass("bg-indigo-600")
+        expect(projectsButton).toBeInTheDocument()
+        expect(projectsButton).toHaveClass("bg-gray-300")
+        expect(tagsButton).toBeInTheDocument()
+        expect(tagsButton).toHaveClass("bg-gray-300")
     })
     it("shows task view and log out button initially", () => {
         render(<MainView client={new TestClient()} onLogout={() => { }} />)
@@ -19,6 +26,14 @@ describe("MainView", () => {
         expect(logoutButton).toBeInTheDocument()
 
         expect(screen.getByTestId("task-view")).toBeInTheDocument()
+
+        const tasksButton = screen.getByRole("button", { name: "Tasks" })
+        const projectsButton = screen.getByRole("button", { name: "Projects" })
+        const tagsButton = screen.getByRole("button", { name: "Tags" })
+
+        expect(tasksButton).toHaveClass("bg-indigo-600")
+        expect(projectsButton).toHaveClass("bg-gray-300")
+        expect(tagsButton).toHaveClass("bg-gray-300")
     })
 
     it("shows project view after switching to project view", () => {
@@ -28,6 +43,14 @@ describe("MainView", () => {
 
         expect(screen.getByTestId("project-view")).toBeInTheDocument()
         expect(screen.queryByTestId("task-view")).not.toBeInTheDocument()
+
+        const tasksButton = screen.getByRole("button", { name: "Tasks" })
+        const projectsButton = screen.getByRole("button", { name: "Projects" })
+        const tagsButton = screen.getByRole("button", { name: "Tags" })
+
+        expect(tasksButton).toHaveClass("bg-gray-300")
+        expect(projectsButton).toHaveClass("bg-indigo-600")
+        expect(tagsButton).toHaveClass("bg-gray-300")
     })
 
     it("shows tag view after switching to tag view", () => {
@@ -38,6 +61,14 @@ describe("MainView", () => {
         expect(screen.getByTestId("tag-view")).toBeInTheDocument()
         expect(screen.queryByTestId("task-view")).not.toBeInTheDocument()
         expect(screen.queryByTestId("project-view")).not.toBeInTheDocument()
+
+        const tasksButton = screen.getByRole("button", { name: "Tasks" })
+        const projectsButton = screen.getByRole("button", { name: "Projects" })
+        const tagsButton = screen.getByRole("button", { name: "Tags" })
+        
+        expect(tasksButton).toHaveClass("bg-gray-300")
+        expect(projectsButton).toHaveClass("bg-gray-300")
+        expect(tagsButton).toHaveClass("bg-indigo-600")
     })
 
     it("shows task view after switching back from project view", () => {
@@ -48,5 +79,13 @@ describe("MainView", () => {
 
         expect(screen.getByTestId("task-view")).toBeInTheDocument()
         expect(screen.queryByTestId("project-view")).not.toBeInTheDocument()
+
+        const tasksButton = screen.getByRole("button", { name: "Tasks" })
+        const projectsButton = screen.getByRole("button", { name: "Projects" })
+        const tagsButton = screen.getByRole("button", { name: "Tags" })
+
+        expect(tasksButton).toHaveClass("bg-indigo-600")
+        expect(projectsButton).toHaveClass("bg-gray-300")
+        expect(tagsButton).toHaveClass("bg-gray-300")
     })
 })
