@@ -33,6 +33,23 @@ describe("TaskFilters", () => {
         expect(screen.getByRole("checkbox", {name: "Completed tasks"})).toBeChecked()
 
         expect(screen.queryByRole("checkbox", {name: "Uncompleted project"})).not.toBeInTheDocument()
-        expect(screen.queryByRole("checkbox", {name: "Completed project"})).toBeInTheDocument()
+        expect(screen.getByRole("checkbox", {name: "Completed project"})).toBeInTheDocument()
+    })
+
+    it("Shows both completed and uncompleted project filters", async () => {
+        const client = new TestClient()
+        client.Projects = [
+            { id: 1, name: "Uncompleted project", done: false, later: false },
+            { id: 2, name: "Completed project", done: true, later: false },
+        ]
+        render(<TaskFilters client={client} 
+            filter={{ uncompleted: true, completed: true}} />)
+        await sleep(1)
+
+        expect(screen.getByRole("checkbox", {name: "Completed tasks"})).toBeChecked()
+        expect(screen.getByRole("checkbox", {name: "Uncompleted tasks"})).toBeChecked()
+
+        expect(screen.getByRole("checkbox", {name: "Uncompleted project"})).toBeInTheDocument()
+        expect(screen.getByRole("checkbox", {name: "Completed project"})).toBeInTheDocument()
     })
 })
