@@ -64,6 +64,8 @@ export function TaskFilters(props: TaskFiltersProps) {
                 executeFilterChangeCallback(props, { ...filter, inactive: selected })} 
         />
 
+        <hr />
+
         <CheckBox label="Completed tasks" checked={filter?.completed?? false}
             onChange={(selected) => 
                 executeFilterChangeCallback(props, { ...filter, completed: selected })}
@@ -72,6 +74,8 @@ export function TaskFilters(props: TaskFiltersProps) {
             onChange={(selected) =>
                 executeFilterChangeCallback(props, { ...filter, uncompleted: selected })}
         />
+
+        <hr />
 
         <CheckBox label="All projects" 
             checked={
@@ -120,6 +124,8 @@ export function TaskFilters(props: TaskFiltersProps) {
                 }
             }
         />
+
+        <hr/>
 
         <CheckBox label="All tags" 
             checked={filter?.tagIds?.includes("nonnull") ?? false} 

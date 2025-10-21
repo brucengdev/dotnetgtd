@@ -40,7 +40,7 @@ export function TaskView(props: TaskViewProps) {
           .then(tags => setTags(tags))
     }
     return <div data-testid="task-view" 
-        className="grid grid-cols-3">
+        className="grid grid-cols-3 gap-1">
       <TaskFilters client={client} filter={filter}
         onFiltersChanged={filter => {
           setFilter(filter)

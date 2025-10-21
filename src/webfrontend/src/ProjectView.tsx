@@ -23,7 +23,7 @@ export function ProjectView({ client }: ProjectViewProps) {
         client.GetProjects(filter)
         .then(retrievedProjects => setProjects(retrievedProjects))
     }
-    return <div data-testid="project-view" className="grid grid-cols-3">
+    return <div data-testid="project-view" className="grid grid-cols-3 gap-1">
         <ProjectFilters filter={filter} 
             onChange={newFilter => {
                 setFilter(newFilter)

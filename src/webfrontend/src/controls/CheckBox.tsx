@@ -9,7 +9,6 @@ interface CheckBoxProps {
 export function CheckBox(props: CheckBoxProps) {
     const { label, checked, onChange, dataTestId } = props
     return <label className="mr-4 block">
-        {label}
         <input 
             className="ml-1"
             data-testId={dataTestId}
@@ -21,5 +20,6 @@ export function CheckBox(props: CheckBoxProps) {
                 }
             }}
         />
+        {label}
     </label>
 }
