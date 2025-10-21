@@ -115,4 +115,55 @@ describe("TaskFilters", () => {
         expect(screen.queryByRole("checkbox", { name: "Inactive completed project" })).not.toBeInTheDocument()
         expect(screen.queryByRole("checkbox", { name: "Inactive uncompleted project" })).not.toBeInTheDocument()
     })
+
+    it("Shows only active uncompleted project filters", async () => {
+        const client = new TestClient()
+        client.Projects = [
+            { id: 1, name: "Active completed project", done: true, later: false },
+            { id: 2, name: "Active uncompleted project", done: false, later: false },
+            { id: 3, name: "Inactive completed project", done: true, later: true },
+            { id: 4, name: "Inactive uncompleted project", done: false, later: true },
+        ]
+        render(<TaskFilters client={client} filter={{active: true, uncompleted: true}} />)
+        await sleep(1)
+
+        expect(screen.queryByRole("checkbox", { name: "Active completed project" })).not.toBeInTheDocument()
+        expect(screen.queryByRole("checkbox", { name: "Active uncompleted project" })).toBeInTheDocument()
+        expect(screen.queryByRole("checkbox", { name: "Inactive completed project" })).not.toBeInTheDocument()
+        expect(screen.queryByRole("checkbox", { name: "Inactive uncompleted project" })).not.toBeInTheDocument()
+    })
+
+    it("Shows only inactive completed project filters", async () => {
+        const client = new TestClient()
+        client.Projects = [
+            { id: 1, name: "Active completed project", done: true, later: false },
+            { id: 2, name: "Active uncompleted project", done: false, later: false },
+            { id: 3, name: "Inactive completed project", done: true, later: true },
+            { id: 4, name: "Inactive uncompleted project", done: false, later: true },
+        ]
+        render(<TaskFilters client={client} filter={{inactive: true, completed: true}} />)
+        await sleep(1)
+
+        expect(screen.queryByRole("checkbox", { name: "Active completed project" })).not.toBeInTheDocument()
+        expect(screen.queryByRole("checkbox", { name: "Active uncompleted project" })).not.toBeInTheDocument()
+        expect(screen.queryByRole("checkbox", { name: "Inactive completed project" })).toBeInTheDocument()
+        expect(screen.queryByRole("checkbox", { name: "Inactive uncompleted project" })).not.toBeInTheDocument()
+    })
+
+    it("Shows only inactive uncompleted project filters", async () => {
+        const client = new TestClient()
+        client.Projects = [
+            { id: 1, name: "Active completed project", done: true, later: false },
+            { id: 2, name: "Active uncompleted project", done: false, later: false },
+            { id: 3, name: "Inactive completed project", done: true, later: true },
+            { id: 4, name: "Inactive uncompleted project", done: false, later: true },
+        ]
+        render(<TaskFilters client={client} filter={{inactive: true, uncompleted: true}} />)
+        await sleep(1)
+
+        expect(screen.queryByRole("checkbox", { name: "Active completed project" })).not.toBeInTheDocument()
+        expect(screen.queryByRole("checkbox", { name: "Active uncompleted project" })).not.toBeInTheDocument()
+        expect(screen.queryByRole("checkbox", { name: "Inactive completed project" })).not.toBeInTheDocument()
+        expect(screen.queryByRole("checkbox", { name: "Inactive uncompleted project" })).toBeInTheDocument()
+    })
 })
