@@ -52,4 +52,50 @@ describe("TaskFilters", () => {
         expect(screen.getByRole("checkbox", {name: "Uncompleted project"})).toBeInTheDocument()
         expect(screen.getByRole("checkbox", {name: "Completed project"})).toBeInTheDocument()
     })
+
+    it("should only shows active project filters if active is checked", async () => {
+        const client = new TestClient()
+        client.Projects = [
+            { id: 1, name: "Active project", done: false, later: false },
+            { id: 2, name: "Inactive project", done: false, later: true },
+        ]
+        render(<TaskFilters client={client} filter={{active: true}} />)
+        await sleep(1)
+
+        expect(screen.getByRole("checkbox", {name: "Active tasks"})).toBeChecked()
+
+        expect(screen.getByRole("checkbox", {name: "Active project"})).toBeInTheDocument()
+        expect(screen.queryByRole("checkbox", {name: "Inactive project"})).not.toBeInTheDocument()
+    })
+
+    it("should only shows inactive project filters if inactive is checked", async () => {
+        const client = new TestClient()
+        client.Projects = [
+            { id: 1, name: "Active project", done: false, later: false },
+            { id: 2, name: "Inactive project", done: false, later: true },
+        ]
+        render(<TaskFilters client={client} filter={{inactive: true}} />)
+        await sleep(1)
+
+        expect(screen.getByRole("checkbox", {name: "Inactive tasks"})).toBeChecked()
+
+        expect(screen.queryByRole("checkbox", {name: "Active project"})).not.toBeInTheDocument()
+        expect(screen.getByRole("checkbox", {name: "Inactive project"})).toBeInTheDocument()
+    })
+
+    it("shows both active and inactive project filters when both active and inactive filters are checked", async () => {
+        const client = new TestClient()
+        client.Projects = [
+            { id: 1, name: "Active project", done: false, later: false },
+            { id: 2, name: "Inactive project", done: false, later: true },
+        ]
+        render(<TaskFilters client={client} filter={{active: true, inactive: true}} />)
+        await sleep(1)
+
+        expect(screen.getByRole("checkbox", {name: "Inactive tasks"})).toBeChecked()
+        expect(screen.getByRole("checkbox", {name: "Active tasks"})).toBeChecked()
+
+        expect(screen.getByRole("checkbox", {name: "Active project"})).toBeInTheDocument()
+        expect(screen.getByRole("checkbox", {name: "Inactive project"})).toBeInTheDocument()
+    })
 })
