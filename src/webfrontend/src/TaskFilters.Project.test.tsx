@@ -6,7 +6,7 @@ import '@testing-library/jest-dom'
 import { sleep } from "./__test__/testutils";
 
 describe("TaskFilters", () => {
-    it("should only shows active project filters if uncompleted is checked", async () => {
+    it("should only shows uncompleted project filters if uncompleted is checked", async () => {
         const client = new TestClient()
         client.Projects = [
             { id: 1, name: "Uncompleted project", done: false, later: false },
@@ -18,6 +18,6 @@ describe("TaskFilters", () => {
         expect(screen.getByRole("checkbox", {name: "Uncompleted tasks"})).toBeChecked()
 
         expect(screen.getByRole("checkbox", {name: "Uncompleted project"})).toBeInTheDocument()
-        expect(screen.getByRole("checkbox", {name: "Completed project"})).not.toBeInTheDocument()
+        expect(screen.queryByRole("checkbox", {name: "Completed project"})).not.toBeInTheDocument()
     })
 })
