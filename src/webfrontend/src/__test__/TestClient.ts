@@ -143,10 +143,12 @@ export class TestClient implements IClient {
         })]
         if(filter !== undefined) {
             result = result.filter(p => {
-                const activeFilter = filter?.active && !p.later ||
-                    filter?.inactive && p.later
-                const completionFilter = filter?.completed && p.done ||
-                    filter?.uncompleted && !p.done
+                const activeFilter = filter?.active && !p.later
+                    || filter?.inactive && p.later
+                    || (filter.active === undefined && filter.inactive === undefined)
+                const completionFilter = filter?.completed && p.done
+                    || filter?.uncompleted && !p.done
+                    || (filter.completed === undefined && filter.uncompleted === undefined)
                 return activeFilter && completionFilter
             })
         }

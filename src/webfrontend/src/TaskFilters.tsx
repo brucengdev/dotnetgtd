@@ -24,7 +24,7 @@ export function TaskFilters(props: TaskFiltersProps) {
     const [projects, setProjects] = useState<Project[] | undefined>(undefined)
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
     if(projects === undefined) {
-        client.GetProjects()
+        client.GetProjects(filter)
         .then(retrievedProjects => setProjects(retrievedProjects))
     }
     if(tags === undefined) {
