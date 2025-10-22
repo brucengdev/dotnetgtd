@@ -133,6 +133,20 @@ describe("ItemView", () => {
             expectedDoneStatus: true,
             expectedLaterStatus: false
         },
+        { 
+            testCaseName: "shows active task as active if project is active",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: false,
+                later: false,
+                projectId: testProjects.find(p => p.name == "Uncompleted Active Project")?.id
+            } as Item,
+            expectedDisplayedProjectName: "Uncompleted Active Project",
+            expectedDisplayedTags: "",
+            expectedDoneStatus: false,
+            expectedLaterStatus: false
+        },
     ].forEach(testCase => {
         const {
             testCaseName, item, 
