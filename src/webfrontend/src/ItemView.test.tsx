@@ -170,6 +170,34 @@ describe("ItemView", () => {
             expectedDoneStatus: false,
             expectedLaterStatus: false
         },
+        { 
+            testCaseName: "shows active task as inactive if project is inactive",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: false,
+                later: false,
+                projectId: testProjects.find(p => p.name == "Uncompleted Inactive Project")?.id
+            } as Item,
+            expectedDisplayedProjectName: "Uncompleted Inactive Project",
+            expectedDisplayedTags: "",
+            expectedDoneStatus: false,
+            expectedLaterStatus: true
+        },
+        { 
+            testCaseName: "shows inactive task as inactive if project is inactive",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: false,
+                later: true,
+                projectId: testProjects.find(p => p.name == "Uncompleted Inactive Project")?.id
+            } as Item,
+            expectedDisplayedProjectName: "Uncompleted Inactive Project",
+            expectedDisplayedTags: "",
+            expectedDoneStatus: false,
+            expectedLaterStatus: true
+        },
     ].forEach(testCase => {
         const {
             testCaseName, item, 
