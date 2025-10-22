@@ -84,14 +84,27 @@ describe("ItemView", () => {
                 description: "Task description",
                 done: false,
                 later: false,
-                projectId: testProjects.find(p => p.name == "Completed Active Project")?.id,
-                tagIds: [1,2]
+                projectId: testProjects.find(p => p.name == "Completed Active Project")?.id
             } as Item,
             expectedDisplayedProjectName: "Completed Active Project",
-            expectedDisplayedTags: "tag1,tag2",
+            expectedDisplayedTags: "",
             expectedDoneStatus: true,
             expectedLaterStatus: false
-        }
+        },
+        { 
+            testCaseName: "shows completed task as completed if project is completed",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: true,
+                later: false,
+                projectId: testProjects.find(p => p.name == "Completed Active Project")?.id
+            } as Item,
+            expectedDisplayedProjectName: "Completed Active Project",
+            expectedDisplayedTags: "",
+            expectedDoneStatus: true,
+            expectedLaterStatus: false
+        },
     ].forEach(testCase => {
         const {
             testCaseName, item, 
