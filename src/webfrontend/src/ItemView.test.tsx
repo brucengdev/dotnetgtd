@@ -7,8 +7,8 @@ import { Item } from "./models/Item";
 import { Tag } from "./models/Tag";
 
 const testProjects: Project[] = [
-    { id: 1, name: "Project A", done: false, later: false },
-    { id: 2, name: "Project B", done: false, later: false }
+    { id: 1, name: "Uncompleted Project", done: false, later: false },
+    { id: 2, name: "Completed Project", done: true, later: false }
 ];
 
 const testTags: Tag[] = [
@@ -19,7 +19,7 @@ const testTags: Tag[] = [
 describe("ItemView", () => {
     [
         { 
-            testCaseName: "renders view correctly with project name = Project A",
+            testCaseName: "renders view correctly with project name = Uncompleted Project",
             item: {
                 id: 1,
                 description: "Task description",
@@ -27,8 +27,10 @@ describe("ItemView", () => {
                 later: false,
                 projectId: 1,
             } as Item,
-            expectedDisplayedProjectName: "Project A",
-            expectedDisplayedTags: ""
+            expectedDisplayedProjectName: "Uncompleted Project",
+            expectedDisplayedTags: "",
+            expectedDoneStatus: false,
+            expectedLaterStatus: false
         },
         { 
             testCaseName: "renders view correctly with undefined project name",
@@ -40,6 +42,8 @@ describe("ItemView", () => {
             } as Item,
             expectedDisplayedProjectName: "",
             expectedDisplayedTags: "",
+            expectedDoneStatus: false,
+            expectedLaterStatus: true
         },
         { 
             testCaseName: "renders view correctly with 1 tag",
@@ -51,8 +55,10 @@ describe("ItemView", () => {
                 projectId: 1,
                 tagIds: [1]
             } as Item,
-            expectedDisplayedProjectName: "Project A",
+            expectedDisplayedProjectName: "Uncompleted Project",
             expectedDisplayedTags: "tag1",
+            expectedDoneStatus: true,
+            expectedLaterStatus: true
         },
         { 
             testCaseName: "renders view correctly with multiple tags",
@@ -64,14 +70,18 @@ describe("ItemView", () => {
                 projectId: 1,
                 tagIds: [1,2]
             } as Item,
-            expectedDisplayedProjectName: "Project A",
+            expectedDisplayedProjectName: "Uncompleted Project",
             expectedDisplayedTags: "tag1,tag2",
+            expectedDoneStatus: false,
+            expectedLaterStatus: false
         }
     ].forEach(testCase => {
         const {
             testCaseName, item, 
             expectedDisplayedProjectName,
-            expectedDisplayedTags
+            expectedDisplayedTags,
+            expectedDoneStatus,
+            expectedLaterStatus
         } = testCase
         it(testCaseName, () => {
             const { description, done, later } = item
@@ -94,14 +104,14 @@ describe("ItemView", () => {
             expect(tagNamesView.textContent).toBe(expectedDisplayedTags)
 
             const doneView = screen.getByTestId("done")
-            if(done) {
+            if(expectedDoneStatus) {
                 expect(doneView).toBeChecked()
             }else {
                 expect(doneView).not.toBeChecked()
             }
 
             const laterView = screen.getByTestId("later")
-            if(later) {
+            if(expectedLaterStatus) {
                 expect(laterView).toBeChecked()
             }else {
                 expect(laterView).not.toBeChecked()
