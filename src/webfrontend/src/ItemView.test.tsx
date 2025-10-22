@@ -47,6 +47,9 @@ describe("ItemView", () => {
             expectedDoneStatus: false,
             expectedLaterStatus: true
         },
+
+        //------------------------------------------------------------
+
         { 
             testCaseName: "renders view correctly with 1 tag",
             item: {
@@ -77,6 +80,9 @@ describe("ItemView", () => {
             expectedDoneStatus: false,
             expectedLaterStatus: false
         },
+
+        //------------------------------------------------------------
+
         { 
             testCaseName: "shows uncompleted task as completed if project is completed",
             item: {
@@ -133,6 +139,9 @@ describe("ItemView", () => {
             expectedDoneStatus: true,
             expectedLaterStatus: false
         },
+
+        //------------------------------------------------------------
+
         { 
             testCaseName: "shows active task as active if project is active",
             item: {
@@ -140,6 +149,20 @@ describe("ItemView", () => {
                 description: "Task description",
                 done: false,
                 later: false,
+                projectId: testProjects.find(p => p.name == "Uncompleted Active Project")?.id
+            } as Item,
+            expectedDisplayedProjectName: "Uncompleted Active Project",
+            expectedDisplayedTags: "",
+            expectedDoneStatus: false,
+            expectedLaterStatus: false
+        },
+        { 
+            testCaseName: "shows inactive task as active if project is active",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: false,
+                later: true,
                 projectId: testProjects.find(p => p.name == "Uncompleted Active Project")?.id
             } as Item,
             expectedDisplayedProjectName: "Uncompleted Active Project",

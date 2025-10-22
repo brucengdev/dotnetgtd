@@ -63,7 +63,7 @@ export default function ItemView(props: ItemViewProps) {
             />
             <CheckBox
                 label="Later"
-                checked={later}
+                checked={project?.later? later: false}
                 dataTestId="later"
                 onChange={checked => onChange?.({...item, later: checked})}
             />
