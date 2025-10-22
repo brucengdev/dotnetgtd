@@ -141,7 +141,32 @@ describe("ItemView", () => {
         },
 
         //------------------------------------------------------------
-
+        { 
+            testCaseName: "shows active task as active if there is no project",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: false,
+                later: false
+            } as Item,
+            expectedDisplayedProjectName: "",
+            expectedDisplayedTags: "",
+            expectedDoneStatus: false,
+            expectedLaterStatus: false
+        },
+        { 
+            testCaseName: "shows inactive task as inactive if there is no project",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: false,
+                later: true
+            } as Item,
+            expectedDisplayedProjectName: "",
+            expectedDisplayedTags: "",
+            expectedDoneStatus: false,
+            expectedLaterStatus: true
+        },
         { 
             testCaseName: "shows active task as active if project is active",
             item: {
