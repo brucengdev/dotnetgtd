@@ -57,10 +57,9 @@ describe("ItemView", () => {
                 description: "Task description",
                 done: true,
                 later: true,
-                projectId: 1,
                 tagIds: [1]
             } as Item,
-            expectedDisplayedProjectName: "Uncompleted Active Project",
+            expectedDisplayedProjectName: "",
             expectedDisplayedTags: "tag1",
             expectedDoneStatus: true,
             expectedLaterStatus: true
@@ -83,6 +82,32 @@ describe("ItemView", () => {
 
         //------------------------------------------------------------
 
+        { 
+            testCaseName: "shows uncompleted task as uncompleted if task in no project",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: false,
+                later: false
+            } as Item,
+            expectedDisplayedProjectName: "",
+            expectedDisplayedTags: "",
+            expectedDoneStatus: false,
+            expectedLaterStatus: false
+        },
+        { 
+            testCaseName: "shows completed task as completed if task in no project",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: true,
+                later: false
+            } as Item,
+            expectedDisplayedProjectName: "",
+            expectedDisplayedTags: "",
+            expectedDoneStatus: true,
+            expectedLaterStatus: false
+        },
         { 
             testCaseName: "shows uncompleted task as completed if project is completed",
             item: {
