@@ -92,7 +92,6 @@ describe("ItemView update form", () => {
                     description:"Task A" ,
                     done:false,
                     later: !later,
-                    projectId: 1,
                     tagIds: [1,2]
                 }}
                 projects={testProjects}
@@ -107,8 +106,7 @@ describe("ItemView update form", () => {
                 description: "Task A",
                 done: false,
                 later: later,
-                tagIds: [1, 2],
-                projectId: 1
+                tagIds: [1, 2]
             })
         })
     })
