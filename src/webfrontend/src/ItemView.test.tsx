@@ -7,8 +7,10 @@ import { Item } from "./models/Item";
 import { Tag } from "./models/Tag";
 
 const testProjects: Project[] = [
-    { id: 1, name: "Project A", done: false, later: false },
-    { id: 2, name: "Project B", done: false, later: false }
+    { id: 1, name: "Uncompleted Active Project", done: false, later: false },
+    { id: 2, name: "Completed Active Project", done: true, later: false },
+    { id: 3, name: "Uncompleted Inactive Project", done: false, later: true },
+    { id: 4, name: "Completed Inactive Project", done: true, later: true }
 ];
 
 const testTags: Tag[] = [
@@ -19,7 +21,7 @@ const testTags: Tag[] = [
 describe("ItemView", () => {
     [
         { 
-            testCaseName: "renders view correctly with project name = Project A",
+            testCaseName: "renders view correctly with project name = Uncompleted Active Project",
             item: {
                 id: 1,
                 description: "Task description",
@@ -27,8 +29,10 @@ describe("ItemView", () => {
                 later: false,
                 projectId: 1,
             } as Item,
-            expectedDisplayedProjectName: "Project A",
-            expectedDisplayedTags: ""
+            expectedDisplayedProjectName: "Uncompleted Active Project",
+            expectedDisplayedTags: "",
+            expectedDoneStatus: false,
+            expectedLaterStatus: false
         },
         { 
             testCaseName: "renders view correctly with undefined project name",
@@ -40,7 +44,12 @@ describe("ItemView", () => {
             } as Item,
             expectedDisplayedProjectName: "",
             expectedDisplayedTags: "",
+            expectedDoneStatus: false,
+            expectedLaterStatus: true
         },
+
+        //------------------------------------------------------------
+
         { 
             testCaseName: "renders view correctly with 1 tag",
             item: {
@@ -48,11 +57,12 @@ describe("ItemView", () => {
                 description: "Task description",
                 done: true,
                 later: true,
-                projectId: 1,
                 tagIds: [1]
             } as Item,
-            expectedDisplayedProjectName: "Project A",
+            expectedDisplayedProjectName: "",
             expectedDisplayedTags: "tag1",
+            expectedDoneStatus: true,
+            expectedLaterStatus: true
         },
         { 
             testCaseName: "renders view correctly with multiple tags",
@@ -64,17 +74,190 @@ describe("ItemView", () => {
                 projectId: 1,
                 tagIds: [1,2]
             } as Item,
-            expectedDisplayedProjectName: "Project A",
+            expectedDisplayedProjectName: "Uncompleted Active Project",
             expectedDisplayedTags: "tag1,tag2",
-        }
+            expectedDoneStatus: false,
+            expectedLaterStatus: false
+        },
+
+        //------------------------------------------------------------
+
+        { 
+            testCaseName: "shows uncompleted task as uncompleted if task in no project",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: false,
+                later: false
+            } as Item,
+            expectedDisplayedProjectName: "",
+            expectedDisplayedTags: "",
+            expectedDoneStatus: false,
+            expectedLaterStatus: false
+        },
+        { 
+            testCaseName: "shows completed task as completed if task in no project",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: true,
+                later: false
+            } as Item,
+            expectedDisplayedProjectName: "",
+            expectedDisplayedTags: "",
+            expectedDoneStatus: true,
+            expectedLaterStatus: false
+        },
+        { 
+            testCaseName: "shows uncompleted task as completed if project is completed",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: false,
+                later: false,
+                projectId: testProjects.find(p => p.name == "Completed Active Project")?.id
+            } as Item,
+            expectedDisplayedProjectName: "Completed Active Project",
+            expectedDisplayedTags: "",
+            expectedDoneStatus: true,
+            expectedLaterStatus: false
+        },
+        { 
+            testCaseName: "shows completed task as completed if project is completed",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: true,
+                later: false,
+                projectId: testProjects.find(p => p.name == "Completed Active Project")?.id
+            } as Item,
+            expectedDisplayedProjectName: "Completed Active Project",
+            expectedDisplayedTags: "",
+            expectedDoneStatus: true,
+            expectedLaterStatus: false
+        },
+         { 
+            testCaseName: "shows uncompleted task as uncompleted if project is uncompleted",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: false,
+                later: false,
+                projectId: testProjects.find(p => p.name == "Uncompleted Active Project")?.id
+            } as Item,
+            expectedDisplayedProjectName: "Uncompleted Active Project",
+            expectedDisplayedTags: "",
+            expectedDoneStatus: false,
+            expectedLaterStatus: false
+        },
+        { 
+            testCaseName: "shows completed task as completed if project is uncompleted",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: true,
+                later: false,
+                projectId: testProjects.find(p => p.name == "Uncompleted Active Project")?.id
+            } as Item,
+            expectedDisplayedProjectName: "Uncompleted Active Project",
+            expectedDisplayedTags: "",
+            expectedDoneStatus: true,
+            expectedLaterStatus: false
+        },
+
+        //------------------------------------------------------------
+        { 
+            testCaseName: "shows active task as active if there is no project",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: false,
+                later: false
+            } as Item,
+            expectedDisplayedProjectName: "",
+            expectedDisplayedTags: "",
+            expectedDoneStatus: false,
+            expectedLaterStatus: false
+        },
+        { 
+            testCaseName: "shows inactive task as inactive if there is no project",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: false,
+                later: true
+            } as Item,
+            expectedDisplayedProjectName: "",
+            expectedDisplayedTags: "",
+            expectedDoneStatus: false,
+            expectedLaterStatus: true
+        },
+        { 
+            testCaseName: "shows active task as active if project is active",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: false,
+                later: false,
+                projectId: testProjects.find(p => p.name == "Uncompleted Active Project")?.id
+            } as Item,
+            expectedDisplayedProjectName: "Uncompleted Active Project",
+            expectedDisplayedTags: "",
+            expectedDoneStatus: false,
+            expectedLaterStatus: false
+        },
+        { 
+            testCaseName: "shows inactive task as active if project is active",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: false,
+                later: true,
+                projectId: testProjects.find(p => p.name == "Uncompleted Active Project")?.id
+            } as Item,
+            expectedDisplayedProjectName: "Uncompleted Active Project",
+            expectedDisplayedTags: "",
+            expectedDoneStatus: false,
+            expectedLaterStatus: false
+        },
+        { 
+            testCaseName: "shows active task as inactive if project is inactive",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: false,
+                later: false,
+                projectId: testProjects.find(p => p.name == "Uncompleted Inactive Project")?.id
+            } as Item,
+            expectedDisplayedProjectName: "Uncompleted Inactive Project",
+            expectedDisplayedTags: "",
+            expectedDoneStatus: false,
+            expectedLaterStatus: true
+        },
+        { 
+            testCaseName: "shows inactive task as inactive if project is inactive",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: false,
+                later: true,
+                projectId: testProjects.find(p => p.name == "Uncompleted Inactive Project")?.id
+            } as Item,
+            expectedDisplayedProjectName: "Uncompleted Inactive Project",
+            expectedDisplayedTags: "",
+            expectedDoneStatus: false,
+            expectedLaterStatus: true
+        },
     ].forEach(testCase => {
         const {
             testCaseName, item, 
             expectedDisplayedProjectName,
-            expectedDisplayedTags
+            expectedDisplayedTags,
+            expectedDoneStatus,
+            expectedLaterStatus
         } = testCase
         it(testCaseName, () => {
-            const { description, done, later } = item
+            const { description } = item
             render(<ItemView 
                     item={item}
                     projects={testProjects}
@@ -94,14 +277,14 @@ describe("ItemView", () => {
             expect(tagNamesView.textContent).toBe(expectedDisplayedTags)
 
             const doneView = screen.getByTestId("done")
-            if(done) {
+            if(expectedDoneStatus) {
                 expect(doneView).toBeChecked()
             }else {
                 expect(doneView).not.toBeChecked()
             }
 
             const laterView = screen.getByTestId("later")
-            if(later) {
+            if(expectedLaterStatus) {
                 expect(laterView).toBeChecked()
             }else {
                 expect(laterView).not.toBeChecked()
