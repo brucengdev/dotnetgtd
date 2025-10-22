@@ -20,7 +20,8 @@ export default function ItemView(props: ItemViewProps) {
     const { item, onChange, onDelete, projects } = props
     const { description, done, later } = item
     const [ showConfirmDelete, setShowConfirmDelete ] = useState(false)
-    const projectName = props.projects.find(p => p.id === item.projectId)?.name
+    const project = props.projects.find(p => p.id === item.projectId)
+    const projectName = project?.name
     return <div data-testId="item">
         <div  className="grid grid-cols-6 mb-1">
             <EditableTextView 
@@ -56,7 +57,7 @@ export default function ItemView(props: ItemViewProps) {
             />
             <CheckBox
                 label="Done"
-                checked={done}
+                checked={project?.done? true: done}
                 dataTestId="done"
                 onChange={checked => onChange?.({...item, done: checked})}
             />

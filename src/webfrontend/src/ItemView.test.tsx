@@ -7,8 +7,10 @@ import { Item } from "./models/Item";
 import { Tag } from "./models/Tag";
 
 const testProjects: Project[] = [
-    { id: 1, name: "Uncompleted Project", done: false, later: false },
-    { id: 2, name: "Completed Project", done: true, later: false }
+    { id: 1, name: "Uncompleted Active Project", done: false, later: false },
+    { id: 2, name: "Completed Active Project", done: true, later: false },
+    { id: 3, name: "Uncompleted Inactive Project", done: false, later: true },
+    { id: 4, name: "Completed Inactive Project", done: true, later: true }
 ];
 
 const testTags: Tag[] = [
@@ -19,7 +21,7 @@ const testTags: Tag[] = [
 describe("ItemView", () => {
     [
         { 
-            testCaseName: "renders view correctly with project name = Uncompleted Project",
+            testCaseName: "renders view correctly with project name = Uncompleted Active Project",
             item: {
                 id: 1,
                 description: "Task description",
@@ -27,7 +29,7 @@ describe("ItemView", () => {
                 later: false,
                 projectId: 1,
             } as Item,
-            expectedDisplayedProjectName: "Uncompleted Project",
+            expectedDisplayedProjectName: "Uncompleted Active Project",
             expectedDisplayedTags: "",
             expectedDoneStatus: false,
             expectedLaterStatus: false
@@ -55,7 +57,7 @@ describe("ItemView", () => {
                 projectId: 1,
                 tagIds: [1]
             } as Item,
-            expectedDisplayedProjectName: "Uncompleted Project",
+            expectedDisplayedProjectName: "Uncompleted Active Project",
             expectedDisplayedTags: "tag1",
             expectedDoneStatus: true,
             expectedLaterStatus: true
@@ -70,9 +72,24 @@ describe("ItemView", () => {
                 projectId: 1,
                 tagIds: [1,2]
             } as Item,
-            expectedDisplayedProjectName: "Uncompleted Project",
+            expectedDisplayedProjectName: "Uncompleted Active Project",
             expectedDisplayedTags: "tag1,tag2",
             expectedDoneStatus: false,
+            expectedLaterStatus: false
+        },
+        { 
+            testCaseName: "shows uncompleted task as completed if project is completed",
+            item: {
+                id: 1,
+                description: "Task description",
+                done: false,
+                later: false,
+                projectId: testProjects.find(p => p.name == "Completed Active Project")?.id,
+                tagIds: [1,2]
+            } as Item,
+            expectedDisplayedProjectName: "Completed Active Project",
+            expectedDisplayedTags: "tag1,tag2",
+            expectedDoneStatus: true,
             expectedLaterStatus: false
         }
     ].forEach(testCase => {
@@ -84,7 +101,7 @@ describe("ItemView", () => {
             expectedLaterStatus
         } = testCase
         it(testCaseName, () => {
-            const { description, done, later } = item
+            const { description } = item
             render(<ItemView 
                     item={item}
                     projects={testProjects}
