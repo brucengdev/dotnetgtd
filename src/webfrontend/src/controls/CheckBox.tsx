@@ -4,16 +4,18 @@ interface CheckBoxProps {
     checked: boolean,
     onChange?: (checked: boolean) => void,
     dataTestId?: string
+    disabled?: boolean
 }
 
 export function CheckBox(props: CheckBoxProps) {
-    const { label, checked, onChange, dataTestId } = props
+    const { label, checked, onChange, disabled, dataTestId } = props
     return <label className="mr-4 block">
         <input 
             className="ml-1"
             data-testId={dataTestId}
             type="checkbox" 
             checked={checked} 
+            disabled={disabled}
             onClick={_ => {
                 if(onChange) {
                     onChange(!checked)
