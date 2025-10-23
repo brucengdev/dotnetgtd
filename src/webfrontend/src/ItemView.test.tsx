@@ -298,6 +298,25 @@ describe("ItemView", () => {
         })
     })
 
+    testProjects.filter(p => p.done)
+    .forEach(completedProject => {
+        it(`does not allow changing completion of a task in project "${completedProject.name}"`, () => {
+            render(<ItemView item={{
+                    id: 1,
+                    description:"Task A",
+                    projectId: completedProject?.id,
+                    done: false,
+                    later: false
+                }}  
+                projects={testProjects}
+                tags={[]}
+            />)
+
+            const doneCheckbox = screen.getByRole("checkbox", { name: "Done" })
+            expect(doneCheckbox).toBeDisabled()
+        })
+    })
+
     it("shows delete confirm view when delete is clicked", () => {
         render(<ItemView 
                 item={{
