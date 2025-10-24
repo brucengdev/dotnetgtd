@@ -58,6 +58,7 @@ export default function ItemView(props: ItemViewProps) {
             <CheckBox
                 label="Done"
                 checked={project?.done? true: done}
+                disabled={project?.done ?? false}
                 dataTestId="done"
                 onChange={checked => onChange?.({...item, done: checked})}
             />
