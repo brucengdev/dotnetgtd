@@ -55,11 +55,22 @@ export function TaskView(props: TaskViewProps) {
                       setItems(undefined) //to reload
                   })
           }}
-          onUpdate={(item: Item) => {
-              client.UpdateItem(item)
-                  .then(() => {
-                      setItems(undefined) //to reload
-                  })
+          onUpdate={async (item: Item) => {
+            const existingItem = items?.find(i => i.id === item.id)
+            if(existingItem && item.projectId !== undefined) {
+              const project = projects?.find(p => p.id === item.projectId)
+              //an item in a project has later status same as project's
+              //changing item's later status should update project later status
+              if(project && project.later !== item.later) {
+                await client.UpdateProject({
+                  ...project,
+                  later: item.later
+                })
+              }
+            }
+            await client.UpdateItem(item);
+            setItems(undefined) //to reload items
+            setProjects(undefined) //to reload projects
           }}
         />
         {showNewTaskForm

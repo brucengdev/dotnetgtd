@@ -53,7 +53,7 @@ describe("ItemView update form", () => {
 
     const doneValues = [true, false]
     doneValues.forEach(done => {
-        it(`Executes callback when done is changed to ${done}`, () => {
+        it(`Executes callback when done is changed to ${done} for tasks in no project or in uncompleted projects`, () => {
             const fn = vitest.fn()
             render(<ItemView
                 item={{
