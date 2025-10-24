@@ -22,7 +22,8 @@ describe("TaskView", () => {
             client.Projects = [
                 { id: 1, name: "Project X", later: projectLater, done: false }
             ]
-            render(<TaskView client={client} filter={{uncompleted: true, active: true, inactive: true}} />)
+            render(<TaskView client={client} 
+                filter={{uncompleted: true, active: true, inactive: true}} />)
             await sleep(10)
 
             let laterCheckboxes = screen.getAllByRole("checkbox", { name: "Later" })
@@ -31,11 +32,11 @@ describe("TaskView", () => {
 
             laterCheckboxes = screen.getAllByRole("checkbox", { name: "Later" })
             if(expectedLater) {
-                expect(laterCheckboxes[1]).toBeChecked()
                 expect(client.Projects[0].later).toBeTruthy()
+                expect(laterCheckboxes[1]).toBeChecked()
             } else {
-                expect(laterCheckboxes[1]).not.toBeChecked()
                 expect(client.Projects[0].later).toBeFalsy()
+                expect(laterCheckboxes[1]).not.toBeChecked()
             }
         })
     })
