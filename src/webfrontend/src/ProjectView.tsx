@@ -13,10 +13,11 @@ export const defaultProjectsFilter: ProjectFilter = {
 
 interface ProjectViewProps {
     client: IClient,
-    filter?: ProjectFilter
+    filter?: ProjectFilter,
+    onFilterChange?: (filter: ProjectFilter) => void
 }
 
-export function ProjectView({ client, filter: initialFilter }: ProjectViewProps) {
+export function ProjectView({ client, filter: initialFilter, onFilterChange }: ProjectViewProps) {
     const [showNewProjectForm, setShowNewProjectForm] = useState(false)
     const [projects, setProjects] = useState<Project[] | undefined>(undefined)
     const [filter, setFilter] = useState(initialFilter || defaultProjectsFilter)
@@ -29,6 +30,7 @@ export function ProjectView({ client, filter: initialFilter }: ProjectViewProps)
             onChange={newFilter => {
                 setFilter(newFilter)
                 setProjects(undefined) //to reload
+                onFilterChange?.(newFilter)
             }}
          />
         <div className="col-span-2">
