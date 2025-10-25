@@ -11,6 +11,7 @@ export interface SelectProps {
 export function Select(props: SelectProps) {
     const { onChange, options, selectedValue, selectDataTestId: dataTestId } = props
     return <select 
+        className="border border-gray-300 block w-full"
         data-testId={dataTestId}
         onChange={(e) => {
             if(onChange) {
