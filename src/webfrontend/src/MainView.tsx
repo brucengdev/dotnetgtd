@@ -35,7 +35,9 @@ export function MainView({onLogout, client} : MainViewProps) {
         className="mr-1" onClick={() => setCurrentView(View.PROJECTS)} />
       <Button text="Tags" mode={buttonMode(View.TAGS, currentView)}
         onClick={() => setCurrentView(View.TAGS)} />
-      {renderView(currentView, client, tasksFilter, projectsFilter)}
+      {renderView(currentView, client, 
+        tasksFilter, setTasksFilter, 
+        projectsFilter, setProjectsFilter)}
     </div>;
 }
 
@@ -46,7 +48,9 @@ function buttonMode(view: View, currentView: View) {
 function renderView(view: View, 
   client: IClient, 
   tasksFilter: TaskFilter,
-  projectsFilter: ProjectFilter
+  setTasksFilter: (filter: TaskFilter) => void,
+  projectsFilter: ProjectFilter,
+  setProjectsFilter: (filter: ProjectFilter) => void
 ) {
   switch(view) {
     case View.PROJECTS:
@@ -55,6 +59,7 @@ function renderView(view: View,
       return <TagView client={client} />;
     case View.TASKS:
     default:
-      return <TaskView client={client} filter={tasksFilter} />
+      return <TaskView client={client} 
+            filter={tasksFilter} onFilterChange={setTasksFilter} />
   }
 }
