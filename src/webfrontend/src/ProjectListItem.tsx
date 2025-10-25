@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { ConfirmDeleteView } from "./ConfirmDeleteView"
-import { Button } from "./controls/Button"
+import { Button, ButtonMode } from "./controls/Button"
 import { CheckBox } from "./controls/CheckBox"
 import { EditableTextView } from "./controls/EditableTextView"
 import { Project } from "./models/Project"
@@ -54,9 +54,11 @@ export function ProjectListItem(props: ProjectListItemProps) {
                 }
             }}
         />
-        {!showConfirmDelete 
-            && <Button text="Delete" 
-                onClick={() => setShowConfirmDelete(true)} /> }
+        <div className="text-right">
+            {!showConfirmDelete 
+                && <Button text="Delete" mode={ButtonMode.DANGER}
+                    onClick={() => setShowConfirmDelete(true)} /> }
+        </div>
         {showConfirmDelete 
         && <ConfirmDeleteView
                 onYes={() => {

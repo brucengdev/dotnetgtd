@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { ConfirmDeleteView } from "./ConfirmDeleteView"
-import { Button } from "./controls/Button"
+import { Button, ButtonMode } from "./controls/Button"
 import { Tag } from "./models/Tag"
 import { EditableTextView } from "./controls/EditableTextView"
 
@@ -24,9 +24,11 @@ export function TagListItem(props: TagListItemProps) {
                 }
             }}
         />
+        <div className="text-right">
         {!showConfirmDelete 
-            && <Button text="Delete" 
+            && <Button text="Delete" mode={ButtonMode.DANGER}
                 onClick={() => setShowConfirmDelete(true)} /> }
+        </div>
         {showConfirmDelete 
         && <ConfirmDeleteView
                 onYes={() => {
