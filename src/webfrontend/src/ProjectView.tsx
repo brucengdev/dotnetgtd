@@ -6,19 +6,20 @@ import { ProjectList } from "./ProjectList";
 import { Project } from "./models/Project";
 import { ProjectFilter, ProjectFilters } from "./ProjectFilters";
 
-const defaultFilter: ProjectFilter = {
+export const defaultProjectsFilter: ProjectFilter = {
     active: true,
     uncompleted: true
 }
 
 interface ProjectViewProps {
-    client: IClient
+    client: IClient,
+    filter?: ProjectFilter
 }
 
-export function ProjectView({ client }: ProjectViewProps) {
+export function ProjectView({ client, filter: initialFilter }: ProjectViewProps) {
     const [showNewProjectForm, setShowNewProjectForm] = useState(false)
     const [projects, setProjects] = useState<Project[] | undefined>(undefined)
-    const [filter, setFilter] = useState(defaultFilter)
+    const [filter, setFilter] = useState(initialFilter || defaultProjectsFilter)
     if(projects === undefined) {
         client.GetProjects(filter)
         .then(retrievedProjects => setProjects(retrievedProjects))

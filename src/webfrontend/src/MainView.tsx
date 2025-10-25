@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { IClient } from "./api/Client"
 import { Button, ButtonMode } from "./controls/Button";
-import { TaskView } from "./TaskView"
-import { ProjectView } from "./ProjectView";
+import { defaultTasksFilter, TaskView } from "./TaskView"
+import { defaultProjectsFilter, ProjectView } from "./ProjectView";
 import { TagView } from "./TagView";
+import { TaskFilter } from "./TaskFilters";
+import { ProjectFilter } from "./ProjectFilters";
 
 export interface MainViewProps {
   client: IClient
@@ -18,6 +20,8 @@ enum View {
 
 export function MainView({onLogout, client} : MainViewProps) {
     var [currentView, setCurrentView] = useState(View.TASKS)
+    const [tasksFilter, setTasksFilter] = useState(defaultTasksFilter)
+    const [projectsFilter, setProjectsFilter] = useState(defaultProjectsFilter)
     return <div data-testid="main-view">
       <Button 
         className="block mb-4"
@@ -31,7 +35,7 @@ export function MainView({onLogout, client} : MainViewProps) {
         className="mr-1" onClick={() => setCurrentView(View.PROJECTS)} />
       <Button text="Tags" mode={buttonMode(View.TAGS, currentView)}
         onClick={() => setCurrentView(View.TAGS)} />
-      {renderView(currentView, client)}
+      {renderView(currentView, client, tasksFilter, projectsFilter)}
     </div>;
 }
 
@@ -39,14 +43,18 @@ function buttonMode(view: View, currentView: View) {
   return view === currentView ? ButtonMode.PRIMARY: ButtonMode.SECONDARY;
 }
 
-function renderView(view: View, client: IClient) {
+function renderView(view: View, 
+  client: IClient, 
+  tasksFilter: TaskFilter,
+  projectsFilter: ProjectFilter
+) {
   switch(view) {
     case View.PROJECTS:
-      return <ProjectView client={client} />
+      return <ProjectView client={client} filter={projectsFilter} />
     case View.TAGS:
       return <TagView client={client} />;
     case View.TASKS:
     default:
-      return <TaskView client={client} />
+      return <TaskView client={client} filter={tasksFilter} />
   }
 }
