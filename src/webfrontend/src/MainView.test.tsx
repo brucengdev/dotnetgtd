@@ -3,6 +3,7 @@ import {describe, expect, it} from 'vitest'
 import '@testing-library/jest-dom'
 import { TestClient } from "./__test__/TestClient";
 import { MainView } from "./MainView";
+import { sleep } from "./__test__/testutils";
 
 describe("MainView", () => {
     it("shows buttons to switch between views", () => {
@@ -87,5 +88,51 @@ describe("MainView", () => {
         expect(tasksButton).toHaveClass("bg-indigo-600")
         expect(projectsButton).toHaveClass("bg-gray-300")
         expect(tagsButton).toHaveClass("bg-gray-300")
+    })
+
+    it("remembers current task filters when switching views", async () => {
+        render(<MainView client={new TestClient()} onLogout={() => { }} />)
+        await sleep(1)
+
+        const completedTaskCheckbox = screen.getByRole("checkbox", { name: "Completed tasks" })
+        expect(completedTaskCheckbox).not.toBeChecked()
+        completedTaskCheckbox.click()
+
+        expect(completedTaskCheckbox).toBeChecked()
+
+        const projectButton = screen.getByRole("button", { name: "Projects" })
+        fireEvent.click(projectButton)
+        await sleep(1)
+
+        const tasksButton = screen.getByRole("button", { name: "Tasks" })
+        fireEvent.click(tasksButton)
+        await sleep(1)
+
+        const completedTaskCheckboxAfter = screen.getByRole("checkbox", { name: "Completed tasks" })
+        expect(completedTaskCheckboxAfter).toBeChecked()
+    })
+
+    it("remembers current project filters when switching views", async () => {
+        render(<MainView client={new TestClient()} onLogout={() => { }} />)
+        await sleep(1)
+
+        const projectsButton = screen.getByRole("button", { name: "Projects" })
+        fireEvent.click(projectsButton)
+        await sleep(1)
+
+        const completedProjectCheckbox = screen.getByRole("checkbox", { name: "Completed projects" })
+        expect(completedProjectCheckbox).not.toBeChecked()
+        completedProjectCheckbox.click()
+        expect(completedProjectCheckbox).toBeChecked()
+
+        const tasksButton = screen.getByRole("button", { name: "Tasks" })
+        fireEvent.click(tasksButton)
+        await sleep(1)
+
+        fireEvent.click(projectsButton)
+        await sleep(1)
+
+        const completedProjectCheckboxAfter = screen.getByRole("checkbox", { name: "Completed projects" })
+        expect(completedProjectCheckboxAfter).toBeChecked()
     })
 })
