@@ -15,7 +15,7 @@ export function EditableMultiSelect(props: EditableMultiSelectProps) {
         return options.find(o => o.value === v)?.text ?? v
     }).join(',') ?? ""
     return isEditing
-            ?<>
+            ?<div>
                 <MultiSelect 
                     options={options} 
                     selectedValues={editFieldSelectedValues} 
@@ -29,7 +29,7 @@ export function EditableMultiSelect(props: EditableMultiSelectProps) {
                         onChange(editFieldSelectedValues)
                     }
                 }} />
-            </>
+            </div>
             :<div data-testId={textViewDataTestId} 
                 onClick={() => setIsEditing(true)} >
                 {displayValue}

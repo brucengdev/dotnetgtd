@@ -68,11 +68,13 @@ export default function ItemView(props: ItemViewProps) {
                 dataTestId="later"
                 onChange={checked => onChange?.({...item, later: checked})}
             />
-            {showConfirmDelete
-                ? <></>
-                : <Button text="Delete" className="justify-self-end" 
-                    mode={ButtonMode.DANGER} 
-                    onClick={() => setShowConfirmDelete(true)} />}
+            <>
+                {showConfirmDelete
+                    ? <></>
+                    : <Button text="Delete" className="justify-self-end" 
+                        mode={ButtonMode.DANGER} 
+                        onClick={() => setShowConfirmDelete(true)} />}
+            </>
         </div>
             {showConfirmDelete
                 ?<ConfirmDeleteView onNo={() => setShowConfirmDelete(false)} 

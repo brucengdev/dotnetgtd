@@ -12,6 +12,7 @@ export interface MultiSelectProps {
 export function MultiSelect(props: MultiSelectProps) {
     const { onChange, options, selectedValues, selectDataTestId } = props
     return <select 
+                className="border border-gray-300 block w-full"
                 data-testId={selectDataTestId}
                 multiple
                 onChange={e => {

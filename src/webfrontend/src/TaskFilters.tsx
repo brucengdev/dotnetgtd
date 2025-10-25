@@ -54,7 +54,7 @@ export function TaskFilters(props: TaskFiltersProps) {
         }
     }
 
-    return <div data-testId="task-filters">
+    return <div data-testId="task-filters" className="pt-5">
         <CheckBox label="Active tasks" checked={filter?.active ?? false}
             onChange={(selected) =>
                 executeFilterChangeCallback(props, { ...filter, active: selected })} 
