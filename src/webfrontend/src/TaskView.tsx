@@ -48,7 +48,7 @@ export function TaskView(props: TaskViewProps) {
           props.onFilterChange?.(filter)
         }}
       />
-      <div>
+      <div className="pt-5">
         <ItemList items={items} projects={projects} tags={tags}
           onDelete={(item: Item) => {
               client.DeleteItem(item.id)

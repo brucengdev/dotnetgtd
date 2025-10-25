@@ -33,7 +33,7 @@ export function ProjectView({ client, filter: initialFilter, onFilterChange }: P
                 onFilterChange?.(newFilter)
             }}
          />
-        <div>
+        <div className="pt-5">
             <ProjectList projects={projects || []} 
                 onDelete={(projectId) => {
                     client.DeleteProject(projectId)
