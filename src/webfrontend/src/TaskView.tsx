@@ -40,8 +40,7 @@ export function TaskView(props: TaskViewProps) {
       client.GetTags()
           .then(tags => setTags(tags))
     }
-    return <div data-testid="task-view" 
-        className="grid grid-cols-3 gap-1">
+    return <div data-testid="task-view">
       <TaskFilters client={client} filter={filter}
         onFiltersChanged={filter => {
           setFilter(filter)
@@ -49,7 +48,7 @@ export function TaskView(props: TaskViewProps) {
           props.onFilterChange?.(filter)
         }}
       />
-      <div className="col-span-2">
+      <div>
         <ItemList items={items} projects={projects} tags={tags}
           onDelete={(item: Item) => {
               client.DeleteItem(item.id)

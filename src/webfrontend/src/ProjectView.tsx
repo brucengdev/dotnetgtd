@@ -25,7 +25,7 @@ export function ProjectView({ client, filter: initialFilter, onFilterChange }: P
         client.GetProjects(filter)
         .then(retrievedProjects => setProjects(retrievedProjects))
     }
-    return <div data-testid="project-view" className="grid grid-cols-3 gap-1">
+    return <div data-testid="project-view">
         <ProjectFilters filter={filter} 
             onChange={newFilter => {
                 setFilter(newFilter)
@@ -33,7 +33,7 @@ export function ProjectView({ client, filter: initialFilter, onFilterChange }: P
                 onFilterChange?.(newFilter)
             }}
          />
-        <div className="col-span-2">
+        <div>
             <ProjectList projects={projects || []} 
                 onDelete={(projectId) => {
                     client.DeleteProject(projectId)
