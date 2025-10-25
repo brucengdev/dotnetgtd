@@ -10,7 +10,8 @@ import { TaskFilter, TaskFilters } from "./TaskFilters"
 
 export interface TaskViewProps {
   client: IClient,
-  filter?: TaskFilter
+  filter?: TaskFilter,
+  onFilterChange?: (filter: TaskFilter) => void
 }
 
 export const defaultTasksFilter: TaskFilter = {
@@ -45,6 +46,7 @@ export function TaskView(props: TaskViewProps) {
         onFiltersChanged={filter => {
           setFilter(filter)
           setItems(undefined) //to reload
+          props.onFilterChange?.(filter)
         }}
       />
       <div className="col-span-2">
