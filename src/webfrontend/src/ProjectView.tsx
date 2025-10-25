@@ -6,19 +6,21 @@ import { ProjectList } from "./ProjectList";
 import { Project } from "./models/Project";
 import { ProjectFilter, ProjectFilters } from "./ProjectFilters";
 
-const defaultFilter: ProjectFilter = {
+export const defaultProjectsFilter: ProjectFilter = {
     active: true,
     uncompleted: true
 }
 
 interface ProjectViewProps {
-    client: IClient
+    client: IClient,
+    filter?: ProjectFilter,
+    onFilterChange?: (filter: ProjectFilter) => void
 }
 
-export function ProjectView({ client }: ProjectViewProps) {
+export function ProjectView({ client, filter: initialFilter, onFilterChange }: ProjectViewProps) {
     const [showNewProjectForm, setShowNewProjectForm] = useState(false)
     const [projects, setProjects] = useState<Project[] | undefined>(undefined)
-    const [filter, setFilter] = useState(defaultFilter)
+    const [filter, setFilter] = useState(initialFilter || defaultProjectsFilter)
     if(projects === undefined) {
         client.GetProjects(filter)
         .then(retrievedProjects => setProjects(retrievedProjects))
@@ -28,6 +30,7 @@ export function ProjectView({ client }: ProjectViewProps) {
             onChange={newFilter => {
                 setFilter(newFilter)
                 setProjects(undefined) //to reload
+                onFilterChange?.(newFilter)
             }}
          />
         <div className="col-span-2">

@@ -10,10 +10,11 @@ import { TaskFilter, TaskFilters } from "./TaskFilters"
 
 export interface TaskViewProps {
   client: IClient,
-  filter?: TaskFilter
+  filter?: TaskFilter,
+  onFilterChange?: (filter: TaskFilter) => void
 }
 
-const defaultFilter: TaskFilter = {
+export const defaultTasksFilter: TaskFilter = {
   active: true,
   uncompleted: true,
   projectIds: ["nonnull", "null"],
@@ -26,7 +27,7 @@ export function TaskView(props: TaskViewProps) {
     const [items, setItems] = useState(undefined as (Item[]|undefined))
     const [projects, setProjects] = useState<Project[] | undefined>(undefined)
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
-    const [filter, setFilter] = useState<TaskFilter>(props.filter ?? defaultFilter)
+    const [filter, setFilter] = useState<TaskFilter>(props.filter ?? defaultTasksFilter)
     if(items === undefined) {
         client.GetItems(filter)
             .then(items => setItems(items))
@@ -45,6 +46,7 @@ export function TaskView(props: TaskViewProps) {
         onFiltersChanged={filter => {
           setFilter(filter)
           setItems(undefined) //to reload
+          props.onFilterChange?.(filter)
         }}
       />
       <div className="col-span-2">
