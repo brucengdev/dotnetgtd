@@ -54,7 +54,8 @@ function renderView(view: View,
 ) {
   switch(view) {
     case View.PROJECTS:
-      return <ProjectView client={client} filter={projectsFilter} />
+      return <ProjectView client={client} 
+            filter={projectsFilter} onFilterChange={setProjectsFilter} />
     case View.TAGS:
       return <TagView client={client} />;
     case View.TASKS:
