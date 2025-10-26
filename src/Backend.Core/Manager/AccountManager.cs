@@ -29,11 +29,13 @@ public class AccountManager: IAccountManager
 {
     internal IUserRepository _userRepository;
     private readonly string _salt;
+    private readonly int _hoursTillExpiration;
 
-    public AccountManager(IUserRepository userRepository, string salt)
+    public AccountManager(IUserRepository userRepository, string salt, int hoursTillExpiration = 1)
     {
         _salt = salt;
         _userRepository = userRepository;
+        _hoursTillExpiration = hoursTillExpiration;
     }
     private bool VerifyUser(string username, string password)
     {
@@ -69,7 +71,7 @@ public class AccountManager: IAccountManager
     {
         VerifyUser(username, password);
         var user = _userRepository.GetUser(username);
-        var expiryTime = creationTime.AddHours(1);
+        var expiryTime = creationTime.AddHours(_hoursTillExpiration);
         var info = $"{username}-{expiryTime.ToString("yyyy-MM-dd-HH-mm")}";
         var infoAndPasswordHash = info + user.PasswordHash;
         var hasedInfoAndPassHash = CreateHash(infoAndPasswordHash, _salt);

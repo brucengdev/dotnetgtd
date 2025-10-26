@@ -7,6 +7,7 @@ services:
     environment:
       ConnectionStrings__DefaultConnection: "Data Source=gtd-db;Initial Catalog=GTD;User Id=sa;Password='Pass@123';Trust Server Certificate=True;"
       HashSalt: "Ax4663akaa" # replace with your hash salt here for more security
+      TokenExpirationHours: 1 # replace with your token expiration values in hours
       AdminPassword: "admin" #replace with your admin password
     ports:
       - 80:8080
