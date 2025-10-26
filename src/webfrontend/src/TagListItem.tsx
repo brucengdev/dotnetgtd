@@ -13,7 +13,7 @@ export function TagListItem(props: TagListItemProps) {
     const { tag, onDelete, onChange } = props
     const { name } = tag
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
-    return <div data-testid="tag"  className="grid grid-cols-4 mb-1">
+    return <div data-testid="tag"  className="grid grid-cols-4 mb-1 border border-gray-800 p-3 rounded-md mt-5">
         <EditableTextView text={name} 
             className="col-span-3"
             textViewTestId="name" 
