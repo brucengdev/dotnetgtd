@@ -5,11 +5,12 @@ interface CheckBoxProps {
     onChange?: (checked: boolean) => void,
     dataTestId?: string
     disabled?: boolean
+    className?: string
 }
 
 export function CheckBox(props: CheckBoxProps) {
-    const { label, checked, onChange, disabled, dataTestId } = props
-    return <label className="mr-4">
+    const { label, checked, onChange, disabled, dataTestId, className } = props
+    return <label className={`mr-4 ${className}`}>
         <input 
             className="mr-1"
             data-testId={dataTestId}
