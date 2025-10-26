@@ -25,7 +25,7 @@ export default function ItemView(props: ItemViewProps) {
     return <div data-testId="item" className="p-3 border border-gray-800 rounded-md mb-2">
         <div  className="grid grid-cols-7 mb-1 gap-2">
             <EditableTextView 
-                className="col-span-6 sm:col-span-1"
+                className="col-span-6 md:col-span-1"
                 text={description} 
                 textViewTestId="description" editViewTestId="edit-description"
                 onChange={newDescription => onChange?.({ 
@@ -33,7 +33,7 @@ export default function ItemView(props: ItemViewProps) {
                 }) } 
             />
             <EditableSelect
-                className="col-span-6 sm:col-span-1"
+                className="col-span-6 md:col-span-1"
                 value={projectName}
                 textViewDataTestId="project"
                 selectDataTestId="edit-project"
@@ -46,7 +46,7 @@ export default function ItemView(props: ItemViewProps) {
                 onChange={newProjectId => onChange?.({...item, projectId: newProjectId ? parseInt(newProjectId) : undefined})}
             />
             <EditableMultiSelect 
-                className="col-span-6 sm:col-span-1"
+                className="col-span-6 md:col-span-1"
                 selectedValues={item.tagIds?.map(t => t.toString()) ?? []}
                 textViewDataTestId="tags"
                 selectDataTestId="edit-tags"
@@ -59,7 +59,7 @@ export default function ItemView(props: ItemViewProps) {
                 }}
             />
             <CheckBox
-                className="col-span-3 sm:col-span-1"
+                className="col-span-3 md:col-span-1"
                 label="Done"
                 checked={project?.done? true: done}
                 disabled={project?.done ?? false}
@@ -67,13 +67,13 @@ export default function ItemView(props: ItemViewProps) {
                 onChange={checked => onChange?.({...item, done: checked})}
             />
             <CheckBox
-                className="col-span-3 sm:col-span-1"
+                className="col-span-3 md:col-span-1"
                 label="Later"
                 checked={project == null? later: project?.later}
                 dataTestId="later"
                 onChange={checked => onChange?.({...item, later: checked})}
             />
-            <div className="sm:col-span-2 text-right">
+            <div className="md:col-span-2 text-right">
                 {showConfirmDelete
                     ? <></>
                     : <Button text="Delete" className="pr-2"
