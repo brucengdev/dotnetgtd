@@ -56,23 +56,31 @@ export function TaskFilters(props: TaskFiltersProps) {
 
     return <div data-testId="task-filters" className="pt-5">
         <CheckBox label="Active tasks" checked={filter?.active ?? false}
-            onChange={(selected) =>
-                executeFilterChangeCallback(props, { ...filter, active: selected })} 
+            onChange={(selected) => {
+                setProjects(undefined) //to reload projects when filter changes
+                executeFilterChangeCallback(props, { ...filter, active: selected })
+            }}
         />
         <CheckBox label="Inactive tasks" checked={filter?.inactive ?? false} 
-            onChange={(selected) =>
-                executeFilterChangeCallback(props, { ...filter, inactive: selected })} 
+            onChange={(selected) => {
+                setProjects(undefined) //to reload projects when filter changes
+                executeFilterChangeCallback(props, { ...filter, inactive: selected })
+            }} 
         />
 
         <hr />
 
         <CheckBox label="Completed tasks" checked={filter?.completed?? false}
-            onChange={(selected) => 
-                executeFilterChangeCallback(props, { ...filter, completed: selected })}
+            onChange={(selected) => {
+                setProjects(undefined) //to reload projects when filter changes
+                executeFilterChangeCallback(props, { ...filter, completed: selected })
+            }}
          />
         <CheckBox label="Uncompleted tasks" checked={filter?.uncompleted ?? false} 
-            onChange={(selected) =>
-                executeFilterChangeCallback(props, { ...filter, uncompleted: selected })}
+            onChange={(selected) => {
+                setProjects(undefined) //to reload projects when filter changes
+                executeFilterChangeCallback(props, { ...filter, uncompleted: selected })
+            }}
         />
 
         <hr />
