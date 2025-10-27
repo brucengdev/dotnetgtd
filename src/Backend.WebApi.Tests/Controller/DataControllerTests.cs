@@ -1,7 +1,10 @@
-﻿using Backend.Models;
+﻿using Backend.Core.Manager;
+using Backend.Models;
 using Backend.WebApi.ActionFilters;
 using Backend.WebApi.Controllers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Moq;
 using Shouldly;
 
 namespace Backend.WebApi.Tests.Controller;
@@ -28,7 +31,12 @@ public class DataControllerTests
     public void Import_data_must_be_successful()
     {
         //arrange
-        var sut = new DataController();
+        var dm = Mock.Of<IDataManager>();
+        var sut = new DataController(dm);
+        sut.ControllerContext = new();
+        var httpContext = new DefaultHttpContext();
+        sut.ControllerContext.HttpContext = httpContext;
+        httpContext.Items["UserId"] = 12;
 
         //act
         var userData = new UserData();
