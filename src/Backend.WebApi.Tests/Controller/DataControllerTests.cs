@@ -27,8 +27,11 @@ public class DataControllerTests
         secAttrs.Length.ShouldBe(1, "Must require authorization");
     }
 
-    [Fact]
-    public void Import_data_must_be_successful()
+    [Theory]
+    [InlineData(12)]
+    [InlineData(67)]
+    [InlineData(1220)]
+    public void Import_data_must_be_successful(int userId)
     {
         //arrange
         var dataManager = new Mock<IDataManager>();
@@ -36,7 +39,7 @@ public class DataControllerTests
         sut.ControllerContext = new();
         var httpContext = new DefaultHttpContext();
         sut.ControllerContext.HttpContext = httpContext;
-        httpContext.Items["UserId"] = 12;
+        httpContext.Items["UserId"] = userId;
 
         //act
         var userData = new UserData();
@@ -44,7 +47,7 @@ public class DataControllerTests
         
         //assert
         response.ShouldBeOfType<OkResult>();
-        dataManager.Verify(dm => dm.Import(userData), Times.Exactly(1));
+        dataManager.Verify(dm => dm.Import(userData, userId), Times.Exactly(1));
         dataManager.VerifyNoOtherCalls();
     }
 }

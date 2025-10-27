@@ -1,6 +1,7 @@
 ﻿using Backend.Core.Manager;
 using Backend.Models;
 using Backend.WebApi.ActionFilters;
+using Backend.WebApi.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -20,7 +21,7 @@ public class DataController:ControllerBase
     [ServiceFilter<SecurityFilterAttribute>]
     public ActionResult Import([FromBody] UserData data)
     {
-        _dataManager.Import(data);
+        _dataManager.Import(data, this.CurrentUserId());
         return Ok();
     }
 }
