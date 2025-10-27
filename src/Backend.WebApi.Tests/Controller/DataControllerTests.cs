@@ -31,8 +31,8 @@ public class DataControllerTests
     public void Import_data_must_be_successful()
     {
         //arrange
-        var dm = Mock.Of<IDataManager>();
-        var sut = new DataController(dm);
+        var dataManager = new Mock<IDataManager>();
+        var sut = new DataController(dataManager.Object);
         sut.ControllerContext = new();
         var httpContext = new DefaultHttpContext();
         sut.ControllerContext.HttpContext = httpContext;
@@ -44,5 +44,7 @@ public class DataControllerTests
         
         //assert
         response.ShouldBeOfType<OkResult>();
+        dataManager.Verify(dm => dm.Import(userData), Times.Exactly(1));
+        dataManager.VerifyNoOtherCalls();
     }
 }

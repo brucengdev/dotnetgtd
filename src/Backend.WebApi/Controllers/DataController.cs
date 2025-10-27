@@ -10,15 +10,17 @@ namespace Backend.WebApi.Controllers;
 [Route("[controller]")]
 public class DataController:ControllerBase
 {
-    public DataController(IDataManager _)
+    private readonly IDataManager _dataManager;
+    public DataController(IDataManager dm)
     {
-        
+        _dataManager = dm;
     }
     
     [HttpPut("[action]")]
     [ServiceFilter<SecurityFilterAttribute>]
-    public ActionResult Import([FromBody] UserData _)
+    public ActionResult Import([FromBody] UserData data)
     {
+        _dataManager.Import(data);
         return Ok();
     }
 }
