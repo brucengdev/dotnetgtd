@@ -47,6 +47,7 @@ builder.Services.AddScoped<IProjectManager, ProjectManager>();
 builder.Services.AddScoped<ITagRepository, TagRepository>();
 builder.Services.AddScoped<ITagManager, TagManager>();
 builder.Services.AddScoped<IItemTagMappingRepo, ItemTagMappingRepo>();
+builder.Services.AddScoped<IDataManager, DataManager>();
 
 builder.Services.AddScoped<SecurityFilterAttribute>();
 
