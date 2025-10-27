@@ -1,4 +1,5 @@
-﻿using Backend.WebApi.ActionFilters;
+﻿using Backend.Models;
+using Backend.WebApi.ActionFilters;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -10,7 +11,7 @@ public class DataController:ControllerBase
 {
     [HttpPut("[action]")]
     [ServiceFilter<SecurityFilterAttribute>]
-    public ActionResult Import()
+    public ActionResult Import([FromBody] UserData _)
     {
         return Ok();
     }

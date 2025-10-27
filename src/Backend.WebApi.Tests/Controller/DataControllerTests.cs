@@ -1,4 +1,5 @@
-﻿using Backend.WebApi.ActionFilters;
+﻿using Backend.Models;
+using Backend.WebApi.ActionFilters;
 using Backend.WebApi.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Shouldly;
@@ -21,5 +22,19 @@ public class DataControllerTests
         
         var secAttrs = method?.GetCustomAttributes(typeof(ServiceFilterAttribute<SecurityFilterAttribute>), true);
         secAttrs.Length.ShouldBe(1, "Must require authorization");
+    }
+
+    [Fact]
+    public void Import_data_must_be_successful()
+    {
+        //arrange
+        var sut = new DataController();
+
+        //act
+        var userData = new UserData();
+        var response = sut.Import(userData);
+        
+        //assert
+        response.ShouldBeOfType<OkResult>();
     }
 }
