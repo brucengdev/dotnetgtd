@@ -6,10 +6,30 @@ namespace Backend.Core.Tests;
 
 public class DataManagerTests
 {
+    [Fact]
     public void Import_must_delete_current_data()
     {
         //arrange
         var data = new TestDataSource();
+        data.Items =
+        [
+            new() { Id = 1, Description = "Task 1" },
+            new() { Id = 2, Description = "Task 2" }
+        ];
+        data.Tags =
+        [
+            new() { Id = 1, Name = "Tag 1" },
+            new() { Id = 2, Name = "Tag 2" }
+        ];
+        data.ItemTagMappings =
+        [
+            new() { Id = 1, ItemId = 1, TagId = 2 }
+        ];
+        data.Projects =
+        [
+            new() { Id = 1, Name = "Project 1" },
+            new() { Id = 2, Name = "Project 2" }
+        ];
         var itemRepo = new TestItemRepository(data);
         var sut = new DataManager(itemRepo);
         
