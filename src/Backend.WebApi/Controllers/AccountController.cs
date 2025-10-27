@@ -17,7 +17,8 @@ public class AccountController: ControllerBase
     
     [HttpPost("[action]")]
     public ActionResult<string> Login(
-        string username, string password)
+        [FromForm] string username,
+        [FromForm] string password)
     {
         try
         {
