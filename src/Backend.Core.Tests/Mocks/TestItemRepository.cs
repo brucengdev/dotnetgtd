@@ -61,4 +61,13 @@ public class TestItemRepository: IItemRepository
     {
         return _data.Items.Find(i => i.Id == itemId);
     }
+
+    public void Clear(int userId)
+    {
+        var userItems = _data.Items.Where(i => i.UserId == userId).ToList();
+        foreach (var userItem in userItems)
+        {
+            _data.Items.Remove(userItem);
+        }
+    }
 }

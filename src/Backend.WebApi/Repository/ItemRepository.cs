@@ -121,4 +121,8 @@ public class ItemRepository: IItemRepository
         var item = _dbContext.Items.Find(itemId);
         return item;
     }
+
+    public void Clear(int userId)
+    {
+    }
 }

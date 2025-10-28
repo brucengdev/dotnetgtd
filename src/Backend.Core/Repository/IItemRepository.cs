@@ -15,4 +15,6 @@ public interface IItemRepository
         bool tasksWithNoTag = true);
     void DeleteItem(int itemId);
     Item? GetItem(int itemId);
+
+    void Clear(int userId);
 }

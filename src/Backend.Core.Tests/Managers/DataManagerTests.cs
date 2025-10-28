@@ -13,13 +13,13 @@ public class DataManagerTests
         var data = new TestDataSource();
         data.Items =
         [
-            new() { Id = 1, Description = "Task 1" },
-            new() { Id = 2, Description = "Task 2" }
+            new() { Id = 1, Description = "Task 1", UserId = 12 },
+            new() { Id = 2, Description = "Task 2", UserId = 12 }
         ];
         data.Tags =
         [
-            new() { Id = 1, Name = "Tag 1" },
-            new() { Id = 2, Name = "Tag 2" }
+            new() { Id = 1, Name = "Tag 1", UserId = 12 },
+            new() { Id = 2, Name = "Tag 2", UserId = 12 }
         ];
         data.ItemTagMappings =
         [
@@ -27,8 +27,8 @@ public class DataManagerTests
         ];
         data.Projects =
         [
-            new() { Id = 1, Name = "Project 1" },
-            new() { Id = 2, Name = "Project 2" }
+            new() { Id = 1, Name = "Project 1", UserId = 12 },
+            new() { Id = 2, Name = "Project 2", UserId = 12 }
         ];
         var itemRepo = new TestItemRepository(data);
         var sut = new DataManager(itemRepo);
