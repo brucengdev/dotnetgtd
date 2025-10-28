@@ -62,6 +62,7 @@ public class ProjectRepository: IProjectRepository
 
     public void Clear(int userId)
     {
-        throw new NotImplementedException();
+        _dbContext.Projects.RemoveRange(_dbContext.Projects.Where(p => p.UserId == userId));
+        _dbContext.SaveChanges();
     }
 }
