@@ -65,6 +65,7 @@ public class TestItemRepository: IItemRepository
     public void Clear(int userId)
     {
         var userItems = _data.Items.Where(i => i.UserId == userId).ToList();
+        _data.ItemTagMappings = _data.ItemTagMappings.Where(m => !userItems.Any(i => i.Id == m.ItemId)).ToList();
         foreach (var userItem in userItems)
         {
             _data.Items.Remove(userItem);
