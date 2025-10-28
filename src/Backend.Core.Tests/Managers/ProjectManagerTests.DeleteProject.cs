@@ -18,8 +18,9 @@ public partial class ProjectManagerTests
             PasswordHash = AccountManagerTests.HashPassword("pass"),
             Username = "user1"
         });
-        var projectRepo = new TestProjectRepository();
-        projectRepo.Projects = new List<Project>
+        var data = new TestDataSource();
+        var projectRepo = new TestProjectRepository(data);
+        data.Projects = new List<Project>
         {
             new() { Id = 1, Name = "Project A", UserId = 123 },
             new() { Id = 2, Name = "Project B", UserId = 456 },
@@ -33,7 +34,7 @@ public partial class ProjectManagerTests
         sut.DeleteProject(3, 123);
         
         //assert
-        projectRepo.Projects.ShouldBe(new List<Project>
+        data.Projects.ShouldBe(new List<Project>
         {
             new() { Id = 1, Name = "Project A", UserId = 123 },
             new() { Id = 2, Name = "Project B", UserId = 456 },
@@ -53,8 +54,9 @@ public partial class ProjectManagerTests
             PasswordHash = AccountManagerTests.HashPassword("pass"),
             Username = "user1"
         });
-        var projectRepo = new TestProjectRepository();
-        projectRepo.Projects = new List<Project>
+        var data = new TestDataSource();
+        var projectRepo = new TestProjectRepository(data);
+        data.Projects = new List<Project>
         {
             new() { Id = 1, Name = "Project A", UserId = 123 },
             new() { Id = 2, Name = "Project B", UserId = 456 },
@@ -68,7 +70,7 @@ public partial class ProjectManagerTests
         exception.ShouldNotBeNull();
         exception.Message.ShouldBe("User does not own this project");
         
-        projectRepo.Projects.ShouldBe(new List<Project>
+        data.Projects.ShouldBe(new List<Project>
         {
             new() { Id = 1, Name = "Project A", UserId = 123 },
             new() { Id = 2, Name = "Project B", UserId = 456 },
@@ -88,8 +90,9 @@ public partial class ProjectManagerTests
             PasswordHash = AccountManagerTests.HashPassword("pass"),
             Username = "user1"
         });
-        var projectRepo = new TestProjectRepository();
-        projectRepo.Projects = new List<Project>
+        var data = new TestDataSource();
+        var projectRepo = new TestProjectRepository(data);
+        data.Projects = new List<Project>
         {
             new() { Id = 1, Name = "Project A", UserId = 123 },
             new() { Id = 2, Name = "Project B", UserId = 456 }
@@ -101,7 +104,7 @@ public partial class ProjectManagerTests
             () =>sut.DeleteProject(3, 245));
         exception.ShouldNotBeNull();
         
-        projectRepo.Projects.ShouldBe(new List<Project>
+        data.Projects.ShouldBe(new List<Project>
         {
             new() { Id = 1, Name = "Project A", UserId = 123 },
             new() { Id = 2, Name = "Project B", UserId = 456 }

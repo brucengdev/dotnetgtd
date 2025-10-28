@@ -35,7 +35,8 @@ public class DataManagerTests
             new() { Id = 3, Name = "Project 3", UserId = 14 }
         ];
         var itemRepo = new TestItemRepository(data);
-        var sut = new DataManager(itemRepo);
+        var projectRepo = new TestProjectRepository(data);
+        var sut = new DataManager(itemRepo, projectRepo);
         
         //act
         sut.Import(new(), 12);

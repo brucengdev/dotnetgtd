@@ -20,8 +20,9 @@ public partial class ProjectManagerTests
             Username = "user1",
             PasswordHash = AccountManagerTests.HashPassword("pass")
         });
-        var projectRepo = new TestProjectRepository();
-        projectRepo.Projects.Add(new()
+        var data = new TestDataSource();
+        var projectRepo = new TestProjectRepository(data);
+        data.Projects.Add(new()
         {
             Id = 2,
             Name = "Project X",
@@ -40,8 +41,8 @@ public partial class ProjectManagerTests
         }, 123);
         
         //assert
-        projectRepo.Projects.Count.ShouldBe(1);
-        var savedItem = projectRepo.Projects[0];
+        data.Projects.Count.ShouldBe(1);
+        var savedItem = data.Projects[0];
         savedItem.ShouldBe(new Project
         {
             Name = projectName,
@@ -56,8 +57,9 @@ public partial class ProjectManagerTests
     {
         //arrange
         var userRepo = new TestUserRepository();
-        var projectRepo = new TestProjectRepository();
-        projectRepo.Projects.Add(new()
+        var data = new TestDataSource();
+        var projectRepo = new TestProjectRepository(data);
+        data.Projects.Add(new()
         {
             Id = 2,
             Name = "Project X",
@@ -73,7 +75,7 @@ public partial class ProjectManagerTests
         }, 234));
         
         //assert
-        projectRepo.Projects.Count.ShouldBe(1);
+        data.Projects.Count.ShouldBe(1);
     }
     
     [Fact]
@@ -87,8 +89,9 @@ public partial class ProjectManagerTests
             Username = "user1",
             PasswordHash = AccountManagerTests.HashPassword("pass")
         });
-        var projectRepo = new TestProjectRepository();
-        projectRepo.Projects.Add(new()
+        var data = new TestDataSource();
+        var projectRepo = new TestProjectRepository(data);
+        data.Projects.Add(new()
         {
             Id = 2,
             Name = "Project X",
@@ -104,8 +107,8 @@ public partial class ProjectManagerTests
         }, 234));
         
         //assert
-        projectRepo.Projects.Count.ShouldBe(1);
-        projectRepo.Projects[0].ShouldBe(new()
+        data.Projects.Count.ShouldBe(1);
+        data.Projects[0].ShouldBe(new()
         {
             Id = 2,
             Name = "Project X",
@@ -124,7 +127,8 @@ public partial class ProjectManagerTests
             Username = "user1",
             PasswordHash = AccountManagerTests.HashPassword("pass")
         });
-        var projectRepo = new TestProjectRepository();
+        var data = new TestDataSource();
+        var projectRepo = new TestProjectRepository(data);
         var sut = new ProjectManager(projectRepo, userRepo);
         
         //act and assert
@@ -135,6 +139,6 @@ public partial class ProjectManagerTests
         }, 234));
         
         //assert
-        projectRepo.Projects.Count.ShouldBe(0);
+        data.Projects.Count.ShouldBe(0);
     }
 }
