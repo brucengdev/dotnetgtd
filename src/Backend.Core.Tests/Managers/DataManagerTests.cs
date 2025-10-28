@@ -23,7 +23,8 @@ public class DataManagerTests
         ];
         data.ItemTagMappings =
         [
-            new() { Id = 1, ItemId = 1, TagId = 2 }
+            new() { Id = 1, ItemId = 1, TagId = 2 },
+            new() { Id = 2, ItemId = 3, TagId = 2 }
         ];
         data.Projects =
         [
@@ -37,8 +38,8 @@ public class DataManagerTests
         sut.Import(new(), 12);
         
         //assert
-        data.Items.ShouldBeEmpty();
         data.ItemTagMappings.ShouldBeEmpty();
+        data.Items.ShouldBeEmpty();
         data.Projects.ShouldBeEmpty();
         data.Tags.ShouldBeEmpty();
     }

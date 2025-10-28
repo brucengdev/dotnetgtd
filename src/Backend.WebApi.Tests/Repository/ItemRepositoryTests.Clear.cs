@@ -30,6 +30,14 @@ public partial class ItemRepositoryTests
             Later = true,
             ProjectId = 2
         });
+        dbContext.ItemTagMappings.Add(new()
+        {
+            Id = 1, ItemId = 1, TagId = 1
+        });
+        dbContext.ItemTagMappings.Add(new()
+        {
+            Id = 2, ItemId = 3, TagId = 1
+        });
         dbContext.SaveChanges();
         var sut = new ItemRepository(dbContext);
         
@@ -39,5 +47,11 @@ public partial class ItemRepositoryTests
         //assert
         dbContext.Items.Count().ShouldBe(1);
         dbContext.Items.First().ShouldBe(user1Item);
+        
+        dbContext.ItemTagMappings.Count().ShouldBe(1);
+        dbContext.ItemTagMappings.First().ShouldBe(new()
+        {
+            Id = 2, ItemId = 3, TagId = 1
+        });
     }
 }
