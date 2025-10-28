@@ -7,7 +7,10 @@ public class DataManager:IDataManager
 {
     private readonly IItemRepository _itemRepository;
     private readonly IProjectRepository _projectRepo;
-    public DataManager(IItemRepository itemRepo, IProjectRepository projectRepo)
+    public DataManager(
+        IItemRepository itemRepo,
+        IProjectRepository projectRepo,
+        ITagRepository _)
     {
         _itemRepository = itemRepo;
         _projectRepo = projectRepo;

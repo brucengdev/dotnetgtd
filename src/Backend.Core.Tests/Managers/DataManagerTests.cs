@@ -36,7 +36,11 @@ public class DataManagerTests
         ];
         var itemRepo = new TestItemRepository(data);
         var projectRepo = new TestProjectRepository(data);
-        var sut = new DataManager(itemRepo, projectRepo);
+        var tagRepo = new TestTagRepository(data);
+        var sut = new DataManager(
+            itemRepo,
+            projectRepo,
+            tagRepo);
         
         //act
         sut.Import(new(), 12);

@@ -48,9 +48,9 @@ public partial class ItemManagerTests
             Id = 123,
             Username = "testuser"
         });
-
-        var tagRepo = new TestTagRepository();
-        tagRepo.Tags = new List<Tag>()
+        var data = new TestDataSource();
+        var tagRepo = new TestTagRepository(data);
+        data.Tags = new List<Tag>()
         {
             new() { Id = 1, UserId = 123, Name = "Tag1" },
             new() { Id = 2, UserId = 123, Name = "Tag2" },
