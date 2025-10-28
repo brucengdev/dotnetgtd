@@ -7,17 +7,20 @@ public class DataManager:IDataManager
 {
     private readonly IItemRepository _itemRepository;
     private readonly IProjectRepository _projectRepo;
+    private readonly ITagRepository _tagRepo;
     public DataManager(
         IItemRepository itemRepo,
         IProjectRepository projectRepo,
-        ITagRepository _)
+        ITagRepository tagRepo)
     {
         _itemRepository = itemRepo;
         _projectRepo = projectRepo;
+        _tagRepo = tagRepo;
     }
     public void Import(UserData data, int userId)
     {
         _itemRepository.Clear(userId);
         _projectRepo.Clear(userId);
+        _tagRepo.Clear(userId);
     }
 }
