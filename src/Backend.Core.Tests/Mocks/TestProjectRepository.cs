@@ -42,6 +42,6 @@ public class TestProjectRepository: IProjectRepository
 
     public void Clear(int userId)
     {
-        throw new NotImplementedException();
+        _data.Projects.RemoveAll(p => p.UserId == userId);
     }
 }
