@@ -35,4 +35,9 @@ public class TestProjectRepository: IProjectRepository
     {
         return Projects.Find(p => p.Id == projectId);
     }
+
+    public void Clear(int userId)
+    {
+        throw new NotImplementedException();
+    }
 }

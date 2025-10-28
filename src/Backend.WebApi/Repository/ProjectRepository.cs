@@ -59,4 +59,9 @@ public class ProjectRepository: IProjectRepository
     {
         return _dbContext.Projects.Find(projectId);
     }
+
+    public void Clear(int userId)
+    {
+        throw new NotImplementedException();
+    }
 }
