@@ -14,7 +14,7 @@ public static class SeedData {
         context.Users.Add(new User
         {
             Id = 0,
-            Username = "admin",
+            Username = Constants.ADMIN_USERNAME,
             PasswordHash = AccountManager.CreateHash(adminPassword, salt)
         });
 

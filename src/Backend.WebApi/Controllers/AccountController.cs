@@ -41,7 +41,8 @@ public class AccountController: ControllerBase
         [FromForm] string username, 
         [FromForm] string password)
     {
-        if (this.CurrentUserId() != 1)
+        var user = _accountManager.GetById(this.CurrentUserId());
+        if (user.Username != Constants.ADMIN_USERNAME)
         {
             return Unauthorized();
         }

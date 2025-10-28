@@ -18,6 +18,11 @@ namespace Backend.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>(e =>
+            {
+                e.HasIndex(u => u.Username)
+                    .IsUnique();
+            });
             modelBuilder.Entity<Item>(e =>
             {
                 e.HasOne(e => e.User);
