@@ -79,11 +79,35 @@ public class DataManagerTests
             [
                 new()
                 {
+                    Id = 12,
+                    Name = "Project 1",
+                    Description = "Project 1 description",
                     Completed = false,
                     Later = false,
-                    Description = "Project 1 description",
-                    Id = 12,
-                    Name = "Project 1"
+                },
+                new()
+                {
+                    Id = 7,
+                    Name = "Project 2",
+                    Description = "Project 2 description",
+                    Completed = false,
+                    Later = true,
+                },
+                new()
+                {
+                    Id = 65,
+                    Name = "Project 3",
+                    Description = "Project 3 description",
+                    Completed = true,
+                    Later = false,
+                },
+                new()
+                {
+                    Id = 33,
+                    Name = "Project 4",
+                    Description = "Project 4 description",
+                    Completed = true,
+                    Later = true,
                 }
             ]
         };
@@ -97,6 +121,30 @@ public class DataManagerTests
                 Name = "Project 1",
                 Done = false,
                 Later = false,
+                UserId = 12
+            },
+            new()
+            {
+                Id = 2,
+                Name = "Project 2",
+                Done = false,
+                Later = true,
+                UserId = 12
+            },
+            new()
+            {
+                Id = 3,
+                Name = "Project 3",
+                Done = true,
+                Later = false,
+                UserId = 12
+            },
+            new()
+            {
+                Id = 4,
+                Name = "Project 4",
+                Done = true,
+                Later = true,
                 UserId = 12
             }
         ]);
