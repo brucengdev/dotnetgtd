@@ -93,7 +93,7 @@ public class DataManagerTests
         data.Projects.ShouldBe([
             new()
             {
-                Id = 12,
+                Id = 1,
                 Name = "Project 1",
                 Done = false,
                 Later = false,

@@ -19,8 +19,22 @@ public class DataManager:IDataManager
     }
     public void Import(ExportedData data, int userId)
     {
+        //clear data
         _itemRepository.Clear(userId);
         _projectRepo.Clear(userId);
         _tagRepo.Clear(userId);
+        
+        //import data
+        foreach (var exportedProject in data.Projects ?? [])
+        {
+            var project = new Project()
+            {
+                Name = exportedProject.Name,
+                Done = exportedProject.Completed,
+                Later = exportedProject.Later,
+                UserId = userId
+            };
+            _projectRepo.CreateProject(project);
+        }
     }
 }
