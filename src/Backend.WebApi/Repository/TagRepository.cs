@@ -49,8 +49,11 @@ public class TagRepository: ITagRepository
         return _dbContext.Tags.Any(t => t.Id == tagId);
     }
     
-    public void Clear(int userId) 
+    public void Clear(int userId)
     {
-        
+        _dbContext.Tags.RemoveRange(
+            _dbContext.Tags.Where(p => p.UserId == userId)
+        );
+        _dbContext.SaveChanges();
     }
 }
