@@ -88,5 +88,17 @@ public class DataManagerTests
             ]
         };
         sut.Import(userData, 12);
+        
+        //assert
+        data.Projects.ShouldBe([
+            new()
+            {
+                Id = 12,
+                Name = "Project 1",
+                Done = false,
+                Later = false,
+                UserId = 12
+            }
+        ]);
     }
 }
