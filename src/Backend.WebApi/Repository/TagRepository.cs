@@ -48,4 +48,9 @@ public class TagRepository: ITagRepository
     {
         return _dbContext.Tags.Any(t => t.Id == tagId);
     }
+    
+    public void Clear(int userId) 
+    {
+        
+    }
 }

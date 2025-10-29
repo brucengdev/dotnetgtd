@@ -42,4 +42,9 @@ public class TestTagRepository: ITagRepository
     {
         return _data.Tags.Exists(t => t.Id == tagId);
     }
+
+    public void Clear(int userId)
+    {
+        _data.Tags.RemoveAll(t => t.UserId == userId);
+    }
 }
