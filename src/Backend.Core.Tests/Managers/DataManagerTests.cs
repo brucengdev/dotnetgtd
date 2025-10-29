@@ -1,5 +1,6 @@
 ﻿using Backend.Core.Manager;
 using Backend.Core.Tests.Mocks;
+using Backend.Models;
 using Shouldly;
 
 namespace Backend.Core.Tests;
@@ -59,5 +60,33 @@ public class DataManagerTests
         data.Tags.ShouldBe([
             new() { Id = 3, Name = "Tag 3", UserId = 14 }
         ]);
+    }
+
+    [Fact]
+    public void ImportData_must_create_projects()
+    {
+        //arrange
+        var data = new TestDataSource();
+        var itemRepo = new TestItemRepository(data);
+        var projectRepo = new TestProjectRepository(data);
+        var tagRepo = new TestTagRepository(data);
+        var sut = new DataManager(itemRepo, projectRepo, tagRepo);
+        
+        //assert
+        var userData = new ExportedData()
+        {
+            Projects =
+            [
+                new()
+                {
+                    Completed = false,
+                    Later = false,
+                    Description = "Project 1 description",
+                    Id = 12,
+                    Name = "Project 1"
+                }
+            ]
+        };
+        sut.Import(userData, 12);
     }
 }

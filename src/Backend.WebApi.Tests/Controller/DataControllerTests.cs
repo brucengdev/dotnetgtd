@@ -42,7 +42,7 @@ public class DataControllerTests
         httpContext.Items["UserId"] = userId;
 
         //act
-        var userData = new UserData();
+        var userData = new ExportedData();
         var response = sut.Import(userData);
         
         //assert

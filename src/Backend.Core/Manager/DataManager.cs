@@ -17,7 +17,7 @@ public class DataManager:IDataManager
         _projectRepo = projectRepo;
         _tagRepo = tagRepo;
     }
-    public void Import(UserData data, int userId)
+    public void Import(ExportedData data, int userId)
     {
         _itemRepository.Clear(userId);
         _projectRepo.Clear(userId);
