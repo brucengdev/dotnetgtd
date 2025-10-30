@@ -43,9 +43,9 @@ public class DataManager:IDataManager
         {
             int? projectId = null;
             if (exportedTask.ProjectId != null 
-                && projectIdMap.TryGetValue(exportedTask.ProjectId.Value, out var foundValue))
+                && projectIdMap.TryGetValue(exportedTask.ProjectId.Value, out var savedProjectId))
             {
-                projectId = foundValue;
+                projectId = savedProjectId;
             }
             
             var item = new Item()
@@ -59,10 +59,11 @@ public class DataManager:IDataManager
             var itemId = _itemRepository.CreateItem(item);
             foreach (var exportedTagId in exportedTask.TagIds ?? [])
             {
+                if (!tagIdMap.TryGetValue(exportedTagId, out var savedTagId)) { continue; }
                 _itemTagMappingRepo.CreateMapping(new()
                 {
                     ItemId = itemId,
-                    TagId = tagIdMap[exportedTagId]
+                    TagId = savedTagId
                 });
             }
         }
