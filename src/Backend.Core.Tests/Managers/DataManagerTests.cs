@@ -169,6 +169,11 @@ public class DataManagerTests
                 {
                     Id = 12,
                     Name = "Tag 1",
+                },
+                new()
+                {
+                    Id = 13,
+                    Name = "Tag 2",
                 }
             ]
         };
@@ -180,6 +185,12 @@ public class DataManagerTests
             {
                 Id = 1,
                 Name = "Tag 1",
+                UserId = 12
+            },
+            new()
+            {
+                Id = 2,
+                Name = "Tag 2",
                 UserId = 12
             }
         ]);
