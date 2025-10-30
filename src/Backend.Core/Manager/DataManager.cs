@@ -8,15 +8,17 @@ public class DataManager:IDataManager
     private readonly IItemRepository _itemRepository;
     private readonly IProjectRepository _projectRepo;
     private readonly ITagRepository _tagRepo;
+    private readonly IItemTagMappingRepo _itemTagMappingRepo;
     public DataManager(
         IItemRepository itemRepo,
         IProjectRepository projectRepo,
         ITagRepository tagRepo,
-        IItemTagMappingRepo _)
+        IItemTagMappingRepo itemTagMappingRepo)
     {
         _itemRepository = itemRepo;
         _projectRepo = projectRepo;
         _tagRepo = tagRepo;
+        _itemTagMappingRepo = itemTagMappingRepo;
     }
     public void Import(ExportedData data, int userId)
     {
@@ -27,13 +29,14 @@ public class DataManager:IDataManager
         
         //import data
         var projectIdMap = ImportProjects(data, userId);
-        ImportTags(data, userId);
-        ImportTasks(data, projectIdMap, userId);
+        var tagIdMap = ImportTags(data, userId);
+        ImportTasks(data, projectIdMap, tagIdMap, userId);
     }
 
     private void ImportTasks(
         ExportedData data, 
         Dictionary<int, int> projectIdMap, 
+        Dictionary<int, int> tagIdMap,
         int userId)
     {
         foreach (var exportedTask in data.Tasks ?? [])
@@ -47,12 +50,21 @@ public class DataManager:IDataManager
                 ProjectId = exportedTask.ProjectId == null? null
                         :projectIdMap[exportedTask.ProjectId.Value]
             };
-            _itemRepository.CreateItem(item);
+            var itemId = _itemRepository.CreateItem(item);
+            foreach (var exportedTagId in exportedTask.TagIds ?? [])
+            {
+                _itemTagMappingRepo.CreateMapping(new()
+                {
+                    ItemId = itemId,
+                    TagId = tagIdMap[exportedTagId]
+                });
+            }
         }
     }
 
-    private void ImportTags(ExportedData data, int userId)
+    private Dictionary<int, int> ImportTags(ExportedData data, int userId)
     {
+        var idMap = new Dictionary<int, int>();
         foreach (var exportedTag in data.Tags ?? [])
         {
             var tag = new Tag()
@@ -60,8 +72,11 @@ public class DataManager:IDataManager
                 Name = exportedTag.Name,
                 UserId = userId
             };
-            _tagRepo.CreateTag(tag);
+            var tagId = _tagRepo.CreateTag(tag);
+            idMap[exportedTag.Id] = tagId;
         }
+
+        return idMap;
     }
 
     private Dictionary<int, int> ImportProjects(ExportedData data, int userId)
