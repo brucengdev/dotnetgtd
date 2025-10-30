@@ -267,6 +267,30 @@ public class DataManagerTests
                 Done = false,
                 Later = false,
                 UserId = 12
+            },
+            new()
+            {
+                Id = 2,
+                Description = "Task 2",
+                Done = false,
+                Later = false,
+                UserId = 12
+            },
+            new()
+            {
+                Id = 3,
+                Description = "Task 3",
+                Done = false,
+                Later = false,
+                UserId = 12
+            },
+            new()
+            {
+                Id = 4,
+                Description = "Task 4",
+                Done = false,
+                Later = false,
+                UserId = 12
             }
         ]);
     }
