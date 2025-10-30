@@ -25,12 +25,15 @@ public class DataManager:IDataManager
         _tagRepo.Clear(userId);
         
         //import data
-        ImportProjects(data, userId);
+        var projectIdMap = ImportProjects(data, userId);
         ImportTags(data, userId);
-        ImportTasks(data, userId);
+        ImportTasks(data, projectIdMap, userId);
     }
 
-    private void ImportTasks(ExportedData data, int userId)
+    private void ImportTasks(
+        ExportedData data, 
+        Dictionary<int, int> projectIdMap, 
+        int userId)
     {
         foreach (var exportedTask in data.Tasks ?? [])
         {
@@ -39,7 +42,9 @@ public class DataManager:IDataManager
                 Description = exportedTask.Name,
                 Done = exportedTask.Completed,
                 Later = exportedTask.Later,
-                UserId = userId
+                UserId = userId,
+                ProjectId = exportedTask.ProjectId == null? null
+                        :projectIdMap[exportedTask.ProjectId.Value]
             };
             _itemRepository.CreateItem(item);
         }
@@ -58,8 +63,9 @@ public class DataManager:IDataManager
         }
     }
 
-    private void ImportProjects(ExportedData data, int userId)
+    private Dictionary<int, int> ImportProjects(ExportedData data, int userId)
     {
+        var idMap = new Dictionary<int, int>();
         foreach (var exportedProject in data.Projects ?? [])
         {
             var project = new Project()
@@ -69,7 +75,10 @@ public class DataManager:IDataManager
                 Later = exportedProject.Later,
                 UserId = userId
             };
-            _projectRepo.CreateProject(project);
+            var projectId = _projectRepo.CreateProject(project);
+            idMap[exportedProject.Id] = projectId;
         }
+
+        return idMap;
     }
 }
