@@ -220,6 +220,39 @@ public class DataManagerTests
                     Note = "a note",
                     Pinned = false,
                     Priority = false,
+                },
+                new()
+                {
+                    Id = 5,
+                    Name = "Task 2",
+                    Completed = false,
+                    Later = false,
+                    Description = "Task description",
+                    Note = "a note",
+                    Pinned = false,
+                    Priority = true,
+                },
+                new()
+                {
+                    Id = 8,
+                    Name = "Task 3",
+                    Completed = false,
+                    Later = false,
+                    Description = "Task description",
+                    Note = "a note",
+                    Pinned = true,
+                    Priority = false
+                },
+                new()
+                {
+                    Id = 54,
+                    Name = "Task 4",
+                    Completed = false,
+                    Later = false,
+                    Description = "Task description",
+                    Note = "a note",
+                    Pinned = true,
+                    Priority = true
                 }
             ]
         };
