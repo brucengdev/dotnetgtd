@@ -29,7 +29,7 @@ public class ExportedProject
     public string Name { get; set; }
     
     [JsonPropertyName("description")]
-    public string Description { get; set; }
+    public string? Description { get; set; }
 }
 
 public class ExportedTag
@@ -50,7 +50,7 @@ public class ExportedTask
     public string Name { get; set; }
     
     [JsonPropertyName("description")]
-    public string Description { get; set; }
+    public string? Description { get; set; }
     
     [JsonPropertyName("completed")]
     public bool Completed { get; set; }
@@ -65,11 +65,11 @@ public class ExportedTask
     public IEnumerable<int>? TagIds { get; set; }
     
     [JsonPropertyName("note")]
-    public string Note { get; set; }
+    public string? Note { get; set; }
     
     [JsonPropertyName("pinned")]
-    public bool Pinned { get; set; }
+    public bool? Pinned { get; set; }
     
     [JsonPropertyName("priority")]
-    public bool Priority { get; set; }
+    public bool? Priority { get; set; }
 }
