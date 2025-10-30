@@ -41,14 +41,20 @@ public class DataManager:IDataManager
     {
         foreach (var exportedTask in data.Tasks ?? [])
         {
+            int? projectId = null;
+            if (exportedTask.ProjectId != null 
+                && projectIdMap.TryGetValue(exportedTask.ProjectId.Value, out var foundValue))
+            {
+                projectId = foundValue;
+            }
+            
             var item = new Item()
             {
                 Description = exportedTask.Name,
                 Done = exportedTask.Completed,
                 Later = exportedTask.Later,
                 UserId = userId,
-                ProjectId = exportedTask.ProjectId == null? null
-                        :projectIdMap[exportedTask.ProjectId.Value]
+                ProjectId = projectId
             };
             var itemId = _itemRepository.CreateItem(item);
             foreach (var exportedTagId in exportedTask.TagIds ?? [])
