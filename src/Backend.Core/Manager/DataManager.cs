@@ -25,6 +25,25 @@ public class DataManager:IDataManager
         _tagRepo.Clear(userId);
         
         //import data
+        ImportProjects(data, userId);
+        ImportTags(data, userId);
+    }
+
+    private void ImportTags(ExportedData data, int userId)
+    {
+        foreach (var exportedTag in data.Tags ?? [])
+        {
+            var tag = new Tag()
+            {
+                Name = exportedTag.Name,
+                UserId = userId
+            };
+            _tagRepo.CreateTag(tag);
+        }
+    }
+
+    private void ImportProjects(ExportedData data, int userId)
+    {
         foreach (var exportedProject in data.Projects ?? [])
         {
             var project = new Project()

@@ -6,6 +6,9 @@ public class ExportedData
 {
     [JsonPropertyName("projects")]
     public List<ExportedProject> Projects { get; set; }
+    
+    [JsonPropertyName("tags")]
+    public List<ExportedTag> Tags { get; set; }
 }
 
 public class ExportedProject
@@ -24,4 +27,13 @@ public class ExportedProject
     
     [JsonPropertyName("description")]
     public string Description { get; set; }
+}
+
+public class ExportedTag
+{
+    [JsonPropertyName("id")]
+    public int Id { get; set; }
+    
+    [JsonPropertyName("name")]
+    public string Name { get; set; }
 }

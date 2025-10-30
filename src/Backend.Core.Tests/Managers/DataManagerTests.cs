@@ -149,4 +149,39 @@ public class DataManagerTests
             }
         ]);
     }
+    
+    [Fact]
+    public void ImportData_must_create_tags()
+    {
+        //arrange
+        var data = new TestDataSource();
+        var itemRepo = new TestItemRepository(data);
+        var projectRepo = new TestProjectRepository(data);
+        var tagRepo = new TestTagRepository(data);
+        var sut = new DataManager(itemRepo, projectRepo, tagRepo);
+        
+        //assert
+        var userData = new ExportedData()
+        {
+            Tags =
+            [
+                new()
+                {
+                    Id = 12,
+                    Name = "Tag 1",
+                }
+            ]
+        };
+        sut.Import(userData, 12);
+        
+        //assert
+        data.Tags.ShouldBe([
+            new()
+            {
+                Id = 1,
+                Name = "Tag 1",
+                UserId = 12
+            }
+        ]);
+    }
 }
