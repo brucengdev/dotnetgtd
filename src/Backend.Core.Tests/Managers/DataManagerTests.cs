@@ -356,4 +356,79 @@ public class DataManagerTests
             }
         ]);
     }
+    
+    [Fact]
+    public void ImportData_must_create_tasks_with_tags()
+    {
+        //arrange
+        var data = new TestDataSource();
+        var itemRepo = new TestItemRepository(data);
+        var projectRepo = new TestProjectRepository(data);
+        var tagRepo = new TestTagRepository(data);
+        var sut = new DataManager(itemRepo, projectRepo, tagRepo);
+        
+        //assert
+        var userData = new ExportedData()
+        {
+            Tags = [
+                new()
+                {
+                    Id = 123,
+                    Name = "Tag 1",
+                },
+                new()
+                {
+                    Id = 131,
+                    Name = "Tag 2",
+                }
+            ],
+            Tasks = [
+                new()
+                {
+                    Id = 3,
+                    Name = "Task 1",
+                    TagIds = [123, 321]
+                }
+            ]
+        };
+        sut.Import(userData, 12);
+        
+        //assert
+        data.Tags.ShouldBe([
+            new()
+            {
+                Id = 1,
+                Name = "Tag 1",
+                UserId = 12
+            },
+            new()
+            {
+                Id = 2,
+                Name = "Tag 2",
+                UserId = 12
+            }
+        ]);
+        data.Items.ShouldBe([
+            new()
+            {
+                Id = 1,
+                Description = "Task 1",
+                UserId = 12
+            }
+        ]);
+        data.ItemTagMappings.ShouldBe([
+            new()
+            {
+                Id = 1,
+                ItemId = 1,
+                TagId = 1
+            },
+            new()
+            {
+                Id = 2,
+                ItemId = 1,
+                TagId = 2
+            }
+        ]);
+    }
 }
