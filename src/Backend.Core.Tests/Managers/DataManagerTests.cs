@@ -197,7 +197,7 @@ public class DataManagerTests
     }
     
     [Fact]
-    public void ImportData_must_create_tasks()
+    public void ImportData_must_create_tasks_with_no_project_and_tags()
     {
         //arrange
         var data = new TestDataSource();
@@ -220,8 +220,6 @@ public class DataManagerTests
                     Note = "a note",
                     Pinned = false,
                     Priority = false,
-                    ProjectId = 2,
-                    TagIds = [1,2]
                 }
             ]
         };
@@ -231,11 +229,11 @@ public class DataManagerTests
         data.Items.ShouldBe([
             new()
             {
-                Id = 3,
+                Id = 1,
                 Description = "Task 1",
                 Done = false,
                 Later = false,
-                ProjectId = 2
+                UserId = 12
             }
         ]);
     }

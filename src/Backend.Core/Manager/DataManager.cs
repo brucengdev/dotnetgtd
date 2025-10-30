@@ -27,6 +27,22 @@ public class DataManager:IDataManager
         //import data
         ImportProjects(data, userId);
         ImportTags(data, userId);
+        ImportTasks(data, userId);
+    }
+
+    private void ImportTasks(ExportedData data, int userId)
+    {
+        foreach (var exportedTask in data.Tasks ?? [])
+        {
+            var item = new Item()
+            {
+                Description = exportedTask.Name,
+                Done = exportedTask.Completed,
+                Later = exportedTask.Later,
+                UserId = userId
+            };
+            _itemRepository.CreateItem(item);
+        }
     }
 
     private void ImportTags(ExportedData data, int userId)
