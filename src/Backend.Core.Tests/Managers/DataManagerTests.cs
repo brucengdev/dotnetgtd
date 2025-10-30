@@ -195,4 +195,48 @@ public class DataManagerTests
             }
         ]);
     }
+    
+    [Fact]
+    public void ImportData_must_create_tasks()
+    {
+        //arrange
+        var data = new TestDataSource();
+        var itemRepo = new TestItemRepository(data);
+        var projectRepo = new TestProjectRepository(data);
+        var tagRepo = new TestTagRepository(data);
+        var sut = new DataManager(itemRepo, projectRepo, tagRepo);
+        
+        //assert
+        var userData = new ExportedData()
+        {
+            Tasks = [
+                new()
+                {
+                    Id = 3,
+                    Name = "Task 1",
+                    Completed = false,
+                    Later = false,
+                    Description = "Task description",
+                    Note = "a note",
+                    Pinned = false,
+                    Priority = false,
+                    ProjectId = 2,
+                    TagIds = [1,2]
+                }
+            ]
+        };
+        sut.Import(userData, 12);
+        
+        //assert
+        data.Items.ShouldBe([
+            new()
+            {
+                Id = 3,
+                Description = "Task 1",
+                Done = false,
+                Later = false,
+                ProjectId = 2
+            }
+        ]);
+    }
 }
