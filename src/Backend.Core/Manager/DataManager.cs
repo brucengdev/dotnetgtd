@@ -11,7 +11,8 @@ public class DataManager:IDataManager
     public DataManager(
         IItemRepository itemRepo,
         IProjectRepository projectRepo,
-        ITagRepository tagRepo)
+        ITagRepository tagRepo,
+        IItemTagMappingRepo _)
     {
         _itemRepository = itemRepo;
         _projectRepo = projectRepo;

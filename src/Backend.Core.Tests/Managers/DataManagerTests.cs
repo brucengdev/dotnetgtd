@@ -38,10 +38,12 @@ public class DataManagerTests
         var itemRepo = new TestItemRepository(data);
         var projectRepo = new TestProjectRepository(data);
         var tagRepo = new TestTagRepository(data);
+        var itemTagMappingRepo = new TestItemTagMappingRepo(data);
         var sut = new DataManager(
             itemRepo,
             projectRepo,
-            tagRepo);
+            tagRepo,
+            itemTagMappingRepo);
         
         //act
         sut.Import(new(), 12);
@@ -70,7 +72,8 @@ public class DataManagerTests
         var itemRepo = new TestItemRepository(data);
         var projectRepo = new TestProjectRepository(data);
         var tagRepo = new TestTagRepository(data);
-        var sut = new DataManager(itemRepo, projectRepo, tagRepo);
+        var itemTagMappingRepo = new TestItemTagMappingRepo(data);
+        var sut = new DataManager(itemRepo, projectRepo, tagRepo, itemTagMappingRepo);
         
         //assert
         var userData = new ExportedData()
@@ -158,7 +161,8 @@ public class DataManagerTests
         var itemRepo = new TestItemRepository(data);
         var projectRepo = new TestProjectRepository(data);
         var tagRepo = new TestTagRepository(data);
-        var sut = new DataManager(itemRepo, projectRepo, tagRepo);
+        var itemTagMappingRepo = new TestItemTagMappingRepo(data);
+        var sut = new DataManager(itemRepo, projectRepo, tagRepo, itemTagMappingRepo);
         
         //assert
         var userData = new ExportedData()
@@ -204,7 +208,8 @@ public class DataManagerTests
         var itemRepo = new TestItemRepository(data);
         var projectRepo = new TestProjectRepository(data);
         var tagRepo = new TestTagRepository(data);
-        var sut = new DataManager(itemRepo, projectRepo, tagRepo);
+        var itemTagMappingRepo = new TestItemTagMappingRepo(data);
+        var sut = new DataManager(itemRepo, projectRepo, tagRepo, itemTagMappingRepo);
         
         //assert
         var userData = new ExportedData()
@@ -303,7 +308,8 @@ public class DataManagerTests
         var itemRepo = new TestItemRepository(data);
         var projectRepo = new TestProjectRepository(data);
         var tagRepo = new TestTagRepository(data);
-        var sut = new DataManager(itemRepo, projectRepo, tagRepo);
+        var itemTagMappingRepo = new TestItemTagMappingRepo(data);
+        var sut = new DataManager(itemRepo, projectRepo, tagRepo, itemTagMappingRepo);
         
         //assert
         var userData = new ExportedData()
@@ -365,7 +371,8 @@ public class DataManagerTests
         var itemRepo = new TestItemRepository(data);
         var projectRepo = new TestProjectRepository(data);
         var tagRepo = new TestTagRepository(data);
-        var sut = new DataManager(itemRepo, projectRepo, tagRepo);
+        var itemTagMappingRepo = new TestItemTagMappingRepo(data);
+        var sut = new DataManager(itemRepo, projectRepo, tagRepo, itemTagMappingRepo);
         
         //assert
         var userData = new ExportedData()
