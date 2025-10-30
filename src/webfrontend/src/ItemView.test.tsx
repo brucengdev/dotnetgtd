@@ -42,7 +42,7 @@ describe("ItemView", () => {
                 done: false,
                 later: true
             } as Item,
-            expectedDisplayedProjectName: "",
+            expectedDisplayedProjectName: "[No Project]",
             expectedDisplayedTags: "",
             expectedDoneStatus: false,
             expectedLaterStatus: true
