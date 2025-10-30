@@ -332,6 +332,12 @@ public class DataManagerTests
                     Id = 3,
                     Name = "Task 1",
                     ProjectId = 131
+                },
+                new()
+                {
+                    Id = 4,
+                    Name = "Task with nonexisting project",//will be added as task with no projects
+                    ProjectId = 999
                 }
             ]
         };
@@ -359,6 +365,12 @@ public class DataManagerTests
                 Description = "Task 1",
                 UserId = 12,
                 ProjectId = 2
+            },
+            new()
+            {
+                Id = 2,
+                Description = "Task with nonexisting project",
+                UserId = 12
             }
         ]);
     }
@@ -395,6 +407,12 @@ public class DataManagerTests
                     Id = 3,
                     Name = "Task 1",
                     TagIds = [123, 131]
+                },
+                new()
+                {
+                    Id = 4,
+                    Name = "Task with unexisting tag",
+                    TagIds = [123, 444] //only 123 will be migrated
                 }
             ]
         };
@@ -421,6 +439,12 @@ public class DataManagerTests
                 Id = 1,
                 Description = "Task 1",
                 UserId = 12
+            },
+            new()
+            {
+                Id = 2,
+                Description = "Task with unexisting tag",
+                UserId = 12
             }
         ]);
         data.ItemTagMappings.ShouldBe([
@@ -435,7 +459,13 @@ public class DataManagerTests
                 Id = 2,
                 ItemId = 1,
                 TagId = 2
-            }
+            },
+            new()
+            {
+                Id = 3,
+                ItemId = 2,
+                TagId = 1
+            },
         ]);
     }
 }
