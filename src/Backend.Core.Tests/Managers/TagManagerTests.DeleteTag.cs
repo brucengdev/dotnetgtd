@@ -18,8 +18,9 @@ public partial class TagManagerTests
             PasswordHash = AccountManagerTests.HashPassword("pass"),
             Username = "user1"
         });
-        var tagRepo = new TestTagRepository();
-        tagRepo.Tags = new List<Tag>
+        var data = new TestDataSource();
+        var tagRepo = new TestTagRepository(data);
+        data.Tags = new List<Tag>
         {
             new() { Id = 1, Name = "Tag A", UserId = 123 },
             new() { Id = 2, Name = "Tag B", UserId = 456 },
@@ -33,7 +34,7 @@ public partial class TagManagerTests
         sut.DeleteTag(3, 123);
         
         //assert
-        tagRepo.Tags.ShouldBe(new List<Tag>
+        data.Tags.ShouldBe(new List<Tag>
         {
             new() { Id = 1, Name = "Tag A", UserId = 123 },
             new() { Id = 2, Name = "Tag B", UserId = 456 },
@@ -53,8 +54,9 @@ public partial class TagManagerTests
             PasswordHash = AccountManagerTests.HashPassword("pass"),
             Username = "user1"
         });
-        var tagRepo = new TestTagRepository();
-        tagRepo.Tags = new List<Tag>
+        var data = new TestDataSource();
+        var tagRepo = new TestTagRepository(data);
+        data.Tags = new List<Tag>
         {
             new() { Id = 1, Name = "Tag A", UserId = 123 },
             new() { Id = 2, Name = "Tag B", UserId = 456 },
@@ -68,7 +70,7 @@ public partial class TagManagerTests
         exception.ShouldNotBeNull();
         exception.Message.ShouldBe("User does not own this tag");
         
-        tagRepo.Tags.ShouldBe(new List<Tag>
+        data.Tags.ShouldBe(new List<Tag>
         {
             new() { Id = 1, Name = "Tag A", UserId = 123 },
             new() { Id = 2, Name = "Tag B", UserId = 456 },
@@ -88,8 +90,9 @@ public partial class TagManagerTests
             PasswordHash = AccountManagerTests.HashPassword("pass"),
             Username = "user1"
         });
-        var tagRepo = new TestTagRepository();
-        tagRepo.Tags = new List<Tag>
+        var data = new TestDataSource();
+        var tagRepo = new TestTagRepository(data);
+        data.Tags = new List<Tag>
         {
             new() { Id = 1, Name = "Tag A", UserId = 123 },
             new() { Id = 2, Name = "Tag B", UserId = 456 }
@@ -101,7 +104,7 @@ public partial class TagManagerTests
             () =>sut.DeleteTag(3, 245));
         exception.ShouldNotBeNull();
         
-        tagRepo.Tags.ShouldBe(new List<Tag>
+        data.Tags.ShouldBe(new List<Tag>
         {
             new() { Id = 1, Name = "Tag A", UserId = 123 },
             new() { Id = 2, Name = "Tag B", UserId = 456 }

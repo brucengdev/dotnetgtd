@@ -59,4 +59,10 @@ public class ProjectRepository: IProjectRepository
     {
         return _dbContext.Projects.Find(projectId);
     }
+
+    public void Clear(int userId)
+    {
+        _dbContext.Projects.RemoveRange(_dbContext.Projects.Where(p => p.UserId == userId));
+        _dbContext.SaveChanges();
+    }
 }

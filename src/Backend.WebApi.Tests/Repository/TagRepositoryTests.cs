@@ -60,4 +60,37 @@ public class TagRepositoryTests
         db.Tags.Count().ShouldBe(1);
         db.Tags.First().ShouldBe(updatedTag);
     }
+
+    [Fact]
+    public void Clear_tags_test()
+    {
+        //arrange
+        var db = Utils.CreateTestDB();
+        db.Tags.Add(new()
+        {
+            Id = 1,
+            Name = "Tag 1",
+            UserId = 2
+        });
+        db.Tags.Add(new()
+        {
+            Id = 2,
+            Name = "Tag 2",
+            UserId = 1
+        });
+        db.SaveChanges();
+        var sut = new TagRepository(db);
+        
+        //act
+        sut.Clear(2);
+        
+        //assert
+        db.Tags.ShouldBe([
+            new() {
+                Id = 2,
+                Name = "Tag 2",
+                UserId = 1
+            }
+        ]);
+    }
 }

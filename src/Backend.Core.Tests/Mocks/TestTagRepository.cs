@@ -5,37 +5,46 @@ namespace Backend.Core.Tests.Mocks;
 
 public class TestTagRepository: ITagRepository
 {
-    public List<Tag> Tags { get; set; } = new ();
+    private readonly TestDataSource _data;
+    public TestTagRepository(TestDataSource data)
+    {
+        _data = data;
+    }
     public int CreateTag(Tag tag)
     {
-        tag.Id = Tags.Count + 1;
-        Tags.Add(tag);
+        tag.Id = _data.Tags.Count + 1;
+        _data.Tags.Add(tag);
         return tag.Id;
     }
 
     public void UpdateTag(Tag tag)
     {
-        Tags.RemoveAt(Tags.FindIndex(t => t.Id == tag.Id));
-        Tags.Add(tag);
+        _data.Tags.RemoveAt(_data.Tags.FindIndex(t => t.Id == tag.Id));
+        _data.Tags.Add(tag);
     }
 
     public IEnumerable<Tag> GetTags(int userId)
     {
-        return Tags.Where(p => p.UserId == userId);
+        return _data.Tags.Where(p => p.UserId == userId);
     }
 
     public void DeleteTag(int tagId)
     {
-        Tags.Remove(Tags.Find(p => p.Id == tagId));
+        _data.Tags.Remove(_data.Tags.Find(p => p.Id == tagId));
     }
 
     public Tag GetTagById(int tagId)
     {
-        return Tags.Find(p => p.Id == tagId);
+        return _data.Tags.Find(p => p.Id == tagId);
     }
 
     public bool TagExists(int tagId)
     {
-        return Tags.Exists(t => t.Id == tagId);
+        return _data.Tags.Exists(t => t.Id == tagId);
+    }
+
+    public void Clear(int userId)
+    {
+        _data.Tags.RemoveAll(t => t.UserId == userId);
     }
 }

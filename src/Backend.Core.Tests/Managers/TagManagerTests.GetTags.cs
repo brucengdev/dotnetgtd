@@ -18,8 +18,9 @@ public partial class TagManagerTests
             PasswordHash = AccountManagerTests.HashPassword("pass"),
             Username = "user1"
         });
-        var tagRepo = new TestTagRepository();
-        tagRepo.Tags = new List<Tag>
+        var data = new TestDataSource();
+        var tagRepo = new TestTagRepository(data);
+        data.Tags = new List<Tag>
         {
             new() { Id = 1, Name = "Tag A", UserId = 123 },
             new() { Id = 2, Name = "Tag B", UserId = 456 },

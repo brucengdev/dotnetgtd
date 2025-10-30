@@ -15,4 +15,6 @@ public interface IProjectRepository
     void DeleteProject(int projectId);
 
     Project GetProjectById(int projectId);
+
+    void Clear(int userId);
 }

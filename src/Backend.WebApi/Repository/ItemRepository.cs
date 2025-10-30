@@ -121,4 +121,11 @@ public class ItemRepository: IItemRepository
         var item = _dbContext.Items.Find(itemId);
         return item;
     }
+
+    public void Clear(int userId)
+    {
+        var items = _dbContext.Items.Where(i => i.UserId == userId);
+        _dbContext.Items.RemoveRange(items);
+        _dbContext.SaveChanges();
+    }
 }

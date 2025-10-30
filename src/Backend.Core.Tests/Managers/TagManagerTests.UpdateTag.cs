@@ -18,8 +18,9 @@ public partial class TagManagerTests
             Username = "user1",
             PasswordHash = AccountManagerTests.HashPassword("pass")
         });
-        var tagRepo = new TestTagRepository();
-        tagRepo.Tags.Add(new()
+        var data = new TestDataSource();
+        var tagRepo = new TestTagRepository(data);
+        data.Tags.Add(new()
         {
             Id = 1,
             Name = "Tag Name",
@@ -35,8 +36,8 @@ public partial class TagManagerTests
         }, 123);
         
         //assert
-        tagRepo.Tags.Count.ShouldBe(1);
-        var savedItem = tagRepo.Tags[0];
+        data.Tags.Count.ShouldBe(1);
+        var savedItem = data.Tags[0];
         savedItem.ShouldBe(new Tag
         {
             Id = 1,
@@ -50,8 +51,9 @@ public partial class TagManagerTests
     {
         //arrange
         var userRepo = new TestUserRepository();
-        var tagRepo = new TestTagRepository();
-        tagRepo.Tags.Add(new()
+        var data = new TestDataSource();
+        var tagRepo = new TestTagRepository(data);
+        data.Tags.Add(new()
         {
             Id = 1,
             Name = "Tag Name",
@@ -66,8 +68,8 @@ public partial class TagManagerTests
         }, 123));
         
         //assert
-        tagRepo.Tags.Count.ShouldBe(1);
-        var savedItem = tagRepo.Tags[0];
+        data.Tags.Count.ShouldBe(1);
+        var savedItem = data.Tags[0];
         savedItem.ShouldBe(new Tag
         {
             Id = 1,
@@ -87,7 +89,8 @@ public partial class TagManagerTests
             Username = "user1",
             PasswordHash = AccountManagerTests.HashPassword("pass")
         });
-        var tagRepo = new TestTagRepository();
+        var data = new TestDataSource();
+        var tagRepo = new TestTagRepository(data);
         var sut = new TagManager(tagRepo, userRepo);
         
         //act and assert
@@ -98,7 +101,7 @@ public partial class TagManagerTests
         }, 123));
         
         //assert
-        tagRepo.Tags.Count.ShouldBe(0);
+        data.Tags.Count.ShouldBe(0);
     } 
     
     [Fact]
@@ -112,8 +115,9 @@ public partial class TagManagerTests
             Username = "user1",
             PasswordHash = AccountManagerTests.HashPassword("pass")
         });
-        var tagRepo = new TestTagRepository();
-        tagRepo.Tags.Add(new()
+        var data = new TestDataSource();
+        var tagRepo = new TestTagRepository(data);
+        data.Tags.Add(new()
         {
             Id = 1,
             Name = "Tag Name",
@@ -129,8 +133,8 @@ public partial class TagManagerTests
         }, 123));
         
         //assert
-        tagRepo.Tags.Count.ShouldBe(1);
-        tagRepo.Tags.First().ShouldBe(new()
+        data.Tags.Count.ShouldBe(1);
+        data.Tags.First().ShouldBe(new()
         {
             Id = 1,
             Name = "Tag Name",
