@@ -51,6 +51,7 @@ export function TaskView(props: TaskViewProps) {
       <div className="pt-5">
         {showNewTaskForm
           ? <AddItemForm client={client} 
+              projectFilter={filter}
               onCancel={() => setShowNewTaskForm(false)} 
               onCompleted={() => {
                   setShowNewTaskForm(false)

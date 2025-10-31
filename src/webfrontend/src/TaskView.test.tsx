@@ -32,6 +32,29 @@ describe("TaskView", () => {
         expect(screen.queryByRole("button", { name: "Add"})).not.toBeInTheDocument()
     })
 
+    it("passes filter to add item form to filter project dropdown list", async () => {
+        const client = new TestClient()
+        client.Projects = [
+            { id: 1, name: "Active uncompleted project",    later: false,   done: false }, 
+            { id: 2, name: "Active completed project",      later: false,   done: true },
+            { id: 3, name: "Inactive uncompleted project",  later: true,    done: false }, 
+            { id: 4, name: "Inactive completed project",    later: true,    done: true },
+        ]
+        render(<TaskView client={client} filter={{active: true, completed: true}} />)
+
+        const addItemButton = screen.getByRole("button", { name: "Add"})
+        fireEvent.click(addItemButton)
+        await sleep(1)
+
+        const projectOptions = screen.getAllByRole("option")
+        const projectNames = projectOptions.map(o => o.textContent)
+
+        expect(projectNames).toEqual([
+            "[No project]",
+            "Active completed project"
+        ])
+    })
+
     it("hides the add item form when cancel is clicked", () => {
         render(<TaskView client={new TestClient()} />)
 
