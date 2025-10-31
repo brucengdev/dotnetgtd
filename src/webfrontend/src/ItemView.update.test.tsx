@@ -132,7 +132,7 @@ describe("ItemView update form", () => {
         
         expect(screen.getByTestId("edit-project")).toBeInTheDocument()
         expect(screen.getByTestId("edit-project").children.length).toBe(4)
-        expect(screen.getByTestId("edit-project").children[0].textContent).toBe("No project")
+        expect(screen.getByTestId("edit-project").children[0].textContent).toBe("[No project]")
         expect(screen.getByTestId("edit-project").children[1].textContent).toBe("ProjectX")
         expect(screen.getByTestId("edit-project").children[2].textContent).toBe("ProjectY")
         expect(screen.getByTestId("edit-project").children[3].textContent).toBe("ProjectZ")

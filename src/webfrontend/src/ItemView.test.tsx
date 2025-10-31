@@ -30,7 +30,7 @@ describe("ItemView", () => {
                 projectId: 1,
             } as Item,
             expectedDisplayedProjectName: "Uncompleted Active Project",
-            expectedDisplayedTags: "",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: false,
             expectedLaterStatus: false
         },
@@ -42,8 +42,8 @@ describe("ItemView", () => {
                 done: false,
                 later: true
             } as Item,
-            expectedDisplayedProjectName: "",
-            expectedDisplayedTags: "",
+            expectedDisplayedProjectName: "[No project]",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: false,
             expectedLaterStatus: true
         },
@@ -59,7 +59,7 @@ describe("ItemView", () => {
                 later: true,
                 tagIds: [1]
             } as Item,
-            expectedDisplayedProjectName: "",
+            expectedDisplayedProjectName: "[No project]",
             expectedDisplayedTags: "tag1",
             expectedDoneStatus: true,
             expectedLaterStatus: true
@@ -90,8 +90,8 @@ describe("ItemView", () => {
                 done: false,
                 later: false
             } as Item,
-            expectedDisplayedProjectName: "",
-            expectedDisplayedTags: "",
+            expectedDisplayedProjectName: "[No project]",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: false,
             expectedLaterStatus: false
         },
@@ -103,8 +103,8 @@ describe("ItemView", () => {
                 done: true,
                 later: false
             } as Item,
-            expectedDisplayedProjectName: "",
-            expectedDisplayedTags: "",
+            expectedDisplayedProjectName: "[No project]",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: true,
             expectedLaterStatus: false
         },
@@ -118,7 +118,7 @@ describe("ItemView", () => {
                 projectId: testProjects.find(p => p.name == "Completed Active Project")?.id
             } as Item,
             expectedDisplayedProjectName: "Completed Active Project",
-            expectedDisplayedTags: "",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: true,
             expectedLaterStatus: false
         },
@@ -132,7 +132,7 @@ describe("ItemView", () => {
                 projectId: testProjects.find(p => p.name == "Completed Active Project")?.id
             } as Item,
             expectedDisplayedProjectName: "Completed Active Project",
-            expectedDisplayedTags: "",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: true,
             expectedLaterStatus: false
         },
@@ -146,7 +146,7 @@ describe("ItemView", () => {
                 projectId: testProjects.find(p => p.name == "Uncompleted Active Project")?.id
             } as Item,
             expectedDisplayedProjectName: "Uncompleted Active Project",
-            expectedDisplayedTags: "",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: false,
             expectedLaterStatus: false
         },
@@ -160,7 +160,7 @@ describe("ItemView", () => {
                 projectId: testProjects.find(p => p.name == "Uncompleted Active Project")?.id
             } as Item,
             expectedDisplayedProjectName: "Uncompleted Active Project",
-            expectedDisplayedTags: "",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: true,
             expectedLaterStatus: false
         },
@@ -174,8 +174,8 @@ describe("ItemView", () => {
                 done: false,
                 later: false
             } as Item,
-            expectedDisplayedProjectName: "",
-            expectedDisplayedTags: "",
+            expectedDisplayedProjectName: "[No project]",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: false,
             expectedLaterStatus: false
         },
@@ -187,8 +187,8 @@ describe("ItemView", () => {
                 done: false,
                 later: true
             } as Item,
-            expectedDisplayedProjectName: "",
-            expectedDisplayedTags: "",
+            expectedDisplayedProjectName: "[No project]",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: false,
             expectedLaterStatus: true
         },
@@ -202,7 +202,7 @@ describe("ItemView", () => {
                 projectId: testProjects.find(p => p.name == "Uncompleted Active Project")?.id
             } as Item,
             expectedDisplayedProjectName: "Uncompleted Active Project",
-            expectedDisplayedTags: "",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: false,
             expectedLaterStatus: false
         },
@@ -216,7 +216,7 @@ describe("ItemView", () => {
                 projectId: testProjects.find(p => p.name == "Uncompleted Active Project")?.id
             } as Item,
             expectedDisplayedProjectName: "Uncompleted Active Project",
-            expectedDisplayedTags: "",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: false,
             expectedLaterStatus: false
         },
@@ -230,7 +230,7 @@ describe("ItemView", () => {
                 projectId: testProjects.find(p => p.name == "Uncompleted Inactive Project")?.id
             } as Item,
             expectedDisplayedProjectName: "Uncompleted Inactive Project",
-            expectedDisplayedTags: "",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: false,
             expectedLaterStatus: true
         },
@@ -244,7 +244,7 @@ describe("ItemView", () => {
                 projectId: testProjects.find(p => p.name == "Uncompleted Inactive Project")?.id
             } as Item,
             expectedDisplayedProjectName: "Uncompleted Inactive Project",
-            expectedDisplayedTags: "",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: false,
             expectedLaterStatus: true
         },

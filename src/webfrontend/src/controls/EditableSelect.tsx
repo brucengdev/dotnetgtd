@@ -2,15 +2,15 @@ import { useState } from "react"
 import { Select, SelectProps } from "./Select"
 
 interface EditableSelectProps extends SelectProps {
-    value?: string
     textViewDataTestId?: string
     className?: string
 }
 
 export function EditableSelect(props: EditableSelectProps) {
-    const { value, textViewDataTestId: displayViewDataTestId, 
+    const { textViewDataTestId: displayViewDataTestId, 
         selectDataTestId, options, onChange, selectedValue, className } = props
     const [isEditing, setIsEditing] = useState(false)
+    const optionDisplayText = options.find(o => o.value === (selectedValue??""))?.text
     return <>
         {isEditing
             ? <Select selectDataTestId={selectDataTestId} 
@@ -27,7 +27,7 @@ export function EditableSelect(props: EditableSelectProps) {
             :<div data-testId={displayViewDataTestId} 
                     className={className}
                 onClick={() => setIsEditing(true)}>
-                {value??""}
+                {optionDisplayText??""}
             </div>
         }
     </>
