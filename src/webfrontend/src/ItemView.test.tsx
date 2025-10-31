@@ -43,7 +43,7 @@ describe("ItemView", () => {
                 later: true
             } as Item,
             expectedDisplayedProjectName: "[No project]",
-            expectedDisplayedTags: "",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: false,
             expectedLaterStatus: true
         },
