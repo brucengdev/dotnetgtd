@@ -128,4 +128,29 @@ describe("AddItemForm", () => {
             })
         })
     })
+
+    it("shows projects as sorted by name", async () => {
+        const client = new TestClient()
+        client.Projects = [
+            { id: 1, name: "C",    later: false,   done: false }, 
+            { id: 2, name: "D",      later: false,   done: true },
+            { id: 3, name: "A",  later: true,    done: false }, 
+            { id: 4, name: "F",    later: true,    done: true },
+        ]
+        render(<AddItemForm client={client} onCancel={() => {}}/>)
+
+        await sleep(1)
+
+        const optionss = screen.getAllByRole("option")
+        expect(optionss.length).toBe(5) //4 projects + [No project]
+        
+        const projectNames = optionss.map(o => o.textContent)
+        expect(projectNames).toEqual([
+            "[No project]",
+            "A",
+            "C",
+            "D",
+            "F"
+        ])
+    })
 })

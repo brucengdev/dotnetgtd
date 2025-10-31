@@ -27,7 +27,7 @@ export function AddItemForm(props: AddItemFormProps) {
     const [later, setLater] = useState(false)
     if(projects === undefined) {
         client.GetProjects(projectFilter)
-        .then(retrievedProjects => setProjects(retrievedProjects))
+        .then(retrievedProjects => setProjects(retrievedProjects.sort((a, b) => a.name.localeCompare(b.name))))
     }
 
     if(tags === undefined) {
