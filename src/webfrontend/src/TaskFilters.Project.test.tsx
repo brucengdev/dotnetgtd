@@ -26,6 +26,24 @@ const WrapperComponent = (props: WrapperProps) => {
 }
 
 describe("TaskFilters", () => {
+    it("shows project filters sorted by name", async () => {
+        const client = new TestClient()
+        client.Projects = [
+            { id: 1, name: "C Project", done: false, later: false },
+            { id: 2, name: "D Project", done: true, later: false },
+            { id: 3, name: "A Project", done: false, later: false },
+            { id: 4, name: "B Project", done: true, later: false },
+        ]
+        render(<WrapperComponent client={client} filter={{}} />)
+        await sleep(1)
+
+        const checkboxes = screen.getAllByRole("checkbox").filter(cb => cb.parentElement?.textContent.endsWith(" Project"))
+        const projectFilters = checkboxes.map(cb => cb.parentElement?.textContent??"")
+        expect(projectFilters).toEqual([
+            "A Project", "B Project", "C Project", "D Project"
+        ])
+    })
+
     it("should only shows uncompleted project filters if uncompleted is checked", async () => {
         const client = new TestClient()
         client.Projects = [

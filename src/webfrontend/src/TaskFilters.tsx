@@ -31,7 +31,8 @@ export function TaskFilters(props: TaskFiltersProps) {
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
     if(projectsWithNextAction === undefined) {
         (async () => {
-            const retrievedProjects = await client.GetProjects(filter)
+            let retrievedProjects = await client.GetProjects(filter)
+            retrievedProjects = retrievedProjects.sort((a, b) => a.name.localeCompare(b.name))
             const tasks = await client.GetItems({ 
                 active: true,
                 inactive: true,
