@@ -7,15 +7,17 @@ import { Tag } from "./models/Tag";
 import { CheckBox } from "./controls/CheckBox";
 import { MultiSelect } from "./controls/MultiSelect";
 import { Select } from "./controls/Select";
+import { ProjectFilter } from "./ProjectFilters";
 
 interface AddItemFormProps {
     onCancel: () => any
     onCompleted?: () => any
     client: IClient
+    projectFilter?: ProjectFilter
 }
 
 export function AddItemForm(props: AddItemFormProps) {
-    const { onCancel, client, onCompleted } = props
+    const { onCancel, client, onCompleted, projectFilter } = props
     const [ description, setDescription ] = useState('')
     const [projects, setProjects] = useState<Project[] | undefined>(undefined)
     const [projectId, setProjectId] = useState<number>(0)
@@ -24,8 +26,8 @@ export function AddItemForm(props: AddItemFormProps) {
     const [done, setDone] = useState(false)
     const [later, setLater] = useState(false)
     if(projects === undefined) {
-        client.GetProjects()
-        .then(retrievedProjects => setProjects(retrievedProjects))
+        client.GetProjects(projectFilter)
+        .then(retrievedProjects => setProjects(retrievedProjects.sort((a, b) => a.name.localeCompare(b.name))))
     }
 
     if(tags === undefined) {
