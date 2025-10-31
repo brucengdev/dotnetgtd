@@ -54,9 +54,10 @@ describe("TaskFilters views", () => {
         await sleep(1)
 
         expect(screen.getByRole("checkbox", {name: "Project 1"})).toBeInTheDocument()
-        expect(screen.getByRole("checkbox", {name: "Project 1"})).not.toHaveClass("text-red-500")
+        expect(screen.getByRole("checkbox", {name: "Project 1"}).parentElement?.className).not.toContain("text-red-500")
+        
         expect(screen.getByRole("checkbox", {name: "Project 2"})).toBeInTheDocument()
-        expect(screen.getByRole("checkbox", {name: "Project 2"})).toHaveClass("text-red-500")
+        expect(screen.getByRole("checkbox", {name: "Project 2"}).parentElement?.className).toContain("text-red-500")
     })
 
 
