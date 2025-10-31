@@ -19,6 +19,7 @@ describe("EditableMultiSelect", () => {
         />)
 
         expect(screen.getByTestId("displayField")).toBeInTheDocument()
+        expect(screen.getByTestId("displayField").textContent).toBe("Option 1")
         expect(screen.queryByTestId("editField")).not.toBeInTheDocument()
         expect(screen.queryByRole("button", { name: "✓" })).not.toBeInTheDocument()
     })
