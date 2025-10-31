@@ -10,7 +10,8 @@ interface TagListProps {
 export function TagList(props: TagListProps) {
     const { tags, onDelete, onChange } = props
     return <div data-testid="tag-list">
-        {tags?.map(t => 
+        {tags?.sort((a, b) => a.name.localeCompare(b.name))
+            .map(t => 
             <TagListItem key={t.id} tag={{id: t.id, name: t.name}}
                 onDelete={() => {
                     if(onDelete) {
