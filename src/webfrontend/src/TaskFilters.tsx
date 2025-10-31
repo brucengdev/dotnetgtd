@@ -32,9 +32,16 @@ export function TaskFilters(props: TaskFiltersProps) {
     if(projectsWithNextAction === undefined) {
         (async () => {
             const retrievedProjects = await client.GetProjects(filter)
+            const tasks = await client.GetItems({ 
+                active: true,
+                inactive: true,
+                completed: true,
+                uncompleted: true,
+                projectIds: retrievedProjects.map(p => p.id.toString()) 
+            })
             setProjects(retrievedProjects.map(p => ({
                 project: p,
-                hasNextAction: false
+                hasNextAction: tasks.some(t => t.projectId === p.id && t.tagIds !== undefined && t.tagIds?.length > 0)
             })))
         })()
     }
@@ -117,6 +124,7 @@ export function TaskFilters(props: TaskFiltersProps) {
         
         {(projectsWithNextAction || []).map(p => 
             <CheckBox key={p.project.id} label={p.project.name} 
+                className={p.hasNextAction ? "" : "text-red-500"}
                 checked={
                         filter?.projectIds === undefined 
                         || filter?.projectIds?.includes(p.project.id.toString()) 
