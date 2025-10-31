@@ -21,7 +21,6 @@ export default function ItemView(props: ItemViewProps) {
     const { description, done, later } = item
     const [ showConfirmDelete, setShowConfirmDelete ] = useState(false)
     const project = props.projects.find(p => p.id === item.projectId)
-    const projectName = project?.name
     return <div data-testId="item" className="p-3 border border-gray-800 rounded-md mb-2">
         <div  className="grid grid-cols-7 mb-1 gap-2">
             <EditableTextView 
@@ -34,11 +33,10 @@ export default function ItemView(props: ItemViewProps) {
             />
             <EditableSelect
                 className="col-span-6 md:col-span-1"
-                value={projectName}
                 textViewDataTestId="project"
                 selectDataTestId="edit-project"
                 options={
-                    [{ value: "", text: "No project" }] .concat(
+                    [{ value: "", text: "[No project]" }] .concat(
                         projects.map(p => ({ value: p.id.toString(), text: p.name }))
                     )
                 }

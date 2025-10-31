@@ -42,7 +42,7 @@ describe("ItemView", () => {
                 done: false,
                 later: true
             } as Item,
-            expectedDisplayedProjectName: "[No Project]",
+            expectedDisplayedProjectName: "[No project]",
             expectedDisplayedTags: "",
             expectedDoneStatus: false,
             expectedLaterStatus: true
@@ -59,7 +59,7 @@ describe("ItemView", () => {
                 later: true,
                 tagIds: [1]
             } as Item,
-            expectedDisplayedProjectName: "",
+            expectedDisplayedProjectName: "[No project]",
             expectedDisplayedTags: "tag1",
             expectedDoneStatus: true,
             expectedLaterStatus: true
@@ -90,7 +90,7 @@ describe("ItemView", () => {
                 done: false,
                 later: false
             } as Item,
-            expectedDisplayedProjectName: "",
+            expectedDisplayedProjectName: "[No project]",
             expectedDisplayedTags: "",
             expectedDoneStatus: false,
             expectedLaterStatus: false
@@ -103,7 +103,7 @@ describe("ItemView", () => {
                 done: true,
                 later: false
             } as Item,
-            expectedDisplayedProjectName: "",
+            expectedDisplayedProjectName: "[No project]",
             expectedDisplayedTags: "",
             expectedDoneStatus: true,
             expectedLaterStatus: false
@@ -174,7 +174,7 @@ describe("ItemView", () => {
                 done: false,
                 later: false
             } as Item,
-            expectedDisplayedProjectName: "",
+            expectedDisplayedProjectName: "[No project]",
             expectedDisplayedTags: "",
             expectedDoneStatus: false,
             expectedLaterStatus: false
@@ -187,7 +187,7 @@ describe("ItemView", () => {
                 done: false,
                 later: true
             } as Item,
-            expectedDisplayedProjectName: "",
+            expectedDisplayedProjectName: "[No project]",
             expectedDisplayedTags: "",
             expectedDoneStatus: false,
             expectedLaterStatus: true
