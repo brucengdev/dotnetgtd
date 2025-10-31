@@ -40,15 +40,16 @@ export function TaskView(props: TaskViewProps) {
       client.GetTags()
           .then(tags => setTags(tags))
     }
-    return <div data-testid="task-view">
-      <TaskFilters client={client} filter={filter}
+    return <div data-testid="task-view" className="md:grid md:grid-cols-4">
+      <TaskFilters 
+        client={client} filter={filter}
         onFiltersChanged={filter => {
           setFilter(filter)
           setItems(undefined) //to reload
           props.onFilterChange?.(filter)
         }}
       />
-      <div className="pt-5">
+      <div className="pt-5 md:col-span-3">
         {showNewTaskForm
           ? <AddItemForm client={client} 
               projectFilter={filter}
