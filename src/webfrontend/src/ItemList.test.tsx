@@ -11,8 +11,12 @@ describe("ItemList", () => {
         expect(screen.getByText("There are no items.")).toBeInTheDocument()
     })
 
-    it("shows a list of items", async () => {
+    it("shows a list of items sorted by name", async () => {
         const items = [
+            { 
+                id: 3, description: "Task C", projectId: 2, tagIds: [1, 2] ,
+                done: true, later: false
+            },
             { 
                 id: 1, description: "Task A", projectId: 0, 
                 done: false, later: true 
@@ -35,7 +39,7 @@ describe("ItemList", () => {
         await sleep(10)
 
         let itemViews = screen.getAllByTestId("item")
-        expect(itemViews.length).toBe(2)
+        expect(itemViews.length).toBe(3)
 
         expect(itemViews[0].querySelector('[data-testid="description"]')
             ?.textContent).toBe("Task A")
@@ -55,6 +59,17 @@ describe("ItemList", () => {
         expect(itemViews[1].querySelector('[data-testid="done"]'))
             .toBeChecked()
         expect(itemViews[1].querySelector('[data-testid="later"]'))
+            .not.toBeChecked()
+
+        expect(itemViews[2].querySelector('[data-testid="description"]')
+            ?.textContent).toBe("Task C")
+        expect(itemViews[2].querySelector('[data-testid="project"]')
+            ?.textContent).toBe("Project X")
+        expect(itemViews[2].querySelector('[data-testid="tags"]')
+            ?.textContent).toBe("Tag 1,Tag 2")
+        expect(itemViews[2].querySelector('[data-testid="done"]'))
+            .toBeChecked()
+        expect(itemViews[2].querySelector('[data-testid="later"]'))
             .not.toBeChecked()
 
 
