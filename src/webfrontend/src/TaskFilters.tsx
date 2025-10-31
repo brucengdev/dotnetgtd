@@ -24,12 +24,16 @@ export function TaskFilters(props: TaskFiltersProps) {
     const [projects, setProjects] = useState<Project[] | undefined>(undefined)
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
     if(projects === undefined) {
-        client.GetProjects(filter)
-        .then(retrievedProjects => setProjects(retrievedProjects))
+        (async () => {
+            const retrievedProjects = await client.GetProjects(filter)
+            setProjects(retrievedProjects)
+        })()
     }
     if(tags === undefined) {
-        client.GetTags()
-        .then(retrievedTags => setTags(retrievedTags))
+        (async () => {
+            const retrievedTags = await client.GetTags()
+            setTags(retrievedTags)
+        })()
     }
 
     function buildProjectIdsFilter(projectId: number, projectSelected: boolean)
