@@ -9,7 +9,18 @@ import { ProjectFilter } from "./ProjectFilters";
 describe("AddItemForm", () => {
     const testCases = [
         { 
-            filter: {} as ProjectFilter , 
+            name: "shows all projects when no filter is applied",
+            expectedProjectNames: [
+                "[No project]", 
+                "Active uncompleted project",
+                "Active completed project",
+                "Inactive uncompleted project",
+                "Inactive completed project"
+            ] 
+        },
+        { 
+            name: "shows all projects when no empty filter is applied",
+            filter: { } as ProjectFilter,
             expectedProjectNames: [
                 "[No project]", 
                 "Active uncompleted project",
@@ -19,8 +30,8 @@ describe("AddItemForm", () => {
             ] 
         }
     ]
-    testCases.forEach(({filter, expectedProjectNames}) => {
-        it("filter project dropdown list based on current task filters", async () => {
+    testCases.forEach(({name, filter, expectedProjectNames}) => {
+        it(name, async () => {
             const client = new TestClient()
             client.Projects = [
                 { id: 1, name: "Active uncompleted project",    later: false,   done: false }, 
