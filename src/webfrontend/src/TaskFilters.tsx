@@ -19,24 +19,44 @@ interface TaskFiltersProps {
     filter?: TaskFilter
     onFiltersChanged?: (filter: TaskFilter) => void
 }
+
+interface ProjectWithNextAction {
+    project: Project
+    hasNextAction: boolean
+}
+
 export function TaskFilters(props: TaskFiltersProps) {
     const { client, filter } = props
-    const [projects, setProjects] = useState<Project[] | undefined>(undefined)
+    const [projectsWithNextAction, setProjects] = useState<ProjectWithNextAction[] | undefined>(undefined)
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
-    if(projects === undefined) {
-        client.GetProjects(filter)
-        .then(retrievedProjects => setProjects(retrievedProjects))
+    if(projectsWithNextAction === undefined) {
+        (async () => {
+            const retrievedProjects = await client.GetProjects(filter)
+            const tasks = await client.GetItems({ 
+                active: true,
+                inactive: true,
+                completed: true,
+                uncompleted: true,
+                projectIds: retrievedProjects.map(p => p.id.toString()) 
+            })
+            setProjects(retrievedProjects.map(p => ({
+                project: p,
+                hasNextAction: tasks.some(t => t.projectId === p.id && t.tagIds !== undefined && t.tagIds?.length > 0)
+            })))
+        })()
     }
     if(tags === undefined) {
-        client.GetTags()
-        .then(retrievedTags => setTags(retrievedTags))
+        (async () => {
+            const retrievedTags = await client.GetTags()
+            setTags(retrievedTags)
+        })()
     }
 
     function buildProjectIdsFilter(projectId: number, projectSelected: boolean)
         : string[] | undefined {
         if(filter?.projectIds === undefined || filter?.projectIds?.includes("nonnull")) {
             if(projectSelected === false) {
-                return [...filter?.projectIds?? [], ...(projects?.map(p => p.id.toString()) ?? [])]
+                return [...filter?.projectIds?? [], ...(projectsWithNextAction?.map(p => p.project.id.toString()) ?? [])]
                     .filter(pId => pId !== "nonnull" && pId !== projectId.toString())
             }
         }
@@ -44,7 +64,7 @@ export function TaskFilters(props: TaskFiltersProps) {
             let result = [...(filter?.projectIds || []), projectId.toString()]
                 .filter(pId => pId !== "nonnull")
             const numberOfProjects = result.filter(pId => isAnIntId(pId)).length
-            if(numberOfProjects === (projects?.length ?? 0))//all projects are selected
+            if(numberOfProjects === (projectsWithNextAction?.length ?? 0))//all projects are selected
             {
                 result = result.filter(pId => !isAnIntId(pId)).concat("nonnull")
             }
@@ -102,16 +122,17 @@ export function TaskFilters(props: TaskFiltersProps) {
                 executeFilterChangeCallback(props, { ...filter, projectIds: newProjectFilters})
             }} />
         
-        {(projects || []).map(p => 
-            <CheckBox key={p.id} label={p.name} 
+        {(projectsWithNextAction || []).map(p => 
+            <CheckBox key={p.project.id} label={p.project.name} 
+                className={p.hasNextAction ? "" : "text-red-500"}
                 checked={
                         filter?.projectIds === undefined 
-                        || filter?.projectIds?.includes(p.id.toString()) 
+                        || filter?.projectIds?.includes(p.project.id.toString()) 
                         || filter?.projectIds?.includes("nonnull")
                         || false
                     } 
                 onChange={(selected) => {
-                    executeFilterChangeCallback(props, { ...filter, projectIds: buildProjectIdsFilter(p.id, selected) })
+                    executeFilterChangeCallback(props, { ...filter, projectIds: buildProjectIdsFilter(p.project.id, selected) })
                 }}
         />
         )}

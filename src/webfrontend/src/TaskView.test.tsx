@@ -1,5 +1,5 @@
 import { screen, render, fireEvent } from "@testing-library/react";
-import {describe, expect, it} from 'vitest'
+import {describe, expect, it, vitest} from 'vitest'
 import '@testing-library/jest-dom'
 import { TaskView } from "./TaskView";
 import { TestClient } from "./__test__/TestClient";
@@ -163,11 +163,7 @@ describe("TaskView", () => {
             +`,inactive=${inactive},completed=${completed}`
             +`,uncompleted=${uncompleted}`, async () => {
             const client = new TestClient()
-            let passedInFilter: TaskFilter | undefined = undefined
-            client.GetItems = async (filter:TaskFilter) => {
-                passedInFilter = filter
-                return []
-            }
+            client.GetItems = vitest.fn(async (_: TaskFilter) => [])
             client.Items = [
                 { id: 1, description: "Task A", projectId: 0, done: false, later: false}
             ]
@@ -197,7 +193,7 @@ describe("TaskView", () => {
                     delete expectedFilter[k]
                 }
             })
-            expect(passedInFilter).toStrictEqual(expectedFilter)
+            expect(client.GetItems).toHaveBeenCalledWith(expectedFilter)
         })
     })
 
