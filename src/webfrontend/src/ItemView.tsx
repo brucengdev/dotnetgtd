@@ -22,9 +22,9 @@ export default function ItemView(props: ItemViewProps) {
     const [ showConfirmDelete, setShowConfirmDelete ] = useState(false)
     const project = props.projects.find(p => p.id === item.projectId)
     return <div data-testId="item" className="p-3 border border-gray-800 rounded-md mb-2">
-        <div  className="grid grid-cols-7 mb-1 gap-2">
+        <div  className="grid grid-cols-8 mb-1 gap-2">
             <EditableTextView 
-                className="col-span-6 md:col-span-1"
+                className="col-span-6 lg:col-span-3"
                 text={description} 
                 textViewTestId="description" editViewTestId="edit-description"
                 onChange={newDescription => onChange?.({ 
@@ -32,7 +32,7 @@ export default function ItemView(props: ItemViewProps) {
                 }) } 
             />
             <EditableSelect
-                className="col-span-6 md:col-span-1"
+                className="col-span-6 lg:col-span-1"
                 textViewDataTestId="project"
                 selectDataTestId="edit-project"
                 options={
@@ -44,7 +44,7 @@ export default function ItemView(props: ItemViewProps) {
                 onChange={newProjectId => onChange?.({...item, projectId: newProjectId ? parseInt(newProjectId) : undefined})}
             />
             <EditableMultiSelect 
-                className="col-span-6 md:col-span-1"
+                className="col-span-6 lg:col-span-1"
                 selectedValues={item.tagIds?.map(t => t.toString()) ?? []}
                 textViewDataTestId="tags"
                 selectDataTestId="edit-tags"
@@ -58,7 +58,7 @@ export default function ItemView(props: ItemViewProps) {
                 placeHolderForNoOption="[No tag]"
             />
             <CheckBox
-                className="col-span-3 md:col-span-1"
+                className="col-span-3 lg:col-span-1"
                 label="Done"
                 checked={project?.done? true: done}
                 disabled={project?.done ?? false}
@@ -66,13 +66,13 @@ export default function ItemView(props: ItemViewProps) {
                 onChange={checked => onChange?.({...item, done: checked})}
             />
             <CheckBox
-                className="col-span-3 md:col-span-1"
+                className="col-span-3 lg:col-span-1"
                 label="Later"
                 checked={project == null? later: project?.later}
                 dataTestId="later"
                 onChange={checked => onChange?.({...item, later: checked})}
             />
-            <div className="md:col-span-2 text-right">
+            <div className="lg:col-span-1 text-right">
                 {showConfirmDelete
                     ? <></>
                     : <Button text="Delete" className="pr-2"
