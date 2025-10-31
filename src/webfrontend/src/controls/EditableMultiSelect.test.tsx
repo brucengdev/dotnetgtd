@@ -10,7 +10,7 @@ describe("EditableMultiSelect", () => {
         { selectedValues: ["1"], expectedDisplayText: "Option 1" },
         { selectedValues: ["2"], expectedDisplayText: "Option 2" },
         { selectedValues: ["1","2"], expectedDisplayText: "Option 1,Option 2" },
-        { selectedValues: [], expectedDisplayText: "No options placeholder" }
+        { selectedValues: [], expectedDisplayText: "No options selected" }
     ]
     displayFieldCases.forEach( ({selectedValues, expectedDisplayText}) => {
         it(`shows display view initially with selected value = ${selectedValues.join(",")}`, () => {
@@ -23,7 +23,7 @@ describe("EditableMultiSelect", () => {
                     { value: "3", text: "Option 3" }
                 ]}
                 selectedValues={selectedValues}
-                emptyOptionPlaceholder="No options placeholder"
+                placeHolderForNoOption="No options selected"
             />)
 
             expect(screen.getByTestId("displayField")).toBeInTheDocument()
