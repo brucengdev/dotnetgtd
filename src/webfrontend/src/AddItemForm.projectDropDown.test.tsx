@@ -37,6 +37,65 @@ describe("AddItemForm", () => {
                 "Active uncompleted project",
                 "Active completed project"
             ] 
+        },
+        { 
+            name: "shows only inactive projects",
+            filter: { inactive: true } as ProjectFilter,
+            expectedProjectNames: [
+                "[No project]", 
+                "Inactive uncompleted project",
+                "Inactive completed project"
+            ] 
+        },
+        { 
+            name: "shows only completed projects",
+            filter: { completed: true } as ProjectFilter,
+            expectedProjectNames: [
+                "[No project]", 
+                "Active completed project",
+                "Inactive completed project"
+            ] 
+        },
+        { 
+            name: "shows only uncompleted projects",
+            filter: { uncompleted: true } as ProjectFilter,
+            expectedProjectNames: [
+                "[No project]", 
+                "Active uncompleted project",
+                "Inactive uncompleted project"
+            ] 
+        },
+        { 
+            name: "shows only active uncompleted projects",
+            filter: { uncompleted: true, active: true } as ProjectFilter,
+            expectedProjectNames: [
+                "[No project]", 
+                "Active uncompleted project"
+            ] 
+        },
+        { 
+            name: "shows only active completed projects",
+            filter: { completed: true, active: true } as ProjectFilter,
+            expectedProjectNames: [
+                "[No project]", 
+                "Active completed project"
+            ] 
+        },
+        { 
+            name: "shows only inactive completed projects",
+            filter: { completed: true, inactive: true } as ProjectFilter,
+            expectedProjectNames: [
+                "[No project]", 
+                "Inactive completed project"
+            ] 
+        },
+        { 
+            name: "shows only inactive uncompleted projects",
+            filter: { uncompleted: true, inactive: true } as ProjectFilter,
+            expectedProjectNames: [
+                "[No project]", 
+                "Inactive uncompleted project"
+            ] 
         }
     ]
     testCases.forEach(({name, filter, expectedProjectNames}) => {
