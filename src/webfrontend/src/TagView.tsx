@@ -17,6 +17,15 @@ export function TagView({ client }: TagViewProps) {
         .then(retrievedTags => setTags(retrievedTags))
     }
     return <div data-testid="tag-view">
+        {showNewTagForm
+            ?<AddTagForm client={client} 
+                    onCancel={() => setShowNewTagForm(false)} 
+                    onCompleted={() => {
+                        setShowNewTagForm(false)
+                        setTags(undefined) //set to undefined so Tags are reloaded
+                    }} />
+            :<Button text="Add" onClick={() => setShowNewTagForm(true)}/>
+        }
         <TagList tags={Tags || []} 
             onDelete={(tagId) => {
                 client.DeleteTag(tagId)
@@ -27,14 +36,5 @@ export function TagView({ client }: TagViewProps) {
                     .then(() => setTags(undefined))//to reload Tag list
             }}
             />
-        {showNewTagForm
-            ?<AddTagForm client={client} 
-                    onCancel={() => setShowNewTagForm(false)} 
-                    onCompleted={() => {
-                        setShowNewTagForm(false)
-                        setTags(undefined) //set to undefined so Tags are reloaded
-                    }} />
-            :<Button text="Add" onClick={() => setShowNewTagForm(true)}/>
-        }
     </div>
 }
