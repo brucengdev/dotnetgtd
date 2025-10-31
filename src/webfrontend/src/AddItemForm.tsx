@@ -17,7 +17,7 @@ interface AddItemFormProps {
 }
 
 export function AddItemForm(props: AddItemFormProps) {
-    const { onCancel, client, onCompleted } = props
+    const { onCancel, client, onCompleted, projectFilter } = props
     const [ description, setDescription ] = useState('')
     const [projects, setProjects] = useState<Project[] | undefined>(undefined)
     const [projectId, setProjectId] = useState<number>(0)
@@ -26,7 +26,7 @@ export function AddItemForm(props: AddItemFormProps) {
     const [done, setDone] = useState(false)
     const [later, setLater] = useState(false)
     if(projects === undefined) {
-        client.GetProjects()
+        client.GetProjects(projectFilter)
         .then(retrievedProjects => setProjects(retrievedProjects))
     }
 

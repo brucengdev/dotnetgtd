@@ -28,6 +28,15 @@ describe("AddItemForm", () => {
                 "Inactive uncompleted project",
                 "Inactive completed project"
             ] 
+        },
+        { 
+            name: "shows only active projects",
+            filter: { active: true } as ProjectFilter,
+            expectedProjectNames: [
+                "[No project]", 
+                "Active uncompleted project",
+                "Active completed project"
+            ] 
         }
     ]
     testCases.forEach(({name, filter, expectedProjectNames}) => {
