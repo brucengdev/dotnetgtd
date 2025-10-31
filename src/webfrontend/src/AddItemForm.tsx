@@ -7,11 +7,13 @@ import { Tag } from "./models/Tag";
 import { CheckBox } from "./controls/CheckBox";
 import { MultiSelect } from "./controls/MultiSelect";
 import { Select } from "./controls/Select";
+import { ProjectFilter } from "./ProjectFilters";
 
 interface AddItemFormProps {
     onCancel: () => any
     onCompleted?: () => any
     client: IClient
+    projectFilter?: ProjectFilter
 }
 
 export function AddItemForm(props: AddItemFormProps) {
