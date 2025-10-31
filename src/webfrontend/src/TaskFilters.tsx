@@ -19,16 +19,26 @@ interface TaskFiltersProps {
     filter?: TaskFilter
     onFiltersChanged?: (filter: TaskFilter) => void
 }
+
+interface ProjectWithNextAction {
+    project: Project
+    hasNextAction: boolean
+}
+
 export function TaskFilters(props: TaskFiltersProps) {
     const { client, filter } = props
-    const [projects, setProjects] = useState<Project[] | undefined>(undefined)
+    const [projectsWithNextAction, setProjects] = useState<ProjectWithNextAction[] | undefined>(undefined)
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
-    if(projects === undefined) {
+    if(projectsWithNextAction === undefined) {
         (async () => {
             const retrievedProjects = await client.GetProjects(filter)
-            setProjects(retrievedProjects)
+            setProjects(retrievedProjects.map(p => ({
+                project: p,
+                hasNextAction: false
+            })))
         })()
     }
+    const projects = projectsWithNextAction?.map(pwna => pwna.project)
     if(tags === undefined) {
         (async () => {
             const retrievedTags = await client.GetTags()
