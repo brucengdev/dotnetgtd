@@ -10,7 +10,8 @@ interface ProjectListProps {
 export function ProjectList(props: ProjectListProps) {
     const { projects, onDelete, onChange } = props
     return <div data-testid="project-list">
-        {projects?.map(p => 
+        {projects?.sort((a, b) => a.name.localeCompare(b.name))
+            .map(p => 
             <ProjectListItem key={p.id} 
                 project={p}
                 onDelete={() => {
