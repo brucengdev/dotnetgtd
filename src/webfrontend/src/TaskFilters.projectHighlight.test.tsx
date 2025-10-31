@@ -20,11 +20,17 @@ describe("TaskFilters", () => {
             { id: 2, name: "Tag 2" }
         ]
         client.Items = [
+            //project 1
             { id: 1, description: "Item 1", done: false, later: false, projectId: 1, tagIds: [1] },
             { id: 2, description: "Item 2", done: false, later: false, projectId: 1, tagIds: [] },
 
+            //project 2
             { id: 3, description: "Item 3", done: false, later: false, projectId: 2, tagIds: [] },
             { id: 4, description: "Item 4", done: false, later: false, projectId: 2, tagIds: [] },
+
+            //project 3
+            //completed action with tag should not count
+            { id: 5, description: "Item 5", done: true, later: false, projectId: 3, tagIds: [1] },
         ]
         render(<TaskFilters client={client} />)
         await sleep(1)

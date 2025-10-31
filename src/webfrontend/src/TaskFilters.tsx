@@ -35,7 +35,6 @@ export function TaskFilters(props: TaskFiltersProps) {
             const tasks = await client.GetItems({ 
                 active: true,
                 inactive: true,
-                completed: true,
                 uncompleted: true,
                 projectIds: retrievedProjects.map(p => p.id.toString()) 
             })
