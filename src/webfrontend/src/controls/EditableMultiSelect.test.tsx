@@ -6,22 +6,31 @@ import { sleep } from "../__test__/testutils";
 import userEvent from "@testing-library/user-event";
 
 describe("EditableMultiSelect", () => {
-    it(`shows display view initially`, () => {
-        render(<EditableMultiSelect 
-            textViewDataTestId="displayField" 
-            selectDataTestId="editField" 
-            options={[
-                { value: "1", text: "Option 1" },
-                { value: "2", text: "Option 2" },
-                { value: "3", text: "Option 3" }
-            ]}
-            selectedValues={["1"]}
-        />)
+    const displayFieldCases = [
+        { selectedValues: ["1"], expectedDisplayText: "Option 1" },
+        { selectedValues: ["2"], expectedDisplayText: "Option 2" },
+        { selectedValues: ["1","2"], expectedDisplayText: "Option 1,Option 2" },
+        { selectedValues: [], expectedDisplayText: "No options placeholder" }
+    ]
+    displayFieldCases.forEach( ({selectedValues, expectedDisplayText}) => {
+        it(`shows display view initially with selected value = ${selectedValues.join(",")}`, () => {
+            render(<EditableMultiSelect 
+                textViewDataTestId="displayField" 
+                selectDataTestId="editField" 
+                options={[
+                    { value: "1", text: "Option 1" },
+                    { value: "2", text: "Option 2" },
+                    { value: "3", text: "Option 3" }
+                ]}
+                selectedValues={selectedValues}
+                emptyOptionPlaceholder="No options placeholder"
+            />)
 
-        expect(screen.getByTestId("displayField")).toBeInTheDocument()
-        expect(screen.getByTestId("displayField").textContent).toBe("Option 1")
-        expect(screen.queryByTestId("editField")).not.toBeInTheDocument()
-        expect(screen.queryByRole("button", { name: "✓" })).not.toBeInTheDocument()
+            expect(screen.getByTestId("displayField")).toBeInTheDocument()
+            expect(screen.getByTestId("displayField").textContent).toBe(expectedDisplayText)
+            expect(screen.queryByTestId("editField")).not.toBeInTheDocument()
+            expect(screen.queryByRole("button", { name: "✓" })).not.toBeInTheDocument()
+        })
     })
 
     it(`shows edit view when display view is clicked`, async () => {
