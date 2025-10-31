@@ -30,7 +30,7 @@ describe("ItemView", () => {
                 projectId: 1,
             } as Item,
             expectedDisplayedProjectName: "Uncompleted Active Project",
-            expectedDisplayedTags: "",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: false,
             expectedLaterStatus: false
         },
@@ -91,7 +91,7 @@ describe("ItemView", () => {
                 later: false
             } as Item,
             expectedDisplayedProjectName: "[No project]",
-            expectedDisplayedTags: "",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: false,
             expectedLaterStatus: false
         },
@@ -104,7 +104,7 @@ describe("ItemView", () => {
                 later: false
             } as Item,
             expectedDisplayedProjectName: "[No project]",
-            expectedDisplayedTags: "",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: true,
             expectedLaterStatus: false
         },
@@ -118,7 +118,7 @@ describe("ItemView", () => {
                 projectId: testProjects.find(p => p.name == "Completed Active Project")?.id
             } as Item,
             expectedDisplayedProjectName: "Completed Active Project",
-            expectedDisplayedTags: "",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: true,
             expectedLaterStatus: false
         },
@@ -132,7 +132,7 @@ describe("ItemView", () => {
                 projectId: testProjects.find(p => p.name == "Completed Active Project")?.id
             } as Item,
             expectedDisplayedProjectName: "Completed Active Project",
-            expectedDisplayedTags: "",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: true,
             expectedLaterStatus: false
         },
@@ -146,7 +146,7 @@ describe("ItemView", () => {
                 projectId: testProjects.find(p => p.name == "Uncompleted Active Project")?.id
             } as Item,
             expectedDisplayedProjectName: "Uncompleted Active Project",
-            expectedDisplayedTags: "",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: false,
             expectedLaterStatus: false
         },
@@ -160,7 +160,7 @@ describe("ItemView", () => {
                 projectId: testProjects.find(p => p.name == "Uncompleted Active Project")?.id
             } as Item,
             expectedDisplayedProjectName: "Uncompleted Active Project",
-            expectedDisplayedTags: "",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: true,
             expectedLaterStatus: false
         },
@@ -175,7 +175,7 @@ describe("ItemView", () => {
                 later: false
             } as Item,
             expectedDisplayedProjectName: "[No project]",
-            expectedDisplayedTags: "",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: false,
             expectedLaterStatus: false
         },
@@ -188,7 +188,7 @@ describe("ItemView", () => {
                 later: true
             } as Item,
             expectedDisplayedProjectName: "[No project]",
-            expectedDisplayedTags: "",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: false,
             expectedLaterStatus: true
         },
@@ -202,7 +202,7 @@ describe("ItemView", () => {
                 projectId: testProjects.find(p => p.name == "Uncompleted Active Project")?.id
             } as Item,
             expectedDisplayedProjectName: "Uncompleted Active Project",
-            expectedDisplayedTags: "",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: false,
             expectedLaterStatus: false
         },
@@ -216,7 +216,7 @@ describe("ItemView", () => {
                 projectId: testProjects.find(p => p.name == "Uncompleted Active Project")?.id
             } as Item,
             expectedDisplayedProjectName: "Uncompleted Active Project",
-            expectedDisplayedTags: "",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: false,
             expectedLaterStatus: false
         },
@@ -230,7 +230,7 @@ describe("ItemView", () => {
                 projectId: testProjects.find(p => p.name == "Uncompleted Inactive Project")?.id
             } as Item,
             expectedDisplayedProjectName: "Uncompleted Inactive Project",
-            expectedDisplayedTags: "",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: false,
             expectedLaterStatus: true
         },
@@ -244,7 +244,7 @@ describe("ItemView", () => {
                 projectId: testProjects.find(p => p.name == "Uncompleted Inactive Project")?.id
             } as Item,
             expectedDisplayedProjectName: "Uncompleted Inactive Project",
-            expectedDisplayedTags: "",
+            expectedDisplayedTags: "[No tag]",
             expectedDoneStatus: false,
             expectedLaterStatus: true
         },

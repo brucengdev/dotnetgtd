@@ -55,6 +55,7 @@ export default function ItemView(props: ItemViewProps) {
                         tagIds: newTagIds
                     })
                 }}
+                placeHolderForNoOption="[No tag]"
             />
             <CheckBox
                 className="col-span-3 md:col-span-1"
