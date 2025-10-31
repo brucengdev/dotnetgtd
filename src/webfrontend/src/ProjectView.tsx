@@ -34,6 +34,15 @@ export function ProjectView({ client, filter: initialFilter, onFilterChange }: P
             }}
          />
         <div className="pt-5">
+            {showNewProjectForm
+                ?<AddProjectForm client={client} 
+                        onCancel={() => setShowNewProjectForm(false)} 
+                        onCompleted={() => {
+                            setShowNewProjectForm(false)
+                            setProjects(undefined) //set to undefined so projects are reloaded
+                        }} />
+                :<Button text="Add" onClick={() => setShowNewProjectForm(true)}/>
+            }
             <ProjectList projects={projects || []} 
                 onDelete={(projectId) => {
                     client.DeleteProject(projectId)
@@ -44,15 +53,6 @@ export function ProjectView({ client, filter: initialFilter, onFilterChange }: P
                         .then(() => setProjects(undefined)) //to reload project list
                 }}
             />
-            {showNewProjectForm
-                ?<AddProjectForm client={client} 
-                        onCancel={() => setShowNewProjectForm(false)} 
-                        onCompleted={() => {
-                            setShowNewProjectForm(false)
-                            setProjects(undefined) //set to undefined so projects are reloaded
-                        }} />
-                :<Button text="Add" onClick={() => setShowNewProjectForm(true)}/>
-            }
         </div>
     </div>
 }

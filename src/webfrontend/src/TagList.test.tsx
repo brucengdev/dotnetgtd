@@ -6,13 +6,14 @@ import { TagList } from "./TagList";
 describe("TagList", () => {
     it("shows the list of tags", () => {
         const tags = [
+            { id: 3, name: "Tag C" },
             { id: 1, name: "Tag A" },
-            { id: 2, name: "Tag B" }
+            { id: 2, name: "Tag B" },
         ]
         render(<TagList tags={tags} />)
         
         const tagItems = screen.getAllByTestId("tag")
-        expect(tagItems.length).toBe(2)
+        expect(tagItems.length).toBe(3)
 
         const tagA = tagItems[0]
         expect(tagA.querySelector("[data-testId='name']")?.textContent)
@@ -21,6 +22,10 @@ describe("TagList", () => {
         const tagB = tagItems[1]
         expect(tagB.querySelector("[data-testId='name']")?.textContent)
             .toBe('Tag B')
+
+        const tagC = tagItems[2]
+        expect(tagC.querySelector("[data-testId='name']")?.textContent)
+            .toBe('Tag C')
     })
 
     it("calls onDelete when a tag is deleted", () => {

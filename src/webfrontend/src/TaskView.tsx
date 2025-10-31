@@ -49,6 +49,16 @@ export function TaskView(props: TaskViewProps) {
         }}
       />
       <div className="pt-5">
+        {showNewTaskForm
+          ? <AddItemForm client={client} 
+              onCancel={() => setShowNewTaskForm(false)} 
+              onCompleted={() => {
+                  setShowNewTaskForm(false)
+                  setItems(undefined) //to reload
+                }
+              }
+              />
+          : <Button text="Add" className="mb-5 block" onClick={() => setShowNewTaskForm(true)} />}
         <ItemList items={items} projects={projects} tags={tags}
           onDelete={(item: Item) => {
               client.DeleteItem(item.id)
@@ -74,16 +84,6 @@ export function TaskView(props: TaskViewProps) {
             setProjects(undefined) //to reload projects
           }}
         />
-        {showNewTaskForm
-          ? <AddItemForm client={client} 
-              onCancel={() => setShowNewTaskForm(false)} 
-              onCompleted={() => {
-                  setShowNewTaskForm(false)
-                  setItems(undefined) //to reload
-                }
-              }
-              />
-          : <Button text="Add" className="mb-5 block" onClick={() => setShowNewTaskForm(true)} />}
       </div>
     </div>
 }

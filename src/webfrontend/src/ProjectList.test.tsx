@@ -5,25 +5,34 @@ import { ProjectList } from "./ProjectList";
 import { sleep } from "./__test__/testutils";
 
 describe("ProjectList", () => {
-    it("shows the list of projects", () => {
+    it("shows the list of projects sorted by name", () => {
         const projects = [
+            { id: 3, name: "Project C", later: false, done: false },
             { id: 1, name: "Project A", later: true, done: false },
             { id: 2, name: "Project B", later: false, done: false }
         ]
         render(<ProjectList projects={projects} />)
         
         const projectItems = screen.getAllByTestId("project")
-        expect(projectItems.length).toBe(2)
+        expect(projectItems.length).toBe(3)
 
         const projectA = projectItems[0]
         expect(projectA.querySelector("[data-testId='name']")?.textContent)
             .toBe('Project A')
         expect(projectA.querySelector("[data-testId='later']")).toBeChecked()
+        expect(projectA.querySelector("[data-testId='done']")).not.toBeChecked()
 
         const projectB = projectItems[1]
         expect(projectB.querySelector("[data-testId='name']")?.textContent)
             .toBe('Project B')
         expect(projectB.querySelector("[data-testId='later']")).not.toBeChecked()
+        expect(projectB.querySelector("[data-testId='done']")).not.toBeChecked()
+
+        const projectC = projectItems[2]
+        expect(projectC.querySelector("[data-testId='name']")?.textContent)
+            .toBe('Project C')
+        expect(projectC.querySelector("[data-testId='later']")).not.toBeChecked()
+        expect(projectC.querySelector("[data-testId='done']")).not.toBeChecked()
     })
 
     it("calls onDelete when a project is deleted", () => {

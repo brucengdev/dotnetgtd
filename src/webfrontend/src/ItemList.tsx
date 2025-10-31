@@ -19,7 +19,8 @@ export default function ItemList(props: ItemListProps) {
         ?<div>There are no items.</div>
         :<div>
             {
-                items?.map(item => {
+                items?.sort((a, b) => a.description.localeCompare(b.description))
+                .map(item => {
                     return <ItemView 
                         item={item}
                         projects={props.projects ?? []}
