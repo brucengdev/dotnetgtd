@@ -40,7 +40,8 @@ export function TaskView(props: TaskViewProps) {
       client.GetTags()
           .then(tags => setTags(tags))
     }
-    return <div data-testid="task-view" className="md:grid md:grid-cols-4">
+    return <div data-testid="task-view" 
+      className="sm:grid sm:grid-cols-3 lg:grid-cols-5">
       <TaskFilters 
         client={client} filter={filter}
         onFiltersChanged={filter => {
@@ -49,7 +50,7 @@ export function TaskView(props: TaskViewProps) {
           props.onFilterChange?.(filter)
         }}
       />
-      <div className="pt-5 md:col-span-3">
+      <div className="pt-5 sm:col-span-2 lg:col-span-4">
         {showNewTaskForm
           ? <AddItemForm client={client} 
               projectFilter={filter}
