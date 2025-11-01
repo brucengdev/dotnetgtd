@@ -50,7 +50,7 @@ export function TaskView(props: TaskViewProps) {
           props.onFilterChange?.(filter)
         }}
       />
-      <div className="pt-5 sm:col-span-2 lg:col-span-4">
+      <div className="sm:col-span-2 lg:col-span-4">
         {showNewTaskForm
           ? <AddItemForm client={client} 
               projectFilter={filter}
@@ -61,7 +61,7 @@ export function TaskView(props: TaskViewProps) {
                 }
               }
               />
-          : <Button text="Add" className="mb-5 block" onClick={() => setShowNewTaskForm(true)} />}
+          : <Button text="Add" className="mb-2 block" onClick={() => setShowNewTaskForm(true)} />}
         <ItemList items={items} projects={projects} tags={tags}
           onDelete={(item: Item) => {
               client.DeleteItem(item.id)
