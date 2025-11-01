@@ -37,7 +37,7 @@ describe("TaskFilters", () => {
         render(<WrapperComponent client={client} filter={{}} />)
         await sleep(1)
 
-        const checkboxes = screen.getAllByRole("checkbox").filter(cb => cb.parentElement?.textContent.endsWith(" Project"))
+        const checkboxes = screen.getAllByRole("checkbox").filter(cb => (cb.parentElement?.textContent ?? "").endsWith(" Project"))
         const projectFilters = checkboxes.map(cb => cb.parentElement?.textContent??"")
         expect(projectFilters).toEqual([
             "A Project", "B Project", "C Project", "D Project"
