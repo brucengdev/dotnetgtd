@@ -40,15 +40,17 @@ export function TaskView(props: TaskViewProps) {
       client.GetTags()
           .then(tags => setTags(tags))
     }
-    return <div data-testid="task-view">
-      <TaskFilters client={client} filter={filter}
+    return <div data-testid="task-view" 
+      className="sm:grid sm:grid-cols-3 lg:grid-cols-5">
+      <TaskFilters 
+        client={client} filter={filter}
         onFiltersChanged={filter => {
           setFilter(filter)
           setItems(undefined) //to reload
           props.onFilterChange?.(filter)
         }}
       />
-      <div className="pt-5">
+      <div className="sm:col-span-2 lg:col-span-4">
         {showNewTaskForm
           ? <AddItemForm client={client} 
               projectFilter={filter}
@@ -59,7 +61,7 @@ export function TaskView(props: TaskViewProps) {
                 }
               }
               />
-          : <Button text="Add" className="mb-5 block" onClick={() => setShowNewTaskForm(true)} />}
+          : <Button text="Add" className="mb-2 block" onClick={() => setShowNewTaskForm(true)} />}
         <ItemList items={items} projects={projects} tags={tags}
           onDelete={(item: Item) => {
               client.DeleteItem(item.id)

@@ -23,18 +23,20 @@ export function MainView({onLogout, client} : MainViewProps) {
     const [tasksFilter, setTasksFilter] = useState(defaultTasksFilter)
     const [projectsFilter, setProjectsFilter] = useState(defaultProjectsFilter)
     return <div data-testid="main-view">
-      <Button 
-        className="block mb-4"
-        text="Log out"
-        mode={ButtonMode.DANGER}
-        onClick={() => onLogout()}
-        />
-      <Button text="Tasks" mode={buttonMode(View.TASKS, currentView)}
-        className="mr-1" onClick={() => setCurrentView(View.TASKS)} />
-      <Button text="Projects" mode={buttonMode(View.PROJECTS, currentView)}
-        className="mr-1" onClick={() => setCurrentView(View.PROJECTS)} />
-      <Button text="Tags" mode={buttonMode(View.TAGS, currentView)}
-        onClick={() => setCurrentView(View.TAGS)} />
+      <div className="flex">
+        <Button text="Tasks" mode={buttonMode(View.TASKS, currentView)}
+          className="mr-1" onClick={() => setCurrentView(View.TASKS)} />
+        <Button text="Projects" mode={buttonMode(View.PROJECTS, currentView)}
+          className="mr-1" onClick={() => setCurrentView(View.PROJECTS)} />
+        <Button text="Tags" mode={buttonMode(View.TAGS, currentView)}
+          onClick={() => setCurrentView(View.TAGS)} />
+        <Button 
+            className="ml-auto mb-2"
+            text="Log out"
+            mode={ButtonMode.DANGER}
+            onClick={() => onLogout()}
+            />
+      </div>
       {renderView(currentView, client, 
         tasksFilter, setTasksFilter, 
         projectsFilter, setProjectsFilter)}

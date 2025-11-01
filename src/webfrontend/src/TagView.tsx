@@ -24,7 +24,7 @@ export function TagView({ client }: TagViewProps) {
                         setShowNewTagForm(false)
                         setTags(undefined) //set to undefined so Tags are reloaded
                     }} />
-            :<Button text="Add" onClick={() => setShowNewTagForm(true)}/>
+            :<Button className="mt-2 mb-2" text="Add" onClick={() => setShowNewTagForm(true)}/>
         }
         <TagList tags={Tags || []} 
             onDelete={(tagId) => {
