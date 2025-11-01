@@ -4,6 +4,7 @@ import { Project } from "./models/Project"
 import { Tag } from "./models/Tag"
 import { CheckBox } from "./controls/CheckBox"
 import { isAnIntId } from "./utils"
+import { Button, ButtonMode } from "./controls/Button"
 
 export interface TaskFilter {
     completed?: boolean
@@ -75,148 +76,151 @@ export function TaskFilters(props: TaskFiltersProps) {
     }
 
     return <div data-testId="task-filters" className="pt-5">
-        <CheckBox label="Active tasks"
-            className="block" 
-            checked={filter?.active ?? false}
-            onChange={(selected) => {
-                setProjects(undefined) //to reload projects when filter changes
-                executeFilterChangeCallback(props, { ...filter, active: selected })
-            }}
-        />
-        <CheckBox label="Inactive tasks" checked={filter?.inactive ?? false} 
-            onChange={(selected) => {
-                setProjects(undefined) //to reload projects when filter changes
-                executeFilterChangeCallback(props, { ...filter, inactive: selected })
-            }} 
-        />
+        <Button text="Filters ▼" mode={ButtonMode.SECONDARY} />
+        <div>
+            <CheckBox label="Active tasks"
+                className="block" 
+                checked={filter?.active ?? false}
+                onChange={(selected) => {
+                    setProjects(undefined) //to reload projects when filter changes
+                    executeFilterChangeCallback(props, { ...filter, active: selected })
+                }}
+            />
+            <CheckBox label="Inactive tasks" checked={filter?.inactive ?? false} 
+                onChange={(selected) => {
+                    setProjects(undefined) //to reload projects when filter changes
+                    executeFilterChangeCallback(props, { ...filter, inactive: selected })
+                }} 
+            />
 
-        <hr />
+            <hr />
 
-        <CheckBox label="Completed tasks" 
-            className="block"
-            checked={filter?.completed?? false}
-            onChange={(selected) => {
-                setProjects(undefined) //to reload projects when filter changes
-                executeFilterChangeCallback(props, { ...filter, completed: selected })
-            }}
-         />
-        <CheckBox label="Uncompleted tasks" checked={filter?.uncompleted ?? false} 
-            onChange={(selected) => {
-                setProjects(undefined) //to reload projects when filter changes
-                executeFilterChangeCallback(props, { ...filter, uncompleted: selected })
-            }}
-        />
-
-        <hr/>
-        <CheckBox label="All tags" 
-            checked={filter?.tagIds?.includes("nonnull") ?? false} 
-            onChange={selected => {
-                let newTagFilters = [...(filter?.tagIds ?? [])]
-                if(selected) {
-                    newTagFilters.push("nonnull")
-                    newTagFilters = newTagFilters.filter(tId => !isAnIntId(tId))
-                } else {
-                    newTagFilters = newTagFilters.filter(tId => tId !== "nonnull")
-                }
-                executeFilterChangeCallback(props, {...filter, tagIds: newTagFilters})
-            }}
-        />
-        <CheckBox label="No tag" 
-            checked={filter?.tagIds?.includes("null") ?? false} 
-            onChange={(selected) => {
-                let newTagFilters = [...(filter?.tagIds ?? [])]
-                if(selected) {
-                    newTagFilters.push("null")
-                } else {
-                    newTagFilters = newTagFilters.filter(tId => tId !== "null")
-                }
-                executeFilterChangeCallback(props, {... filter, tagIds: newTagFilters })
-            }}
-        />
-        <hr/>
-        {(tags || []).map(t => 
-            <CheckBox key={t.id} label={t.name} 
+            <CheckBox label="Completed tasks" 
                 className="block"
-                checked={filter?.tagIds?.includes(t.id.toString()) 
-                    || filter?.tagIds?.includes("nonnull")
-                    || false
-                }
+                checked={filter?.completed?? false}
+                onChange={(selected) => {
+                    setProjects(undefined) //to reload projects when filter changes
+                    executeFilterChangeCallback(props, { ...filter, completed: selected })
+                }}
+            />
+            <CheckBox label="Uncompleted tasks" checked={filter?.uncompleted ?? false} 
+                onChange={(selected) => {
+                    setProjects(undefined) //to reload projects when filter changes
+                    executeFilterChangeCallback(props, { ...filter, uncompleted: selected })
+                }}
+            />
+
+            <hr/>
+            <CheckBox label="All tags" 
+                checked={filter?.tagIds?.includes("nonnull") ?? false} 
                 onChange={selected => {
                     let newTagFilters = [...(filter?.tagIds ?? [])]
                     if(selected) {
-                        newTagFilters.push(t.id.toString())
-
-                        const tagIds = newTagFilters.filter(tId => isAnIntId(tId))
-                        if(tagIds.length === (tags?.length ?? 0)) {
-                            //all tags are selected
-                            newTagFilters.push("nonnull")
-                            newTagFilters = newTagFilters.filter(tId => !isAnIntId(tId))
-                        }
+                        newTagFilters.push("nonnull")
+                        newTagFilters = newTagFilters.filter(tId => !isAnIntId(tId))
                     } else {
-                        if(newTagFilters.includes("nonnull")) {
-                            const otherTagIds = tags?.map(t => t.id.toString())
-                                .filter(tagId => tagId !== t.id.toString()) ?? []
-                            newTagFilters = newTagFilters
-                                            .filter(tId => tId !== "nonnull")
-                                            .concat(otherTagIds)
-                        } else {
-                            newTagFilters = newTagFilters.filter(tId => tId !== t.id.toString())
-                        }
+                        newTagFilters = newTagFilters.filter(tId => tId !== "nonnull")
+                    }
+                    executeFilterChangeCallback(props, {...filter, tagIds: newTagFilters})
+                }}
+            />
+            <CheckBox label="No tag" 
+                checked={filter?.tagIds?.includes("null") ?? false} 
+                onChange={(selected) => {
+                    let newTagFilters = [...(filter?.tagIds ?? [])]
+                    if(selected) {
+                        newTagFilters.push("null")
+                    } else {
+                        newTagFilters = newTagFilters.filter(tId => tId !== "null")
                     }
                     executeFilterChangeCallback(props, {... filter, tagIds: newTagFilters })
                 }}
-            />)}
-
-        <hr />
-
-        <CheckBox label="All projects" 
-            checked={
-                filter?.projectIds === undefined
-                || filter?.projectIds?.includes("nonnull")
-            }
-            onChange={selected => {
-                let newProjectFilters = [...filter?.projectIds??[]]
-                if(selected) {
-                    newProjectFilters.push("nonnull")
-                    newProjectFilters = newProjectFilters.filter(pId => !isAnIntId(pId))
-                } else {
-                    //remove all project filters accept "null" (for tasks with no project)
-                    newProjectFilters = newProjectFilters.filter(pId => pId !== "nonnull" && !isAnIntId(pId))
-                }
-                executeFilterChangeCallback(props, { ...filter, projectIds: newProjectFilters})
-            }} />
-
-        <CheckBox label="No project" checked={
-                filter?.projectIds?.includes("null") 
-                || false 
-            }
-            onChange={(selected) => 
-                {
-                    let newProjectFilters = [...filter?.projectIds??[]]
-                    if(selected && !newProjectFilters.includes("null")) {
-                        newProjectFilters.push("null")
-                    } else {
-                        newProjectFilters = newProjectFilters.filter(pId => pId !== "null")
-                    }
-                    executeFilterChangeCallback(props, { ...filter, projectIds: newProjectFilters })
-                }
-            }
-        />
-        <hr/>
-        {(projectsWithNextAction || []).map(p => 
-            <CheckBox key={p.project.id} label={p.project.name} 
-                className={"block " + (p.hasNextAction ? "" : "text-red-500")}
-                checked={
-                        filter?.projectIds === undefined 
-                        || filter?.projectIds?.includes(p.project.id.toString()) 
-                        || filter?.projectIds?.includes("nonnull")
+            />
+            <hr/>
+            {(tags || []).map(t => 
+                <CheckBox key={t.id} label={t.name} 
+                    className="block"
+                    checked={filter?.tagIds?.includes(t.id.toString()) 
+                        || filter?.tagIds?.includes("nonnull")
                         || false
-                    } 
-                onChange={(selected) => {
-                    executeFilterChangeCallback(props, { ...filter, projectIds: buildProjectIdsFilter(p.project.id, selected) })
-                }}
-        />
+                    }
+                    onChange={selected => {
+                        let newTagFilters = [...(filter?.tagIds ?? [])]
+                        if(selected) {
+                            newTagFilters.push(t.id.toString())
+
+                            const tagIds = newTagFilters.filter(tId => isAnIntId(tId))
+                            if(tagIds.length === (tags?.length ?? 0)) {
+                                //all tags are selected
+                                newTagFilters.push("nonnull")
+                                newTagFilters = newTagFilters.filter(tId => !isAnIntId(tId))
+                            }
+                        } else {
+                            if(newTagFilters.includes("nonnull")) {
+                                const otherTagIds = tags?.map(t => t.id.toString())
+                                    .filter(tagId => tagId !== t.id.toString()) ?? []
+                                newTagFilters = newTagFilters
+                                                .filter(tId => tId !== "nonnull")
+                                                .concat(otherTagIds)
+                            } else {
+                                newTagFilters = newTagFilters.filter(tId => tId !== t.id.toString())
+                            }
+                        }
+                        executeFilterChangeCallback(props, {... filter, tagIds: newTagFilters })
+                    }}
+                />)}
+
+            <hr />
+
+            <CheckBox label="All projects" 
+                checked={
+                    filter?.projectIds === undefined
+                    || filter?.projectIds?.includes("nonnull")
+                }
+                onChange={selected => {
+                    let newProjectFilters = [...filter?.projectIds??[]]
+                    if(selected) {
+                        newProjectFilters.push("nonnull")
+                        newProjectFilters = newProjectFilters.filter(pId => !isAnIntId(pId))
+                    } else {
+                        //remove all project filters accept "null" (for tasks with no project)
+                        newProjectFilters = newProjectFilters.filter(pId => pId !== "nonnull" && !isAnIntId(pId))
+                    }
+                    executeFilterChangeCallback(props, { ...filter, projectIds: newProjectFilters})
+                }} />
+
+            <CheckBox label="No project" checked={
+                    filter?.projectIds?.includes("null") 
+                    || false 
+                }
+                onChange={(selected) => 
+                    {
+                        let newProjectFilters = [...filter?.projectIds??[]]
+                        if(selected && !newProjectFilters.includes("null")) {
+                            newProjectFilters.push("null")
+                        } else {
+                            newProjectFilters = newProjectFilters.filter(pId => pId !== "null")
+                        }
+                        executeFilterChangeCallback(props, { ...filter, projectIds: newProjectFilters })
+                    }
+                }
+            />
+            <hr/>
+            {(projectsWithNextAction || []).map(p => 
+                <CheckBox key={p.project.id} label={p.project.name} 
+                    className={"block " + (p.hasNextAction ? "" : "text-red-500")}
+                    checked={
+                            filter?.projectIds === undefined 
+                            || filter?.projectIds?.includes(p.project.id.toString()) 
+                            || filter?.projectIds?.includes("nonnull")
+                            || false
+                        } 
+                    onChange={(selected) => {
+                        executeFilterChangeCallback(props, { ...filter, projectIds: buildProjectIdsFilter(p.project.id, selected) })
+                    }}
+            />
         )}
+        </div>
     </div>
 }
 
