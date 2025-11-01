@@ -133,8 +133,10 @@ export function TaskFilters(props: TaskFiltersProps) {
                 executeFilterChangeCallback(props, {... filter, tagIds: newTagFilters })
             }}
         />
+        <hr/>
         {(tags || []).map(t => 
             <CheckBox key={t.id} label={t.name} 
+                className="block"
                 checked={filter?.tagIds?.includes(t.id.toString()) 
                     || filter?.tagIds?.includes("nonnull")
                     || false
