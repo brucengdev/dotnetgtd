@@ -6,6 +6,14 @@ import '@testing-library/jest-dom'
 import { sleep } from "./__test__/testutils";
 
 describe("TaskFilters views", () => {
+
+    it("shows filters toggle button", async () => {
+        const client = new TestClient()
+        render(<TaskFilters client={client} />)
+        await sleep(1)
+
+        expect(screen.getByRole("button", { name: "Filters ▼" })).toBeInTheDocument()
+    })
     it("shows tag and project filters", async () => {
         const client = new TestClient()
         client.Projects = [
@@ -18,8 +26,6 @@ describe("TaskFilters views", () => {
         ]
         render(<TaskFilters client={client} />)
         await sleep(1)
-
-        expect(screen.getByRole("button", { name: "Filters ▼" })).toBeInTheDocument()
 
         expect(screen.getByRole("checkbox", {name: "Active tasks"})).toBeInTheDocument()
         expect(screen.getByRole("checkbox", {name: "Inactive tasks"})).toBeInTheDocument()
