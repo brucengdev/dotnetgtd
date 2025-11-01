@@ -30,7 +30,7 @@ export function TaskFilters(props: TaskFiltersProps) {
     const { client, filter } = props
     const [projectsWithNextAction, setProjects] = useState<ProjectWithNextAction[] | undefined>(undefined)
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
-    const [collapsed, setCollapsed] = useState<boolean>(false)
+    const [collapsed, setCollapsed] = useState<boolean>(window.innerWidth <= 640)
     if(projectsWithNextAction === undefined) {
         (async () => {
             let retrievedProjects = await client.GetProjects(filter)

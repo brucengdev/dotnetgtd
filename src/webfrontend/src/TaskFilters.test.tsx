@@ -6,6 +6,39 @@ import '@testing-library/jest-dom'
 import { sleep } from "./__test__/testutils";
 
 describe("TaskFilters views", () => {
+    const screenSizeCases = [
+        { width: 100, collapsed: true},
+        { width: 200, collapsed: true},
+        { width: 300, collapsed: true},
+        { width: 400, collapsed: true},
+        { width: 499, collapsed: true},
+        { width: 500, collapsed: true},
+        { width: 600, collapsed: true},
+        { width: 640, collapsed: true},
+        { width: 641, collapsed: false},
+        { width: 700, collapsed: false},
+        { width: 800, collapsed: false},
+        { width: 900, collapsed: false}
+    ]
+    screenSizeCases.forEach(({width, collapsed}) => {
+        it(`show or hide filters correctly on screen width ${width}`, async () => {
+            const innerWidthBackup = window.innerWidth
+            window.innerWidth = width
+            const client = new TestClient()
+            render(<TaskFilters client={client} />)
+            await sleep(1)
+
+            if(collapsed) {
+                expect(screen.getByRole("button", { name: "Filters ▲" })).toBeInTheDocument()
+                expect(screen.queryByRole("button", { name: "Filters ▼" })).not.toBeInTheDocument()
+            } else {
+                expect(screen.queryByRole("button", { name: "Filters ▲" })).not.toBeInTheDocument()
+                expect(screen.getByRole("button", { name: "Filters ▼" })).toBeInTheDocument()
+            }
+
+            window.innerWidth = innerWidthBackup
+        })
+    })
     it("hide or show all filters when button is toggled", async () => {
         const client = new TestClient()
         client.Projects = [
