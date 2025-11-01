@@ -30,6 +30,7 @@ export function TaskFilters(props: TaskFiltersProps) {
     const { client, filter } = props
     const [projectsWithNextAction, setProjects] = useState<ProjectWithNextAction[] | undefined>(undefined)
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
+    const [collapsed, setCollapsed] = useState<boolean>(false)
     if(projectsWithNextAction === undefined) {
         (async () => {
             let retrievedProjects = await client.GetProjects(filter)
@@ -76,8 +77,14 @@ export function TaskFilters(props: TaskFiltersProps) {
     }
 
     return <div data-testId="task-filters" className="pt-5">
-        <Button text="Filters ▼" mode={ButtonMode.SECONDARY} />
-        <div>
+        <Button 
+            text={collapsed? "Filters ▲":"Filters ▼"} 
+            mode={ButtonMode.SECONDARY} 
+            onClick={() => {
+                setCollapsed(!collapsed)
+            } 
+        }/>
+        {!collapsed && <>
             <CheckBox label="Active tasks"
                 className="block" 
                 checked={filter?.active ?? false}
@@ -220,7 +227,7 @@ export function TaskFilters(props: TaskFiltersProps) {
                     }}
             />
         )}
-        </div>
+        </>}
     </div>
 }
 

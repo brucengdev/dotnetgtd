@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vitest } from "vitest";
 import { TaskFilter, TaskFilters } from "./TaskFilters";
 import { TestClient } from "./__test__/TestClient";
@@ -6,15 +6,7 @@ import '@testing-library/jest-dom'
 import { sleep } from "./__test__/testutils";
 
 describe("TaskFilters views", () => {
-
-    it("shows filters toggle button", async () => {
-        const client = new TestClient()
-        render(<TaskFilters client={client} />)
-        await sleep(1)
-
-        expect(screen.getByRole("button", { name: "Filters ▼" })).toBeInTheDocument()
-    })
-    it("shows tag and project filters", async () => {
+    it("hide or show all filters when button is toggled", async () => {
         const client = new TestClient()
         client.Projects = [
             { id: 1, name: "Project 1", later: false, done: false},
@@ -26,6 +18,52 @@ describe("TaskFilters views", () => {
         ]
         render(<TaskFilters client={client} />)
         await sleep(1)
+
+        expect(screen.getByRole("button", { name: "Filters ▼" })).toBeInTheDocument()
+        expect(screen.queryByRole("button", { name: "Filters ▲" })).not.toBeInTheDocument()
+        expect(screen.getByRole("button", { name: "Filters ▼" })).toBeInTheDocument()
+
+        expect(screen.getByRole("checkbox", {name: "Active tasks"})).toBeInTheDocument()
+        expect(screen.getByRole("checkbox", {name: "Inactive tasks"})).toBeInTheDocument()
+
+        expect(screen.getByRole("checkbox", {name: "Completed tasks"})).toBeInTheDocument()
+        expect(screen.getByRole("checkbox", {name: "Uncompleted tasks"})).toBeInTheDocument()
+
+        expect(screen.getByRole("checkbox", {name: "All projects"})).toBeInTheDocument()
+        expect(screen.getByRole("checkbox", {name: "No project"})).toBeInTheDocument()
+        expect(screen.getByRole("checkbox", {name: "Project 1"})).toBeInTheDocument()
+        expect(screen.getByRole("checkbox", {name: "Project 2"})).toBeInTheDocument()
+
+        expect(screen.getByRole("checkbox", {name: "All tags"})).toBeInTheDocument()
+        expect(screen.getByRole("checkbox", {name: "No tag"})).toBeInTheDocument()
+        expect(screen.getByRole("checkbox", {name: "Tag 1"})).toBeInTheDocument()
+        expect(screen.getByRole("checkbox", {name: "Tag 2"})).toBeInTheDocument()
+        
+        fireEvent.click(screen.getByRole("button", { name: "Filters ▼" }))
+
+        expect(screen.queryByRole("button", { name: "Filters ▼" })).not.toBeInTheDocument()
+        expect(screen.getByRole("button", { name: "Filters ▲" })).toBeInTheDocument()
+
+        expect(screen.queryByRole("checkbox", {name: "Active tasks"})).not.toBeInTheDocument()
+        expect(screen.queryByRole("checkbox", {name: "Inactive tasks"})).not.toBeInTheDocument()
+
+        expect(screen.queryByRole("checkbox", {name: "Completed tasks"})).not.toBeInTheDocument()
+        expect(screen.queryByRole("checkbox", {name: "Uncompleted tasks"})).not.toBeInTheDocument()
+
+        expect(screen.queryByRole("checkbox", {name: "All projects"})).not.toBeInTheDocument()
+        expect(screen.queryByRole("checkbox", {name: "No project"})).not.toBeInTheDocument()
+        expect(screen.queryByRole("checkbox", {name: "Project 1"})).not.toBeInTheDocument()
+        expect(screen.queryByRole("checkbox", {name: "Project 2"})).not.toBeInTheDocument()
+
+        expect(screen.queryByRole("checkbox", {name: "All tags"})).not.toBeInTheDocument()
+        expect(screen.queryByRole("checkbox", {name: "No tag"})).not.toBeInTheDocument()
+        expect(screen.queryByRole("checkbox", {name: "Tag 1"})).not.toBeInTheDocument()
+        expect(screen.queryByRole("checkbox", {name: "Tag 2"})).not.toBeInTheDocument()
+
+        fireEvent.click(screen.getByRole("button", { name: "Filters ▲" }))
+
+        expect(screen.queryByRole("button", { name: "Filters ▲" })).not.toBeInTheDocument()
+        expect(screen.getByRole("button", { name: "Filters ▼" })).toBeInTheDocument()
 
         expect(screen.getByRole("checkbox", {name: "Active tasks"})).toBeInTheDocument()
         expect(screen.getByRole("checkbox", {name: "Inactive tasks"})).toBeInTheDocument()
