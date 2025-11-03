@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest"
 import ItemView from "./ItemView"
-import { screen, render } from "@testing-library/react";
+import { screen, render, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom'
 import { Project } from "./models/Project";
 import { Tag } from "./models/Tag";
@@ -77,5 +77,41 @@ describe("ItemView", () => {
 
             window.innerWidth = originalSize
         })
+    })
+
+    it(`expands compact view when more is clicked on`, () => {
+        const originalSize = window.innerWidth
+        window.innerWidth = 640
+        render(<ItemView item={{
+            id: 1,
+            description: "test task",
+            done: false,
+            later: false
+        }} 
+        projects={testProjects} 
+        tags={testTags}
+        />)
+
+        expect(screen.getByTestId("description")).toBeInTheDocument()
+        expect(screen.queryByTestId("project")).not.toBeInTheDocument()
+        expect(screen.queryByTestId("done")).not.toBeInTheDocument()
+        expect(screen.queryByTestId("later")).not.toBeInTheDocument()
+        expect(screen.queryByTestId("tags")).not.toBeInTheDocument()
+
+        expect(screen.getByRole("link", { name: "more"})).toBeInTheDocument()
+        expect(screen.queryByRole("link", { name: "collapse"})).not.toBeInTheDocument()
+
+        fireEvent.click(screen.getByRole("link", { name: "more"}))
+
+        expect(screen.getByTestId("description")).toBeInTheDocument()
+        expect(screen.getByTestId("project")).toBeInTheDocument()
+        expect(screen.getByTestId("done")).toBeInTheDocument()
+        expect(screen.getByTestId("later")).toBeInTheDocument()
+        expect(screen.getByTestId("tags")).toBeInTheDocument()
+
+        expect(screen.queryByRole("link", { name: "more"})).not.toBeInTheDocument()
+        expect(screen.getByRole("link", { name: "collapse"})).toBeInTheDocument()
+
+        window.innerWidth = originalSize
     })
 })
