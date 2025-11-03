@@ -24,7 +24,7 @@ export default function ItemView(props: ItemViewProps) {
     const project = props.projects.find(p => p.id === item.projectId)
     const [ isCompactMode, setIsCompactMode ] = useState(window.innerWidth <= 640)
     return <div data-testId="item" className="border border-gray-400 mb-1">
-        <div  className="grid grid-cols-8 mb-1 gap-2">
+        <div  className="grid grid-cols-9 mb-1 gap-2">
             <EditableTextView 
                 className="col-span-6 lg:col-span-3"
                 text={description} 
@@ -39,7 +39,7 @@ export default function ItemView(props: ItemViewProps) {
                 </>
                 :<>
                     <EditableSelect
-                        className="col-span-6 lg:col-span-1"
+                        className="col-span-7 lg:col-span-1"
                         textViewDataTestId="project"
                         selectDataTestId="edit-project"
                         options={
@@ -51,7 +51,7 @@ export default function ItemView(props: ItemViewProps) {
                         onChange={newProjectId => onChange?.({...item, projectId: newProjectId ? parseInt(newProjectId) : undefined})}
                     />
                     <EditableMultiSelect 
-                        className="col-span-6 lg:col-span-1"
+                        className="col-span-7 lg:col-span-1"
                         selectedValues={item.tagIds?.map(t => t.toString()) ?? []}
                         textViewDataTestId="tags"
                         selectDataTestId="edit-tags"
@@ -65,7 +65,7 @@ export default function ItemView(props: ItemViewProps) {
                         placeHolderForNoOption="[No tag]"
                     />
                     <CheckBox
-                        className="col-span-3 lg:col-span-1"
+                        className="col-span-4 lg:col-span-1"
                         label="Done"
                         checked={project?.done? true: done}
                         disabled={project?.done ?? false}
@@ -74,16 +74,16 @@ export default function ItemView(props: ItemViewProps) {
                     />
 
                     <CheckBox
-                        className="col-span-3 lg:col-span-1"
+                        className="col-span-5 lg:col-span-1"
                         label="Later"
                         checked={project == null? later: project?.later}
                         dataTestId="later"
                         onChange={checked => onChange?.({...item, later: checked})}
                     />
 
-                    <Link text="collapse" onClick={() => setIsCompactMode(true)} />
+                    <Link text="collapse" className="col-span-7 lg:col-span-1" onClick={() => setIsCompactMode(true)} />
                 </>}
-            <div className="lg:col-span-1 text-right">
+            <div className="text-right">
                 {showConfirmDelete
                     ? <></>
                     : <Button text="Delete" className="pr-2"
