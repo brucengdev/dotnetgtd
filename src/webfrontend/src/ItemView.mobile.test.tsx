@@ -20,7 +20,7 @@ const testTags: Tag[] = [
 
 describe("ItemView", () => {
     const smallScreenSize = [
-        320, 375, 425, 576, 639
+        320, 375, 425, 576, 640
     ]
     smallScreenSize.forEach(size => {
         it(`shows compact view on mobile screens with size = ${size}`, () => {
@@ -40,6 +40,30 @@ describe("ItemView", () => {
             expect(screen.getByTestId("done")).not.toBeInTheDocument()
             expect(screen.getByTestId("later")).not.toBeInTheDocument()
             expect(screen.getByTestId("tags")).not.toBeInTheDocument()
+        })
+    })
+
+    const bigScreenSize = [
+        641, 768, 1024, 1280, 1536
+    ]
+    bigScreenSize.forEach(size => {
+        it(`shows full view on mobile screens with size = ${size}`, () => {
+            window.innerWidth = size
+            render(<ItemView item={{
+                id: 1,
+                description: "test task",
+                done: false,
+                later: false
+            }} 
+            projects={testProjects} 
+            tags={testTags}
+            />)
+
+            expect(screen.getByTestId("description")).toBeInTheDocument()
+            expect(screen.getByTestId("project")).toBeInTheDocument()
+            expect(screen.getByTestId("done")).toBeInTheDocument()
+            expect(screen.getByTestId("later")).toBeInTheDocument()
+            expect(screen.getByTestId("tags")).toBeInTheDocument()
         })
     })
 })
