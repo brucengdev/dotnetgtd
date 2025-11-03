@@ -8,6 +8,7 @@ import { Project } from "./models/Project"
 import { Tag } from "./models/Tag"
 import { EditableSelect } from "./controls/EditableSelect"
 import { EditableMultiSelect } from "./controls/EditableMultiSelect"
+import { Link } from "./controls/Link"
 
 interface ItemViewProps {
     onChange?: (item: Item) => void
@@ -21,8 +22,9 @@ export default function ItemView(props: ItemViewProps) {
     const { description, done, later } = item
     const [ showConfirmDelete, setShowConfirmDelete ] = useState(false)
     const project = props.projects.find(p => p.id === item.projectId)
+    const [ isCompactMode, setIsCompactMode ] = useState(window.innerWidth <= 640)
     return <div data-testId="item" className="border border-gray-400 mb-1">
-        <div  className="grid grid-cols-8 mb-1 gap-2">
+        <div  className="grid grid-cols-9 mb-1 gap-2">
             <EditableTextView 
                 className="col-span-6 lg:col-span-3"
                 text={description} 
@@ -31,48 +33,57 @@ export default function ItemView(props: ItemViewProps) {
                     ...item, description: newDescription
                 }) } 
             />
-            <EditableSelect
-                className="col-span-6 lg:col-span-1"
-                textViewDataTestId="project"
-                selectDataTestId="edit-project"
-                options={
-                    [{ value: "", text: "[No project]" }] .concat(
-                        projects.map(p => ({ value: p.id.toString(), text: p.name }))
-                    )
-                }
-                selectedValue={item.projectId?.toString() ?? ""}
-                onChange={newProjectId => onChange?.({...item, projectId: newProjectId ? parseInt(newProjectId) : undefined})}
-            />
-            <EditableMultiSelect 
-                className="col-span-6 lg:col-span-1"
-                selectedValues={item.tagIds?.map(t => t.toString()) ?? []}
-                textViewDataTestId="tags"
-                selectDataTestId="edit-tags"
-                options={props.tags.map(t => ({ value: t.id.toString(), text: t.name }))}
-                onChange={newValues => {
-                    const newTagIds = newValues?.map(v => parseInt(v)) ?? []
-                    return onChange?.({...item, 
-                        tagIds: newTagIds
-                    })
-                }}
-                placeHolderForNoOption="[No tag]"
-            />
-            <CheckBox
-                className="col-span-3 lg:col-span-1"
-                label="Done"
-                checked={project?.done? true: done}
-                disabled={project?.done ?? false}
-                dataTestId="done"
-                onChange={checked => onChange?.({...item, done: checked})}
-            />
-            <CheckBox
-                className="col-span-3 lg:col-span-1"
-                label="Later"
-                checked={project == null? later: project?.later}
-                dataTestId="later"
-                onChange={checked => onChange?.({...item, later: checked})}
-            />
-            <div className="lg:col-span-1 text-right">
+            {isCompactMode
+                ?<>
+                    <Link text="more" onClick={() => setIsCompactMode(false)}/>
+                </>
+                :<>
+                    <EditableSelect
+                        className="col-span-7 lg:col-span-1"
+                        textViewDataTestId="project"
+                        selectDataTestId="edit-project"
+                        options={
+                            [{ value: "", text: "[No project]" }] .concat(
+                                projects.map(p => ({ value: p.id.toString(), text: p.name }))
+                            )
+                        }
+                        selectedValue={item.projectId?.toString() ?? ""}
+                        onChange={newProjectId => onChange?.({...item, projectId: newProjectId ? parseInt(newProjectId) : undefined})}
+                    />
+                    <EditableMultiSelect 
+                        className="col-span-7 lg:col-span-1"
+                        selectedValues={item.tagIds?.map(t => t.toString()) ?? []}
+                        textViewDataTestId="tags"
+                        selectDataTestId="edit-tags"
+                        options={props.tags.map(t => ({ value: t.id.toString(), text: t.name }))}
+                        onChange={newValues => {
+                            const newTagIds = newValues?.map(v => parseInt(v)) ?? []
+                            return onChange?.({...item, 
+                                tagIds: newTagIds
+                            })
+                        }}
+                        placeHolderForNoOption="[No tag]"
+                    />
+                    <CheckBox
+                        className="col-span-4 lg:col-span-1"
+                        label="Done"
+                        checked={project?.done? true: done}
+                        disabled={project?.done ?? false}
+                        dataTestId="done"
+                        onChange={checked => onChange?.({...item, done: checked})}
+                    />
+
+                    <CheckBox
+                        className="col-span-5 lg:col-span-1"
+                        label="Later"
+                        checked={project == null? later: project?.later}
+                        dataTestId="later"
+                        onChange={checked => onChange?.({...item, later: checked})}
+                    />
+
+                    <Link text="collapse" className="col-span-7 lg:col-span-1" onClick={() => setIsCompactMode(true)} />
+                </>}
+            <div className="text-right">
                 {showConfirmDelete
                     ? <></>
                     : <Button text="Delete" className="pr-2"
