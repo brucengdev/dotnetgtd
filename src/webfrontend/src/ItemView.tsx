@@ -81,7 +81,7 @@ export default function ItemView(props: ItemViewProps) {
                         onChange={checked => onChange?.({...item, later: checked})}
                     />
 
-                    <Link text="collapse" />
+                    <Link text="collapse" onClick={() => setSmallScreen(true)} />
                 </>}
             <div className="lg:col-span-1 text-right">
                 {showConfirmDelete
