@@ -22,7 +22,7 @@ export default function ItemView(props: ItemViewProps) {
     const { description, done, later } = item
     const [ showConfirmDelete, setShowConfirmDelete ] = useState(false)
     const project = props.projects.find(p => p.id === item.projectId)
-    const [ onSmallScreen, setSmallScreen ] = useState(window.innerWidth <= 640)
+    const [ isCompactMode, setIsCompactMode ] = useState(window.innerWidth <= 640)
     return <div data-testId="item" className="border border-gray-400 mb-1">
         <div  className="grid grid-cols-8 mb-1 gap-2">
             <EditableTextView 
@@ -33,9 +33,9 @@ export default function ItemView(props: ItemViewProps) {
                     ...item, description: newDescription
                 }) } 
             />
-            {onSmallScreen
+            {isCompactMode
                 ?<>
-                    <Link text="more" onClick={() => setSmallScreen(false)}/>
+                    <Link text="more" onClick={() => setIsCompactMode(false)}/>
                 </>
                 :<>
                     <EditableSelect
@@ -81,7 +81,7 @@ export default function ItemView(props: ItemViewProps) {
                         onChange={checked => onChange?.({...item, later: checked})}
                     />
 
-                    <Link text="collapse" onClick={() => setSmallScreen(true)} />
+                    <Link text="collapse" onClick={() => setIsCompactMode(true)} />
                 </>}
             <div className="lg:col-span-1 text-right">
                 {showConfirmDelete
