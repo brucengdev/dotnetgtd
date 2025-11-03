@@ -21,6 +21,7 @@ export default function ItemView(props: ItemViewProps) {
     const { description, done, later } = item
     const [ showConfirmDelete, setShowConfirmDelete ] = useState(false)
     const project = props.projects.find(p => p.id === item.projectId)
+    const onSmallScreen = window.innerWidth <= 640
     return <div data-testId="item" className="border border-gray-400 mb-1">
         <div  className="grid grid-cols-8 mb-1 gap-2">
             <EditableTextView 
@@ -31,7 +32,7 @@ export default function ItemView(props: ItemViewProps) {
                     ...item, description: newDescription
                 }) } 
             />
-            <EditableSelect
+            {onSmallScreen?<></>:<EditableSelect
                 className="col-span-6 lg:col-span-1"
                 textViewDataTestId="project"
                 selectDataTestId="edit-project"
@@ -42,8 +43,8 @@ export default function ItemView(props: ItemViewProps) {
                 }
                 selectedValue={item.projectId?.toString() ?? ""}
                 onChange={newProjectId => onChange?.({...item, projectId: newProjectId ? parseInt(newProjectId) : undefined})}
-            />
-            <EditableMultiSelect 
+            />}
+            {onSmallScreen?<></>:<EditableMultiSelect 
                 className="col-span-6 lg:col-span-1"
                 selectedValues={item.tagIds?.map(t => t.toString()) ?? []}
                 textViewDataTestId="tags"
@@ -56,22 +57,23 @@ export default function ItemView(props: ItemViewProps) {
                     })
                 }}
                 placeHolderForNoOption="[No tag]"
-            />
-            <CheckBox
+            />}
+            {onSmallScreen?<></>:<CheckBox
                 className="col-span-3 lg:col-span-1"
                 label="Done"
                 checked={project?.done? true: done}
                 disabled={project?.done ?? false}
                 dataTestId="done"
                 onChange={checked => onChange?.({...item, done: checked})}
-            />
-            <CheckBox
+            />}
+
+            {onSmallScreen?<></>:<CheckBox
                 className="col-span-3 lg:col-span-1"
                 label="Later"
                 checked={project == null? later: project?.later}
                 dataTestId="later"
                 onChange={checked => onChange?.({...item, later: checked})}
-            />
+            />}
             <div className="lg:col-span-1 text-right">
                 {showConfirmDelete
                     ? <></>
