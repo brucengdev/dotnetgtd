@@ -32,48 +32,51 @@ export default function ItemView(props: ItemViewProps) {
                     ...item, description: newDescription
                 }) } 
             />
-            {onSmallScreen?<></>:<EditableSelect
-                className="col-span-6 lg:col-span-1"
-                textViewDataTestId="project"
-                selectDataTestId="edit-project"
-                options={
-                    [{ value: "", text: "[No project]" }] .concat(
-                        projects.map(p => ({ value: p.id.toString(), text: p.name }))
-                    )
-                }
-                selectedValue={item.projectId?.toString() ?? ""}
-                onChange={newProjectId => onChange?.({...item, projectId: newProjectId ? parseInt(newProjectId) : undefined})}
-            />}
-            {onSmallScreen?<></>:<EditableMultiSelect 
-                className="col-span-6 lg:col-span-1"
-                selectedValues={item.tagIds?.map(t => t.toString()) ?? []}
-                textViewDataTestId="tags"
-                selectDataTestId="edit-tags"
-                options={props.tags.map(t => ({ value: t.id.toString(), text: t.name }))}
-                onChange={newValues => {
-                    const newTagIds = newValues?.map(v => parseInt(v)) ?? []
-                    return onChange?.({...item, 
-                        tagIds: newTagIds
-                    })
-                }}
-                placeHolderForNoOption="[No tag]"
-            />}
-            {onSmallScreen?<></>:<CheckBox
-                className="col-span-3 lg:col-span-1"
-                label="Done"
-                checked={project?.done? true: done}
-                disabled={project?.done ?? false}
-                dataTestId="done"
-                onChange={checked => onChange?.({...item, done: checked})}
-            />}
+            {onSmallScreen?<></>
+                :<>
+                    <EditableSelect
+                        className="col-span-6 lg:col-span-1"
+                        textViewDataTestId="project"
+                        selectDataTestId="edit-project"
+                        options={
+                            [{ value: "", text: "[No project]" }] .concat(
+                                projects.map(p => ({ value: p.id.toString(), text: p.name }))
+                            )
+                        }
+                        selectedValue={item.projectId?.toString() ?? ""}
+                        onChange={newProjectId => onChange?.({...item, projectId: newProjectId ? parseInt(newProjectId) : undefined})}
+                    />
+                    <EditableMultiSelect 
+                        className="col-span-6 lg:col-span-1"
+                        selectedValues={item.tagIds?.map(t => t.toString()) ?? []}
+                        textViewDataTestId="tags"
+                        selectDataTestId="edit-tags"
+                        options={props.tags.map(t => ({ value: t.id.toString(), text: t.name }))}
+                        onChange={newValues => {
+                            const newTagIds = newValues?.map(v => parseInt(v)) ?? []
+                            return onChange?.({...item, 
+                                tagIds: newTagIds
+                            })
+                        }}
+                        placeHolderForNoOption="[No tag]"
+                    />
+                    <CheckBox
+                        className="col-span-3 lg:col-span-1"
+                        label="Done"
+                        checked={project?.done? true: done}
+                        disabled={project?.done ?? false}
+                        dataTestId="done"
+                        onChange={checked => onChange?.({...item, done: checked})}
+                    />
 
-            {onSmallScreen?<></>:<CheckBox
-                className="col-span-3 lg:col-span-1"
-                label="Later"
-                checked={project == null? later: project?.later}
-                dataTestId="later"
-                onChange={checked => onChange?.({...item, later: checked})}
-            />}
+                    <CheckBox
+                        className="col-span-3 lg:col-span-1"
+                        label="Later"
+                        checked={project == null? later: project?.later}
+                        dataTestId="later"
+                        onChange={checked => onChange?.({...item, later: checked})}
+                    />
+                </>}
             <div className="lg:col-span-1 text-right">
                 {showConfirmDelete
                     ? <></>
