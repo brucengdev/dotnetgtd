@@ -5,5 +5,8 @@ interface LinkProps {
 }
 export function Link(props: LinkProps) {
     const { text, onClick, className } = props
-    return <a href="#" className={`text-blue-800 ${className}`} onClick={_ => onClick?.()}>{text}</a>
+    return <a href="#" className={`text-blue-800 ${className}`} onClick={e => {
+        e.preventDefault()//prevent navigation to link, thus jumping to top of page
+        onClick?.()
+    }}>{text}</a>
 }

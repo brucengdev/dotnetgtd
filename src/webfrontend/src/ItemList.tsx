@@ -21,7 +21,8 @@ export default function ItemList(props: ItemListProps) {
             {
                 items?.sort((a, b) => a.description.localeCompare(b.description))
                 .map(item => {
-                    return <ItemView 
+                    return <ItemView
+                        key={item.id}
                         item={item}
                         projects={props.projects ?? []}
                         tags={tags ?? []}

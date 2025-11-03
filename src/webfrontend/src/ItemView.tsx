@@ -95,5 +95,5 @@ export default function ItemView(props: ItemViewProps) {
                 ?<ConfirmDeleteView onNo={() => setShowConfirmDelete(false)} 
                     onYes={onDelete} />
                 : <></>}
-        </div>
+    </div>
 }
