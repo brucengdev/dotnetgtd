@@ -114,4 +114,40 @@ describe("ItemView", () => {
 
         window.innerWidth = originalSize
     })
+
+    it(`collapses to compact view when collapse is clicked on`, () => {
+        const originalSize = window.innerWidth
+        window.innerWidth = 641
+        render(<ItemView item={{
+            id: 1,
+            description: "test task",
+            done: false,
+            later: false
+        }} 
+        projects={testProjects} 
+        tags={testTags}
+        />)
+        
+        expect(screen.getByTestId("description")).toBeInTheDocument()
+        expect(screen.getByTestId("project")).toBeInTheDocument()
+        expect(screen.getByTestId("done")).toBeInTheDocument()
+        expect(screen.getByTestId("later")).toBeInTheDocument()
+        expect(screen.getByTestId("tags")).toBeInTheDocument()
+
+        expect(screen.queryByRole("link", { name: "more"})).not.toBeInTheDocument()
+        expect(screen.getByRole("link", { name: "collapse"})).toBeInTheDocument()
+
+        fireEvent.click(screen.getByRole("link", { name: "collapse"}))
+
+        expect(screen.getByTestId("description")).toBeInTheDocument()
+        expect(screen.queryByTestId("project")).not.toBeInTheDocument()
+        expect(screen.queryByTestId("done")).not.toBeInTheDocument()
+        expect(screen.queryByTestId("later")).not.toBeInTheDocument()
+        expect(screen.queryByTestId("tags")).not.toBeInTheDocument()
+
+        expect(screen.getByRole("link", { name: "more"})).toBeInTheDocument()
+        expect(screen.queryByRole("link", { name: "collapse"})).not.toBeInTheDocument()
+
+        window.innerWidth = originalSize
+    })
 })
