@@ -46,6 +46,8 @@ describe("EditableSelect", () => {
         expect(screen.getByTestId("editField").children[1]).toHaveAttribute("value", "2")
         expect(screen.getByTestId("editField").children[2].textContent).toBe("Option 3")
         expect(screen.getByTestId("editField").children[2]).toHaveAttribute("value", "3")
+
+        expect(screen.getByRole("button", { name: "Cancel" })).toBeInTheDocument()
     })
 
     it("Executes callback when value is changed", async () => {
