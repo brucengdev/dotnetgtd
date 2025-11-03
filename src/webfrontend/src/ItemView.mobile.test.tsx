@@ -43,6 +43,7 @@ describe("ItemView", () => {
             expect(screen.queryByTestId("tags")).not.toBeInTheDocument()
 
             expect(screen.getByRole("link", { name: "more"})).toBeInTheDocument()
+            expect(screen.queryByRole("link", { name: "collapse"})).not.toBeInTheDocument()
 
             window.innerWidth = originalSize
         })
@@ -72,6 +73,7 @@ describe("ItemView", () => {
             expect(screen.getByTestId("tags")).toBeInTheDocument()
 
             expect(screen.queryByRole("link", { name: "more"})).not.toBeInTheDocument()
+            expect(screen.getByRole("link", { name: "collapse"})).toBeInTheDocument()
 
             window.innerWidth = originalSize
         })
