@@ -16,7 +16,7 @@ export function ProjectListItem(props: ProjectListItemProps) {
     const [showConfirmDelete, setShowConfirmDelete] = useState(false)
     return <div data-testid="project"  className="grid grid-cols-6 mb-1 border border-gray-400">
         <EditableTextView 
-            className="col-span-4 md:col-span-3"
+            className="col-span-3 md:col-span-3"
             text={name} 
             editViewTestId="edit-name"
             textViewTestId="name" 
