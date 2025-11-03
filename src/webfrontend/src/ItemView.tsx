@@ -33,7 +33,8 @@ export default function ItemView(props: ItemViewProps) {
                     ...item, description: newDescription
                 }) } 
             />
-            {onSmallScreen?<>
+            {onSmallScreen
+                ?<>
                     <Link text="more" />
                 </>
                 :<>
@@ -79,6 +80,8 @@ export default function ItemView(props: ItemViewProps) {
                         dataTestId="later"
                         onChange={checked => onChange?.({...item, later: checked})}
                     />
+
+                    <Link text="collapse" />
                 </>}
             <div className="lg:col-span-1 text-right">
                 {showConfirmDelete
