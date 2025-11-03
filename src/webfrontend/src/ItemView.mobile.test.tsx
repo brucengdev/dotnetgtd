@@ -1,6 +1,6 @@
-import { describe, expect, it, vitest } from "vitest"
+import { describe, expect, it } from "vitest"
 import ItemView from "./ItemView"
-import { screen, render, fireEvent } from "@testing-library/react";
+import { screen, render } from "@testing-library/react";
 import '@testing-library/jest-dom'
 import { Project } from "./models/Project";
 import { Tag } from "./models/Tag";
@@ -41,6 +41,9 @@ describe("ItemView", () => {
             expect(screen.queryByTestId("done")).not.toBeInTheDocument()
             expect(screen.queryByTestId("later")).not.toBeInTheDocument()
             expect(screen.queryByTestId("tags")).not.toBeInTheDocument()
+
+            expect(screen.getByRole("link", { name: "more"})).toBeInTheDocument()
+
             window.innerWidth = originalSize
         })
     })
@@ -67,6 +70,9 @@ describe("ItemView", () => {
             expect(screen.getByTestId("done")).toBeInTheDocument()
             expect(screen.getByTestId("later")).toBeInTheDocument()
             expect(screen.getByTestId("tags")).toBeInTheDocument()
+
+            expect(screen.queryByRole("link", { name: "more"})).not.toBeInTheDocument()
+
             window.innerWidth = originalSize
         })
     })
