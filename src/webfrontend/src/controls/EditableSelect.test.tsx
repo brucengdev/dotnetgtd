@@ -47,7 +47,7 @@ describe("EditableSelect", () => {
         expect(screen.getByTestId("editField").children[2].textContent).toBe("Option 3")
         expect(screen.getByTestId("editField").children[2]).toHaveAttribute("value", "3")
 
-        expect(screen.getByRole("button", { name: "Cancel" })).toBeInTheDocument()
+        expect(screen.getByRole("button", { name: "x" })).toBeInTheDocument()
     })
 
     it(`switches back to display view when cancel is clicked`, async () => {
@@ -70,7 +70,7 @@ describe("EditableSelect", () => {
         expect(screen.getByTestId("editField")).toBeInTheDocument()
         expect(screen.queryByTestId("displayField")).not.toBeInTheDocument()
 
-        fireEvent.click(screen.getByRole("button", { name: "Cancel" }))
+        fireEvent.click(screen.getByRole("button", { name: "x" }))
         await sleep(1)
 
         expect(screen.getByTestId("displayField")).toBeInTheDocument()

@@ -14,7 +14,7 @@ export function EditableSelect(props: EditableSelectProps) {
     const optionDisplayText = options.find(o => o.value === (selectedValue??""))?.text
     return <>
         {isEditing
-            ? <>
+            ? <div>
                 <Select selectDataTestId={selectDataTestId} 
                     className={className}
                     options={options} 
@@ -26,10 +26,10 @@ export function EditableSelect(props: EditableSelectProps) {
                         }
                     }}
                 />
-                <Button text="Cancel" mode={ButtonMode.SECONDARY} 
+                <Button text="x" mode={ButtonMode.SECONDARY} 
                     onClick={() => setIsEditing(false)}
                 />
-            </>
+            </div>
             :<div data-testId={displayViewDataTestId} 
                     className={className}
                 onClick={() => setIsEditing(true)}>
