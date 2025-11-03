@@ -36,10 +36,10 @@ describe("ItemView", () => {
             />)
 
             expect(screen.getByTestId("description")).toBeInTheDocument()
-            expect(screen.getByTestId("project")).not.toBeInTheDocument()
-            expect(screen.getByTestId("done")).not.toBeInTheDocument()
-            expect(screen.getByTestId("later")).not.toBeInTheDocument()
-            expect(screen.getByTestId("tags")).not.toBeInTheDocument()
+            expect(screen.queryByTestId("project")).not.toBeInTheDocument()
+            expect(screen.queryByTestId("done")).not.toBeInTheDocument()
+            expect(screen.queryByTestId("later")).not.toBeInTheDocument()
+            expect(screen.queryByTestId("tags")).not.toBeInTheDocument()
         })
     })
 
