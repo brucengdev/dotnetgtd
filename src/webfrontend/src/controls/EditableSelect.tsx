@@ -26,7 +26,9 @@ export function EditableSelect(props: EditableSelectProps) {
                         }
                     }}
                 />
-                <Button text="Cancel" mode={ButtonMode.SECONDARY} />
+                <Button text="Cancel" mode={ButtonMode.SECONDARY} 
+                    onClick={() => setIsEditing(false)}
+                />
             </>
             :<div data-testId={displayViewDataTestId} 
                     className={className}

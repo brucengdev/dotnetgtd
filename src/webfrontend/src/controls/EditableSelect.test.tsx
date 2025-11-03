@@ -50,6 +50,34 @@ describe("EditableSelect", () => {
         expect(screen.getByRole("button", { name: "Cancel" })).toBeInTheDocument()
     })
 
+    it(`switches back to display view when cancel is clicked`, async () => {
+        const fn = vitest.fn()
+        render(<EditableSelect 
+            textViewDataTestId="displayField" 
+            selectDataTestId="editField" 
+            onChange={fn}
+            options={[
+                { value: "1", text: "Option 1" },
+                { value: "2", text: "Option 2" },
+                { value: "3", text: "Option 3" }
+            ]}
+            selectedValue="1"
+        />)
+
+        screen.getByTestId("displayField").click()
+        await sleep(1)
+
+        expect(screen.getByTestId("editField")).toBeInTheDocument()
+        expect(screen.queryByTestId("displayField")).not.toBeInTheDocument()
+
+        fireEvent.click(screen.getByRole("button", { name: "Cancel" }))
+        await sleep(1)
+
+        expect(screen.getByTestId("displayField")).toBeInTheDocument()
+        expect(screen.queryByTestId("editField")).not.toBeInTheDocument()
+        expect(fn).not.toHaveBeenCalled()
+    })
+
     it("Executes callback when value is changed", async () => {
         var fn = vitest.fn()
         render(<EditableSelect 
