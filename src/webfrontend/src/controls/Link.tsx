@@ -3,5 +3,5 @@ interface LinkProps {
 }
 export function Link(props: LinkProps) {
     const { text } = props
-    return <a href="#">{text}</a>
+    return <a href="#" className="text-blue-800">{text}</a>
 }
