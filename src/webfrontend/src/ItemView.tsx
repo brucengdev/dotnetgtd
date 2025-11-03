@@ -8,6 +8,7 @@ import { Project } from "./models/Project"
 import { Tag } from "./models/Tag"
 import { EditableSelect } from "./controls/EditableSelect"
 import { EditableMultiSelect } from "./controls/EditableMultiSelect"
+import { Link } from "./controls/Link"
 
 interface ItemViewProps {
     onChange?: (item: Item) => void
@@ -32,7 +33,9 @@ export default function ItemView(props: ItemViewProps) {
                     ...item, description: newDescription
                 }) } 
             />
-            {onSmallScreen?<></>
+            {onSmallScreen?<>
+                    <Link text="more" />
+                </>
                 :<>
                     <EditableSelect
                         className="col-span-6 lg:col-span-1"
