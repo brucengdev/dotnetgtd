@@ -24,6 +24,7 @@ describe("ItemView", () => {
     ]
     smallScreenSize.forEach(size => {
         it(`shows compact view on mobile screens with size = ${size}`, () => {
+            const originalSize = window.innerWidth
             window.innerWidth = size
             render(<ItemView item={{
                 id: 1,
@@ -40,6 +41,7 @@ describe("ItemView", () => {
             expect(screen.queryByTestId("done")).not.toBeInTheDocument()
             expect(screen.queryByTestId("later")).not.toBeInTheDocument()
             expect(screen.queryByTestId("tags")).not.toBeInTheDocument()
+            window.innerWidth = originalSize
         })
     })
 
@@ -48,6 +50,7 @@ describe("ItemView", () => {
     ]
     bigScreenSize.forEach(size => {
         it(`shows full view on mobile screens with size = ${size}`, () => {
+            const originalSize = window.innerWidth
             window.innerWidth = size
             render(<ItemView item={{
                 id: 1,
@@ -64,6 +67,7 @@ describe("ItemView", () => {
             expect(screen.getByTestId("done")).toBeInTheDocument()
             expect(screen.getByTestId("later")).toBeInTheDocument()
             expect(screen.getByTestId("tags")).toBeInTheDocument()
+            window.innerWidth = originalSize
         })
     })
 })
