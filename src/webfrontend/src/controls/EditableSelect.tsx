@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { Select, SelectProps } from "./Select"
+import { Button, ButtonMode } from "./Button"
 
 interface EditableSelectProps extends SelectProps {
     textViewDataTestId?: string
@@ -13,7 +14,8 @@ export function EditableSelect(props: EditableSelectProps) {
     const optionDisplayText = options.find(o => o.value === (selectedValue??""))?.text
     return <>
         {isEditing
-            ? <Select selectDataTestId={selectDataTestId} 
+            ? <>
+                <Select selectDataTestId={selectDataTestId} 
                     className={className}
                     options={options} 
                     selectedValue={selectedValue} 
@@ -24,6 +26,10 @@ export function EditableSelect(props: EditableSelectProps) {
                         }
                     }}
                 />
+                <Button text="Cancel" mode={ButtonMode.SECONDARY} 
+                    onClick={() => setIsEditing(false)}
+                />
+            </>
             :<div data-testId={displayViewDataTestId} 
                     className={className}
                 onClick={() => setIsEditing(true)}>
