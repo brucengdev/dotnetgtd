@@ -29,16 +29,23 @@ export function TaskView(props: TaskViewProps) {
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
     const [filter, setFilter] = useState<TaskFilter>(props.filter ?? defaultTasksFilter)
     if(items === undefined) {
-        client.GetItems(filter)
-            .then(items => setItems(items))
+      (async () => {
+        const items = await client.GetItems(filter)
+        setItems(items)
+      })()
     }
     if(projects === undefined) {
-        client.GetProjects()
-            .then(projects => setProjects(projects))
+      (async () => {
+        const projects = await client.GetProjects(filter)
+        projects.sort((a, b) => a.name.localeCompare(b.name))
+        setProjects(projects)
+      })()
     }
     if(tags === undefined) {
-      client.GetTags()
-          .then(tags => setTags(tags))
+      (async () => {
+        const tags = await client.GetTags()
+        setTags(tags)
+      })()
     }
     return <div data-testid="task-view" 
       className="sm:grid sm:grid-cols-3 lg:grid-cols-5">
