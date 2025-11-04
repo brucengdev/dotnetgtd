@@ -37,6 +37,7 @@ export function TaskView(props: TaskViewProps) {
     if(projects === undefined) {
       (async () => {
         const projects = await client.GetProjects()
+        projects.sort((a, b) => a.name.localeCompare(b.name))
         setProjects(projects)
       })()
     }
