@@ -4,9 +4,10 @@ import '@testing-library/jest-dom'
 import { TaskView } from "./TaskView";
 import { TestClient } from "./__test__/TestClient";
 import { sleep } from "./__test__/testutils";
+import { ProjectFilter } from "./ProjectFilters";
 
 describe("TaskView", () => {
-    it(`filters project dropdown list in item view is sorted by project name`, async () => {
+    it(`makes project dropdown list in item view sorted by project name`, async () => {
         const client = new TestClient()
         client.Items = [
             { id: 1, description: "Task A", projectId: 0, done: false, later: false },
@@ -14,11 +15,10 @@ describe("TaskView", () => {
         client.Projects = [
             { id: 1, name: "Project D", later: false, done: false },
             { id: 2, name: "Project C", later: false, done: false },
-            { id: 1, name: "Project A", later: false, done: false },
-            { id: 1, name: "Project B", later: false, done: false },
+            { id: 3, name: "Project A", later: false, done: false },
+            { id: 4, name: "Project B", later: false, done: false },
         ]
-        render(<TaskView client={client} 
-            filter={{uncompleted: true, active: true, inactive: true}} />)
+        render(<TaskView client={client} />)
         await sleep(1)
 
         fireEvent.click(screen.getByTestId("project"))
@@ -32,5 +32,44 @@ describe("TaskView", () => {
         expect(projectOptionNames).toEqual(
             ["[No project]", "Project A", "Project B", "Project C", "Project D"]
         )
+    })
+
+    const cases = [
+        { 
+            filter: { uncompleted: true, completed: true, active: true, inactive: true} as ProjectFilter, 
+            expectedProjects: [
+                "[No project]",
+                "Active completed project",
+                "Active uncompleted project",
+                "Inactive completed project",
+                "Inactive uncompleted project" 
+            ]
+        },
+    ]
+    cases.forEach(({ filter, expectedProjects }) => {
+        it(`filters project dropdown list in item view with filter ${JSON.stringify(filter)}`, async () => {
+            const client = new TestClient()
+            client.Items = [
+                { id: 1, description: "Active uncompleted task",    later: false,   done: false  },
+                { id: 2, description: "Active completed task",      later: false,   done: true   },
+                { id: 3, description: "Inactive uncompleted task",  later: true,    done: false  },
+                { id: 4, description: "Inactive completed task",    later: true,    done: true   }
+            ]
+            client.Projects = [
+                { id: 1, name: "Active uncompleted project",    later: false,   done: false  },
+                { id: 2, name: "Active completed project",      later: false,   done: true   },
+                { id: 3, name: "Inactive uncompleted project",  later: true,    done: false  },
+                { id: 4, name: "Inactive completed project",    later: true,    done: true   }
+            ]
+            render(<TaskView client={client} filter={filter} />)
+            await sleep(1)
+
+            fireEvent.click(screen.getAllByTestId("project")[0])
+            await sleep(1)
+
+            const projectOptions = screen.getAllByTestId("edit-project")[0].children
+            const projectOptionNames = Array.from(projectOptions).map(p => p.textContent)
+            expect(projectOptionNames).toEqual(expectedProjects)
+        })
     })
 })
