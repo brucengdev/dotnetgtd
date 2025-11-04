@@ -45,6 +45,66 @@ describe("TaskView", () => {
                 "Inactive uncompleted project" 
             ]
         },
+        { 
+            filter: { active: true, uncompleted: true } as ProjectFilter, 
+            expectedProjects: [
+                "[No project]",
+                "Active uncompleted project"
+            ]
+        },
+        { 
+            filter: { active: true, completed: true } as ProjectFilter, 
+            expectedProjects: [
+                "[No project]",
+                "Active completed project"
+            ]
+        },
+        { 
+            filter: { inactive: true, uncompleted: true} as ProjectFilter, 
+            expectedProjects: [
+                "[No project]",
+                "Inactive uncompleted project" 
+            ]
+        },
+        { 
+            filter: { inactive: true, completed: true} as ProjectFilter, 
+            expectedProjects: [
+                "[No project]",
+                "Inactive completed project"
+            ]
+        },
+        { 
+            filter: { uncompleted: true, active: true, inactive: true } as ProjectFilter, 
+            expectedProjects: [
+                "[No project]",
+                "Active uncompleted project",
+                "Inactive uncompleted project" 
+            ]
+        },
+        { 
+            filter: { completed: true, active: true, inactive: true } as ProjectFilter, 
+            expectedProjects: [
+                "[No project]",
+                "Active completed project",
+                "Inactive completed project"
+            ]
+        },
+        { 
+            filter: { active: true, uncompleted: true, completed: true} as ProjectFilter, 
+            expectedProjects: [
+                "[No project]",
+                "Active completed project",
+                "Active uncompleted project"
+            ]
+        },
+        { 
+            filter: { inactive: true, uncompleted: true, completed: true } as ProjectFilter, 
+            expectedProjects: [
+                "[No project]",
+                "Inactive completed project",
+                "Inactive uncompleted project" 
+            ]
+        }
     ]
     cases.forEach(({ filter, expectedProjects }) => {
         it(`filters project dropdown list in item view with filter ${JSON.stringify(filter)}`, async () => {
