@@ -23,7 +23,7 @@ FROM buildbackend AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./Backend.WebApi.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-FROM node as buildfrontend
+FROM node:22 as buildfrontend
 COPY webfrontend /src
 WORKDIR /src
 RUN echo "VITE_API_SERVER=/" > .env; npm i;npm run build
