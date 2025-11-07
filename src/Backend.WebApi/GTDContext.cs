@@ -25,22 +25,24 @@ namespace Backend.Models
             });
             modelBuilder.Entity<Item>(e =>
             {
-                e.HasOne(e => e.User);
-                e.HasOne(e => e.Project);
-                e.HasMany<ItemTagMapping>(e => e.ItemTagMappings);
+                e.HasOne(i => i.User);
+                e.HasOne(i => i.Project);
+                e.HasMany(i => i.ItemTagMappings);
             });
 
             modelBuilder.Entity<Tag>(e =>
             {
-                e.HasOne(e => e.User);
+                e.HasIndex(t => t.Name).IsUnique();
+                e.HasOne(t => t.User);
                 e.HasMany<ItemTagMapping>()
-                    .WithOne(e => e.Tag)
+                    .WithOne(t => t.Tag)
                     .OnDelete(DeleteBehavior.NoAction);
             });
 
             modelBuilder.Entity<Project>(e =>
             {
-                e.HasOne(e => e.User);
+                e.HasIndex(p => p.Name).IsUnique();
+                e.HasOne(p => p.User);
             });
         }
     }
