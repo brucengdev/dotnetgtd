@@ -73,9 +73,8 @@ export function TaskView(props: TaskViewProps) {
         <ItemList items={items} projects={projects} tags={tags}
           onDelete={(item: Item) => {
               client.DeleteItem(item.id)
-                  .then(() => {
-                      setItems(undefined) //to reload
-                  })
+                  .then(() => client.GetItems(filter))
+                  .then(items => setItems(items))
           }}
           onUpdate={async (item: Item) => {
             const existingItem = items?.find(i => i.id === item.id)
