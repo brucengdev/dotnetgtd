@@ -91,8 +91,12 @@ export function TaskView(props: TaskViewProps) {
               }
             }
             await client.UpdateItem(item);
-            setItems(undefined) //to reload items
-            setProjects(undefined) //to reload projects
+            const [updatedItems, updatedProjects] = await Promise.all([
+              client.GetItems(filter),
+              client.GetProjects(filter)
+            ])
+            setItems(updatedItems)
+            setProjects(updatedProjects)
           }}
         />
       </div>
