@@ -54,6 +54,7 @@ export function TaskView(props: TaskViewProps) {
         onFiltersChanged={filter => {
           setFilter(filter)
           setItems(undefined) //to reload
+          setProjects(undefined) //to reload
           props.onFilterChange?.(filter)
         }}
       />
