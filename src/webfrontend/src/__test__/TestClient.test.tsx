@@ -26,4 +26,17 @@ describe("TestClient", () => {
             { id: 2, description: "Inactive Task", projectId: 1, done: false, later: true }
         ])
     })
+
+    it("should return both active and inactive projects", async () => {
+        const client = new TestClient();
+        client.Projects = [
+            { id: 1, name: "Active Project", done: false, later: false },
+            { id: 2, name: "Inactive Project", done: false, later: true }
+        ]
+        const projects = await client.GetProjects({ uncompleted: true, active: true, inactive: true })
+        expect(projects).toEqual([
+            { id: 1, name: "Active Project", done: false, later: false },
+            { id: 2, name: "Inactive Project", done: false, later: true }
+        ])
+    })
 })

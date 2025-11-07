@@ -132,4 +132,46 @@ describe("TaskView", () => {
             expect(projectOptionNames).toEqual(expectedProjects)
         })
     })
+
+    it("refreshes project dropdown list when task filters are changed", async () => {
+        const client = new TestClient()
+        client.Items = [
+            { id: 1, description: "Active uncompleted task",    later: false,   done: false  },
+            { id: 2, description: "Active completed task",      later: false,   done: true   },
+            { id: 3, description: "Inactive uncompleted task",  later: true,    done: false  },
+            { id: 4, description: "Inactive completed task",    later: true,    done: true   }
+        ]
+        client.Projects = [
+            { id: 1, name: "Active uncompleted project",    later: false,   done: false  },
+            { id: 2, name: "Active completed project",      later: false,   done: true   },
+            { id: 3, name: "Inactive uncompleted project",  later: true,    done: false  },
+            { id: 4, name: "Inactive completed project",    later: true,    done: true   }
+        ]
+        render(<TaskView client={client} filter={{active: true, uncompleted: true}} />)
+        await sleep(1)
+
+        fireEvent.click(screen.getAllByTestId("project")[0])
+        await sleep(1)
+        
+        let projectOptions = screen.getAllByTestId("edit-project")[0].children
+        let projectOptionNames = Array.from(projectOptions).map(p => p.textContent)
+        expect(projectOptionNames).toEqual([
+            "[No project]",
+            "Active uncompleted project"
+        ])
+
+        fireEvent.click(screen.getByRole("checkbox", { name: "Inactive tasks" }))
+        await sleep(1)
+
+        fireEvent.click(screen.getAllByTestId("project")[0])
+        await sleep(1)
+
+        projectOptions = screen.getAllByTestId("edit-project")[0].children
+        projectOptionNames = Array.from(projectOptions).map(p => p.textContent)
+        expect(projectOptionNames).toEqual([
+            "[No project]",
+            "Active uncompleted project",
+            "Inactive uncompleted project"
+        ])
+    })
 })

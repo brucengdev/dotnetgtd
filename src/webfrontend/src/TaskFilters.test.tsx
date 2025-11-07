@@ -146,6 +146,31 @@ describe("TaskFilters views", () => {
             })
         })
 
+        it("completed filter 2", async() => {
+            await setupTest({uncompleted: true})
+            const completedCheckbox = screen.getByRole("checkbox", {name: "Completed tasks"})
+            expect(completedCheckbox).not.toBeChecked()
+            completedCheckbox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                completed: true,
+                uncompleted: true
+            })
+        })
+
+        it("completed filter 3", async() => {
+            await setupTest({active: true, inactive: true})
+            const completedCheckbox = screen.getByRole("checkbox", {name: "Completed tasks"})
+            expect(completedCheckbox).not.toBeChecked()
+            completedCheckbox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                completed: true,
+                active: true,
+                inactive: true
+            })
+        })
+
         it("uncompleted filter", async() => {
             await setupTest()
             const uncompletedCheckbox = screen.getByRole("checkbox", {name: "Uncompleted tasks"})
@@ -154,6 +179,31 @@ describe("TaskFilters views", () => {
             expect(fn).toHaveBeenCalled()
             expect(changedFilters).toEqual({
                 uncompleted: true
+            })
+        })
+
+        it("uncompleted filter 2", async() => {
+            await setupTest({completed: true })
+            const uncompletedCheckbox = screen.getByRole("checkbox", {name: "Uncompleted tasks"})
+            expect(uncompletedCheckbox).not.toBeChecked()
+            uncompletedCheckbox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                uncompleted: true,
+                completed: true
+            })
+        })
+
+        it("uncompleted filter 3", async() => {
+            await setupTest({active: true, inactive: true })
+            const uncompletedCheckbox = screen.getByRole("checkbox", {name: "Uncompleted tasks"})
+            expect(uncompletedCheckbox).not.toBeChecked()
+            uncompletedCheckbox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                uncompleted: true,
+                active: true,
+                inactive: true
             })
         })
 
@@ -168,6 +218,31 @@ describe("TaskFilters views", () => {
             })
         })
 
+        it("active filter 2", async() => {
+            await setupTest({ inactive: true })
+            const activeCheckbox = screen.getByRole("checkbox", {name: "Active tasks"})
+            expect(activeCheckbox).not.toBeChecked()
+            activeCheckbox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                active: true,
+                inactive: true
+            })
+        })
+
+        it("active filter 3", async() => {
+            await setupTest({ completed: true, uncompleted: true })
+            const activeCheckbox = screen.getByRole("checkbox", {name: "Active tasks"})
+            expect(activeCheckbox).not.toBeChecked()
+            activeCheckbox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters).toEqual({
+                active: true,
+                completed: true,
+                uncompleted: true
+            })
+        })
+
         it("inactive filter", async() => {
             await setupTest()
             const inactiveCheckbox = screen.getByRole("checkbox", {name: "Inactive tasks"})
@@ -177,6 +252,33 @@ describe("TaskFilters views", () => {
             expect(changedFilters!.inactive).toBe(true)
             expect(changedFilters).toEqual({
                 inactive: true
+            })
+        })
+
+        it("inactive filter 2", async() => {
+            await setupTest({ active: true})
+            const inactiveCheckbox = screen.getByRole("checkbox", {name: "Inactive tasks"})
+            expect(inactiveCheckbox).not.toBeChecked()
+            inactiveCheckbox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters!.inactive).toBe(true)
+            expect(changedFilters).toEqual({
+                inactive: true,
+                active: true
+            })
+        })
+
+        it("inactive filter 3", async() => {
+            await setupTest({ completed: true, uncompleted: true})
+            const inactiveCheckbox = screen.getByRole("checkbox", {name: "Inactive tasks"})
+            expect(inactiveCheckbox).not.toBeChecked()
+            inactiveCheckbox.click()
+            expect(fn).toHaveBeenCalled()
+            expect(changedFilters!.inactive).toBe(true)
+            expect(changedFilters).toEqual({
+                inactive: true,
+                completed: true,
+                uncompleted: true
             })
         })
 
