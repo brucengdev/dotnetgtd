@@ -29,7 +29,8 @@ export function ProjectView({ client, filter: initialFilter, onFilterChange }: P
         <ProjectFilters filter={filter} 
             onChange={newFilter => {
                 setFilter(newFilter)
-                setProjects(undefined) //to reload
+                client.GetProjects(newFilter)
+                    .then(retrievedProjects => setProjects(retrievedProjects))
                 onFilterChange?.(newFilter)
             }}
          />
@@ -46,11 +47,13 @@ export function ProjectView({ client, filter: initialFilter, onFilterChange }: P
             <ProjectList projects={projects || []} 
                 onDelete={(projectId) => {
                     client.DeleteProject(projectId)
-                        .then(() => setProjects(undefined))//to reload project list
+                        .then(() => client.GetProjects(filter))
+                        .then(projects => setProjects(projects))//to reload project list
                 }}
                 onChange={(project) => {
                     client.UpdateProject(project)
-                        .then(() => setProjects(undefined)) //to reload project list
+                        .then(() => client.GetProjects(filter))
+                        .then(projects => setProjects(projects)) //to reload project list
                 }}
             />
         </div>

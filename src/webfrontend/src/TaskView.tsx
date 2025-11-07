@@ -53,9 +53,14 @@ export function TaskView(props: TaskViewProps) {
         client={client} filter={filter}
         onFiltersChanged={filter => {
           setFilter(filter)
-          setItems(undefined) //to reload
-          setProjects(undefined) //to reload
-          props.onFilterChange?.(filter)
+          Promise.all([
+            client.GetItems(filter),
+            client.GetProjects(filter)
+          ]).then(([filteredTasks, filteredProjects]) => {
+            setItems(filteredTasks)
+            setProjects(filteredProjects)
+            props.onFilterChange?.(filter)
+          })
         }}
       />
       <div className="sm:col-span-2 lg:col-span-4">
@@ -73,9 +78,8 @@ export function TaskView(props: TaskViewProps) {
         <ItemList items={items} projects={projects} tags={tags}
           onDelete={(item: Item) => {
               client.DeleteItem(item.id)
-                  .then(() => {
-                      setItems(undefined) //to reload
-                  })
+                  .then(() => client.GetItems(filter))
+                  .then(items => setItems(items))
           }}
           onUpdate={async (item: Item) => {
             const existingItem = items?.find(i => i.id === item.id)
@@ -91,8 +95,12 @@ export function TaskView(props: TaskViewProps) {
               }
             }
             await client.UpdateItem(item);
-            setItems(undefined) //to reload items
-            setProjects(undefined) //to reload projects
+            const [updatedItems, updatedProjects] = await Promise.all([
+              client.GetItems(filter),
+              client.GetProjects(filter)
+            ])
+            setItems(updatedItems)
+            setProjects(updatedProjects)
           }}
         />
       </div>
