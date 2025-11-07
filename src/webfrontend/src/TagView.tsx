@@ -29,11 +29,13 @@ export function TagView({ client }: TagViewProps) {
         <TagList tags={Tags || []} 
             onDelete={(tagId) => {
                 client.DeleteTag(tagId)
-                    .then(() => setTags(undefined))//to reload Tag list
+                    .then(() => client.GetTags())
+                    .then(tags => setTags(tags))//to reload Tag list
             }}
             onChange={(tag) => {
                 client.UpdateTag(tag)
-                    .then(() => setTags(undefined))//to reload Tag list
+                    .then(() => client.GetTags())
+                    .then(tags => setTags(tags))//to reload Tag list
             }}
             />
     </div>
