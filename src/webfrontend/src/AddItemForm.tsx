@@ -9,7 +9,7 @@ import { MultiSelect } from "./controls/MultiSelect";
 import { Select } from "./controls/Select";
 import { ProjectFilter } from "./ProjectFilters";
 
-interface InitialValues {
+export interface TaskInitialValues {
     projectId?: number
 }
 
@@ -18,7 +18,7 @@ interface AddItemFormProps {
     onCompleted?: () => any
     client: IClient
     projectFilter?: ProjectFilter
-    initialValues?: InitialValues
+    initialValues?: TaskInitialValues
 }
 
 export function AddItemForm(props: AddItemFormProps) {

@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { IClient } from "./api/Client"
 import { Button } from "./controls/Button"
-import { AddItemForm } from "./AddItemForm"
+import { AddItemForm, TaskInitialValues } from "./AddItemForm"
 import ItemList from "./ItemList"
 import { Item } from "./models/Item"
 import { Project } from "./models/Project"
@@ -47,6 +47,14 @@ export function TaskView(props: TaskViewProps) {
         setTags(tags)
       })()
     }
+
+    function buildInitialValues(): TaskInitialValues {
+      const initialValues: TaskInitialValues = {}
+      if(filter.projectIds && filter.projectIds.length > 0) {
+        initialValues.projectId = parseInt(filter.projectIds[0])
+      }
+      return initialValues
+    }
     return <div data-testid="task-view" 
       className="sm:grid sm:grid-cols-3 lg:grid-cols-5">
       <TaskFilters 
@@ -66,6 +74,7 @@ export function TaskView(props: TaskViewProps) {
       <div className="sm:col-span-2 lg:col-span-4">
         {showNewTaskForm
           ? <AddItemForm client={client} 
+              initialValues={buildInitialValues()}
               projectFilter={filter}
               onCancel={() => setShowNewTaskForm(false)} 
               onCompleted={() => {
