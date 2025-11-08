@@ -177,6 +177,8 @@ describe("TaskView", () => {
 
     const projectCases = [
         { filter: { projectIds: ["2"] }, expectedProjectId: 2 },
+        { filter: { projectIds: ["1", "2"] }, expectedProjectId: 1 },
+        { filter: { projectIds: ["null", "nonnull", "2"] }, expectedProjectId: 2 },
     ]
     projectCases.forEach(({ filter, expectedProjectId }) => {
         it(`pre-set values when editing task when filter is ${JSON.stringify(filter)}`, async () => {
