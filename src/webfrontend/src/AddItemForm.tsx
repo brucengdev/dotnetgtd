@@ -11,6 +11,8 @@ import { ProjectFilter } from "./ProjectFilters";
 
 export interface TaskInitialValues {
     projectId?: number
+    done?: boolean
+    later?: boolean
 }
 
 interface AddItemFormProps {
@@ -28,8 +30,8 @@ export function AddItemForm(props: AddItemFormProps) {
     const [projectId, setProjectId] = useState<number>(initialValues?.projectId ?? 0)
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
     const [selectedTagIds, setSelectedTagIds] = useState<number[]>([])
-    const [done, setDone] = useState(false)
-    const [later, setLater] = useState(false)
+    const [done, setDone] = useState(initialValues?.done ?? false)
+    const [later, setLater] = useState(initialValues?.later ?? false)
     if(projects === undefined) {
         client.GetProjects(projectFilter)
         .then(retrievedProjects => setProjects(retrievedProjects.sort((a, b) => a.name.localeCompare(b.name))))
