@@ -20,7 +20,7 @@ export function EditableMultiSelect(props: EditableMultiSelectProps) {
         }).join(',')
     }
     return isEditing
-            ?<div className={className}>
+            ?<div className={className + ` block w-full`}>
                 <MultiSelect 
                     options={options} 
                     selectedValues={editFieldSelectedValues} 
@@ -33,6 +33,7 @@ export function EditableMultiSelect(props: EditableMultiSelectProps) {
                     if(onChange) {
                         onChange(editFieldSelectedValues)
                     }
+                    setIsEditing(false)
                 }} />
             </div>
             :<div data-testId={textViewDataTestId} 

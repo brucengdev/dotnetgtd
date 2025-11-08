@@ -14,8 +14,10 @@ export function EditableTextView(props: EditableTextViewProps) {
     const [ isEditing, setIsEditing ] = useState(false)
     const [ editTextValue, setEditTextValue ] = useState(text)
         return isEditing
-            ?<div className={className??""}>
-                <input type="text" data-testId={editViewTestId} 
+            ?<div className={`${className}`}>
+                <input className={"block w-full rounded-md bg-white px-3.5 py-2 text-base text-gray-900 outline-1 -outline-offset-1 " +
+                        "outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 "}
+                         type="text" data-testId={editViewTestId} 
                     value={editTextValue} 
                     onChange={e => setEditTextValue(e.target.value)}/>
                 <Button text="✓" onClick={() => {
