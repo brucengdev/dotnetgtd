@@ -113,7 +113,7 @@ describe("EditableMultiSelect", () => {
             await sleep(1)
             
             userEvent.selectOptions(screen.getByTestId("editField"), selectedValues)
-            await sleep(1000)
+            await sleep(10)
 
             const option1 = screen.getByRole("option", { name: "No options"}) as HTMLOptionElement
             const option2 = screen.getByRole("option", { name: "Option 1"}) as HTMLOptionElement
@@ -128,8 +128,9 @@ describe("EditableMultiSelect", () => {
 
             await sleep(1)
 
-            
             expect(fn).toHaveBeenCalledWith(selectedValues)
+            expect(screen.getByTestId("displayField")).toBeInTheDocument()
+            expect(screen.queryByTestId("editField")).not.toBeInTheDocument()
         })
     })
 })

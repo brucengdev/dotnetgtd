@@ -33,6 +33,7 @@ export function EditableMultiSelect(props: EditableMultiSelectProps) {
                     if(onChange) {
                         onChange(editFieldSelectedValues)
                     }
+                    setIsEditing(false)
                 }} />
             </div>
             :<div data-testId={textViewDataTestId} 
