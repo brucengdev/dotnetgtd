@@ -175,19 +175,24 @@ describe("TaskView", () => {
         ])
     })
 
-    it("pre-set values when editing task", async () => {
-        const client = new TestClient()
-        client.Projects = [
-            { id: 1, name: "Project A", later: false, done: false },
-            { id: 2, name: "Project B", later: false, done: false },
-        ]
-        render(<TaskView client={client} filter={{projectIds: ["2"]}} />)
-        await sleep(1)
+    const projectCases = [
+        { filter: { projectIds: ["2"] }, expectedProjectId: 2 },
+    ]
+    projectCases.forEach(({ filter, expectedProjectId }) => {
+        it(`pre-set values when editing task when filter is ${JSON.stringify(filter)}`, async () => {
+            const client = new TestClient()
+            client.Projects = [
+                { id: 1, name: "Project A", later: false, done: false },
+                { id: 2, name: "Project B", later: false, done: false },
+            ]
+            render(<TaskView client={client} filter={filter} />)
+            await sleep(1)
 
-        fireEvent.click(screen.getByRole("button", { name: "Add" }))
-        await sleep(1)
+            fireEvent.click(screen.getByRole("button", { name: "Add" }))
+            await sleep(1)
 
-        const projectSelect = screen.getByRole("combobox", { name: "Project" }) as HTMLSelectElement
-        expect(projectSelect.value).toBe("2")
+            const projectSelect = screen.getByRole("combobox", { name: "Project" }) as HTMLSelectElement
+            expect(projectSelect.value).toBe(expectedProjectId.toString())
+        })
     })
 })
