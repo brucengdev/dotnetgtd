@@ -98,6 +98,11 @@ describe("AddItemForm", () => {
                 { id: 1, name: "Project 1", later: false, done: false},
                 { id: 2, name: "Project 2", later: false, done: false}
             ]
+            client.Tags = [
+                { id: 1, name: "Tag 1" },
+                { id: 2, name: "Tag 2" },
+                { id: 3, name: "Tag 3" }
+            ]
             render(<AddItemForm client={client} onCancel={() => {}} initialValues={initialValues} />)
             await sleep(1)
 
@@ -111,8 +116,9 @@ describe("AddItemForm", () => {
 
 
             const tagField = screen.getByRole("listbox", { name: "Tags"}) as HTMLSelectElement
-            const selectedTagOptions = Array.from(tagField.options)
-            const selectedTagIds = selectedTagOptions.map(opt => parseInt((opt as HTMLOptionElement).value))
+            const selectedTagOptions = Array.from(tagField.children).map(c => c as HTMLOptionElement)
+                .filter(opt => opt.selected)
+            const selectedTagIds = selectedTagOptions.map(opt => parseInt(opt.value))
             expect(selectedTagIds).toEqual(expectedTagIds ?? [ ])
         })
     })

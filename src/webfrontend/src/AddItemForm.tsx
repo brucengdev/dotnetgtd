@@ -30,7 +30,7 @@ export function AddItemForm(props: AddItemFormProps) {
     const [projects, setProjects] = useState<Project[] | undefined>(undefined)
     const [projectId, setProjectId] = useState<number>(initialValues?.projectId ?? 0)
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
-    const [selectedTagIds, setSelectedTagIds] = useState<number[]>([])
+    const [selectedTagIds, setSelectedTagIds] = useState<number[]>(initialValues?.tagIds ?? [])
     const [done, setDone] = useState(initialValues?.done ?? false)
     const [later, setLater] = useState(initialValues?.later ?? false)
     if(projects === undefined) {
