@@ -179,6 +179,8 @@ describe("TaskView", () => {
         { filter: { projectIds: ["2"] }, expectedProjectId: 2 },
         { filter: { projectIds: ["1", "2"] }, expectedProjectId: 1 },
         { filter: { projectIds: ["null", "nonnull", "2"] }, expectedProjectId: 2 },
+        { filter: { projectIds: ["null", "2", "1"] }, expectedProjectId: 2 },
+        { filter: { projectIds: ["1", "nonnull", "1"] }, expectedProjectId: 1 },
     ]
     projectCases.forEach(({ filter, expectedProjectId }) => {
         it(`pre-set values when editing task when filter is ${JSON.stringify(filter)}`, async () => {
