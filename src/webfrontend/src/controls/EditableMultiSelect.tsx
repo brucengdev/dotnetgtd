@@ -20,7 +20,7 @@ export function EditableMultiSelect(props: EditableMultiSelectProps) {
         }).join(',')
     }
     return isEditing
-            ?<div className={className}>
+            ?<div className={className + ` block w-full`}>
                 <MultiSelect 
                     options={options} 
                     selectedValues={editFieldSelectedValues} 
