@@ -111,9 +111,13 @@ export function TaskView(props: TaskViewProps) {
 
 
 function buildInitialValues(filter: TaskFilter): TaskInitialValues {
-  const initialValues: TaskInitialValues = {}
-  if(filter.projectIds && filter.projectIds.length > 0) {
-    initialValues.projectId = parseInt(filter.projectIds[0])
-  }
+  const initialValues:TaskInitialValues = {};
+  (filter.projectIds || []).find((pId: string) => {
+    if(Number.isInteger(parseInt(pId))) {
+      initialValues.projectId = parseInt(pId)
+      return true;
+    }
+    return false;
+  })
   return initialValues
 }
