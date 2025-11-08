@@ -120,7 +120,14 @@ function buildInitialValues(filter: TaskFilter): TaskInitialValues {
     return false;
   })
 
+  var tagIds: number[] = (filter.tagIds?? [])
+    .map(tagFilter => parseInt(tagFilter))
+    .filter(tagId => Number.isInteger(tagId))
+
+  initialValues.tagIds = tagIds
+
   initialValues.done = filter.completed ?? false
   initialValues.later = filter.inactive ?? false
+
   return initialValues
 }

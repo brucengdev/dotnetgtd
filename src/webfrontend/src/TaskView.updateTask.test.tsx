@@ -183,19 +183,40 @@ describe("TaskView", () => {
         },
         { 
             filter: { projectIds: ["1", "2"] }, 
-            expectedProjectId: 1, expectedDone: false, expectedLater: false
+            expectedProjectId: 1
         },
         { 
             filter: { projectIds: ["null", "nonnull", "2"] }, 
-            expectedProjectId: 2, expectedDone: false, expectedLater: false
+            expectedProjectId: 2
         },
         { 
             filter: { projectIds: ["null", "2", "1"] }, 
-            expectedProjectId: 2, expectedDone: false, expectedLater: false
+            expectedProjectId: 2
         },
         { 
             filter: { projectIds: ["1", "nonnull", "1"] }, 
-            expectedProjectId: 1, expectedDone: false, expectedLater: false
+            expectedProjectId: 1
+        },
+
+        { 
+            filter: { tagIds: ["2"] } as TaskFilter, 
+            expectedTagIds: [2]
+        },
+        { 
+            filter: { tagIds: ["1", "2"] }, 
+            expectedTagIds: [1, 2]
+        },
+        { 
+            filter: { tagIds: ["null", "nonnull", "2"] }, 
+            expectedTagIds: [2]
+        },
+        { 
+            filter: { tagIds: ["null", "2", "1"] }, 
+            expectedTagIds: [1, 2]
+        },
+        { 
+            filter: { tagIds: ["1", "nonnull", "1"] }, 
+            expectedTagIds: [1]
         },
         
         { 
@@ -215,12 +236,17 @@ describe("TaskView", () => {
             expectedProjectId: 0, expectedDone: true, expectedLater: true
         }
     ]
-    projectCases.forEach(({ filter, expectedProjectId, expectedDone, expectedLater }) => {
+    projectCases.forEach(({ filter, expectedProjectId, expectedDone, expectedLater, expectedTagIds }) => {
         it(`pre-set values when editing task when filter is ${JSON.stringify(filter)}`, async () => {
             const client = new TestClient()
             client.Projects = [
                 { id: 1, name: "Project A", later: false, done: false },
                 { id: 2, name: "Project B", later: false, done: false },
+            ]
+            client.Tags = [
+                { id: 1, name: "Tag 1" },
+                { id: 2, name: "Tag 2" },
+                { id: 3, name: "Tag 3" }
             ]
             render(<TaskView client={client} filter={filter} />)
             await sleep(1)
@@ -229,13 +255,19 @@ describe("TaskView", () => {
             await sleep(1)
 
             const projectSelect = screen.getByRole("combobox", { name: "Project" }) as HTMLSelectElement
-            expect(projectSelect.value).toBe(expectedProjectId.toString())
+            expect(projectSelect.value).toBe(expectedProjectId?.toString() ?? "0")
 
             const doneCheckBox = screen.getByRole("checkbox", { name: "Done" }) as HTMLInputElement
-            expect(doneCheckBox.checked).toBe(expectedDone)
+            expect(doneCheckBox.checked).toBe(expectedDone ?? false)
 
             const laterCheckBox = screen.getByRole("checkbox", { name: "Later" }) as HTMLInputElement
-            expect(laterCheckBox.checked).toBe(expectedLater)
+            expect(laterCheckBox.checked).toBe(expectedLater ?? false)
+
+            const tagField = screen.getByRole("listbox", { name: "Tags"}) as HTMLSelectElement
+            const selectedTagOptions = Array.from(tagField.children).map(c => c as HTMLOptionElement)
+                .filter(opt => opt.selected)
+            const selectedTagIds = selectedTagOptions.map(opt => parseInt(opt.value))
+            expect(selectedTagIds).toEqual(expectedTagIds ?? [ ])
         })
     })
 })
