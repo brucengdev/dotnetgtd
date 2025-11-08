@@ -65,6 +65,19 @@ describe("AddItemForm", () => {
         expect(screen.getByRole("button", {name: "Cancel"})).toBeInTheDocument()
     })
 
+    it("sets initial value for project field", async () => {
+        const client = new TestClient()
+        client.Projects = [
+            { id: 1, name: "Project 1", later: false, done: false},
+            { id: 2, name: "Project 2", later: false, done: false}
+        ]
+        render(<AddItemForm client={client} onCancel={() => {}} initialValues={{projectId: 2}} />)
+        await sleep(1)
+
+        const projectField = screen.getByRole("combobox", { name: "Project"}) as HTMLSelectElement
+        expect(projectField.value).toBe("2")
+    })
+
     it("change project when another project is selected", async () => {
         const client = new TestClient()
         client.Projects = [

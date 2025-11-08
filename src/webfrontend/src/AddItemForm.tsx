@@ -9,11 +9,16 @@ import { MultiSelect } from "./controls/MultiSelect";
 import { Select } from "./controls/Select";
 import { ProjectFilter } from "./ProjectFilters";
 
+interface InitialValues {
+    projectId?: number
+}
+
 interface AddItemFormProps {
     onCancel: () => any
     onCompleted?: () => any
     client: IClient
     projectFilter?: ProjectFilter
+    initialValues?: InitialValues
 }
 
 export function AddItemForm(props: AddItemFormProps) {
