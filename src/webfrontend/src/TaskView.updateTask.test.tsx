@@ -243,6 +243,11 @@ describe("TaskView", () => {
                 { id: 1, name: "Project A", later: false, done: false },
                 { id: 2, name: "Project B", later: false, done: false },
             ]
+            client.Tags = [
+                { id: 1, name: "Tag 1" },
+                { id: 2, name: "Tag 2" },
+                { id: 3, name: "Tag 3" }
+            ]
             render(<TaskView client={client} filter={filter} />)
             await sleep(1)
 
