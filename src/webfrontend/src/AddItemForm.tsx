@@ -22,10 +22,10 @@ interface AddItemFormProps {
 }
 
 export function AddItemForm(props: AddItemFormProps) {
-    const { onCancel, client, onCompleted, projectFilter } = props
+    const { onCancel, client, onCompleted, projectFilter, initialValues } = props
     const [ description, setDescription ] = useState('')
     const [projects, setProjects] = useState<Project[] | undefined>(undefined)
-    const [projectId, setProjectId] = useState<number>(0)
+    const [projectId, setProjectId] = useState<number>(initialValues?.projectId ?? 0)
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
     const [selectedTagIds, setSelectedTagIds] = useState<number[]>([])
     const [done, setDone] = useState(false)
