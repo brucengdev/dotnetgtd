@@ -14,8 +14,8 @@ export function EditableTextView(props: EditableTextViewProps) {
     const [ isEditing, setIsEditing ] = useState(false)
     const [ editTextValue, setEditTextValue ] = useState(text)
         return isEditing
-            ?<div className={className??""}>
-                <input type="text" data-testId={editViewTestId} 
+            ?<div className={`grid grid-cols-4 ${className}`}>
+                <input className="col-span-3" type="text" data-testId={editViewTestId} 
                     value={editTextValue} 
                     onChange={e => setEditTextValue(e.target.value)}/>
                 <Button text="✓" onClick={() => {
