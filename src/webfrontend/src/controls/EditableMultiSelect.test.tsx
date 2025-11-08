@@ -113,7 +113,7 @@ describe("EditableMultiSelect", () => {
             await sleep(1)
             
             userEvent.selectOptions(screen.getByTestId("editField"), selectedValues)
-            await sleep(10)
+            await sleep(50)
 
             const option1 = screen.getByRole("option", { name: "No options"}) as HTMLOptionElement
             const option2 = screen.getByRole("option", { name: "Option 1"}) as HTMLOptionElement
