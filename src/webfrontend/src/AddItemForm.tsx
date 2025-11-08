@@ -13,6 +13,7 @@ export interface TaskInitialValues {
     projectId?: number
     done?: boolean
     later?: boolean
+    tagIds?: number[]
 }
 
 interface AddItemFormProps {

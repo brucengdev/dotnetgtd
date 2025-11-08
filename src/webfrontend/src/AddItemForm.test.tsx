@@ -69,19 +69,29 @@ describe("AddItemForm", () => {
         { initialValues: { projectId: 2}, expectedProjectId: 2 },
         { initialValues: {}, expectedProjectId: 0 },
 
-        { initialValues: { done: false, later: false }, 
-        expectedProjectId: 0, expectedDone: false, expectedLater: false },
-
-        { initialValues: { done: false, later: true }, 
-        expectedProjectId: 0, expectedDone: false, expectedLater: true },
-
-        { initialValues: { done: true, later: false }, 
-        expectedProjectId: 0, expectedDone: true, expectedLater: false },
-
-        { initialValues: { done: true, later: true }, 
-        expectedProjectId: 0, expectedDone: true, expectedLater: true }
+        { 
+            initialValues: { done: false, later: false }, 
+            expectedDone: false, expectedLater: false 
+        },
+        { 
+            initialValues: { done: false, later: true }, 
+            expectedDone: false, expectedLater: true 
+        },
+        { 
+            initialValues: { done: true, later: false }, 
+            expectedDone: true, expectedLater: false 
+        },
+        { 
+            initialValues: { done: true, later: true }, 
+            expectedDone: true, expectedLater: true 
+        },
+        
+        {
+            initialValues: { tagIds: [1, 2] }, 
+            expectedTagIds: [1, 2] 
+        },
     ]
-    initialValueCases.forEach(({ initialValues, expectedProjectId, expectedDone, expectedLater }) => {
+    initialValueCases.forEach(({ initialValues, expectedProjectId, expectedDone, expectedLater, expectedTagIds }) => {
         it(`sets initial value for fields ${JSON.stringify(initialValues)}`, async () => {
             const client = new TestClient()
             client.Projects = [
@@ -92,12 +102,18 @@ describe("AddItemForm", () => {
             await sleep(1)
 
             const projectField = screen.getByRole("combobox", { name: "Project"}) as HTMLSelectElement
-            expect(projectField.value).toBe(expectedProjectId.toString())
+            expect(projectField.value).toBe(expectedProjectId?.toString()?? "0")
 
             const doneCheckBox = screen.getByRole("checkbox", { name: "Done"}) as HTMLInputElement
             expect(doneCheckBox.checked).toBe(expectedDone ?? false)
             const laterCheckBox = screen.getByRole("checkbox", { name: "Later"}) as HTMLInputElement
             expect(laterCheckBox.checked).toBe(expectedLater ?? false)
+
+
+            const tagField = screen.getByRole("listbox", { name: "Tags"}) as HTMLSelectElement
+            const selectedTagOptions = Array.from(tagField.options)
+            const selectedTagIds = selectedTagOptions.map(opt => parseInt((opt as HTMLOptionElement).value))
+            expect(selectedTagIds).toEqual(expectedTagIds ?? [ ])
         })
     })
 
