@@ -9,22 +9,29 @@ import { MultiSelect } from "./controls/MultiSelect";
 import { Select } from "./controls/Select";
 import { ProjectFilter } from "./ProjectFilters";
 
+export interface TaskInitialValues {
+    projectId?: number
+    done?: boolean
+    later?: boolean
+}
+
 interface AddItemFormProps {
     onCancel: () => any
     onCompleted?: () => any
     client: IClient
     projectFilter?: ProjectFilter
+    initialValues?: TaskInitialValues
 }
 
 export function AddItemForm(props: AddItemFormProps) {
-    const { onCancel, client, onCompleted, projectFilter } = props
+    const { onCancel, client, onCompleted, projectFilter, initialValues } = props
     const [ description, setDescription ] = useState('')
     const [projects, setProjects] = useState<Project[] | undefined>(undefined)
-    const [projectId, setProjectId] = useState<number>(0)
+    const [projectId, setProjectId] = useState<number>(initialValues?.projectId ?? 0)
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
     const [selectedTagIds, setSelectedTagIds] = useState<number[]>([])
-    const [done, setDone] = useState(false)
-    const [later, setLater] = useState(false)
+    const [done, setDone] = useState(initialValues?.done ?? false)
+    const [later, setLater] = useState(initialValues?.later ?? false)
     if(projects === undefined) {
         client.GetProjects(projectFilter)
         .then(retrievedProjects => setProjects(retrievedProjects.sort((a, b) => a.name.localeCompare(b.name))))

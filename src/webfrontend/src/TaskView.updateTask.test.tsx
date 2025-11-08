@@ -5,6 +5,7 @@ import { TaskView } from "./TaskView";
 import { TestClient } from "./__test__/TestClient";
 import { sleep } from "./__test__/testutils";
 import { ProjectFilter } from "./ProjectFilters";
+import { TaskFilter } from "./TaskFilters";
 
 describe("TaskView", () => {
     it(`makes project dropdown list in item view sorted by project name`, async () => {
@@ -173,5 +174,68 @@ describe("TaskView", () => {
             "Active uncompleted project",
             "Inactive uncompleted project"
         ])
+    })
+
+    const projectCases = [
+        { 
+            filter: { projectIds: ["2"] } as TaskFilter, 
+            expectedProjectId: 2, expectedDone: false, expectedLater: false
+        },
+        { 
+            filter: { projectIds: ["1", "2"] }, 
+            expectedProjectId: 1, expectedDone: false, expectedLater: false
+        },
+        { 
+            filter: { projectIds: ["null", "nonnull", "2"] }, 
+            expectedProjectId: 2, expectedDone: false, expectedLater: false
+        },
+        { 
+            filter: { projectIds: ["null", "2", "1"] }, 
+            expectedProjectId: 2, expectedDone: false, expectedLater: false
+        },
+        { 
+            filter: { projectIds: ["1", "nonnull", "1"] }, 
+            expectedProjectId: 1, expectedDone: false, expectedLater: false
+        },
+        
+        { 
+            filter: { } as TaskFilter, 
+            expectedProjectId: 0, expectedDone: false, expectedLater: false
+        },
+        { 
+            filter: { inactive: true }, 
+            expectedProjectId: 0, expectedDone: false, expectedLater: true
+        },
+        { 
+            filter: { completed: true }, 
+            expectedProjectId: 0, expectedDone: true, expectedLater: false
+        },
+        { 
+            filter: { completed: true, inactive: true }, 
+            expectedProjectId: 0, expectedDone: true, expectedLater: true
+        }
+    ]
+    projectCases.forEach(({ filter, expectedProjectId, expectedDone, expectedLater }) => {
+        it(`pre-set values when editing task when filter is ${JSON.stringify(filter)}`, async () => {
+            const client = new TestClient()
+            client.Projects = [
+                { id: 1, name: "Project A", later: false, done: false },
+                { id: 2, name: "Project B", later: false, done: false },
+            ]
+            render(<TaskView client={client} filter={filter} />)
+            await sleep(1)
+
+            fireEvent.click(screen.getByRole("button", { name: "Add" }))
+            await sleep(1)
+
+            const projectSelect = screen.getByRole("combobox", { name: "Project" }) as HTMLSelectElement
+            expect(projectSelect.value).toBe(expectedProjectId.toString())
+
+            const doneCheckBox = screen.getByRole("checkbox", { name: "Done" }) as HTMLInputElement
+            expect(doneCheckBox.checked).toBe(expectedDone)
+
+            const laterCheckBox = screen.getByRole("checkbox", { name: "Later" }) as HTMLInputElement
+            expect(laterCheckBox.checked).toBe(expectedLater)
+        })
     })
 })

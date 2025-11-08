@@ -65,6 +65,42 @@ describe("AddItemForm", () => {
         expect(screen.getByRole("button", {name: "Cancel"})).toBeInTheDocument()
     })
 
+    const initialValueCases = [
+        { initialValues: { projectId: 2}, expectedProjectId: 2 },
+        { initialValues: {}, expectedProjectId: 0 },
+
+        { initialValues: { done: false, later: false }, 
+        expectedProjectId: 0, expectedDone: false, expectedLater: false },
+
+        { initialValues: { done: false, later: true }, 
+        expectedProjectId: 0, expectedDone: false, expectedLater: true },
+
+        { initialValues: { done: true, later: false }, 
+        expectedProjectId: 0, expectedDone: true, expectedLater: false },
+
+        { initialValues: { done: true, later: true }, 
+        expectedProjectId: 0, expectedDone: true, expectedLater: true }
+    ]
+    initialValueCases.forEach(({ initialValues, expectedProjectId, expectedDone, expectedLater }) => {
+        it(`sets initial value for fields ${JSON.stringify(initialValues)}`, async () => {
+            const client = new TestClient()
+            client.Projects = [
+                { id: 1, name: "Project 1", later: false, done: false},
+                { id: 2, name: "Project 2", later: false, done: false}
+            ]
+            render(<AddItemForm client={client} onCancel={() => {}} initialValues={initialValues} />)
+            await sleep(1)
+
+            const projectField = screen.getByRole("combobox", { name: "Project"}) as HTMLSelectElement
+            expect(projectField.value).toBe(expectedProjectId.toString())
+
+            const doneCheckBox = screen.getByRole("checkbox", { name: "Done"}) as HTMLInputElement
+            expect(doneCheckBox.checked).toBe(expectedDone ?? false)
+            const laterCheckBox = screen.getByRole("checkbox", { name: "Later"}) as HTMLInputElement
+            expect(laterCheckBox.checked).toBe(expectedLater ?? false)
+        })
+    })
+
     it("change project when another project is selected", async () => {
         const client = new TestClient()
         client.Projects = [
