@@ -176,13 +176,28 @@ describe("TaskView", () => {
     })
 
     const projectCases = [
-        { filter: { projectIds: ["2"] }, expectedProjectId: 2 },
-        { filter: { projectIds: ["1", "2"] }, expectedProjectId: 1 },
-        { filter: { projectIds: ["null", "nonnull", "2"] }, expectedProjectId: 2 },
-        { filter: { projectIds: ["null", "2", "1"] }, expectedProjectId: 2 },
-        { filter: { projectIds: ["1", "nonnull", "1"] }, expectedProjectId: 1 },
+        { 
+            filter: { projectIds: ["2"] }, 
+            expectedProjectId: 2, expectedDone: false, expectedLater: false
+        },
+        { 
+            filter: { projectIds: ["1", "2"] }, 
+            expectedProjectId: 1, expectedDone: false, expectedLater: true
+        },
+        { 
+            filter: { projectIds: ["null", "nonnull", "2"] }, 
+            expectedProjectId: 2, expectedDone: true, expectedLater: false
+        },
+        { 
+            filter: { projectIds: ["null", "2", "1"] }, 
+            expectedProjectId: 2, expectedDone: true, expectedLater: true
+        },
+        { 
+            filter: { projectIds: ["1", "nonnull", "1"] }, 
+            expectedProjectId: 1, expectedDone: false, expectedLater: false
+        }
     ]
-    projectCases.forEach(({ filter, expectedProjectId }) => {
+    projectCases.forEach(({ filter, expectedProjectId, expectedDone, expectedLater }) => {
         it(`pre-set values when editing task when filter is ${JSON.stringify(filter)}`, async () => {
             const client = new TestClient()
             client.Projects = [
@@ -197,6 +212,12 @@ describe("TaskView", () => {
 
             const projectSelect = screen.getByRole("combobox", { name: "Project" }) as HTMLSelectElement
             expect(projectSelect.value).toBe(expectedProjectId.toString())
+
+            const doneCheckBox = screen.getByRole("checkbox", { name: "Done" }) as HTMLInputElement
+            expect(doneCheckBox.checked).toBe(expectedDone)
+
+            const laterCheckBox = screen.getByRole("checkbox", { name: "Later" }) as HTMLInputElement
+            expect(laterCheckBox.checked).toBe(expectedLater)
         })
     })
 })
