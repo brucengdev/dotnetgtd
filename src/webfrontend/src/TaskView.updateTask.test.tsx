@@ -5,6 +5,7 @@ import { TaskView } from "./TaskView";
 import { TestClient } from "./__test__/TestClient";
 import { sleep } from "./__test__/testutils";
 import { ProjectFilter } from "./ProjectFilters";
+import { TaskFilter } from "./TaskFilters";
 
 describe("TaskView", () => {
     it(`makes project dropdown list in item view sorted by project name`, async () => {
@@ -177,24 +178,41 @@ describe("TaskView", () => {
 
     const projectCases = [
         { 
-            filter: { projectIds: ["2"] }, 
+            filter: { projectIds: ["2"] } as TaskFilter, 
             expectedProjectId: 2, expectedDone: false, expectedLater: false
         },
         { 
             filter: { projectIds: ["1", "2"] }, 
-            expectedProjectId: 1, expectedDone: false, expectedLater: true
+            expectedProjectId: 1, expectedDone: false, expectedLater: false
         },
         { 
             filter: { projectIds: ["null", "nonnull", "2"] }, 
-            expectedProjectId: 2, expectedDone: true, expectedLater: false
+            expectedProjectId: 2, expectedDone: false, expectedLater: false
         },
         { 
             filter: { projectIds: ["null", "2", "1"] }, 
-            expectedProjectId: 2, expectedDone: true, expectedLater: true
+            expectedProjectId: 2, expectedDone: false, expectedLater: false
         },
         { 
             filter: { projectIds: ["1", "nonnull", "1"] }, 
             expectedProjectId: 1, expectedDone: false, expectedLater: false
+        },
+        
+        { 
+            filter: { } as TaskFilter, 
+            expectedProjectId: 0, expectedDone: false, expectedLater: false
+        },
+        { 
+            filter: { inactive: true }, 
+            expectedProjectId: 0, expectedDone: false, expectedLater: true
+        },
+        { 
+            filter: { completed: true }, 
+            expectedProjectId: 0, expectedDone: true, expectedLater: false
+        },
+        { 
+            filter: { completed: true, inactive: true }, 
+            expectedProjectId: 0, expectedDone: true, expectedLater: true
         }
     ]
     projectCases.forEach(({ filter, expectedProjectId, expectedDone, expectedLater }) => {
