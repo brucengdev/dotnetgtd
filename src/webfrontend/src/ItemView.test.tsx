@@ -398,7 +398,7 @@ describe("ItemView", () => {
     const assertTaskHighlighted = (shouldBeHighlighted: boolean) => {
         const description = screen.getByTestId("description")
         if(shouldBeHighlighted) {
-            expect(description).toHaveClass("text-blue-500")
+            expect(description).toHaveClass("text-blue-700")
         }
     }
 

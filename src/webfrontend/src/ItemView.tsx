@@ -27,7 +27,7 @@ export default function ItemView(props: ItemViewProps) {
     return <div data-testId="item" className="border border-gray-400 mb-1">
         <div  className="grid grid-cols-9 mb-1 gap-2">
             <EditableTextView 
-                className={`col-span-6 lg:col-span-3 ${highlighted? "text-blue-500": "" }`}
+                className={`col-span-6 lg:col-span-3 ${highlighted? "text-blue-700": "" }`}
                 text={description} 
                 textViewTestId="description" editViewTestId="edit-description"
                 onChange={newDescription => onChange?.({ 
