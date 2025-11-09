@@ -14,12 +14,23 @@ interface ItemListProps {
 export default function ItemList(props: ItemListProps) {
     const { items, onDelete, onUpdate, tags } = props
     const numberOfItems = items?.length ?? 0
+    const sortedItems = items?.sort((a, b) => {
+        const aTags = a.tagIds ?? []
+        const bTags = b.tagIds ?? []
+        if(aTags.length > 0 && bTags.length === 0) {
+            return -1
+        }
+        if(aTags.length === 0 && bTags.length > 0) {
+            return 1
+        }
+        return a.description.localeCompare(b.description)
+    }) ?? []
     return <div data-testId="item-list">
         {numberOfItems === 0
         ?<div>There are no items.</div>
         :<div>
             {
-                items?.sort((a, b) => a.description.localeCompare(b.description))
+                sortedItems
                 .map(item => {
                     return <ItemView
                         key={item.id}

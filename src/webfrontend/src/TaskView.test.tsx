@@ -121,11 +121,13 @@ describe("TaskView", () => {
 
         items = screen.queryAllByTestId("item")
         expect(items.length).toBe(2)
-        expect(items[0].querySelector('[data-testId="description"]')?.textContent).toBe("Task A")
-        expect(items[0].querySelector('[data-testId="project"]')?.textContent).toBe("")
-        expect(items[1].querySelector('[data-testId="description"]')?.textContent).toBe("Task B")
-        expect(items[1].querySelector('[data-testId="project"]')?.textContent).toBe("Project X")
-        expect(items[1].querySelector('[data-testId="tags"]')?.textContent).toBe("Tag 1,Tag 2")
+
+        expect(items[0].querySelector('[data-testId="description"]')?.textContent).toBe("Task B")
+        expect(items[0].querySelector('[data-testId="project"]')?.textContent).toBe("Project X")
+        expect(items[0].querySelector('[data-testId="tags"]')?.textContent).toBe("Tag 1,Tag 2")
+
+        expect(items[1].querySelector('[data-testId="description"]')?.textContent).toBe("Task A")
+        expect(items[1].querySelector('[data-testId="project"]')?.textContent).toBe("")
     })
 
 
