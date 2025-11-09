@@ -393,4 +393,34 @@ describe("ItemView", () => {
         fireEvent.click(screen.getByRole("button", { name: "Yes" }))
         expect(onDelete).toHaveBeenCalled()
     })
+
+    //modify this when highlight criteria change
+    const assertTaskHighlighted = (shouldBeHighlighted: boolean) => {
+        const description = screen.getByTestId("description")
+        if(shouldBeHighlighted) {
+            expect(description).toHaveClass("text-blue-500")
+        }
+    }
+
+    const hightlightTestCases = [
+        { 
+            item: { description: "Highlighted task", tagIds: [1] } as Item, 
+            expectedHighLightStatus: true 
+        },
+        { 
+            item: { description: "Non-highlighted task", tagIds: [] as number[] } as Item, 
+            expectedHighLightStatus: false 
+        }
+    ]
+    hightlightTestCases.forEach(({ item, expectedHighLightStatus }) => {
+        it("highlights tasks that have tags", async () => {
+            render(<ItemView item={item} 
+                projects={[]} 
+                tags={[
+                    { id: 1, name: "tag1"}
+                ]} />)
+
+            assertTaskHighlighted(expectedHighLightStatus)
+        })
+    })
 })
