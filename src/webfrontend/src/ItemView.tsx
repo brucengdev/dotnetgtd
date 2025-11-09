@@ -23,10 +23,11 @@ export default function ItemView(props: ItemViewProps) {
     const [ showConfirmDelete, setShowConfirmDelete ] = useState(false)
     const project = props.projects.find(p => p.id === item.projectId)
     const [ isCompactMode, setIsCompactMode ] = useState(window.innerWidth <= 640)
+    const highlighted = (item.tagIds ?? []).length > 0
     return <div data-testId="item" className="border border-gray-400 mb-1">
         <div  className="grid grid-cols-9 mb-1 gap-2">
             <EditableTextView 
-                className="col-span-6 lg:col-span-3"
+                className={`col-span-6 lg:col-span-3 ${highlighted? "text-blue-500": "" }`}
                 text={description} 
                 textViewTestId="description" editViewTestId="edit-description"
                 onChange={newDescription => onChange?.({ 
