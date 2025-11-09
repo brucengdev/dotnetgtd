@@ -11,6 +11,28 @@ describe("ItemList", () => {
         expect(screen.getByText("There are no items.")).toBeInTheDocument()
     })
 
+    it("shows a list of items with items with tags being first", async () => {
+        render(<ItemList items={[
+            { 
+                id: 3, description: "Task C", tagIds: [1, 2], done: true, later: false
+            },
+            { 
+                id: 1, description: "Task A", done: false, later: true 
+            },
+            { 
+                id: 2, description: "Task B", tagIds: [1, 2], done: true, later: false
+            }
+        ]} tags={[
+            { id: 1, name: "tag1" },
+            { id: 2, name: "tag2" }
+        ]} />)
+
+        const itemDescriptions = screen.getAllByTestId("description").map(e => e.textContent)
+        expect(itemDescriptions).toEqual([
+            "Task B", "Task C", "Task A"
+        ])
+    })
+
     it("shows a list of items sorted by name", async () => {
         const items = [
             { 
