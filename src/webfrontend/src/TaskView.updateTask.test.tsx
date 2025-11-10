@@ -270,4 +270,19 @@ describe("TaskView", () => {
             expect(selectedTagIds).toEqual(expectedTagIds ?? [ ])
         })
     })
+
+    it("highlight project filters with no tasks", async () => {
+        const client = new TestClient()
+        client.Projects = [
+            {
+                id: 1, name: "Project A", later: false, done: false
+            }
+        ]
+        render(<TaskView 
+            client={client}
+        />)
+        await sleep(1)
+
+        
+    })
 })

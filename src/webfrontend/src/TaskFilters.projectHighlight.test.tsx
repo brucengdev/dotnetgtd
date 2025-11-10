@@ -35,12 +35,19 @@ describe("TaskFilters", () => {
         render(<TaskFilters client={client} />)
         await sleep(1)
 
-        expect(screen.getByRole("checkbox", {name: "Project 1"}).parentElement?.className).not.toContain("text-red-500")
-        
-        expect(screen.getByRole("checkbox", {name: "Project 2"}).parentElement?.className).toContain("text-red-500")
-
-        expect(screen.getByRole("checkbox", {name: "Project 3"}).parentElement?.className).toContain("text-red-500")
+        AssertHighlightedProjectFilter("Project 1", false)
+        AssertHighlightedProjectFilter("Project 2", true)
+        AssertHighlightedProjectFilter("Project 3", true)
     })
 
 
 })
+
+export function AssertHighlightedProjectFilter(projectName: string, shouldBeHighlighted: boolean) {
+    const className = screen.getByRole("checkbox", {name: projectName}).parentElement?.className
+    if(shouldBeHighlighted) {
+        expect(className).toContain("text-red-500")
+    }else {
+        expect(className).not.toContain("text-red-500")
+    }
+}
