@@ -6,6 +6,7 @@ import { TestClient } from "./__test__/TestClient";
 import { sleep } from "./__test__/testutils";
 import { ProjectFilter } from "./ProjectFilters";
 import { TaskFilter } from "./TaskFilters";
+import { AssertHighlightedProjectFilter } from "./TaskFilters.projectHighlight.test";
 
 describe("TaskView", () => {
     it(`makes project dropdown list in item view sorted by project name`, async () => {
@@ -271,7 +272,7 @@ describe("TaskView", () => {
         })
     })
 
-    it("highlight project filters with no tasks", async () => {
+    it("highlight project filters with no tasks and remove highlight when new task is created", async () => {
         const client = new TestClient()
         client.Projects = [
             {
@@ -283,6 +284,14 @@ describe("TaskView", () => {
         />)
         await sleep(1)
 
-        
+        AssertHighlightedProjectFilter("Project A", true)
+
+        fireEvent.click(screen.getByRole("button", { name: "Add" }))
+        fireEvent.change(screen.getByRole("combobox", { name: "Project"}), { target: { value: 1 } })
+        fireEvent.change(screen.getByRole("textbox", { name: "Description"}), { target: { value: "Task 1"}})
+        fireEvent.click(screen.getByRole("button", { name: "Create"}))
+        await sleep(1)
+
+        AssertHighlightedProjectFilter("Project A", false)
     })
 })
