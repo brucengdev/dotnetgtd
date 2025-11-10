@@ -79,10 +79,9 @@ export function TaskView(props: TaskViewProps) {
               />
           : <Button text="Add" className="mb-2 block" onClick={() => setShowNewTaskForm(true)} />}
         <ItemList items={items} projects={projects} tags={tags}
-          onDelete={(item: Item) => {
-              client.DeleteItem(item.id)
-                  .then(() => client.GetItems(filter))
-                  .then(items => setItems(items))
+          onDelete={async (item: Item) => {
+              await client.DeleteItem(item.id)
+              setItems(await client.GetItems(filter))
           }}
           onUpdate={async (item: Item) => {
             const existingItem = items?.find(i => i.id === item.id)
