@@ -238,6 +238,9 @@ describe("TaskView", () => {
                 id: 1, name: "Project A", later: false, done: false
             }
         ]
+        client.Tags = [
+            { id: 1, name: "Tag 1" }
+        ]
         render(<TaskView 
             client={client}
         />)
@@ -246,6 +249,8 @@ describe("TaskView", () => {
         AssertHighlightedProjectFilter("Project A", true)
 
         fireEvent.click(screen.getByRole("button", { name: "Add" }))
+        await sleep(1)
+
         fireEvent.change(screen.getByRole("combobox", { name: "Project"}), { target: { value: 1 } })
         userEvent.selectOptions(screen.getByRole("listbox", { name: "Tags"}), ["1"])
         fireEvent.change(screen.getByRole("textbox", { name: "Description"}), { target: { value: "Task 1"}})
@@ -262,6 +267,9 @@ describe("TaskView", () => {
                 id: 1, name: "Project A", later: false, done: false
             }
         ]
+        client.Tags = [
+            { id: 1, name: "Tag 1" }
+        ]
         client.Items = [
             { id: 1, description: "Task 1", projectId: 1, done: false, later: false }
         ]
@@ -272,10 +280,9 @@ describe("TaskView", () => {
 
         AssertHighlightedProjectFilter("Project A", true)
 
-        fireEvent.click(screen.getByRole("button", { name: "Add" }))
-        fireEvent.change(screen.getByRole("combobox", { name: "Project"}), { target: { value: 1 } })
-        fireEvent.change(screen.getByRole("textbox", { name: "Description"}), { target: { value: "Task 1"}})
-        fireEvent.click(screen.getByRole("button", { name: "Create"}))
+        fireEvent.click(screen.getByTestId("tags"))
+        userEvent.selectOptions(screen.getByTestId("edit-tags"), ["1"])
+        fireEvent.click(screen.getByRole("button", { name: "✓"}))
         await sleep(1)
 
         AssertHighlightedProjectFilter("Project A", false)
