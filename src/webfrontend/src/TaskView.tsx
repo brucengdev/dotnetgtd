@@ -70,9 +70,10 @@ export function TaskView(props: TaskViewProps) {
               initialValues={buildInitialValues(filter)}
               projectFilter={filter}
               onCancel={() => setShowNewTaskForm(false)} 
-              onCompleted={() => {
+              onCompleted={async () => {
                   setShowNewTaskForm(false)
-                  setItems(undefined) //to reload
+                  const items = await client.GetItems(filter)
+                  setItems(items)
                 }
               }
               />
