@@ -73,6 +73,7 @@ export function TaskView(props: TaskViewProps) {
                   setShowNewTaskForm(false)
                   const items = await client.GetItems(filter)
                   setItems(items)
+                  setProjects(await loadProjectWithNoNextActions(client, filter))
                 }
               }
               />
