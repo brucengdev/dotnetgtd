@@ -8,6 +8,8 @@ public class Project
     public User User { get; set; }
     public bool Later { get; set; }
     public bool Done { get; set; }
+    
+    public ICollection<Item> Items { get; set; }
 
     public override bool Equals(object? obj)
     {
