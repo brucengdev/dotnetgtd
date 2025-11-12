@@ -16,9 +16,14 @@ export interface TaskFilter {
 }
 
 interface TaskFiltersProps {
-    client: IClient
+    client?: IClient
     filter?: TaskFilter
+    projects?: ProjectAndNoNextActions[]
     onFiltersChanged?: (filter: TaskFilter) => void
+}
+
+interface ProjectAndNoNextActions extends Project {
+    numberOfNextActions?: number
 }
 
 interface ProjectWithNextAction {
