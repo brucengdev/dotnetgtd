@@ -46,7 +46,7 @@ export function TaskFilters(props: TaskFiltersProps) {
         : string[] | undefined {
         if(filter?.projectIds === undefined || filter?.projectIds?.includes("nonnull")) {
             if(projectSelected === false) {
-                return [...filter?.projectIds?? [], ...(projectsWithNextAction?.map(p => p.project.id.toString()) ?? [])]
+                return [...filter?.projectIds?? [], ...(projects?.map(p => p.id.toString()) ?? [])]
                     .filter(pId => pId !== "nonnull" && pId !== projectId.toString())
             }
         }
@@ -54,7 +54,7 @@ export function TaskFilters(props: TaskFiltersProps) {
             let result = [...(filter?.projectIds || []), projectId.toString()]
                 .filter(pId => pId !== "nonnull")
             const numberOfProjects = result.filter(pId => isAnIntId(pId)).length
-            if(numberOfProjects === (projectsWithNextAction?.length ?? 0))//all projects are selected
+            if(numberOfProjects === (projects?.length ?? 0))//all projects are selected
             {
                 result = result.filter(pId => !isAnIntId(pId)).concat("nonnull")
             }
@@ -77,13 +77,11 @@ export function TaskFilters(props: TaskFiltersProps) {
                 className="block" 
                 checked={filter?.active ?? false}
                 onChange={(selected) => {
-                    setProjects(undefined) //to reload projects when filter changes
                     executeFilterChangeCallback(props, { ...filter, active: selected })
                 }}
             />
             <CheckBox label="Inactive tasks" checked={filter?.inactive ?? false} 
                 onChange={(selected) => {
-                    setProjects(undefined) //to reload projects when filter changes
                     executeFilterChangeCallback(props, { ...filter, inactive: selected })
                 }} 
             />
@@ -94,13 +92,11 @@ export function TaskFilters(props: TaskFiltersProps) {
                 className="block"
                 checked={filter?.completed?? false}
                 onChange={(selected) => {
-                    setProjects(undefined) //to reload projects when filter changes
                     executeFilterChangeCallback(props, { ...filter, completed: selected })
                 }}
             />
             <CheckBox label="Uncompleted tasks" checked={filter?.uncompleted ?? false} 
                 onChange={(selected) => {
-                    setProjects(undefined) //to reload projects when filter changes
                     executeFilterChangeCallback(props, { ...filter, uncompleted: selected })
                 }}
             />
