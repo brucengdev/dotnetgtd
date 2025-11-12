@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { TaskFilter, TaskFilters } from "./TaskFilters";
+import { ProjectAndNoNextActions, TaskFilter, TaskFilters } from "./TaskFilters";
 import { TestClient } from "./__test__/TestClient";
 import '@testing-library/jest-dom'
 import { sleep } from "./__test__/testutils";
@@ -9,15 +9,17 @@ import { useState } from "react";
 interface WrapperProps {
     client: TestClient
     filter: TaskFilter
+    projects?: ProjectAndNoNextActions[]
     onFiltersChanged?: (filter: TaskFilter) => void
 }
 
 // a component to wrap TaskFilters for testing
 const WrapperComponent = (props: WrapperProps) => {
-    const {client, onFiltersChanged } = props
+    const {client, onFiltersChanged, projects } = props
     const [filter, setFilter] = useState(props.filter)
     return <TaskFilters client={client} 
         filter={filter}
+        projects={projects}
         onFiltersChanged={(newFilter) => {
             setFilter(newFilter)
             onFiltersChanged?.(newFilter)
@@ -34,7 +36,7 @@ describe("TaskFilters", () => {
             { id: 3, name: "A Project", done: false, later: false },
             { id: 4, name: "B Project", done: true, later: false },
         ]
-        render(<WrapperComponent client={client} filter={{}} />)
+        render(<WrapperComponent client={client} projects={client.Projects} filter={{}} />)
         await sleep(1)
 
         const checkboxes = screen.getAllByRole("checkbox").filter(cb => (cb.parentElement?.textContent ?? "").endsWith(" Project"))
@@ -50,7 +52,7 @@ describe("TaskFilters", () => {
             { id: 1, name: "Uncompleted project", done: false, later: false },
             { id: 2, name: "Completed project", done: true, later: false },
         ]
-        render(<WrapperComponent client={client} filter={{}} />)
+        render(<WrapperComponent client={client} projects={client.Projects} filter={{}} />)
         await sleep(1)
 
         expect(screen.getByRole("checkbox", {name: "Uncompleted tasks"})).not.toBeChecked()
@@ -69,7 +71,7 @@ describe("TaskFilters", () => {
             { id: 1, name: "Uncompleted project", done: false, later: false },
             { id: 2, name: "Completed project", done: true, later: false },
         ]
-        render(<WrapperComponent client={client} filter={{}} />)
+        render(<WrapperComponent client={client} projects={client.Projects} filter={{}} />)
         await sleep(1)
 
         expect(screen.getByRole("checkbox", {name: "Completed tasks"})).not.toBeChecked()
@@ -88,7 +90,7 @@ describe("TaskFilters", () => {
             { id: 1, name: "Uncompleted project", done: false, later: false },
             { id: 2, name: "Completed project", done: true, later: false },
         ]
-        render(<WrapperComponent client={client} filter={{}} />)
+        render(<WrapperComponent client={client} projects={client.Projects} filter={{}} />)
         await sleep(1)
 
         expect(screen.getByRole("checkbox", {name: "Completed tasks"})).not.toBeChecked()
@@ -111,7 +113,7 @@ describe("TaskFilters", () => {
             { id: 1, name: "Active project", done: false, later: false },
             { id: 2, name: "Inactive project", done: false, later: true },
         ]
-        render(<WrapperComponent client={client} filter={{}} />)
+        render(<WrapperComponent client={client} projects={client.Projects} filter={{}} />)
         await sleep(1)
 
         expect(screen.getByRole("checkbox", {name: "Active tasks"})).not.toBeChecked()
@@ -130,7 +132,7 @@ describe("TaskFilters", () => {
             { id: 1, name: "Active project", done: false, later: false },
             { id: 2, name: "Inactive project", done: false, later: true },
         ]
-        render(<WrapperComponent client={client} filter={{}} />)
+        render(<WrapperComponent client={client} projects={client.Projects} filter={{}} />)
         await sleep(1)
 
         expect(screen.getByRole("checkbox", {name: "Inactive tasks"})).not.toBeChecked()
@@ -149,7 +151,7 @@ describe("TaskFilters", () => {
             { id: 1, name: "Active project", done: false, later: false },
             { id: 2, name: "Inactive project", done: false, later: true },
         ]
-        render(<WrapperComponent client={client} filter={{}} />)
+        render(<WrapperComponent client={client} projects={client.Projects} filter={{}} />)
         await sleep(1)
 
         expect(screen.getByRole("checkbox", {name: "Inactive tasks"})).not.toBeChecked()
@@ -174,7 +176,7 @@ describe("TaskFilters", () => {
             { id: 3, name: "Inactive completed project", done: true, later: true },
             { id: 4, name: "Inactive uncompleted project", done: false, later: true },
         ]
-        render(<WrapperComponent client={client} filter={{}} />)
+        render(<WrapperComponent client={client} projects={client.Projects} filter={{}} />)
         await sleep(1)
 
         expect(screen.getByRole("checkbox", { name: "Completed tasks" })).not.toBeChecked()
@@ -198,7 +200,7 @@ describe("TaskFilters", () => {
             { id: 3, name: "Inactive completed project", done: true, later: true },
             { id: 4, name: "Inactive uncompleted project", done: false, later: true },
         ]
-        render(<WrapperComponent client={client} filter={{}} />)
+        render(<WrapperComponent client={client} projects={client.Projects} filter={{}} />)
         await sleep(1)
 
         expect(screen.getByRole("checkbox", { name: "Uncompleted tasks" })).not.toBeChecked()
@@ -222,7 +224,7 @@ describe("TaskFilters", () => {
             { id: 3, name: "Inactive completed project", done: true, later: true },
             { id: 4, name: "Inactive uncompleted project", done: false, later: true },
         ]
-        render(<WrapperComponent client={client} filter={{}} />)
+        render(<WrapperComponent client={client} projects={client.Projects} filter={{}} />)
         await sleep(1)
         expect(screen.getByRole("checkbox", { name: "Completed tasks" })).not.toBeChecked()
         expect(screen.getByRole("checkbox", { name: "Inactive tasks" })).not.toBeChecked()
@@ -245,7 +247,7 @@ describe("TaskFilters", () => {
             { id: 3, name: "Inactive completed project", done: true, later: true },
             { id: 4, name: "Inactive uncompleted project", done: false, later: true },
         ]
-        render(<WrapperComponent client={client} filter={{}} />)
+        render(<WrapperComponent client={client} projects={client.Projects} filter={{}} />)
         await sleep(1)
         expect(screen.getByRole("checkbox", { name: "Uncompleted tasks" })).not.toBeChecked()
         expect(screen.getByRole("checkbox", { name: "Inactive tasks" })).not.toBeChecked()

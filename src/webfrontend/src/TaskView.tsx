@@ -4,9 +4,9 @@ import { Button } from "./controls/Button"
 import { AddItemForm, TaskInitialValues } from "./AddItemForm"
 import ItemList from "./ItemList"
 import { Item } from "./models/Item"
-import { Project } from "./models/Project"
 import { Tag } from "./models/Tag"
-import { TaskFilter, TaskFilters } from "./TaskFilters"
+import { ProjectAndNoNextActions, TaskFilter, TaskFilters } from "./TaskFilters"
+import { ProjectFilter } from "./ProjectFilters"
 
 export interface TaskViewProps {
   client: IClient,
@@ -25,7 +25,7 @@ export function TaskView(props: TaskViewProps) {
     const { client } = props
     const [showNewTaskForm, setShowNewTaskForm] = useState(false)
     const [items, setItems] = useState(undefined as (Item[]|undefined))
-    const [projects, setProjects] = useState<Project[] | undefined>(undefined)
+    const [projects, setProjects] = useState<ProjectAndNoNextActions[] | undefined>(undefined)
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
     const [filter, setFilter] = useState<TaskFilter>(props.filter ?? defaultTasksFilter)
     if(items === undefined) {
@@ -36,9 +36,7 @@ export function TaskView(props: TaskViewProps) {
     }
     if(projects === undefined) {
       (async () => {
-        const projects = await client.GetProjects(filter)
-        projects.sort((a, b) => a.name.localeCompare(b.name))
-        setProjects(projects)
+        setProjects(await loadProjectWithNoNextActions(client, filter))
       })()
     }
     if(tags === undefined) {
@@ -51,6 +49,7 @@ export function TaskView(props: TaskViewProps) {
     return <div data-testid="task-view" 
       className="sm:grid sm:grid-cols-3 lg:grid-cols-5">
       <TaskFilters 
+        projects={projects}
         client={client} filter={filter}
         onFiltersChanged={filter => {
           setFilter(filter)
@@ -70,18 +69,19 @@ export function TaskView(props: TaskViewProps) {
               initialValues={buildInitialValues(filter)}
               projectFilter={filter}
               onCancel={() => setShowNewTaskForm(false)} 
-              onCompleted={() => {
+              onCompleted={async () => {
                   setShowNewTaskForm(false)
-                  setItems(undefined) //to reload
+                  const items = await client.GetItems(filter)
+                  setItems(items)
+                  setProjects(await loadProjectWithNoNextActions(client, filter))
                 }
               }
               />
           : <Button text="Add" className="mb-2 block" onClick={() => setShowNewTaskForm(true)} />}
         <ItemList items={items} projects={projects} tags={tags}
-          onDelete={(item: Item) => {
-              client.DeleteItem(item.id)
-                  .then(() => client.GetItems(filter))
-                  .then(items => setItems(items))
+          onDelete={async (item: Item) => {
+              await client.DeleteItem(item.id)
+              setItems(await client.GetItems(filter))
           }}
           onUpdate={async (item: Item) => {
             const existingItem = items?.find(i => i.id === item.id)
@@ -99,7 +99,7 @@ export function TaskView(props: TaskViewProps) {
             await client.UpdateItem(item);
             const [updatedItems, updatedProjects] = await Promise.all([
               client.GetItems(filter),
-              client.GetProjects(filter)
+              loadProjectWithNoNextActions(client, filter)
             ])
             setItems(updatedItems)
             setProjects(updatedProjects)
@@ -130,4 +130,20 @@ function buildInitialValues(filter: TaskFilter): TaskInitialValues {
   initialValues.later = filter.inactive ?? false
 
   return initialValues
+}
+
+async function loadProjectWithNoNextActions(client: IClient, filter: ProjectFilter): Promise<ProjectAndNoNextActions[]> {
+  const projects = await client.GetProjects(filter)
+  projects.sort((a, b) => a.name.localeCompare(b.name))
+  const tasks = await client.GetItems({ 
+    projectIds: projects.map(p => p.id.toString()), 
+    active: true,
+    uncompleted: true,
+    tagIds: ["nonnull"]
+  })
+  projects.forEach(project => {
+    const numberOfNextActions = tasks.filter(t => t.projectId === project.id).length;
+    (project as ProjectAndNoNextActions).numberOfNextActions = numberOfNextActions
+  })
+  return projects
 }

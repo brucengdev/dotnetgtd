@@ -7,6 +7,7 @@ import { sleep } from "./__test__/testutils";
 import userEvent from "@testing-library/user-event";
 import { TaskFilter } from "./TaskFilters";
 import cartesian from "fast-cartesian";
+import { AssertHighlightedProjectFilter } from "./TaskFilters.projectHighlight.test";
 
 describe("TaskView", () => {
     it("has necessary ui components", () => {
@@ -227,5 +228,63 @@ describe("TaskView", () => {
 
         const updatedItems = screen.queryAllByTestId("description")
         expect(updatedItems[1].textContent).toBe("Task B Updated")
+    })
+
+    
+    it("highlight project filters with no labelled tasks and remove highlight when new task is created", async () => {
+        const client = new TestClient()
+        client.Projects = [
+            {
+                id: 1, name: "Project A", later: false, done: false
+            }
+        ]
+        client.Tags = [
+            { id: 1, name: "Tag 1" }
+        ]
+        render(<TaskView 
+            client={client}
+        />)
+        await sleep(10)
+
+        AssertHighlightedProjectFilter("Project A", true)
+
+        fireEvent.click(screen.getByRole("button", { name: "Add" }))
+        await sleep(1)
+
+        fireEvent.change(screen.getByRole("combobox", { name: "Project"}), { target: { value: 1 } })
+        userEvent.selectOptions(screen.getByRole("listbox", { name: "Tags"}), ["1"])
+        fireEvent.change(screen.getByRole("textbox", { name: "Description"}), { target: { value: "Task 1"}})
+        fireEvent.click(screen.getByRole("button", { name: "Create"}))
+        await sleep(1)
+
+        AssertHighlightedProjectFilter("Project A", false)
+    })
+
+    it("highlight project filters with no labelled tasks and remove highlight task is updated", async () => {
+        const client = new TestClient()
+        client.Projects = [
+            {
+                id: 1, name: "Project A", later: false, done: false
+            }
+        ]
+        client.Tags = [
+            { id: 1, name: "Tag 1" }
+        ]
+        client.Items = [
+            { id: 1, description: "Task 1", projectId: 1, done: false, later: false }
+        ]
+        render(<TaskView 
+            client={client}
+        />)
+        await sleep(1)
+
+        AssertHighlightedProjectFilter("Project A", true)
+
+        fireEvent.click(screen.getByTestId("tags"))
+        userEvent.selectOptions(screen.getByTestId("edit-tags"), ["1"])
+        fireEvent.click(screen.getByRole("button", { name: "✓"}))
+        await sleep(1)
+
+        AssertHighlightedProjectFilter("Project A", false)
     })
 })

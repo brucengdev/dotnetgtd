@@ -49,7 +49,7 @@ describe("TaskFilters views", () => {
             { id: 1, name: "Tag 1" },
             { id: 2, name: "Tag 2" }
         ]
-        render(<TaskFilters client={client} />)
+        render(<TaskFilters client={client} projects={client.Projects}/>)
         await sleep(1)
 
         expect(screen.getByRole("button", { name: "Filters ▼" })).toBeInTheDocument()
@@ -131,7 +131,7 @@ describe("TaskFilters views", () => {
                 { id: 2, name: "Tag 2" },
                 { id: 3, name: "Tag 3" }
             ];
-            render(<TaskFilters client={client} filter={initialFilter} onFiltersChanged={fn} />);
+            render(<TaskFilters client={client} projects={client.Projects} filter={initialFilter} onFiltersChanged={fn} />);
             await sleep(1);
         }
 

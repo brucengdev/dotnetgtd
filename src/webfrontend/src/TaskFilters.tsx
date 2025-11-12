@@ -18,35 +18,18 @@ export interface TaskFilter {
 interface TaskFiltersProps {
     client: IClient
     filter?: TaskFilter
+    projects?: ProjectAndNoNextActions[]
     onFiltersChanged?: (filter: TaskFilter) => void
 }
 
-interface ProjectWithNextAction {
-    project: Project
-    hasNextAction: boolean
+export interface ProjectAndNoNextActions extends Project {
+    numberOfNextActions?: number
 }
 
 export function TaskFilters(props: TaskFiltersProps) {
-    const { client, filter } = props
-    const [projectsWithNextAction, setProjects] = useState<ProjectWithNextAction[] | undefined>(undefined)
+    const { client, filter, projects } = props
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
     const [collapsed, setCollapsed] = useState<boolean>(window.innerWidth <= 640)
-    if(projectsWithNextAction === undefined) {
-        (async () => {
-            let retrievedProjects = await client.GetProjects(filter)
-            retrievedProjects = retrievedProjects.sort((a, b) => a.name.localeCompare(b.name))
-            const tasks = await client.GetItems({ 
-                active: true,
-                inactive: true,
-                uncompleted: true,
-                projectIds: retrievedProjects.map(p => p.id.toString()) 
-            })
-            setProjects(retrievedProjects.map(p => ({
-                project: p,
-                hasNextAction: tasks.some(t => t.projectId === p.id && t.tagIds !== undefined && t.tagIds?.length > 0)
-            })))
-        })()
-    }
     if(tags === undefined) {
         (async () => {
             const retrievedTags = await client.GetTags()
@@ -54,11 +37,24 @@ export function TaskFilters(props: TaskFiltersProps) {
         })()
     }
 
+    const projectFilters = (projects || [])
+        .filter(p => {
+            const completionFilter = !filter?.completed && !filter?.uncompleted
+                || filter?.uncompleted === true && !p.done
+                || filter?.completed === true && p.done
+
+            const activeFilter = !filter?.inactive && !filter?.active
+                || filter?.active === true && !p.later
+                || filter?.inactive === true && p.later
+            return completionFilter && activeFilter
+        })
+        .sort((a,b) => a.name.localeCompare(b.name))
+
     function buildProjectIdsFilter(projectId: number, projectSelected: boolean)
         : string[] | undefined {
         if(filter?.projectIds === undefined || filter?.projectIds?.includes("nonnull")) {
             if(projectSelected === false) {
-                return [...filter?.projectIds?? [], ...(projectsWithNextAction?.map(p => p.project.id.toString()) ?? [])]
+                return [...filter?.projectIds?? [], ...(projects?.map(p => p.id.toString()) ?? [])]
                     .filter(pId => pId !== "nonnull" && pId !== projectId.toString())
             }
         }
@@ -66,7 +62,7 @@ export function TaskFilters(props: TaskFiltersProps) {
             let result = [...(filter?.projectIds || []), projectId.toString()]
                 .filter(pId => pId !== "nonnull")
             const numberOfProjects = result.filter(pId => isAnIntId(pId)).length
-            if(numberOfProjects === (projectsWithNextAction?.length ?? 0))//all projects are selected
+            if(numberOfProjects === (projects?.length ?? 0))//all projects are selected
             {
                 result = result.filter(pId => !isAnIntId(pId)).concat("nonnull")
             }
@@ -89,13 +85,11 @@ export function TaskFilters(props: TaskFiltersProps) {
                 className="block" 
                 checked={filter?.active ?? false}
                 onChange={(selected) => {
-                    setProjects(undefined) //to reload projects when filter changes
                     executeFilterChangeCallback(props, { ...filter, active: selected })
                 }}
             />
             <CheckBox label="Inactive tasks" checked={filter?.inactive ?? false} 
                 onChange={(selected) => {
-                    setProjects(undefined) //to reload projects when filter changes
                     executeFilterChangeCallback(props, { ...filter, inactive: selected })
                 }} 
             />
@@ -106,13 +100,11 @@ export function TaskFilters(props: TaskFiltersProps) {
                 className="block"
                 checked={filter?.completed?? false}
                 onChange={(selected) => {
-                    setProjects(undefined) //to reload projects when filter changes
                     executeFilterChangeCallback(props, { ...filter, completed: selected })
                 }}
             />
             <CheckBox label="Uncompleted tasks" checked={filter?.uncompleted ?? false} 
                 onChange={(selected) => {
-                    setProjects(undefined) //to reload projects when filter changes
                     executeFilterChangeCallback(props, { ...filter, uncompleted: selected })
                 }}
             />
@@ -213,17 +205,17 @@ export function TaskFilters(props: TaskFiltersProps) {
                 }
             />
             <hr/>
-            {(projectsWithNextAction || []).map(p => 
-                <CheckBox key={p.project.id} label={p.project.name} 
-                    className={"block " + (p.hasNextAction ? "" : "text-red-500")}
+            {projectFilters.map(p => 
+                <CheckBox key={p.id} label={p.name} 
+                    className={"block " + ((p.numberOfNextActions ?? 0) == 0 ? "text-red-500": "")}
                     checked={
                             filter?.projectIds === undefined 
-                            || filter?.projectIds?.includes(p.project.id.toString()) 
+                            || filter?.projectIds?.includes(p.id.toString()) 
                             || filter?.projectIds?.includes("nonnull")
                             || false
                         } 
                     onChange={(selected) => {
-                        executeFilterChangeCallback(props, { ...filter, projectIds: buildProjectIdsFilter(p.project.id, selected) })
+                        executeFilterChangeCallback(props, { ...filter, projectIds: buildProjectIdsFilter(p.id, selected) })
                     }}
             />
         )}
