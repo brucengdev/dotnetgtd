@@ -27,7 +27,7 @@ namespace Backend.Models
             {
                 e.HasOne(i => i.User)
                     .WithMany()
-                    .OnDelete(DeleteBehavior.ClientNoAction);
+                    .OnDelete(DeleteBehavior.NoAction);
                 e.HasMany(i => i.ItemTagMappings);
                 e.HasOne(i => i.Project)
                     .WithMany(p => p.Items)
