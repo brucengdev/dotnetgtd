@@ -39,11 +39,14 @@ export function TaskFilters(props: TaskFiltersProps) {
 
     const projectFilters = (projects || [])
         .filter(p => {
-            if(filter?.uncompleted === true && !p.done) { return true }
-            if(filter?.completed === true && p.done) { return true }
-            if(filter?.active === true && !p.later) { return true }
-            if(filter?.inactive === true && p.later) { return true }
-            return false
+            const completionFilter = !filter?.completed && !filter?.uncompleted
+                || filter?.uncompleted === true && !p.done
+                || filter?.completed === true && p.done
+                
+            const activeFilter = !filter?.inactive && !filter?.active
+                || filter?.active === true && !p.later
+                || filter?.inactive === true && p.later
+            return completionFilter && activeFilter
         })
         .sort((a,b) => a.name.localeCompare(b.name))
 
