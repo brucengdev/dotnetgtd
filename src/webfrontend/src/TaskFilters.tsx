@@ -22,13 +22,8 @@ interface TaskFiltersProps {
     onFiltersChanged?: (filter: TaskFilter) => void
 }
 
-interface ProjectAndNoNextActions extends Project {
+export interface ProjectAndNoNextActions extends Project {
     numberOfNextActions?: number
-}
-
-interface ProjectWithNextAction {
-    project: Project
-    hasNextAction: boolean
 }
 
 export function TaskFilters(props: TaskFiltersProps) {
@@ -197,7 +192,7 @@ export function TaskFilters(props: TaskFiltersProps) {
                 }
             />
             <hr/>
-            {(projects || []).map(p => 
+            {(projects || []).sort((a,b) => a.name.localeCompare(b.name)).map(p => 
                 <CheckBox key={p.id} label={p.name} 
                     className={"block " + ((p.numberOfNextActions ?? 0) == 0 ? "" : "text-red-500")}
                     checked={
