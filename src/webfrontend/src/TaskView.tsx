@@ -4,9 +4,9 @@ import { Button } from "./controls/Button"
 import { AddItemForm, TaskInitialValues } from "./AddItemForm"
 import ItemList from "./ItemList"
 import { Item } from "./models/Item"
-import { Project } from "./models/Project"
 import { Tag } from "./models/Tag"
 import { ProjectAndNoNextActions, TaskFilter, TaskFilters } from "./TaskFilters"
+import { ProjectFilter } from "./ProjectFilters"
 
 export interface TaskViewProps {
   client: IClient,
@@ -36,14 +36,7 @@ export function TaskView(props: TaskViewProps) {
     }
     if(projects === undefined) {
       (async () => {
-        const projects = await client.GetProjects(filter)
-        projects.sort((a, b) => a.name.localeCompare(b.name))
-        const tasks = await client.GetItems({ projectIds: projects.map(p => p.id.toString()), active: true, uncompleted: true })
-        projects.forEach(project => {
-          const numberOfNextActions = tasks.filter(t => t.projectId === project.id).length;
-          (project as ProjectAndNoNextActions).numberOfNextActions = numberOfNextActions
-        })
-        setProjects(projects)
+        setProjects(await loadProjectWithNoNextActions(client, filter))
       })()
     }
     if(tags === undefined) {
@@ -105,7 +98,7 @@ export function TaskView(props: TaskViewProps) {
             await client.UpdateItem(item);
             const [updatedItems, updatedProjects] = await Promise.all([
               client.GetItems(filter),
-              client.GetProjects(filter)
+              loadProjectWithNoNextActions(client, filter)
             ])
             setItems(updatedItems)
             setProjects(updatedProjects)
@@ -136,4 +129,20 @@ function buildInitialValues(filter: TaskFilter): TaskInitialValues {
   initialValues.later = filter.inactive ?? false
 
   return initialValues
+}
+
+async function loadProjectWithNoNextActions(client: IClient, filter: ProjectFilter): Promise<ProjectAndNoNextActions[]> {
+  const projects = await client.GetProjects(filter)
+  projects.sort((a, b) => a.name.localeCompare(b.name))
+  const tasks = await client.GetItems({ 
+    projectIds: projects.map(p => p.id.toString()), 
+    active: true,
+    uncompleted: true,
+    tagIds: ["nonnull"]
+  })
+  projects.forEach(project => {
+    const numberOfNextActions = tasks.filter(t => t.projectId === project.id).length;
+    (project as ProjectAndNoNextActions).numberOfNextActions = numberOfNextActions
+  })
+  return projects
 }
