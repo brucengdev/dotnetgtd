@@ -37,6 +37,16 @@ export function TaskFilters(props: TaskFiltersProps) {
         })()
     }
 
+    const projectFilters = (projects || [])
+        .filter(p => {
+            if(filter?.uncompleted === true && !p.done) { return true }
+            if(filter?.completed === true && p.done) { return true }
+            if(filter?.active === true && !p.later) { return true }
+            if(filter?.inactive === true && p.later) { return true }
+            return false
+        })
+        .sort((a,b) => a.name.localeCompare(b.name))
+
     function buildProjectIdsFilter(projectId: number, projectSelected: boolean)
         : string[] | undefined {
         if(filter?.projectIds === undefined || filter?.projectIds?.includes("nonnull")) {
@@ -192,7 +202,7 @@ export function TaskFilters(props: TaskFiltersProps) {
                 }
             />
             <hr/>
-            {(projects || []).sort((a,b) => a.name.localeCompare(b.name)).map(p => 
+            {projectFilters.map(p => 
                 <CheckBox key={p.id} label={p.name} 
                     className={"block " + ((p.numberOfNextActions ?? 0) == 0 ? "" : "text-red-500")}
                     checked={
