@@ -6,7 +6,7 @@ import ItemList from "./ItemList"
 import { Item } from "./models/Item"
 import { Project } from "./models/Project"
 import { Tag } from "./models/Tag"
-import { TaskFilter, TaskFilters } from "./TaskFilters"
+import { ProjectAndNoNextActions, TaskFilter, TaskFilters } from "./TaskFilters"
 
 export interface TaskViewProps {
   client: IClient,
@@ -25,7 +25,7 @@ export function TaskView(props: TaskViewProps) {
     const { client } = props
     const [showNewTaskForm, setShowNewTaskForm] = useState(false)
     const [items, setItems] = useState(undefined as (Item[]|undefined))
-    const [projects, setProjects] = useState<Project[] | undefined>(undefined)
+    const [projects, setProjects] = useState<ProjectAndNoNextActions[] | undefined>(undefined)
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
     const [filter, setFilter] = useState<TaskFilter>(props.filter ?? defaultTasksFilter)
     if(items === undefined) {
@@ -38,6 +38,11 @@ export function TaskView(props: TaskViewProps) {
       (async () => {
         const projects = await client.GetProjects(filter)
         projects.sort((a, b) => a.name.localeCompare(b.name))
+        const tasks = await client.GetItems({ projectIds: projects.map(p => p.id.toString()), active: true, uncompleted: true })
+        projects.forEach(project => {
+          const numberOfNextActions = tasks.filter(t => t.projectId === project.id).length;
+          (project as ProjectAndNoNextActions).numberOfNextActions = numberOfNextActions
+        })
         setProjects(projects)
       })()
     }
