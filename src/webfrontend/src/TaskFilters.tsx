@@ -32,26 +32,9 @@ interface ProjectWithNextAction {
 }
 
 export function TaskFilters(props: TaskFiltersProps) {
-    const { client, filter } = props
-    const [projectsWithNextAction, setProjects] = useState<ProjectWithNextAction[] | undefined>(undefined)
+    const { client, filter, projects } = props
     const [tags, setTags] = useState<Tag[] | undefined>(undefined)
     const [collapsed, setCollapsed] = useState<boolean>(window.innerWidth <= 640)
-    if(projectsWithNextAction === undefined) {
-        (async () => {
-            let retrievedProjects = await client.GetProjects(filter)
-            retrievedProjects = retrievedProjects.sort((a, b) => a.name.localeCompare(b.name))
-            const tasks = await client.GetItems({ 
-                active: true,
-                inactive: true,
-                uncompleted: true,
-                projectIds: retrievedProjects.map(p => p.id.toString()) 
-            })
-            setProjects(retrievedProjects.map(p => ({
-                project: p,
-                hasNextAction: tasks.some(t => t.projectId === p.id && t.tagIds !== undefined && t.tagIds?.length > 0)
-            })))
-        })()
-    }
     if(tags === undefined) {
         (async () => {
             const retrievedTags = await client.GetTags()
@@ -218,17 +201,17 @@ export function TaskFilters(props: TaskFiltersProps) {
                 }
             />
             <hr/>
-            {(projectsWithNextAction || []).map(p => 
-                <CheckBox key={p.project.id} label={p.project.name} 
-                    className={"block " + (p.hasNextAction ? "" : "text-red-500")}
+            {(projects || []).map(p => 
+                <CheckBox key={p.id} label={p.name} 
+                    className={"block " + ((p.numberOfNextActions ?? 0) == 0 ? "" : "text-red-500")}
                     checked={
                             filter?.projectIds === undefined 
-                            || filter?.projectIds?.includes(p.project.id.toString()) 
+                            || filter?.projectIds?.includes(p.id.toString()) 
                             || filter?.projectIds?.includes("nonnull")
                             || false
                         } 
                     onChange={(selected) => {
-                        executeFilterChangeCallback(props, { ...filter, projectIds: buildProjectIdsFilter(p.project.id, selected) })
+                        executeFilterChangeCallback(props, { ...filter, projectIds: buildProjectIdsFilter(p.id, selected) })
                     }}
             />
         )}

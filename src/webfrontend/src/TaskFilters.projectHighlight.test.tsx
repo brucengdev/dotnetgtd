@@ -47,7 +47,7 @@ describe("TaskFilters", () => {
             { id: 2, name: "Project 2", later: false, done: false, numberOfNextActions: 1 },
             { id: 3, name: "Project 3", later: false, done: false, numberOfNextActions: 2 }
         ]
-        render(<TaskFilters projects={projects} />)
+        render(<TaskFilters projects={projects} client={new TestClient()} />)
         await sleep(1)
 
         AssertHighlightedProjectFilter("Project 1", false)
