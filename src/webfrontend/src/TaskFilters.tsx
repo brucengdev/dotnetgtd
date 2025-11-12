@@ -42,7 +42,7 @@ export function TaskFilters(props: TaskFiltersProps) {
             const completionFilter = !filter?.completed && !filter?.uncompleted
                 || filter?.uncompleted === true && !p.done
                 || filter?.completed === true && p.done
-                
+
             const activeFilter = !filter?.inactive && !filter?.active
                 || filter?.active === true && !p.later
                 || filter?.inactive === true && p.later
@@ -207,7 +207,7 @@ export function TaskFilters(props: TaskFiltersProps) {
             <hr/>
             {projectFilters.map(p => 
                 <CheckBox key={p.id} label={p.name} 
-                    className={"block " + ((p.numberOfNextActions ?? 0) == 0 ? "" : "text-red-500")}
+                    className={"block " + ((p.numberOfNextActions ?? 0) == 0 ? "text-red-500": "")}
                     checked={
                             filter?.projectIds === undefined 
                             || filter?.projectIds?.includes(p.id.toString()) 

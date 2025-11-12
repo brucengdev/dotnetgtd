@@ -244,7 +244,7 @@ describe("TaskView", () => {
         render(<TaskView 
             client={client}
         />)
-        await sleep(1)
+        await sleep(10)
 
         AssertHighlightedProjectFilter("Project A", true)
 

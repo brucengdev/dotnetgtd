@@ -17,9 +17,9 @@ describe("TaskFilters", () => {
         render(<TaskFilters projects={projects} client={new TestClient()} />)
         await sleep(1)
 
-        AssertHighlightedProjectFilter("Project 1", false)
-        AssertHighlightedProjectFilter("Project 2", true)
-        AssertHighlightedProjectFilter("Project 3", true)
+        AssertHighlightedProjectFilter("Project 1", true)
+        AssertHighlightedProjectFilter("Project 2", false)
+        AssertHighlightedProjectFilter("Project 3", false)
     })
 })
 
