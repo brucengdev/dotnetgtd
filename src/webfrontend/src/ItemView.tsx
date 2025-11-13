@@ -22,7 +22,7 @@ export default function ItemView(props: ItemViewProps) {
     const { description, done, later } = item
     const [ showConfirmDelete, setShowConfirmDelete ] = useState(false)
     const project = props.projects.find(p => p.id === item.projectId)
-    const [ isCompactMode, setIsCompactMode ] = useState(window.innerWidth <= 640)
+    const [ isCompactMode, setIsCompactMode ] = useState(window.innerWidth <= 1024)
     const highlighted = (item.tagIds ?? []).length > 0
     return <div data-testId="item" className="border border-gray-400 mb-1">
         <div  className="grid grid-cols-9 mb-1 gap-2">

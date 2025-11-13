@@ -1,5 +1,5 @@
 import { screen, render, fireEvent } from "@testing-library/react";
-import {describe, expect, it} from 'vitest'
+import {afterEach, beforeEach, describe, expect, it} from 'vitest'
 import '@testing-library/jest-dom'
 import { TaskView } from "./TaskView";
 import { TestClient } from "./__test__/TestClient";
@@ -8,6 +8,13 @@ import { ProjectFilter } from "./ProjectFilters";
 import { TaskFilter } from "./TaskFilters";
 
 describe("TaskView", () => {
+    const originalInnerWidth = window.innerWidth
+    beforeEach(() => {
+        window.innerWidth = 1025 // large screen size
+    })
+    afterEach(() => {
+        window.innerWidth = originalInnerWidth
+    })
     it(`makes project dropdown list in item view sorted by project name`, async () => {
         const client = new TestClient()
         client.Items = [

@@ -1,5 +1,5 @@
 import { screen, render, fireEvent } from "@testing-library/react";
-import {describe, expect, it, vitest} from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vitest} from 'vitest'
 import '@testing-library/jest-dom'
 import { TaskView } from "./TaskView";
 import { TestClient } from "./__test__/TestClient";
@@ -9,6 +9,13 @@ import { TaskFilter } from "./TaskFilters";
 import cartesian from "fast-cartesian";
 
 describe("TaskView", () => {
+    const originalInnerWidth = window.innerWidth
+    beforeEach(() => {
+        window.innerWidth = 1025 // large screen size
+    })
+    afterEach(() => {
+        window.innerWidth = originalInnerWidth
+    })
     it("has necessary ui components", () => {
         render(<TaskView client={new TestClient()} />)
 

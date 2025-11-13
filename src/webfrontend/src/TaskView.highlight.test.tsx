@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/dom"
 import userEvent from "@testing-library/user-event"
-import { describe, expect, it } from "vitest"
+import { afterEach, beforeEach, describe, expect, it } from "vitest"
 import { TestClient } from "./__test__/TestClient"
 import { sleep } from "./__test__/testutils"
 import { AssertHighlightedProjectFilter } from "./TaskFilters.projectHighlight.test"
@@ -9,7 +9,13 @@ import '@testing-library/jest-dom'
 import { render, screen } from "@testing-library/react"
 
 describe("TaskView ", () => {
-        
+    const originalInnerWidth = window.innerWidth
+    beforeEach(() => {
+        window.innerWidth = 1025 // large screen size
+    })
+    afterEach(() => {
+        window.innerWidth = originalInnerWidth
+    })
     it("highlight project filters with no labelled tasks and remove highlight when new task is created", async () => {
         const client = new TestClient()
         client.Projects = [
