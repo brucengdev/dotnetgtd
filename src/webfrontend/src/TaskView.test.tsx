@@ -7,7 +7,6 @@ import { sleep } from "./__test__/testutils";
 import userEvent from "@testing-library/user-event";
 import { TaskFilter } from "./TaskFilters";
 import cartesian from "fast-cartesian";
-import { AssertHighlightedProjectFilter } from "./TaskFilters.projectHighlight.test";
 
 describe("TaskView", () => {
     it("has necessary ui components", () => {
