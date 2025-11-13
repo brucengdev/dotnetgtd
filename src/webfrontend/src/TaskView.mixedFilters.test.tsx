@@ -1,11 +1,18 @@
 import { screen, render } from "@testing-library/react";
-import {describe, expect, it} from 'vitest'
+import {afterEach, beforeEach, describe, expect, it} from 'vitest'
 import '@testing-library/jest-dom'
 import { TaskView } from "./TaskView";
 import { TestClient } from "./__test__/TestClient";
 import { sleep } from "./__test__/testutils";
 
 describe("TaskView", () => {
+    const originalInnerWidth = window.innerWidth
+    beforeEach(() => {
+        window.innerWidth = 1025 // large screen size
+    })
+    afterEach(() => {
+        window.innerWidth = originalInnerWidth
+    })
     it("get only active and uncompleted tasks", async () => {
         const client = new TestClient()
         client.Items = [

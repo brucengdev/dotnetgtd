@@ -1,11 +1,18 @@
 import { screen, render, fireEvent } from "@testing-library/react";
-import {describe, expect, it, vitest} from 'vitest'
+import {afterEach, beforeEach, describe, expect, it, vitest} from 'vitest'
 import '@testing-library/jest-dom'
 import ItemList from "./ItemList";
 import { sleep } from "./__test__/testutils";
 import { Item } from "./models/Item";
 
 describe("ItemList", () => {
+    const originalInnerWidth = window.innerWidth
+    beforeEach(() => {
+        window.innerWidth = 1025 // large screen size
+    })
+    afterEach(() => {
+        window.innerWidth = originalInnerWidth
+    })
     it("shows message when there are no items", () => {
         render(<ItemList />)
         expect(screen.getByText("There are no items.")).toBeInTheDocument()

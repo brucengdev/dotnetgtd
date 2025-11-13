@@ -1,4 +1,4 @@
-import { describe, expect, it, vitest } from "vitest"
+import { afterEach, beforeEach, describe, expect, it, vitest } from "vitest"
 import ItemView from "./ItemView"
 import { screen, render, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom'
@@ -19,6 +19,13 @@ const testTags: Tag[] = [
 ]
 
 describe("ItemView update form", () => {
+    const originalInnerWidth = window.innerWidth
+    beforeEach(() => {
+        window.innerWidth = 1025 // large screen size
+    })
+    afterEach(() => {
+        window.innerWidth = originalInnerWidth
+    })
     it("Executes callback when description is changed", () => {
         const fn = vitest.fn()
         render(<ItemView
