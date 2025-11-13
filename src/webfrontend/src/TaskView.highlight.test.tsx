@@ -66,4 +66,30 @@ describe("TaskView ", () => {
 
         AssertHighlightedProjectFilter("Project A", false)
     })
+
+    it("should not highlight project filters when task filter is changed", async () => {
+        const client = new TestClient()
+        client.Projects = [
+            {
+                id: 1, name: "Project A", later: false, done: false
+            }
+        ]
+        client.Tags = [
+            { id: 1, name: "Tag 1" }
+        ]
+        client.Items = [
+            { id: 1, description: "Task 1", projectId: 1, tagIds: [1] , done: false, later: false }
+        ]
+        render(<TaskView 
+            client={client}
+        />)
+        await sleep(1)
+
+        AssertHighlightedProjectFilter("Project A", false)
+
+        fireEvent.click(screen.getByRole("checkbox", { name: "No project" }))
+        await sleep(1)
+
+        AssertHighlightedProjectFilter("Project A", false)
+    })
 })
