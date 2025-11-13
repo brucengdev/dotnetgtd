@@ -20,7 +20,7 @@ const testTags: Tag[] = [
 
 describe("ItemView", () => {
     const smallScreenSize = [
-        320, 375, 425, 576, 640
+        320, 375, 425, 576, 640, 768, 1024
     ]
     smallScreenSize.forEach(size => {
         it(`shows compact view on mobile screens with size = ${size}`, () => {
@@ -50,7 +50,7 @@ describe("ItemView", () => {
     })
 
     const bigScreenSize = [
-        641, 768, 1024, 1280, 1536
+        1025, 1280, 1536
     ]
     bigScreenSize.forEach(size => {
         it(`shows full view on mobile screens with size = ${size}`, () => {
