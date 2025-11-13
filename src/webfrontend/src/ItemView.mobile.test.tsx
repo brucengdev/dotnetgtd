@@ -117,7 +117,7 @@ describe("ItemView", () => {
 
     it(`collapses to compact view when collapse is clicked on`, () => {
         const originalSize = window.innerWidth
-        window.innerWidth = 641
+        window.innerWidth = 1025
         render(<ItemView item={{
             id: 1,
             description: "test task",
