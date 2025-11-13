@@ -47,7 +47,7 @@ export function TaskView(props: TaskViewProps) {
     }
 
     return <div data-testid="task-view" 
-      className="sm:grid sm:grid-cols-3 lg:grid-cols-5">
+      className="grid sm:grid-cols-3 lg:grid-cols-5">
       <TaskFilters 
         projects={projects}
         client={client} filter={filter}
