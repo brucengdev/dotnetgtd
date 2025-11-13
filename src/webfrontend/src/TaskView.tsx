@@ -55,7 +55,7 @@ export function TaskView(props: TaskViewProps) {
           setFilter(filter)
           Promise.all([
             client.GetItems(filter),
-            client.GetProjects(filter)
+            loadProjectWithNoNextActions(client, filter)
           ]).then(([filteredTasks, filteredProjects]) => {
             setItems(filteredTasks)
             setProjects(filteredProjects)
