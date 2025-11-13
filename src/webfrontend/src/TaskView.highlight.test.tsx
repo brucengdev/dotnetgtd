@@ -1,6 +1,6 @@
 import { fireEvent } from "@testing-library/dom"
 import userEvent from "@testing-library/user-event"
-import { describe, it } from "vitest"
+import { describe, expect, it } from "vitest"
 import { TestClient } from "./__test__/TestClient"
 import { sleep } from "./__test__/testutils"
 import { AssertHighlightedProjectFilter } from "./TaskFilters.projectHighlight.test"
@@ -86,10 +86,12 @@ describe("TaskView ", () => {
         await sleep(1)
 
         AssertHighlightedProjectFilter("Project A", false)
+        expect(screen.getByRole("checkbox", { name: "No project" })).toBeChecked()
 
         fireEvent.click(screen.getByRole("checkbox", { name: "No project" }))
         await sleep(1)
 
+        expect(screen.getByRole("checkbox", { name: "No project" })).not.toBeChecked()
         AssertHighlightedProjectFilter("Project A", false)
     })
 })
