@@ -11,9 +11,7 @@ const storage = new Storage()
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <StrictMode>
-      <App client={client} storage={storage} />
-    </StrictMode>
+    element: <App client={client} storage={storage} />
   }
 ])
 
@@ -21,6 +19,8 @@ const router = createBrowserRouter([
 const root = document.getElementById('root')!
 
 createRoot(root).render(
-  <RouterProvider router={router} />
+  <StrictMode>
+    <RouterProvider router={router} />
+  </StrictMode>
 )
 
