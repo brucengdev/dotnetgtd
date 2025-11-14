@@ -3,7 +3,6 @@ import { IClient } from './api/Client'
 import { Login } from './Login'
 import { MainView } from './MainView'
 import { IStorage, STORED_TOKEN } from './storage/Storage'
-import "./globals.css"
 
 export interface AppProps {
   client: IClient,
